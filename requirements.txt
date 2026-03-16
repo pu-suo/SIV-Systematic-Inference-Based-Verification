@@ -1,0 +1,21 @@
+# Core ML
+torch>=2.0
+transformers>=4.35
+datasets>=2.14
+accelerate>=0.24
+sentencepiece
+
+# NLP / Symbolic
+nltk>=3.8
+spacy>=3.7
+
+# API
+openai>=1.0
+
+# Data
+pandas>=2.0
+numpy>=1.24
+tqdm
+
+# Testing
+pytest>=7.0

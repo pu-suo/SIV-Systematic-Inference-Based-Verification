@@ -1,0 +1,24 @@
+You are checking whether a candidate FOL formula is a plausible translation of
+a natural language sentence.
+
+Given:
+  NL: {nl_sentence}
+  FOL candidate: {candidate_fol}
+
+Answer with a JSON object:
+{
+  "plausible": <true | false>,
+  "reason": "<one sentence explanation>"
+}
+
+A candidate is PLAUSIBLE if:
+  1. The predicates used are semantically appropriate for the sentence.
+  2. The quantifier structure matches the NL quantification.
+  3. No predicate is obviously hallucinated or wrong.
+
+A candidate is NOT PLAUSIBLE if:
+  1. Key entities or properties from the NL are missing.
+  2. The wrong quantifier is used (e.g., universal where existential is needed).
+  3. A predicate clearly contradicts the sentence meaning.
+
+Output JSON only, no markdown.

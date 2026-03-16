@@ -1,0 +1,80 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+pip-wheel-metadata/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+.conda/
+
+# ── Testing & coverage ────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Secrets & API keys ────────────────────────────────────────────────────────
+.env
+.env.*
+secrets.json
+*_secret*
+*_secrets*
+
+# ── Vampire binary ────────────────────────────────────────────────────────────
+/vampire
+/vampire_macos
+
+# ── Trained model checkpoints (large) ────────────────────────────────────────
+checkpoints/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# ── Generated / downloaded data (reproduce from scripts) ─────────────────────
+# Uncomment these if you want to exclude large data files:
+# data/folio_problems.json
+# data/calibration_set.json
+
+# Keep the pre-computed caches (small, deterministic)
+# data/pmi_cache.json       ← tracked
+# data/perturbation_map.json ← tracked
+
+# ── Results & exports ─────────────────────────────────────────────────────────
+results_*.csv
+results_*.json
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ── Editors ───────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Claude Code ───────────────────────────────────────────────────────────────
+.claude/
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+*.log
+*.tmp

@@ -13,12 +13,13 @@ Usage:
     # Returns True (proved) / False (disproved) / None (timeout or unavailable)
     result = check_entailment("all x.(Dog(x) -> Animal(x))", "all x.(Dog(x) -> Animal(x))")
 """
+import io
 import os
 import subprocess
 import platform
 import stat
-import tempfile
 import urllib.request
+import zipfile
 from pathlib import Path
 from typing import List, Optional, Tuple
 
@@ -28,11 +29,20 @@ from siv.fol_utils import parse_fol, convert_to_tptp, NLTK_AVAILABLE
 
 _VAMPIRE_PATH: Optional[str] = None   # Resolved at first use
 
-# Download URLs per platform (static Vampire 4.8 binaries)
+# Download URLs per platform+arch (Vampire 5.0.1 zip releases)
+_VAMPIRE_VERSION = "v5.0.1"
+_VAMPIRE_BASE = f"https://github.com/vprover/vampire/releases/download/{_VAMPIRE_VERSION}"
 _VAMPIRE_URLS = {
-    "Linux":  "https://github.com/vprover/vampire/releases/download/v4.8/vampire",
-    "Darwin": "https://github.com/vprover/vampire/releases/download/v4.8/vampire_macos",
+    ("Linux",  "X64"):   f"{_VAMPIRE_BASE}/vampire-Linux-X64.zip",
+    ("Linux",  "ARM64"): f"{_VAMPIRE_BASE}/vampire-Linux-ARM64.zip",
+    ("Darwin", "X64"):   f"{_VAMPIRE_BASE}/vampire-macOS-X64.zip",
+    ("Darwin", "ARM64"): f"{_VAMPIRE_BASE}/vampire-macOS-ARM64.zip",
 }
+
+
+def _detect_arch() -> str:
+    machine = platform.machine().lower()
+    return "ARM64" if ("arm" in machine or "aarch" in machine) else "X64"
 
 
 def _find_vampire() -> Optional[str]:
@@ -55,13 +65,16 @@ def setup_vampire(target_dir: str = ".") -> Optional[str]:
     """
     Download and install the Vampire binary for the current platform.
 
-    Returns the path to the installed binary, or None if installation failed.
-    Call this once in a notebook setup cell.
+    Downloads the appropriate zip from the Vampire GitHub releases, extracts
+    the binary, and makes it executable.  Returns the path to the installed
+    binary, or None if installation failed.  Call this once in a notebook
+    setup cell.
     """
     system = platform.system()
-    url = _VAMPIRE_URLS.get(system)
+    arch = _detect_arch()
+    url = _VAMPIRE_URLS.get((system, arch))
     if url is None:
-        print(f"[Vampire] Unsupported platform: {system}. Install Vampire manually.")
+        print(f"[Vampire] Unsupported platform/arch: {system}/{arch}. Install Vampire manually.")
         return None
 
     dest = Path(target_dir) / "vampire"
@@ -69,9 +82,17 @@ def setup_vampire(target_dir: str = ".") -> Optional[str]:
         print(f"[Vampire] Already installed at {dest}")
         return str(dest)
 
-    print(f"[Vampire] Downloading from {url} …")
+    print(f"[Vampire] Downloading {_VAMPIRE_VERSION} ({system}/{arch}) from {url} …")
     try:
-        urllib.request.urlretrieve(url, str(dest))
+        with urllib.request.urlopen(url) as response:
+            zip_data = response.read()
+        with zipfile.ZipFile(io.BytesIO(zip_data)) as zf:
+            # The zip contains a single executable named 'vampire'
+            binary_name = next(
+                (n for n in zf.namelist() if n.endswith("vampire") or n == "vampire"),
+                zf.namelist()[0],
+            )
+            dest.write_bytes(zf.read(binary_name))
         dest.chmod(dest.stat().st_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
         print(f"[Vampire] Installed at {dest}")
         return str(dest)

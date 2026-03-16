@@ -30,7 +30,7 @@ from siv.fol_utils import parse_fol, convert_to_tptp, NLTK_AVAILABLE
 _VAMPIRE_PATH: Optional[str] = None   # Resolved at first use
 
 # Download URLs per platform+arch (Vampire 5.0.0 zip releases)
-_VAMPIRE_VERSION = "v5.0.0"
+_VAMPIRE_VERSION = "v5.0.1"
 _VAMPIRE_BASE = f"https://github.com/vprover/vampire/releases/download/{_VAMPIRE_VERSION}"
 _VAMPIRE_URLS = {
     ("Linux",  "X64"):   f"{_VAMPIRE_BASE}/vampire-Linux-X64.zip",

@@ -29,7 +29,7 @@ from siv.fol_utils import parse_fol, convert_to_tptp, NLTK_AVAILABLE
 
 _VAMPIRE_PATH: Optional[str] = None   # Resolved at first use
 
-# Download URLs per platform+arch (Vampire 5.0.0 zip releases)
+# Download URLs per platform+arch (Vampire 5.0.1 zip releases)
 _VAMPIRE_VERSION = "v5.0.1"
 _VAMPIRE_BASE = f"https://github.com/vprover/vampire/releases/download/{_VAMPIRE_VERSION}"
 _VAMPIRE_URLS = {
@@ -85,6 +85,9 @@ def setup_vampire(target_dir: str = ".") -> Optional[str]:
     if dest.exists() and os.access(str(dest), os.X_OK):
         print(f"[Vampire] Already installed at {dest}")
         return str(dest)
+
+    # Ensure the target directory exists before writing into it
+    dest.parent.mkdir(parents=True, exist_ok=True)
 
     print(f"[Vampire] Downloading {_VAMPIRE_VERSION} ({system}/{arch}) from {url} …")
     try:

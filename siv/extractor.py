@@ -15,6 +15,7 @@ extractor that is accurate enough to run the full pipeline end-to-end.
 import json
 import os
 import re
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List, Optional
 
@@ -45,7 +46,6 @@ def _load_system_prompt() -> str:
     path = _PROMPTS_DIR / "extraction_system.txt"
     if path.exists():
         return path.read_text()
-    # Minimal inline fallback
     return (
         "Extract entities and facts from the sentence into JSON with keys: "
         "entities (list of {id, surface, entity_type}), "
@@ -62,6 +62,11 @@ def _load_examples() -> List[dict]:
     return []
 
 
+# Cache prompt files once at module load — avoids N disk reads per problem
+_SYSTEM_PROMPT: str = _load_system_prompt()
+_EXAMPLES: List[dict] = _load_examples()
+
+
 def _build_prompt(
     sentence: str,
     compound_analyses: List[CompoundAnalysis],
@@ -74,9 +79,9 @@ def _build_prompt(
       [1-2*N] user/assistant: few-shot examples (1 pair per example)
       [-1] user: compound analysis block + sentence to extract
     """
-    messages: List[dict] = [{"role": "system", "content": _load_system_prompt()}]
+    messages: List[dict] = [{"role": "system", "content": _SYSTEM_PROMPT}]
 
-    for ex in _load_examples():
+    for ex in _EXAMPLES:
         compound_block = ex.get("compound_analysis", "(no compound modifiers detected)")
         user_content = (
             f"COMPOUND ANALYSIS:\n{compound_block}\n\n"
@@ -204,23 +209,34 @@ def extract_problem(
     model: str = "gpt-4o",
     use_api: bool = True,
     problem_id: str = "unknown",
+    max_workers: int = 5,
 ) -> ProblemExtraction:
     """
     Extract all sentences in a FOLIO problem.
 
-    Runs Stage 1 pre-analysis, then Stage 2 extraction for each sentence.
-    Entity IDs are deduplicated across sentences using surface-form matching.
+    Runs Stage 1 pre-analysis + Stage 2 extraction for each sentence in
+    parallel (up to *max_workers* concurrent API calls), then performs
+    cross-sentence entity-ID deduplication sequentially on the results.
+
+    *max_workers* caps concurrency to avoid GPT-4o rate-limit 429s.
+    Set max_workers=1 to revert to fully sequential behaviour.
     """
+    def _extract_one(sent: str) -> SentenceExtraction:
+        analyses = analyze_sentence(sent)
+        return extract_sentence(sent, analyses, client=client,
+                                model=model, use_api=use_api)
+
+    # Parallel extraction — pool.map preserves input order
+    workers = min(max_workers, len(problem_sentences)) if problem_sentences else 1
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        raw_extractions = list(pool.map(_extract_one, problem_sentences))
+
+    # Sequential entity-ID deduplication (stateful — must not be parallelised)
     sentence_extractions: List[SentenceExtraction] = []
-    # Cross-sentence entity registry: surface (lower) → canonical id
-    entity_registry: dict = {}
+    entity_registry: dict = {}   # surface (lower) → canonical id
     id_counter = {"e": 1, "c": 1}
 
-    for sent in problem_sentences:
-        analyses = analyze_sentence(sent)
-        extraction = extract_sentence(
-            sent, analyses, client=client, model=model, use_api=use_api
-        )
+    for extraction in raw_extractions:
         # Remap entity IDs to be unique across the problem
         id_remap: dict = {}
         new_entities = []

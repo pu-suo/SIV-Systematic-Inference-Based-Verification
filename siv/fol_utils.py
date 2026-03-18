@@ -35,28 +35,25 @@ def normalize_fol_string(fol: str) -> str:
     if not fol or not isinstance(fol, str):
         return ""
 
-    # Strip non-ASCII (covers fancy quotes, curly arrows, etc.)
+    # Step 1: Replace Unicode logic symbols BEFORE stripping non-ASCII.
+    # Order matters: stripping non-ASCII first would silently delete these.
+    for symbol, replacement in [
+        ("∀", "all "), ("∃", "exists "),
+        ("∧", " & "), ("∨", " | "),
+        ("→", " -> "), ("↔", " <-> "),
+        ("¬", "-"), ("~", "-"),
+    ]:
+        fol = fol.replace(symbol, replacement)
+
+    # Step 2: Strip remaining non-ASCII (fancy quotes, curly arrows, etc.)
     fol = unicodedata.normalize("NFKD", fol).encode("ascii", "ignore").decode("ascii")
 
-    replacements = [
-        # Quantifiers
+    # Step 3: ASCII keyword and whitespace normalisations
+    for pattern, replacement in [
         (r"\bforall\b", "all"),
         (r"\bexist\b(?!s)", "exists"),  # "exist x" → "exists x" but keep "exists"
-        # Unicode symbols (already stripped above, but keep for robustness)
-        (r"∀", "all "),
-        (r"∃", "exists "),
-        # Connectives
-        (r"∧", " & "),
-        (r"∨", " | "),
-        (r"→", " -> "),
-        (r"↔", " <-> "),
-        (r"¬", "-"),
-        (r"~", "-"),
-        # Whitespace cleanup
         (r"\s+", " "),
-    ]
-
-    for pattern, replacement in replacements:
+    ]:
         fol = re.sub(pattern, replacement, fol)
 
     return fol.strip()

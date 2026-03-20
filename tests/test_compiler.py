@@ -1,11 +1,12 @@
 """Tests for siv/compiler.py"""
 import pytest
 from siv.schema import (
-    Entity, EntityType, Fact, MacroTemplate,
+    Constant, Entity, EntityType, Fact, MacroTemplate,
     ProblemExtraction, SentenceExtraction,
 )
 from siv.compiler import (
     compile_test_suite,
+    compile_sentence_test_suite,
     _to_camel_case,
     _compile_vocabulary_tests,
     _compile_binding_tests,
@@ -187,3 +188,90 @@ def test_total_tests_nonzero():
     extraction = _make_problem()
     suite = compile_test_suite(extraction)
     assert suite.total_tests > 0
+
+
+# ── compile_sentence_test_suite ───────────────────────────────────────────────
+
+def test_compile_sentence_test_suite_returns_test_suite():
+    """compile_sentence_test_suite wraps one sentence and returns a TestSuite."""
+    sentence = SentenceExtraction(
+        nl="The tall tree grows.",
+        entities=[Entity(id="e1", surface="tree", entity_type=EntityType.EXISTENTIAL)],
+        facts=[Fact(pred="tall", args=["e1"]), Fact(pred="grows", args=["e1"])],
+        macro_template=MacroTemplate.GROUND_POSITIVE,
+    )
+    suite = compile_sentence_test_suite(sentence, problem_id="s1")
+    assert suite.problem_id == "s1"
+    assert suite.total_tests > 0
+
+
+def test_compile_sentence_test_suite_matches_single_sentence_problem():
+    """Results from compile_sentence_test_suite == compile_test_suite for one sentence."""
+    sentence = SentenceExtraction(
+        nl="The cat sleeps.",
+        entities=[Entity(id="e1", surface="cat", entity_type=EntityType.EXISTENTIAL)],
+        facts=[Fact(pred="sleeps", args=["e1"])],
+        macro_template=MacroTemplate.GROUND_POSITIVE,
+    )
+    suite_sentence = compile_sentence_test_suite(sentence, problem_id="p1")
+    wrapped = ProblemExtraction(problem_id="p1", sentences=[sentence])
+    suite_problem = compile_test_suite(wrapped)
+
+    pos_s = sorted(t.fol_string for t in suite_sentence.positive_tests)
+    pos_p = sorted(t.fol_string for t in suite_problem.positive_tests)
+    assert pos_s == pos_p
+
+
+# ── Constant (new-style) in binding tests ────────────────────────────────────
+
+def test_new_style_constant_unary_binding():
+    """New-style Constant in constants list → grounded Pred(const_id) binding test."""
+    sentence = SentenceExtraction(
+        nl="Bonnie sings.",
+        entities=[],
+        facts=[Fact(pred="sings", args=["bonnie"])],
+        macro_template=MacroTemplate.GROUND_POSITIVE,
+        constants=[Constant(id="bonnie", surface="Bonnie")],
+    )
+    prob = ProblemExtraction(problem_id="t", sentences=[sentence])
+    suite = compile_test_suite(prob)
+    pos = [t.fol_string for t in suite.positive_tests]
+    assert any("Sings(bonnie)" in f for f in pos), f"grounded test missing; got {pos}"
+
+
+def test_new_style_constant_entity_binary_binding():
+    """Pred(const, entity) → exists x.(EntType(x) & Pred(const_id, x))."""
+    sentence = SentenceExtraction(
+        nl="Lana directed a film.",
+        entities=[Entity(id="e1", surface="film", entity_type=EntityType.EXISTENTIAL)],
+        facts=[Fact(pred="directed", args=["lana", "e1"])],
+        macro_template=MacroTemplate.GROUND_POSITIVE,
+        constants=[Constant(id="lana", surface="Lana")],
+    )
+    prob = ProblemExtraction(problem_id="t", sentences=[sentence])
+    suite = compile_test_suite(prob)
+    pos = [t.fol_string for t in suite.positive_tests]
+    assert any("Film(x)" in f and "lana" in f for f in pos), (
+        f"const+entity binding test missing; got {pos}"
+    )
+
+
+def test_new_style_two_constants_binary_binding():
+    """Pred(const, const) → grounded Pred(c1, c2) with no quantifiers."""
+    sentence = SentenceExtraction(
+        nl="Lana directed AfterTiller.",
+        entities=[],
+        facts=[Fact(pred="directed", args=["lana", "afterTiller"])],
+        macro_template=MacroTemplate.GROUND_POSITIVE,
+        constants=[
+            Constant(id="lana", surface="Lana"),
+            Constant(id="afterTiller", surface="After Tiller"),
+        ],
+    )
+    prob = ProblemExtraction(problem_id="t", sentences=[sentence])
+    suite = compile_test_suite(prob)
+    pos = [t.fol_string for t in suite.positive_tests]
+    assert any(
+        ("Directed(lana, afterTiller)" in f or "Directed(lana,afterTiller)" in f)
+        for f in pos
+    ), f"grounded binary test missing; got {pos}"

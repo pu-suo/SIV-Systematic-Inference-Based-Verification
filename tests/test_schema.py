@@ -1,7 +1,7 @@
 """Tests for siv/schema.py"""
 import pytest
 from siv.schema import (
-    Entity, EntityType, Fact, CompoundAnalysis,
+    Constant, Entity, EntityType, Fact, CompoundAnalysis,
     SentenceExtraction, ProblemExtraction,
     UnitTest, TestSuite, VerificationResult,
     MacroTemplate,
@@ -13,6 +13,56 @@ def _make_sentence(nl="The tree is tall.", entity_id="e1", entity_surface="tree"
     entity = Entity(id=entity_id, surface=entity_surface, entity_type=EntityType.EXISTENTIAL)
     fact = Fact(pred=pred, args=[entity_id])
     return SentenceExtraction(nl=nl, entities=[entity], facts=[fact], macro_template=macro)
+
+
+# ── Constant ──────────────────────────────────────────────────────────────────
+
+def test_constant_fields():
+    c = Constant(id="bonnie", surface="Bonnie")
+    assert c.id == "bonnie"
+    assert c.surface == "Bonnie"
+
+
+def test_constant_camelcase_id():
+    c = Constant(id="lanaWilson", surface="Lana Wilson")
+    assert c.id == "lanaWilson"
+
+
+def test_sentence_extraction_constants_field():
+    c = Constant(id="elizabeth", surface="Elizabeth")
+    e = Entity(id="e1", surface="club", entity_type=EntityType.EXISTENTIAL)
+    f = Fact(pred="member", args=["elizabeth", "e1"])
+    sent = SentenceExtraction(
+        nl="Elizabeth is in the club.",
+        entities=[e],
+        facts=[f],
+        macro_template=MacroTemplate.GROUND_POSITIVE,
+        constants=[c],
+    )
+    assert len(sent.constants) == 1
+    assert sent.constants[0].id == "elizabeth"
+
+
+def test_problem_extraction_all_constants():
+    c1 = Constant(id="bonnie", surface="Bonnie")
+    c2 = Constant(id="bonnie", surface="Bonnie")  # duplicate — should deduplicate
+    s1 = SentenceExtraction(
+        nl="Bonnie sings.",
+        entities=[],
+        facts=[Fact(pred="sings", args=["bonnie"])],
+        macro_template=MacroTemplate.GROUND_POSITIVE,
+        constants=[c1],
+    )
+    s2 = SentenceExtraction(
+        nl="Bonnie dances.",
+        entities=[],
+        facts=[Fact(pred="dances", args=["bonnie"])],
+        macro_template=MacroTemplate.GROUND_POSITIVE,
+        constants=[c2],
+    )
+    prob = ProblemExtraction(problem_id="p1", sentences=[s1, s2])
+    assert len(prob.all_constants) == 1
+    assert prob.all_constants[0].id == "bonnie"
 
 
 # ── Entity ────────────────────────────────────────────────────────────────────

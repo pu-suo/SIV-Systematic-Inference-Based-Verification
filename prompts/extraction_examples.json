@@ -4,6 +4,7 @@
     "compound_analysis": "  • \"tall red\" tree  [WordNet:NO  PMI=0.8  ProperNoun:NO  dep=nsubj]  → SPLIT (Low PMI; modifier targets subject entity → separate property.)",
     "sentence": "The tall red tree grows quickly.",
     "response": {
+      "constants": [],
       "entities": [
         {"id": "e1", "surface": "tree", "entity_type": "existential"}
       ],
@@ -16,14 +17,15 @@
     }
   },
   {
-    "description": "Named category (KEEP) and binary relation",
-    "compound_analysis": "  • \"Lana Wilson\" director  [WordNet:NO  PMI=0.0  ProperNoun:YES  dep=nsubj]  → KEEP (Proper-noun modifier denotes a named category.)",
+    "description": "Named individuals in constants, binary relation",
+    "compound_analysis": "  • \"Lana Wilson\" director  [WordNet:NO  PMI=0.0  ProperNoun:YES  dep=nsubj]  → KEEP (Proper-noun modifier denotes a named category.)  [Route to constants array]",
     "sentence": "Lana Wilson directed After Tiller.",
     "response": {
-      "entities": [
-        {"id": "lanaWilson",  "surface": "Lana Wilson",  "entity_type": "constant"},
-        {"id": "afterTiller", "surface": "After Tiller", "entity_type": "constant"}
+      "constants": [
+        {"id": "lanaWilson",  "surface": "Lana Wilson"},
+        {"id": "afterTiller", "surface": "After Tiller"}
       ],
+      "entities": [],
       "facts": [
         {"pred": "directed", "args": ["lanaWilson", "afterTiller"], "negated": false}
       ],
@@ -35,6 +37,7 @@
     "compound_analysis": "  • \"low\" rainfall  [WordNet:NO  PMI=4.2  ProperNoun:NO  dep=dobj]  → KEEP (High PMI (4.2 > 3.0) → fixed collocation.)",
     "sentence": "The region has low rainfall.",
     "response": {
+      "constants": [],
       "entities": [
         {"id": "e1", "surface": "region",        "entity_type": "existential"},
         {"id": "e2", "surface": "low rainfall",  "entity_type": "existential"}
@@ -50,6 +53,7 @@
     "compound_analysis": "(no compound modifiers detected)",
     "sentence": "All kids are young.",
     "response": {
+      "constants": [],
       "entities": [
         {"id": "e1", "surface": "kid", "entity_type": "universal"}
       ],
@@ -64,9 +68,10 @@
     "compound_analysis": "(no compound modifiers detected)",
     "sentence": "Elizabeth is a queen.",
     "response": {
-      "entities": [
-        {"id": "elizabeth", "surface": "Elizabeth", "entity_type": "constant"}
+      "constants": [
+        {"id": "elizabeth", "surface": "Elizabeth"}
       ],
+      "entities": [],
       "facts": [
         {"pred": "queen", "args": ["elizabeth"], "negated": false}
       ],

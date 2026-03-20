@@ -124,6 +124,27 @@ def aggregate_scores(
     return sorted(out, key=lambda p: p.best_siv_score, reverse=True)
 
 
+def aggregate_sentence_scores(
+    sentence_results: List[VerificationResult],
+) -> Dict[str, float]:
+    """
+    Macro-average SIV, recall, and precision across per-sentence VerificationResults.
+
+    Use this for sentence-level evaluation where each premise is scored against
+    its own test suite and the problem score is the mean of per-sentence scores.
+
+    Returns a dict with keys: siv, recall, precision.
+    """
+    if not sentence_results:
+        return {"siv": 0.0, "recall": 0.0, "precision": 0.0}
+    n = len(sentence_results)
+    return {
+        "siv":       sum(r.siv_score      for r in sentence_results) / n,
+        "recall":    sum(r.recall_rate    for r in sentence_results) / n,
+        "precision": sum(r.precision_rate for r in sentence_results) / n,
+    }
+
+
 def macro_average(problem_scores: List[ProblemScore]) -> Dict[str, float]:
     """
     Compute macro-average SIV, recall, and precision across problems.

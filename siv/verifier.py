@@ -16,12 +16,12 @@ A test resolved at Tier 1 with partial credit is recorded in partial_credits
 but does NOT increment recall_passed.
 A test definitively failed at Tier 1 (credit = 0.0) is skipped (no prover call).
 """
-import re
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, Optional, Set, Tuple
 
 from siv.fol_utils import (
     NLTK_AVAILABLE, extract_predicates, is_valid_fol, parse_fol,
 )
+from siv.partial_credit import tier1_credit
 from siv.schema import TestSuite, UnitTest, VerificationResult
 from siv.vampire_interface import check_entailment
 
@@ -33,18 +33,6 @@ def _extract_predicates_from_fol(fol_string: str) -> Set[str]:
     return extract_predicates(fol_string)
 
 
-def _camelcase_components(pred_name: str) -> List[str]:
-    """
-    Split a CamelCase identifier into its constituent words.
-    'CrimsonCar'    → ['Crimson', 'Car']
-    'DirectedBy'    → ['Directed', 'By']
-    'MovesQuickly'  → ['Moves', 'Quickly']
-    """
-    # Insert split before every upper-case letter that follows a lower-case one
-    parts = re.sub(r"([a-z])([A-Z])", r"\1 \2", pred_name).split()
-    return parts
-
-
 # ── Tier 0: Syntax ────────────────────────────────────────────────────────────
 
 def _tier0_syntax(candidate: str) -> bool:
@@ -54,15 +42,22 @@ def _tier0_syntax(candidate: str) -> bool:
 
 # ── Tier 1: Vocabulary ────────────────────────────────────────────────────────
 
-def _tier1_vocabulary(candidate: str, test: UnitTest) -> Tuple[bool, float]:
+def _tier1_vocabulary(
+    candidate: str,
+    test: UnitTest,
+    strict_mode: bool = False,
+) -> Tuple[bool, float]:
     """
     CamelCase-aware vocabulary check.
 
-    Returns (definitive_result, partial_credit) where:
-      (True,  1.0) → predicate found as standalone → full credit, skip Tier 2/3
-      (False, 0.5) → predicate is a CamelCase component → partial credit,
-                     pass to Tier 2/3 for structural resolution
-      (False, 0.0) → predicate absent entirely → definitive fail, skip Tier 2/3
+    strict_mode=False (default for backward compat):
+      (True,  1.0) → all predicates found as standalone → full credit
+      (False, 0.5) → predicate is a CamelCase component → partial credit
+      (False, 0.0) → predicate absent entirely → definitive fail
+
+    strict_mode=True:
+      (True,  1.0) → all predicates found as standalone
+      (False, 0.0) → any predicate absent or only a component → fail
 
     For NEGATIVE tests the semantics are inverted by the caller.
     """
@@ -70,29 +65,14 @@ def _tier1_vocabulary(candidate: str, test: UnitTest) -> Tuple[bool, float]:
     candidate_preds = _extract_predicates_from_fol(candidate)
 
     if not test_preds:
-        # Vocabulary-free test → treat as full pass
         return (True, 1.0)
 
-    # For multi-predicate tests, all test predicates must match
-    best_credit = 1.0
-    for tp in test_preds:
-        if tp in candidate_preds:
-            continue  # Full match for this predicate
-        # Check if tp is a component of any candidate predicate
-        found_as_component = False
-        for cp in candidate_preds:
-            if tp in _camelcase_components(cp):
-                found_as_component = True
-                break
-        if found_as_component:
-            best_credit = min(best_credit, 0.5)
-        else:
-            # At least one required predicate is completely absent
-            return (False, 0.0)
-
-    if best_credit >= 1.0:
+    credit = tier1_credit(candidate_preds, test_preds, strict_mode=strict_mode)
+    if credit >= 1.0:
         return (True, 1.0)
-    return (False, 0.5)
+    if credit > 0.0:
+        return (False, credit)
+    return (False, 0.0)
 
 
 # ── Tier 2: AST pattern matching ──────────────────────────────────────────────
@@ -169,12 +149,18 @@ def verify(
     candidate_fol: str,
     test_suite: TestSuite,
     prover_timeout: int = 5,
+    strict_mode: bool = False,
 ) -> VerificationResult:
     """
     Run the full tiered verification of one candidate against a test suite.
 
     For POSITIVE tests: candidate must entail → counted in recall.
     For NEGATIVE tests: candidate must NOT entail → counted in precision.
+
+    strict_mode=False (default): CamelCase component matching gives 0.5 partial
+                                  credit at Tier 1 (dense reward signal for training).
+    strict_mode=True:             Tier 1 returns only 1.0 or 0.0 — no partial credit
+                                  (strict mathematical verification for leaderboards).
     """
     # ── Tier 0: syntax ──────────────────────────────────────────────────────
     syntax_valid = _tier0_syntax(candidate_fol)
@@ -205,7 +191,7 @@ def verify(
 
     # ── RECALL: positive tests ───────────────────────────────────────────────
     for i, test in enumerate(test_suite.positive_tests):
-        definitive, credit = _tier1_vocabulary(candidate_fol, test)
+        definitive, credit = _tier1_vocabulary(candidate_fol, test, strict_mode=strict_mode)
 
         if credit == 0.0:
             # Predicate completely absent → definitive fail
@@ -258,7 +244,7 @@ def verify(
 
     # ── PRECISION: negative tests ────────────────────────────────────────────
     for i, test in enumerate(test_suite.negative_tests):
-        _, credit = _tier1_vocabulary(candidate_fol, test)
+        _, credit = _tier1_vocabulary(candidate_fol, test, strict_mode=strict_mode)
 
         if credit == 0.0:
             # Candidate lacks the perturbed predicate entirely → trivially safe

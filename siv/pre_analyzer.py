@@ -78,6 +78,9 @@ def format_analyses_for_prompt(analyses: List[CompoundAnalysis]) -> str:
     """
     Render CompoundAnalysis objects as a human-readable block suitable for
     injecting into the LLM extraction prompt.
+
+    When is_proper_noun=True, appends a [Route to constants array] instruction
+    to give the LLM a clear signal for the two-list schema.
     """
     if not analyses:
         return "(no compound modifiers detected)"
@@ -85,10 +88,11 @@ def format_analyses_for_prompt(analyses: List[CompoundAnalysis]) -> str:
     for ca in analyses:
         wn_flag = "WordNet:YES" if ca.wordnet_hit else "WordNet:NO"
         pn_flag = "ProperNoun:YES" if ca.is_proper_noun else "ProperNoun:NO"
+        route = "  [Route to constants array]" if ca.is_proper_noun else ""
         lines.append(
             f'  • "{ca.modifier} {ca.noun}"  [{wn_flag}  PMI={ca.pmi_score:.1f}'
             f"  {pn_flag}  dep={ca.dep_scope}]  → {ca.recommendation}"
-            f" ({ca.reason})"
+            f" ({ca.reason}){route}"
         )
     return "\n".join(lines)
 

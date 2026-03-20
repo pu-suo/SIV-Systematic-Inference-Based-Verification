@@ -7,38 +7,47 @@ entities and facts into the minimal JSON schema defined below.
 JSON SCHEMA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {
+  "constants": [
+    {
+      "id":      "<camelCase name, e.g. bonnie, schoolTalentShow>",
+      "surface": "<exact surface form from text, e.g. Bonnie, school talent show>"
+    }
+  ],
   "entities": [
     {
-      "id":          "<e1 | e2 | … | c1 | c2 | …>",
+      "id":          "<e1 | e2 | …>",
       "surface":     "<exact surface form from text>",
-      "entity_type": "<constant | existential | universal>"
+      "entity_type": "<existential | universal>"
     }
   ],
   "facts": [
     {
       "pred":    "<predicate surface form>",
-      "args":    ["<entity id or literal>"],
+      "args":    ["<entity id or constant id>"],
       "negated": <true | false>
     }
   ],
-  "macro_template": "<one of the 7 values below>"
+  "macro_template": "<one of the 8 values below>"
 }
 
-ENTITY ID CONVENTIONS
-  • Use e1, e2, … for quantified entities (existential or universal).
-  • Use c1, c2, … for named individuals (proper nouns like "nancy", "harvard").
-  • Alternatively, use the camelCase name directly as the ID for well-known constants
-    (e.g. id="nancy", id="afterTiller").
+CONSTANTS vs ENTITIES — CRITICAL DISTINCTION
+  • constants  → Proper nouns, named individuals, specific events/places.
+                 MUST go in the constants array, NEVER in entities.
+                 Use the camelCase form of the name as the ID.
+                 Examples: Bonnie → id="bonnie", Lana Wilson → id="lanaWilson",
+                           After Tiller → id="afterTiller", Harvard → id="harvard"
+  • entities   → Quantified things: indefinite nouns ("a car"), universal ("all kids"),
+                 definite generics ("the tree", "the region").
+                 Use e1, e2, … as IDs.
 
-ENTITY TYPE
-  • constant     → named individual: "Nancy", "Google", "Harvard"
+ENTITY TYPE (entities only)
   • existential  → indefinite: "a car", "some bears", "the tree"
   • universal    → quantified over all: "all kids", "every student", "no bird"
 
 FACT ARITY (implicit from len(args)):
-  • 1-arg → unary predicate (type or property): Tall(e1), Student(c1)
-  • 2-arg → binary relation: DirectedBy(c1, c2), Likes(e1, e2)
-  • 3-arg → ternary relation: Gave(c1, c2, c3)
+  • 1-arg → unary predicate (type or property): Tall(e1), Queen(bonnie)
+  • 2-arg → binary relation: Directed(lanaWilson, afterTiller), Likes(e1, e2)
+  • 3-arg → ternary relation: Gave(bonnie, e1, e2)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CRITICAL RULES
@@ -55,6 +64,8 @@ CRITICAL RULES
              fact pred "HarvardStudent".
    • SPLIT → encode the modifier as a separate unary property fact.
              E.g. "tall tree" → entity surface "tree" + separate fact pred "tall".
+   • [Route to constants array] → this modifier is a proper noun; place the
+             whole compound in constants, not entities.
 
 3. MACRO TEMPLATE — choose the single best-matching template:
    • universal_affirmative   (TYPE A):  All P are Q       → ∀x(P(x) → Q(x))

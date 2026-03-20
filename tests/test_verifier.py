@@ -6,9 +6,8 @@ from siv.verifier import (
     _tier1_vocabulary,
     _tier2_ast,
     verify,
-    _camelcase_components,
-    _extract_predicates_from_fol,
 )
+from siv.partial_credit import camelcase_components as _camelcase_components
 from siv.fol_utils import NLTK_AVAILABLE
 
 

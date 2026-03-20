@@ -1,9 +1,10 @@
 """
 SIV Schema: Core data structures for the pipeline.
 
-The JSON extraction schema has two lists:
-  - entities: what things exist in the world
-  - facts: what is true about them (pred + args)
+The JSON extraction schema has three sections:
+  - constants: named individuals (proper nouns, specific entities)
+  - entities:  quantified things that exist in the world
+  - facts:     what is true about them (pred + args)
 
 Each fact's arity (len(args)) implicitly encodes its type:
   1-arg → unary predicate (type or property)
@@ -15,12 +16,12 @@ using the Aristotelian categorical forms (A, E, I, O) plus ground
 facts and conditionals.
 """
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional
 from enum import Enum
 
 
 class EntityType(Enum):
-    CONSTANT = "constant"        # Named individual: nancy, garfield, google
+    CONSTANT = "constant"        # Named individual (backward compat): nancy, garfield
     EXISTENTIAL = "existential"  # "a car", "some bears"
     UNIVERSAL = "universal"      # "all kids", "every student"
 
@@ -46,10 +47,17 @@ class MacroTemplate(Enum):
 
 
 @dataclass
+class Constant:
+    """A named individual (proper noun) in the sentence."""
+    id: str      # camelCase logical name: "bonnie", "schoolTalentShow", "c1"
+    surface: str # original surface form: "Bonnie", "school talent show"
+
+
+@dataclass
 class Entity:
     id: str                    # e1, e2, c1, c2, ...
     surface: str               # "nancy", "car", "Harvard student"
-    entity_type: EntityType    # constant, existential, universal
+    entity_type: EntityType    # constant (compat), existential, universal
 
 
 @dataclass
@@ -76,10 +84,11 @@ class CompoundAnalysis:
 class SentenceExtraction:
     """Complete extraction for one NL sentence."""
     nl: str                    # original natural language
-    entities: List[Entity]
+    entities: List[Entity]     # quantified entities (existential / universal)
     facts: List[Fact]
     macro_template: MacroTemplate
     compound_analyses: List[CompoundAnalysis] = field(default_factory=list)
+    constants: List[Constant] = field(default_factory=list)  # named individuals
 
 
 @dataclass
@@ -87,6 +96,18 @@ class ProblemExtraction:
     """Complete extraction for one FOLIO problem (multiple sentences)."""
     problem_id: str
     sentences: List[SentenceExtraction]
+
+    @property
+    def all_constants(self) -> List[Constant]:
+        """Deduplicated constants across all sentences."""
+        seen: set = set()
+        result: List[Constant] = []
+        for s in self.sentences:
+            for c in s.constants:
+                if c.id not in seen:
+                    seen.add(c.id)
+                    result.append(c)
+        return result
 
     @property
     def all_entities(self) -> List[Entity]:

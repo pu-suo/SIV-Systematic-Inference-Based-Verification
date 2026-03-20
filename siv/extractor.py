@@ -13,14 +13,13 @@ When no API key is available the module falls back to a spaCy/NLTK rule-based
 extractor that is accurate enough to run the full pipeline end-to-end.
 """
 import json
-import os
 import re
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List, Optional
 
 from siv.schema import (
-    CompoundAnalysis, Entity, EntityType, Fact,
+    CompoundAnalysis, Constant, Entity, EntityType, Fact,
     MacroTemplate, ProblemExtraction, SentenceExtraction,
 )
 from siv.pre_analyzer import analyze_sentence, format_analyses_for_prompt
@@ -28,16 +27,6 @@ from siv.pre_analyzer import analyze_sentence, format_analyses_for_prompt
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
 _PROMPTS_DIR = Path(__file__).parent.parent / "prompts"
-
-
-# ── API key helper ────────────────────────────────────────────────────────────
-
-def _get_openai_key() -> str:
-    try:
-        from google.colab import userdata  # type: ignore
-        return userdata.get("OPENAI_API_KEY") or ""
-    except Exception:
-        return os.environ.get("OPENAI_API_KEY", "")
 
 
 # ── Prompt construction ───────────────────────────────────────────────────────
@@ -48,6 +37,7 @@ def _load_system_prompt() -> str:
         return path.read_text()
     return (
         "Extract entities and facts from the sentence into JSON with keys: "
+        "constants (list of {id, surface}), "
         "entities (list of {id, surface, entity_type}), "
         "facts (list of {pred, args, negated}), macro_template. "
         "Output JSON only."
@@ -106,6 +96,7 @@ def _parse_response(response_text: str) -> dict:
     Parse and validate the LLM JSON response.
     Strips markdown fencing if present.
     Raises ValueError on schema violations.
+    Accepts both the old single-list format and the new two-list format.
     """
     text = response_text.strip()
     # Strip ```json ... ``` or ``` ... ```
@@ -113,13 +104,26 @@ def _parse_response(response_text: str) -> dict:
     text = re.sub(r"\s*```$", "", text)
     data = json.loads(text)
 
+    # New two-list format: must have "entities" or "constants" (or both)
+    # Old format: must have "entities"
+    if "constants" not in data and "entities" not in data:
+        raise ValueError("Missing both 'constants' and 'entities' lists")
+    if "entities" not in data:
+        data["entities"] = []
+    if "constants" not in data:
+        data["constants"] = []
     if not isinstance(data.get("entities"), list):
         raise ValueError("Missing or invalid 'entities' list")
+    if not isinstance(data.get("constants"), list):
+        raise ValueError("Missing or invalid 'constants' list")
     if not isinstance(data.get("facts"), list):
         raise ValueError("Missing or invalid 'facts' list")
     for e in data["entities"]:
         if "id" not in e or "surface" not in e:
             raise ValueError(f"Entity missing id/surface: {e}")
+    for c in data["constants"]:
+        if "id" not in c or "surface" not in c:
+            raise ValueError(f"Constant missing id/surface: {c}")
     for f in data["facts"]:
         if "pred" not in f or "args" not in f:
             raise ValueError(f"Fact missing pred/args: {f}")
@@ -133,19 +137,33 @@ def _dict_to_extraction(
 ) -> SentenceExtraction:
     """Convert validated LLM response dict → SentenceExtraction."""
     etype_map = {
-        "constant":    EntityType.CONSTANT,
         "existential": EntityType.EXISTENTIAL,
         "universal":   EntityType.UNIVERSAL,
+        # backward compat: old prompts may still emit "constant" in entities
+        "constant":    EntityType.CONSTANT,
     }
-    entities = [
-        Entity(
-            id=e["id"],
-            surface=e["surface"],
-            entity_type=etype_map.get(e.get("entity_type", "existential"),
-                                      EntityType.EXISTENTIAL),
-        )
-        for e in data["entities"]
+
+    # New-style: items in data["constants"] → Constant objects
+    constants = [
+        Constant(id=c["id"], surface=c["surface"])
+        for c in data.get("constants", [])
     ]
+
+    # Items in data["entities"] with entity_type="constant" → also Constant
+    # Items with existential/universal → Entity
+    entities = []
+    for e in data.get("entities", []):
+        etype_raw = e.get("entity_type", "existential")
+        if etype_raw == "constant":
+            # Route to constants list (old-format LLM output)
+            constants.append(Constant(id=e["id"], surface=e["surface"]))
+        else:
+            entities.append(Entity(
+                id=e["id"],
+                surface=e["surface"],
+                entity_type=etype_map.get(etype_raw, EntityType.EXISTENTIAL),
+            ))
+
     facts = [
         Fact(
             pred=f["pred"],
@@ -166,6 +184,7 @@ def _dict_to_extraction(
         facts=facts,
         macro_template=macro,
         compound_analyses=compound_analyses,
+        constants=constants,
     )
 
 
@@ -196,7 +215,7 @@ def extract_sentence(
             raw = response.choices[0].message.content
             data = _parse_response(raw)
             return _dict_to_extraction(sentence, data, compound_analyses)
-        except Exception as e:
+        except Exception:
             # Fall through to rule-based
             pass
 
@@ -233,11 +252,12 @@ def extract_problem(
 
     # Sequential entity-ID deduplication (stateful — must not be parallelised)
     sentence_extractions: List[SentenceExtraction] = []
-    entity_registry: dict = {}   # surface (lower) → canonical id
+    entity_registry: dict = {}    # surface (lower) → canonical id
+    constant_registry: dict = {}  # surface (lower) → canonical id
     id_counter = {"e": 1, "c": 1}
 
     for extraction in raw_extractions:
-        # Remap entity IDs to be unique across the problem
+        # Remap entity IDs
         id_remap: dict = {}
         new_entities = []
         for ent in extraction.entities:
@@ -245,7 +265,7 @@ def extract_problem(
             if key in entity_registry:
                 new_id = entity_registry[key]
             else:
-                prefix = "c" if ent.entity_type == EntityType.CONSTANT else "e"
+                prefix = "e"
                 new_id = f"{prefix}{id_counter[prefix]}"
                 id_counter[prefix] += 1
                 entity_registry[key] = new_id
@@ -253,6 +273,19 @@ def extract_problem(
             new_entities.append(
                 Entity(id=new_id, surface=ent.surface, entity_type=ent.entity_type)
             )
+
+        # Remap constant IDs — use camelCase surface as canonical id when possible
+        new_constants = []
+        for const in extraction.constants:
+            key = const.surface.lower()
+            if key in constant_registry:
+                new_id = constant_registry[key]
+            else:
+                # Use camelCase id from const.id or derive from surface
+                new_id = const.id
+                constant_registry[key] = new_id
+            id_remap[const.id] = new_id
+            new_constants.append(Constant(id=new_id, surface=const.surface))
 
         # Remap fact args
         new_facts = []
@@ -267,6 +300,7 @@ def extract_problem(
                 facts=new_facts,
                 macro_template=extraction.macro_template,
                 compound_analyses=extraction.compound_analyses,
+                constants=new_constants,
             )
         )
 
@@ -300,6 +334,41 @@ def _fallback_extraction(
         return _nltk_fallback(sentence, compound_analyses)
 
 
+def _detect_macro_template(sentence: str, doc=None) -> MacroTemplate:
+    """
+    Detect macro template from sentence text and optional spaCy doc.
+
+    Checks both sentence-initial position AND universal determiners on subject noun.
+    """
+    lower = sentence.lower().strip()
+
+    # Sentence-initial quantifiers
+    if lower.startswith(("all ", "every ", "each ")):
+        return MacroTemplate.TYPE_A
+    if lower.startswith("no "):
+        return MacroTemplate.TYPE_E
+
+    # Negation words → switch affirmative to negative variant
+    neg_words = {"not", "never", "no", "n't"}
+
+    # spaCy-based: check universal determiners on subject noun
+    if doc is not None:
+        for tok in doc:
+            if tok.dep_ in ("nsubj", "nsubjpass") and tok.pos_ in ("NOUN", "PROPN"):
+                for child in tok.children:
+                    if child.dep_ == "det" and child.text.lower() in ("all", "every", "each"):
+                        if any(t.lower_ in neg_words for t in doc):
+                            return MacroTemplate.TYPE_E
+                        return MacroTemplate.TYPE_A
+                    if child.dep_ == "det" and child.text.lower() == "no":
+                        return MacroTemplate.TYPE_E
+        # Check for negation with existential subject
+        if any(t.lower_ in neg_words for t in doc):
+            return MacroTemplate.GROUND_NEGATIVE
+
+    return MacroTemplate.GROUND_POSITIVE
+
+
 def _spacy_fallback(sentence: str, analyses: List[CompoundAnalysis], nlp) -> SentenceExtraction:
     """spaCy-based rule-based extraction."""
     doc = nlp(sentence)
@@ -316,27 +385,24 @@ def _spacy_fallback(sentence: str, analyses: List[CompoundAnalysis], nlp) -> Sen
         if ca.recommendation == "SPLIT"
     }
 
-    lower = sentence.lower().strip()
-    if lower.startswith(("all ", "every ", "each ")):
-        default_etype = EntityType.UNIVERSAL
-        macro = MacroTemplate.TYPE_A
-    elif lower.startswith("no "):
-        default_etype = EntityType.UNIVERSAL
-        macro = MacroTemplate.TYPE_E
-    else:
-        default_etype = EntityType.EXISTENTIAL
-        macro = MacroTemplate.GROUND_POSITIVE
+    macro = _detect_macro_template(sentence, doc)
+    default_etype = (
+        EntityType.UNIVERSAL
+        if macro in (MacroTemplate.TYPE_A, MacroTemplate.TYPE_E)
+        else EntityType.EXISTENTIAL
+    )
 
+    constants: List[Constant] = []
     entities: List[Entity] = []
     facts: List[Fact] = []
     eid = 1
-    token_to_eid: dict = {}
+    token_to_id: dict = {}   # token.i → id string
     used_compounds: set = set()
 
-    # First pass: build entities
+    # First pass: build constants + entities
     for tok in doc:
         if tok.pos_ in ("NOUN", "PROPN") and tok.dep_ not in ("compound",):
-            # Check if this is part of a KEEP compound (modifier already attached)
+            # Check if this is part of a KEEP compound
             compound_key = None
             for child in tok.children:
                 if child.dep_ in ("amod", "compound"):
@@ -345,43 +411,57 @@ def _spacy_fallback(sentence: str, analyses: List[CompoundAnalysis], nlp) -> Sen
                         compound_key = ck
                         used_compounds.add(child.i)
 
-            if compound_key:
-                surface = compound_key  # e.g. "Harvard student"
-            else:
-                surface = tok.text.lower()
+            surface = compound_key if compound_key else tok.text.lower()
 
-            etype = (
-                EntityType.CONSTANT
-                if tok.pos_ == "PROPN" or tok.ent_type_
-                else default_etype
-            )
-            eid_str = f"{'c' if etype == EntityType.CONSTANT else 'e'}{eid}"
-            eid += 1
-            entity = Entity(id=eid_str, surface=surface, entity_type=etype)
-            entities.append(entity)
-            token_to_eid[tok.i] = eid_str
+            if tok.pos_ == "PROPN" or tok.ent_type_:
+                # Named individual → constants list
+                const_id = surface.replace(" ", "").lower()
+                # Use camelCase for multi-word surfaces
+                if " " in surface:
+                    parts = surface.split()
+                    const_id = parts[0] + "".join(p.capitalize() for p in parts[1:])
+                const = Constant(id=const_id, surface=surface)
+                constants.append(const)
+                token_to_id[tok.i] = const_id
+            else:
+                etype = default_etype
+                eid_str = f"e{eid}"
+                eid += 1
+                entity = Entity(id=eid_str, surface=surface, entity_type=etype)
+                entities.append(entity)
+                token_to_id[tok.i] = eid_str
 
     # Second pass: build facts
     for tok in doc:
         if tok.i in used_compounds:
             continue
         if tok.pos_ in ("ADJ",) or (tok.dep_ in ("amod",) and tok.i not in used_compounds):
-            # Adjective → unary property on its head noun's entity
-            head_eid = token_to_eid.get(tok.head.i)
-            if head_eid and tok.text.lower() in split_modifiers:
-                facts.append(Fact(pred=tok.text.lower(), args=[head_eid]))
+            head_id = token_to_id.get(tok.head.i)
+            if head_id and tok.text.lower() in split_modifiers:
+                facts.append(Fact(pred=tok.text.lower(), args=[head_id]))
         elif tok.pos_ == "VERB" and tok.dep_ not in ("aux", "auxpass"):
-            subj_eid = None
-            obj_eid = None
+            subj_id = None
+            obj_id = None
             for child in tok.children:
                 if child.dep_ in ("nsubj", "nsubjpass"):
-                    subj_eid = token_to_eid.get(child.i)
-                if child.dep_ in ("dobj", "attr", "pobj"):
-                    obj_eid = token_to_eid.get(child.i)
-            if subj_eid and obj_eid:
-                facts.append(Fact(pred=tok.lemma_.lower(), args=[subj_eid, obj_eid]))
-            elif subj_eid:
-                facts.append(Fact(pred=tok.lemma_.lower(), args=[subj_eid]))
+                    subj_id = token_to_id.get(child.i)
+                if child.dep_ in ("dobj", "attr"):
+                    obj_id = token_to_id.get(child.i)
+                # Bug 3.2 fix: traverse prep → pobj chains
+                if child.dep_ == "prep" and obj_id is None:
+                    for pobj in child.children:
+                        if pobj.dep_ == "pobj":
+                            pobj_id = token_to_id.get(pobj.i)
+                            if pobj_id and subj_id:
+                                compound_pred = f"{tok.lemma_.lower()}_{child.text.lower()}"
+                                facts.append(Fact(pred=compound_pred,
+                                                  args=[subj_id, pobj_id]))
+            if subj_id and obj_id:
+                facts.append(Fact(pred=tok.lemma_.lower(), args=[subj_id, obj_id]))
+            elif subj_id and not any(
+                f.args == [subj_id] and tok.lemma_.lower() in f.pred for f in facts
+            ):
+                facts.append(Fact(pred=tok.lemma_.lower(), args=[subj_id]))
 
     # Fallback: entity type facts
     for ent in entities:
@@ -389,16 +469,7 @@ def _spacy_fallback(sentence: str, analyses: List[CompoundAnalysis], nlp) -> Sen
             f.pred == ent.surface and f.args == [ent.id] for f in facts
         )
         if not has_type_fact:
-            # Add a type fact so the entity surface is represented in tests
             facts.insert(0, Fact(pred=ent.surface, args=[ent.id]))
-
-    # Detect negation in macro template
-    neg_words = {"not", "never", "no", "n't"}
-    if any(t.lower_ in neg_words for t in doc):
-        if default_etype == EntityType.UNIVERSAL:
-            macro = MacroTemplate.TYPE_E
-        else:
-            macro = MacroTemplate.GROUND_NEGATIVE
 
     return SentenceExtraction(
         nl=sentence,
@@ -406,6 +477,7 @@ def _spacy_fallback(sentence: str, analyses: List[CompoundAnalysis], nlp) -> Sen
         facts=facts,
         macro_template=macro,
         compound_analyses=analyses,
+        constants=constants,
     )
 
 
@@ -429,32 +501,42 @@ def _nltk_fallback(sentence: str, analyses: List[CompoundAnalysis]) -> SentenceE
         # Absolute last resort: whitespace split
         tagged = [(w, "NN") for w in sentence.split()]
 
-    lower = sentence.lower().strip()
-    if lower.startswith(("all ", "every ", "each ")):
-        default_etype = EntityType.UNIVERSAL
-        macro = MacroTemplate.TYPE_A
-    else:
-        default_etype = EntityType.EXISTENTIAL
-        macro = MacroTemplate.GROUND_POSITIVE
+    macro = _detect_macro_template(sentence)
 
+    constants: List[Constant] = []
     entities: List[Entity] = []
     facts: List[Fact] = []
     eid = 1
     stop_words = {"the", "a", "an", "some", "all", "every", "each", "no",
                   "is", "are", "was", "were", "be", "been", "being"}
 
+    default_etype = (
+        EntityType.UNIVERSAL
+        if macro in (MacroTemplate.TYPE_A, MacroTemplate.TYPE_E)
+        else EntityType.EXISTENTIAL
+    )
+
+    last_id: Optional[str] = None
     for word, tag in tagged:
         if word.lower() in stop_words:
             continue
         if tag in ("NN", "NNS", "NNP", "NNPS"):
-            etype = EntityType.CONSTANT if tag in ("NNP", "NNPS") else default_etype
-            eid_str = f"{'c' if etype == EntityType.CONSTANT else 'e'}{eid}"
-            eid += 1
-            surface = word.lower()
-            entities.append(Entity(id=eid_str, surface=surface, entity_type=etype))
-            facts.append(Fact(pred=surface, args=[eid_str]))
-        elif tag in ("JJ", "JJR", "JJS") and entities:
-            facts.append(Fact(pred=word.lower(), args=[entities[-1].id]))
+            if tag in ("NNP", "NNPS"):
+                # Proper noun → constants
+                const_id = word.lower()
+                constants.append(Constant(id=const_id, surface=word.lower()))
+                last_id = const_id
+                facts.append(Fact(pred=word.lower(), args=[const_id]))
+            else:
+                eid_str = f"e{eid}"
+                eid += 1
+                surface = word.lower()
+                entities.append(Entity(id=eid_str, surface=surface,
+                                       entity_type=default_etype))
+                facts.append(Fact(pred=surface, args=[eid_str]))
+                last_id = eid_str
+        elif tag in ("JJ", "JJR", "JJS") and last_id is not None:
+            facts.append(Fact(pred=word.lower(), args=[last_id]))
 
     return SentenceExtraction(
         nl=sentence,
@@ -462,4 +544,5 @@ def _nltk_fallback(sentence: str, analyses: List[CompoundAnalysis]) -> SentenceE
         facts=facts,
         macro_template=macro,
         compound_analyses=analyses,
+        constants=constants,
     )

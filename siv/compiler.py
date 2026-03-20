@@ -1,14 +1,15 @@
 """
 Stage 3: Deterministic FOL Test Compilation
 
-Takes a ProblemExtraction (entities + facts + templates) and generates
-positive and negative FOL unit tests in NLTK format.
+Takes a ProblemExtraction (constants + entities + facts + templates) and
+generates positive and negative FOL unit tests in NLTK format.
 
-Test generation rules by arity:
-  1-arg fact → exists x.Pred(x)  +  exists x.(EntityType(x) & Pred(x))
-  2-arg fact → Pred(c1, c2)  (if both are constants)  or
-               exists x.(exists y.(SubjType(x) & ObjType(y) & Pred(x,y)))
-  3-arg fact → Pred(c1, c2, c3)  or  exists x.(Pred(x, c2, c3))
+Compilation matrix by argument type:
+  Pred(const, const)      → Pred(const_id, const_id)          (zero quantifiers)
+  Pred(const, entity)     → exists x.(EntType(x) & Pred(const_id, x))
+  Pred(entity, const)     → exists x.(EntType(x) & Pred(x, const_id))
+  Pred(entity, entity)    → exists x.(exists y.(SubjType(x) & ObjType(y) & Pred(x,y)))
+  Pred(entity)            → exists x.(EntType(x) & Pred(x))   (or universal wrapper)
 
 Negative tests: substitute each 1-arg predicate with its antonym from the
 perturbation map (or a synthetic "Non<Pred>" if absent).
@@ -21,7 +22,7 @@ All FOL strings use NLTK-compatible ASCII format:
 import json
 import re
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from siv.schema import (
     Entity, EntityType, Fact, MacroTemplate,
@@ -85,16 +86,50 @@ def _get_perturbation(pred_camel: str) -> str:
     return pm.get(pred_camel, f"Non{pred_camel}")
 
 
-# ── Entity lookup helpers ─────────────────────────────────────────────────────
+# ── ID lookup ─────────────────────────────────────────────────────────────────
 
-def _id_to_entity(extraction: ProblemExtraction) -> dict:
-    """Return a dict mapping entity id → Entity."""
-    return {e.id: e for e in extraction.all_entities}
+# Each entry is ('const', surface_str) or ('entity', Entity)
+_IdEntry = Tuple[str, object]
 
 
-def _is_constant(eid: str, id_map: dict) -> bool:
-    ent = id_map.get(eid)
-    return ent is not None and ent.entity_type == EntityType.CONSTANT
+def _build_id_map(extraction: ProblemExtraction) -> Dict[str, _IdEntry]:
+    """
+    Build a unified lookup dict:  id → ('const', surface) | ('entity', Entity)
+
+    Sources (in priority order):
+      1. New-style Constant objects from sentence.constants
+      2. Old-style Entity objects with EntityType.CONSTANT (backward compat)
+      3. All other Entity objects
+    """
+    result: Dict[str, _IdEntry] = {}
+
+    # New-style constants
+    for c in extraction.all_constants:
+        result[c.id] = ("const", c.id)   # term used in FOL = the id itself
+
+    # Entities (includes old-style CONSTANT entities for backward compat)
+    for e in extraction.all_entities:
+        if e.entity_type == EntityType.CONSTANT:
+            # Old-style: use entity id as the FOL term
+            if e.id not in result:
+                result[e.id] = ("const", e.id)
+        else:
+            result[e.id] = ("entity", e)
+
+    return result
+
+
+def _is_const(arg_id: str, id_map: Dict[str, _IdEntry]) -> bool:
+    entry = id_map.get(arg_id)
+    return entry is not None and entry[0] == "const"
+
+
+def _const_term(arg_id: str, id_map: Dict[str, _IdEntry]) -> str:
+    """Return the FOL term string for a constant argument."""
+    entry = id_map.get(arg_id)
+    if entry and entry[0] == "const":
+        return str(entry[1])
+    return arg_id   # fallback
 
 
 # ── Vocabulary tests ──────────────────────────────────────────────────────────
@@ -140,49 +175,41 @@ def _compile_vocabulary_tests(extraction: ProblemExtraction) -> List[UnitTest]:
 
 def _compile_binding_tests(extraction: ProblemExtraction) -> List[UnitTest]:
     """
-    For each fact, generate tests that the predicate applies to the
-    correct entity / constant.
+    For each fact, generate tests that the predicate applies to the correct
+    entity / constant using the compilation matrix:
 
-    1-arg fact on existential entity e1 (type="tree", pred="tall"):
-      → exists x.(Tree(x) & Tall(x))
-
-    1-arg fact on constant c1 (pred="queen"):
-      → Queen(nancy)   (grounded)
-
-    2-arg fact both constants (pred="directed", args=["lanaWilson","afterTiller"]):
-      → Directed(lanaWilson, afterTiller)
-      → exists x.(exists y.Directed(x,y))
-
-    2-arg fact with at least one existential:
-      → exists x.(exists y.(SubjType(x) & ObjType(y) & Pred(x,y)))
+      Pred(c, c)      → Pred(c_id, c_id)
+      Pred(c, e)      → exists x.(EntType(x) & Pred(c_id, x))
+      Pred(e, c)      → exists x.(EntType(x) & Pred(x, c_id))
+      Pred(e, e)      → exists x.(exists y.(SubjType(x) & ObjType(y) & Pred(x,y)))
+      Pred(e)  exist  → exists x.(EntType(x) & Pred(x))
+      Pred(e)  univ   → all x.(EntType(x) -> Pred(x))
+      Pred(c)         → Pred(c_id)
     """
-    id_map = _id_to_entity(extraction)
+    id_map = _build_id_map(extraction)
     tests: List[UnitTest] = []
 
     for sent in extraction.sentences:
-        sent_entity_ids = {e.id for e in sent.entities}
-
         for fact in sent.facts:
             pred = _fact_pred(fact)
             args = fact.args
             arity = len(args)
 
             if arity == 1:
-                eid = args[0]
-                if _is_constant(eid, id_map):
-                    # Grounded: Pred(constant)
-                    fol = _to_fol_string(pred, [eid], fact.negated)
+                arg = args[0]
+                if _is_const(arg, id_map):
+                    # Grounded: Pred(const_id)
+                    fol = _to_fol_string(pred, [_const_term(arg, id_map)], fact.negated)
                     tests.append(UnitTest(fol_string=fol, test_type="binding",
                                           is_positive=True, source_fact=fact))
                 else:
-                    ent = id_map.get(eid)
-                    if ent:
+                    entry = id_map.get(arg)
+                    if entry and entry[0] == "entity":
+                        ent: Entity = entry[1]  # type: ignore[assignment]
                         ent_pred = _entity_pred(ent)
                         if ent.entity_type == EntityType.UNIVERSAL:
-                            # all x.(EntType(x) -> Pred(x))
                             inner = f"all x.({ent_pred}(x) -> {_to_fol_string(pred, ['x'], fact.negated)})"
                         else:
-                            # exists x.(EntType(x) & Pred(x))
                             inner = (
                                 f"exists x.({ent_pred}(x) & "
                                 f"{_to_fol_string(pred, ['x'], fact.negated)})"
@@ -192,21 +219,56 @@ def _compile_binding_tests(extraction: ProblemExtraction) -> List[UnitTest]:
 
             elif arity == 2:
                 subj_id, obj_id = args[0], args[1]
-                if _is_constant(subj_id, id_map) and _is_constant(obj_id, id_map):
-                    fol = _to_fol_string(pred, [subj_id, obj_id], fact.negated)
+                subj_const = _is_const(subj_id, id_map)
+                obj_const  = _is_const(obj_id, id_map)
+
+                if subj_const and obj_const:
+                    # Both constants: Pred(c1, c2)
+                    fol = _to_fol_string(
+                        pred,
+                        [_const_term(subj_id, id_map), _const_term(obj_id, id_map)],
+                        fact.negated,
+                    )
                     tests.append(UnitTest(fol_string=fol, test_type="binding",
                                           is_positive=True, source_fact=fact))
+
+                elif subj_const and not obj_const:
+                    # Const + entity: exists x.(ObjType(x) & Pred(const, x))
+                    obj_entry = id_map.get(obj_id)
+                    if obj_entry and obj_entry[0] == "entity":
+                        obj_ent: Entity = obj_entry[1]  # type: ignore[assignment]
+                        obj_ent_pred = _entity_pred(obj_ent)
+                        atom = _to_fol_string(
+                            pred, [_const_term(subj_id, id_map), "x"], fact.negated
+                        )
+                        fol = f"exists x.({obj_ent_pred}(x) & {atom})"
+                        tests.append(UnitTest(fol_string=fol, test_type="binding",
+                                              is_positive=True, source_fact=fact))
+
+                elif not subj_const and obj_const:
+                    # Entity + const: exists x.(SubjType(x) & Pred(x, const))
+                    subj_entry = id_map.get(subj_id)
+                    if subj_entry and subj_entry[0] == "entity":
+                        subj_ent: Entity = subj_entry[1]  # type: ignore[assignment]
+                        subj_ent_pred = _entity_pred(subj_ent)
+                        atom = _to_fol_string(
+                            pred, ["x", _const_term(obj_id, id_map)], fact.negated
+                        )
+                        fol = f"exists x.({subj_ent_pred}(x) & {atom})"
+                        tests.append(UnitTest(fol_string=fol, test_type="binding",
+                                              is_positive=True, source_fact=fact))
+
                 else:
-                    subj_ent = id_map.get(subj_id)
-                    obj_ent  = id_map.get(obj_id)
+                    # Both entities: exists x.(exists y.(SubjType(x) & ObjType(y) & Pred(x,y)))
+                    subj_entry = id_map.get(subj_id)
+                    obj_entry  = id_map.get(obj_id)
                     parts = []
-                    if subj_ent:
-                        parts.append(f"{_entity_pred(subj_ent)}(x)")
-                    if obj_ent:
-                        parts.append(f"{_entity_pred(obj_ent)}(y)")
+                    if subj_entry and subj_entry[0] == "entity":
+                        parts.append(f"{_entity_pred(subj_entry[1])}(x)")  # type: ignore[arg-type]
+                    if obj_entry and obj_entry[0] == "entity":
+                        parts.append(f"{_entity_pred(obj_entry[1])}(y)")  # type: ignore[arg-type]
                     parts.append(_to_fol_string(pred, ["x", "y"], fact.negated))
-                    conjunction = " & ".join(parts)
-                    fol = f"exists x.(exists y.({conjunction}))"
+                    fol = f"exists x.(exists y.({' & '.join(parts)}))"
                     tests.append(UnitTest(fol_string=fol, test_type="binding",
                                           is_positive=True, source_fact=fact))
 
@@ -220,7 +282,7 @@ def _compile_macro_tests(extraction: ProblemExtraction) -> List[UnitTest]:
     For each sentence whose macro_template is informative, generate a
     structural FOL test matching the Aristotelian form.
     """
-    id_map = _id_to_entity(extraction)
+    id_map = _build_id_map(extraction)
     tests: List[UnitTest] = []
 
     for sent in extraction.sentences:
@@ -265,16 +327,17 @@ def _compile_macro_tests(extraction: ProblemExtraction) -> List[UnitTest]:
         elif mt == MacroTemplate.GROUND_POSITIVE:
             for fact in prop_facts:
                 eid = fact.args[0]
-                if _is_constant(eid, id_map):
-                    fol = _to_fol_string(_fact_pred(fact), [eid])
+                if _is_const(eid, id_map):
+                    fol = _to_fol_string(_fact_pred(fact), [_const_term(eid, id_map)])
                     tests.append(UnitTest(fol_string=fol, test_type="entailment",
                                           is_positive=True, source_fact=fact))
 
         elif mt == MacroTemplate.GROUND_NEGATIVE:
             for fact in prop_facts:
                 eid = fact.args[0]
-                if _is_constant(eid, id_map):
-                    fol = _to_fol_string(_fact_pred(fact), [eid], negated=True)
+                if _is_const(eid, id_map):
+                    fol = _to_fol_string(_fact_pred(fact), [_const_term(eid, id_map)],
+                                         negated=True)
                     tests.append(UnitTest(fol_string=fol, test_type="entailment",
                                           is_positive=True, source_fact=fact))
 
@@ -304,7 +367,7 @@ def _compile_negative_tests(extraction: ProblemExtraction) -> List[UnitTest]:
     For each 1-arg property fact, generate a test using the antonym predicate.
     The candidate FOL must NOT entail these (otherwise it hallucinates).
     """
-    id_map = _id_to_entity(extraction)
+    id_map = _build_id_map(extraction)
     tests: List[UnitTest] = []
     seen: set = set()
 
@@ -318,15 +381,18 @@ def _compile_negative_tests(extraction: ProblemExtraction) -> List[UnitTest]:
         seen.add(perturbed)
 
         eid = fact.args[0]
-        ent = id_map.get(eid)
-        if ent is None:
-            continue
-        ent_pred = _entity_pred(ent)
-
-        if ent.entity_type == EntityType.UNIVERSAL:
-            fol = f"all x.({ent_pred}(x) -> {perturbed}(x))"
+        if _is_const(eid, id_map):
+            fol = _to_fol_string(perturbed, [_const_term(eid, id_map)])
         else:
-            fol = f"exists x.({ent_pred}(x) & {perturbed}(x))"
+            entry = id_map.get(eid)
+            if entry is None or entry[0] != "entity":
+                continue
+            ent: Entity = entry[1]  # type: ignore[assignment]
+            ent_pred = _entity_pred(ent)
+            if ent.entity_type == EntityType.UNIVERSAL:
+                fol = f"all x.({ent_pred}(x) -> {perturbed}(x))"
+            else:
+                fol = f"exists x.({ent_pred}(x) & {perturbed}(x))"
 
         tests.append(UnitTest(fol_string=fol, test_type="contrastive",
                               is_positive=False, source_fact=fact))
@@ -334,15 +400,10 @@ def _compile_negative_tests(extraction: ProblemExtraction) -> List[UnitTest]:
     return tests
 
 
-# ── Public API ────────────────────────────────────────────────────────────────
+# ── Internal compile helper ───────────────────────────────────────────────────
 
-def compile_test_suite(extraction: ProblemExtraction) -> TestSuite:
-    """
-    Generate the full test suite from a ProblemExtraction.
-
-    Returns a TestSuite with positive tests (recall) and negative tests (precision).
-    All FOL strings are in NLTK-compatible format.
-    """
+def _compile_from_extraction(extraction: ProblemExtraction) -> TestSuite:
+    """Internal: compile all test types from a ProblemExtraction."""
     vocab_tests   = _compile_vocabulary_tests(extraction)
     binding_tests = _compile_binding_tests(extraction)
     macro_tests   = _compile_macro_tests(extraction)
@@ -368,3 +429,30 @@ def compile_test_suite(extraction: ProblemExtraction) -> TestSuite:
         positive_tests=positive,
         negative_tests=negative,
     )
+
+
+# ── Public API ────────────────────────────────────────────────────────────────
+
+def compile_test_suite(extraction: ProblemExtraction) -> TestSuite:
+    """
+    Generate the full test suite from a ProblemExtraction.
+
+    Returns a TestSuite with positive tests (recall) and negative tests (precision).
+    All FOL strings are in NLTK-compatible format.
+    """
+    return _compile_from_extraction(extraction)
+
+
+def compile_sentence_test_suite(
+    sentence: SentenceExtraction,
+    problem_id: str,
+) -> TestSuite:
+    """
+    Generate a TestSuite from a single SentenceExtraction.
+
+    Wraps the sentence in a temporary ProblemExtraction with one sentence
+    and delegates to compile_test_suite.  Use this for sentence-level
+    evaluation where each premise is scored against its own test suite.
+    """
+    wrapped = ProblemExtraction(problem_id=problem_id, sentences=[sentence])
+    return _compile_from_extraction(wrapped)

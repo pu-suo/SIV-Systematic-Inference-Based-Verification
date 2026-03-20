@@ -38,10 +38,17 @@ def normalize_fol_string(fol: str) -> str:
     # Step 1: Replace Unicode logic symbols BEFORE stripping non-ASCII.
     # Order matters: stripping non-ASCII first would silently delete these.
     for symbol, replacement in [
-        ("∀", "all "), ("∃", "exists "),
-        ("∧", " & "), ("∨", " | "),
-        ("→", " -> "), ("↔", " <-> "),
-        ("¬", "-"), ("~", "-"),
+        # Quantifiers
+        ("∀", "all "),  ("∃", "exists "),
+        # Conjunction / disjunction
+        ("∧", " & "),   ("∨", " | "),
+        ("⋀", " & "),   ("⋁", " | "),   # n-ary variants (U+22C0, U+22C1)
+        # Implication — FOLIO v2 uses ⇒ on many problems
+        ("→", " -> "),  ("⇒", " -> "),  ("⟹", " -> "),
+        # Biconditional
+        ("↔", " <-> "), ("⟺", " <-> "), ("⇔", " <-> "),
+        # Negation
+        ("¬", "-"),     ("~", "-"),
     ]:
         fol = fol.replace(symbol, replacement)
 
@@ -52,6 +59,7 @@ def normalize_fol_string(fol: str) -> str:
     for pattern, replacement in [
         (r"\bforall\b", "all"),
         (r"\bexist\b(?!s)", "exists"),  # "exist x" → "exists x" but keep "exists"
+        (r"(?<=[A-Za-z0-9_])(all|exists)(?=\s)", r" \1"),  # ∀x∃y → "all x exists y"
         (r"\s+", " "),
     ]:
         fol = re.sub(pattern, replacement, fol)

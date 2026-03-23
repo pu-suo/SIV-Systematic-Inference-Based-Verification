@@ -19,3 +19,7 @@ tqdm
 
 # Testing
 pytest>=7.0
+
+# Local GPU extraction (optional — for training loops on A100)
+# Uncomment to enable vLLM backend:
+# vllm>=0.6.0

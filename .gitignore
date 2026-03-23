@@ -78,3 +78,6 @@ results_*.json
 # ── Misc ──────────────────────────────────────────────────────────────────────
 *.log
 *.tmp
+
+CLAUDE_CODE_SPEC.md
+SIV_Evaluation_Framework (3).ipynb

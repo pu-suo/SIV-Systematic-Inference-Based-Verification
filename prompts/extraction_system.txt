@@ -50,6 +50,35 @@ FACT ARITY (implicit from len(args)):
   • 3-arg → ternary relation: Gave(bonnie, e1, e2)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DECOMPOSITION RULES — MANDATORY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+You MUST decompose complex noun phrases into their atomic components.
+Each entity surface must be a SINGLE NOUN or COMPOUND NOUN — never a clause,
+never a phrase containing verbs or prepositions.
+
+PREPOSITIONAL PHRASES — separate entity + binary relation fact:
+  "people in this club" → entity "people" + entity "club" + fact in(people, club)
+  "members of the community" → entity "members" + entity "community" + fact of(members, community)
+  VIOLATION: creating entity with surface "people in this club" — NEVER DO THIS
+
+RELATIVE CLAUSES — decompose the clause into its own facts:
+  "students who attend the school" → entity "students" + entity "school" + fact attend(students, school)
+  "people who chaperone dances" → entity "people" + entity "dances" + fact chaperone(people, dances)
+  VIOLATION: creating entity with surface "students who attend the school" — NEVER DO THIS
+
+CONJUNCTION/DISJUNCTION — preserve each conjunct as a separate fact:
+  "attend and are very engaged with school events" → fact attend(e1, e2) + fact very engaged with(e1, e2)
+  "inactive and disinterested" → fact inactive(e1) + fact disinterested(e1)
+
+NEGATION — use the negated field on facts, NEVER use "not" as a predicate:
+  "are not students" → fact students(e1) with negated=true
+  VIOLATION: fact with pred="not" — NEVER DO THIS
+
+ADVERB + ADJECTIVE/VERB — keep adverbs attached to the predicate they modify:
+  "very engaged with" → pred "very engaged with"
+  "perform often" → pred "perform often in" or separate fact often(e1)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CRITICAL RULES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. EXACT SURFACE FORMS — never lemmatize, normalize, or substitute synonyms.

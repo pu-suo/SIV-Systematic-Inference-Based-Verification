@@ -1,8 +1,8 @@
-"""Tests for siv/extractor.py — fallback extraction only (no API required)."""
+"""Tests for siv/extractor.py (no API required)."""
 import pytest
-from siv.extractor import _fallback_extraction, _nltk_fallback, _parse_response, _dict_to_extraction
+from siv.extractor import extract_sentence, _parse_response, _dict_to_extraction
 from siv.schema import EntityType, MacroTemplate, Constant
-from siv.pre_analyzer import _SPACY_AVAILABLE
+from siv.pre_analyzer import analyze_sentence
 
 
 # ── _parse_response ───────────────────────────────────────────────────────────
@@ -27,72 +27,12 @@ def test_parse_response_invalid_json_raises():
         _parse_response("not json at all")
 
 
-# ── _nltk_fallback ────────────────────────────────────────────────────────────
+# ── extract_sentence backend guard ───────────────────────────────────────────
 
-def test_nltk_fallback_returns_extraction():
-    result = _nltk_fallback("Nancy is a queen.", [])
-    assert result.nl == "Nancy is a queen."
-    assert isinstance(result.macro_template, MacroTemplate)
-    assert len(result.entities) > 0
-
-def test_nltk_fallback_universal_macro():
-    result = _nltk_fallback("All dogs are animals.", [])
-    assert result.macro_template in (MacroTemplate.TYPE_A, MacroTemplate.TYPE_E,
-                                      MacroTemplate.GROUND_POSITIVE)
-    # At minimum, should not crash and should produce entities
-    assert len(result.entities) >= 0
-
-def test_nltk_fallback_entity_types():
-    result = _nltk_fallback("Nancy runs.", [])
-    for e in result.entities:
-        assert isinstance(e.entity_type, EntityType)
-
-
-# ── _fallback_extraction ──────────────────────────────────────────────────────
-
-@pytest.mark.skipif(not _SPACY_AVAILABLE, reason="spaCy not installed")
-def test_spacy_fallback_entities_nonempty():
-    result = _fallback_extraction("The tall tree grows quickly.")
-    assert len(result.entities) > 0
-
-@pytest.mark.skipif(not _SPACY_AVAILABLE, reason="spaCy not installed")
-def test_spacy_fallback_facts_nonempty():
-    result = _fallback_extraction("The tall tree grows quickly.")
-    assert len(result.facts) > 0
-
-@pytest.mark.skipif(not _SPACY_AVAILABLE, reason="spaCy not installed")
-def test_spacy_fallback_proper_noun_to_constants():
-    """Proper nouns must be routed to constants list, not entities."""
-    result = _fallback_extraction("Nancy runs.")
-    const_surfaces = [c.surface.lower() for c in result.constants]
-    assert "nancy" in const_surfaces
-    entity_surfaces = [e.surface.lower() for e in result.entities]
-    assert "nancy" not in entity_surfaces
-
-def test_fallback_always_returns_valid_extraction():
-    """Even without spaCy, fallback must return a valid SentenceExtraction."""
-    result = _fallback_extraction("All students like difficult exams.")
-    assert result.nl == "All students like difficult exams."
-    assert isinstance(result.macro_template, MacroTemplate)
-    assert isinstance(result.entities, list)
-    assert isinstance(result.facts, list)
-
-
-# ── _nltk_fallback constants routing ─────────────────────────────────────────
-
-def test_nltk_fallback_proper_noun_to_constants():
-    """NNP/NNPS tokens must appear in constants, not entities."""
-    result = _nltk_fallback("Nancy is a queen.", [])
-    const_ids = [c.id for c in result.constants]
-    assert "nancy" in const_ids
-    entity_surfaces = [e.surface.lower() for e in result.entities]
-    assert "nancy" not in entity_surfaces
-
-
-def test_nltk_fallback_constants_are_constant_objects():
-    result = _nltk_fallback("James manages the office.", [])
-    for c in result.constants:
-        assert isinstance(c, Constant)
+def test_extract_sentence_no_backend_raises():
+    """Must raise RuntimeError if neither client nor vllm_extractor is provided."""
+    with pytest.raises(RuntimeError, match="No extraction backend"):
+        extract_sentence("Test.", analyze_sentence("Test."))
 
 
 # ── _parse_response two-list format ──────────────────────────────────────────

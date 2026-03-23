@@ -101,13 +101,14 @@ class VLLMExtractor:
         """
         try:
             from vllm import LLM, SamplingParams
-            from vllm.sampling_params import GuidedDecodingParams
-        except ImportError:
+            from vllm.sampling_params import StructuredOutputsParams
+        except ImportError as _e:
             raise RuntimeError(
                 "vLLM is required for local extraction. Install it with:\n"
                 "  pip install vllm\n"
-                "Requires a CUDA GPU (A100 40GB recommended)."
-            )
+                "Requires a CUDA GPU (A100 40GB recommended).\n"
+                f"(Import error: {_e})"
+            ) from _e
 
         print(f"[vLLM] Loading {model} (quantization={quantization})...")
         self._llm = LLM(
@@ -123,7 +124,7 @@ class VLLMExtractor:
         self._sampling_params = SamplingParams(
             temperature=0.0,
             max_tokens=1200,
-            guided_decoding=GuidedDecodingParams(json=SIV_JSON_SCHEMA),
+            structured_outputs=StructuredOutputsParams(json=SIV_JSON_SCHEMA),
         )
 
         self._model_name = model

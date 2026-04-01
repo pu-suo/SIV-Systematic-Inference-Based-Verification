@@ -84,7 +84,7 @@ class VLLMExtractor:
         model: str = "Qwen/Qwen2.5-32B-Instruct-AWQ",
         quantization: str = None,
         gpu_memory_utilization: float = 0.80,
-        max_model_len: int = 4096,
+        max_model_len: int = 8192,
     ):
         """
         Load the model into VRAM.
@@ -97,8 +97,8 @@ class VLLMExtractor:
                           auto-detects awq_marlin from the model config.
             gpu_memory_utilization: Fraction of GPU memory for vLLM.
                                    0.80 leaves 20% for training loop.
-            max_model_len: Maximum sequence length. 4096 is sufficient for
-                           SIV extraction prompts (~2000 tokens).
+            max_model_len: Maximum sequence length. 8192 gives headroom for
+                           SIV extraction prompts (~2000 tokens) plus response.
         """
         try:
             from vllm import LLM, SamplingParams
@@ -124,7 +124,7 @@ class VLLMExtractor:
         # level to physically prevent invalid JSON output. 0% parse failures.
         self._sampling_params = SamplingParams(
             temperature=0.0,
-            max_tokens=1200,
+            max_tokens=2048,
             structured_outputs=StructuredOutputsParams(json=SIV_JSON_SCHEMA),
         )
 
@@ -159,12 +159,16 @@ class VLLMExtractor:
                     data["entities"] = []
                 results.append(data)
             except json.JSONDecodeError as e:
-                raise RuntimeError(
-                    f"[vLLM] JSON parse failed for prompt {i} "
-                    f"(this should not happen with guided decoding).\n"
-                    f"Raw output: {raw_text[:200]}\n"
+                import warnings
+                warnings.warn(
+                    f"[vLLM] JSON parse failed for prompt {i} — returning empty extraction.\n"
+                    f"Raw output ({len(raw_text)} chars): {raw_text[:200]}...\n"
                     f"Error: {e}"
-                ) from e
+                )
+                results.append({
+                    "constants": [], "entities": [], "facts": [],
+                    "macro_template": "ground_positive"
+                })
 
         return results
 

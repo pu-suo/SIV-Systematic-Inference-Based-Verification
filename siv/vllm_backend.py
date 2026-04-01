@@ -82,7 +82,7 @@ class VLLMExtractor:
     def __init__(
         self,
         model: str = "Qwen/Qwen2.5-32B-Instruct-AWQ",
-        quantization: str = "awq",
+        quantization: str = None,
         gpu_memory_utilization: float = 0.80,
         max_model_len: int = 4096,
     ):
@@ -93,7 +93,8 @@ class VLLMExtractor:
             model: HuggingFace model ID. Recommended:
                    - "Qwen/Qwen2.5-32B-Instruct-AWQ" (19GB, best quality)
                    - "Qwen/Qwen2.5-14B-Instruct-AWQ" (9GB, fastest)
-            quantization: Quantization method. "awq" for AWQ models.
+            quantization: Quantization method. Defaults to None so vLLM
+                          auto-detects awq_marlin from the model config.
             gpu_memory_utilization: Fraction of GPU memory for vLLM.
                                    0.80 leaves 20% for training loop.
             max_model_len: Maximum sequence length. 4096 is sufficient for

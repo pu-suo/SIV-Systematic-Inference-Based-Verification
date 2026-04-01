@@ -268,6 +268,48 @@ def extract_sentence(
     )
 
 
+def extract_sentences_batch(
+    sentences: List[str],
+    compound_analyses_list: List[List[CompoundAnalysis]],
+    client=None,
+    model: str = "gpt-4o",
+    vllm_extractor=None,
+) -> List[SentenceExtraction]:
+    """
+    Batch-extract multiple sentences at once.
+
+    When vllm_extractor is provided: builds ALL prompts, sends them in a
+    SINGLE vllm_extractor.extract_batch() call, parses all results.
+
+    When client is provided: uses ThreadPoolExecutor for parallel API calls.
+
+    Returns a list of SentenceExtraction in the same order as input.
+    """
+    if client is None and vllm_extractor is None:
+        raise RuntimeError(
+            "No extraction backend configured. Provide either client or vllm_extractor."
+        )
+
+    if vllm_extractor is not None:
+        prompts = [
+            _build_vllm_prompt(sent, analyses)
+            for sent, analyses in zip(sentences, compound_analyses_list)
+        ]
+        batch_results = vllm_extractor.extract_batch(prompts)
+        return [
+            _dict_to_extraction(sent, data, analyses)
+            for sent, data, analyses in zip(sentences, batch_results, compound_analyses_list)
+        ]
+
+    def _extract_one(args) -> SentenceExtraction:
+        sent, analyses = args
+        return extract_sentence(sent, analyses, client=client, model=model)
+
+    workers = min(10, len(sentences)) if sentences else 1
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        return list(pool.map(_extract_one, zip(sentences, compound_analyses_list)))
+
+
 def extract_problem(
     problem_sentences: List[str],
     client=None,

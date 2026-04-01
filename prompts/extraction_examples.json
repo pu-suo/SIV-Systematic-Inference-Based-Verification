@@ -80,94 +80,94 @@
   },
   {
     "description": "Complex: prepositional decomposition, relative clause, conjunction of facts",
-    "compound_analysis": "  • \"school talent\" shows  [WordNet:NO  PMI=0.0  ProperNoun:NO  dep=pobj]  → KEEP (Default conservative: insufficient evidence to split.)",
-    "sentence": "People in this club who perform in school talent shows often attend and are very engaged with school events.",
+    "compound_analysis": "(no compound modifiers detected)",
+    "sentence": "Workers at the factory who operate heavy machinery regularly inspect and carefully maintain the production equipment.",
     "response": {
       "constants": [],
       "entities": [
-        {"id": "e1", "surface": "people",             "entity_type": "existential"},
-        {"id": "e2", "surface": "club",               "entity_type": "existential"},
-        {"id": "e3", "surface": "school talent shows","entity_type": "existential"},
-        {"id": "e4", "surface": "school events",      "entity_type": "existential"}
+        {"id": "e1", "surface": "workers",              "entity_type": "existential"},
+        {"id": "e2", "surface": "factory",              "entity_type": "existential"},
+        {"id": "e3", "surface": "heavy machinery",      "entity_type": "existential"},
+        {"id": "e4", "surface": "production equipment", "entity_type": "existential"}
       ],
       "facts": [
-        {"pred": "in",              "args": ["e1", "e2"], "negated": false},
-        {"pred": "perform in",      "args": ["e1", "e3"], "negated": false},
-        {"pred": "attend",          "args": ["e1", "e4"], "negated": false},
-        {"pred": "very engaged with","args": ["e1", "e4"], "negated": false}
+        {"pred": "at",                "args": ["e1", "e2"], "negated": false},
+        {"pred": "operate",           "args": ["e1", "e3"], "negated": false},
+        {"pred": "regularly inspect", "args": ["e1", "e4"], "negated": false},
+        {"pred": "carefully maintain","args": ["e1", "e4"], "negated": false}
       ],
       "macro_template": "conditional"
     }
   },
   {
     "description": "Universal negative: decomposed relative clauses, negation on fact field",
-    "compound_analysis": "  • \"high school\" dances  [WordNet:YES  PMI=0.0  ProperNoun:NO  dep=dobj]  → KEEP (Lexicalized compound in WordNet.)",
-    "sentence": "People in this club who chaperone high school dances are not students who attend the school.",
+    "compound_analysis": "(no compound modifiers detected)",
+    "sentence": "Volunteers at the shelter who supervise weekend activities are not employees who receive a salary.",
     "response": {
       "constants": [],
       "entities": [
-        {"id": "e1", "surface": "people",           "entity_type": "universal"},
-        {"id": "e2", "surface": "club",             "entity_type": "existential"},
-        {"id": "e3", "surface": "high school dances","entity_type": "existential"},
-        {"id": "e4", "surface": "students",         "entity_type": "existential"},
-        {"id": "e5", "surface": "school",           "entity_type": "existential"}
+        {"id": "e1", "surface": "volunteers",        "entity_type": "universal"},
+        {"id": "e2", "surface": "shelter",           "entity_type": "existential"},
+        {"id": "e3", "surface": "weekend activities","entity_type": "existential"},
+        {"id": "e4", "surface": "employees",         "entity_type": "existential"},
+        {"id": "e5", "surface": "salary",            "entity_type": "existential"}
       ],
       "facts": [
-        {"pred": "in",       "args": ["e1", "e2"], "negated": false},
-        {"pred": "chaperone","args": ["e1", "e3"], "negated": false},
-        {"pred": "students", "args": ["e1"],       "negated": true},
-        {"pred": "attend",   "args": ["e1", "e5"], "negated": true}
+        {"pred": "at",        "args": ["e1", "e2"], "negated": false},
+        {"pred": "supervise", "args": ["e1", "e3"], "negated": false},
+        {"pred": "employees", "args": ["e1"],       "negated": true},
+        {"pred": "receive",   "args": ["e1", "e5"], "negated": true}
       ],
       "macro_template": "universal_negative"
     }
   },
   {
     "description": "Universal affirmative: conjoined subjects, split modifier, prepositional decomposition",
-    "compound_analysis": "  • \"young\" children  [WordNet:NO  PMI=0.0  ProperNoun:NO  dep=nsubj]  → SPLIT (Low PMI; modifier targets subject entity → separate property.)",
-    "sentence": "All young children and teenagers in this club who wish to further their academic careers and educational opportunities are students who attend the school.",
+    "compound_analysis": "  • \"junior\" analysts  [WordNet:NO  PMI=0.0  ProperNoun:NO  dep=nsubj]  → SPLIT (Low PMI; modifier targets subject entity → separate property.)",
+    "sentence": "All junior analysts and interns at this firm who aspire to advance their technical skills and leadership abilities are candidates who participate in the mentorship program.",
     "response": {
       "constants": [],
       "entities": [
-        {"id": "e1", "surface": "children",              "entity_type": "universal"},
-        {"id": "e2", "surface": "teenagers",             "entity_type": "universal"},
-        {"id": "e3", "surface": "club",                  "entity_type": "existential"},
-        {"id": "e4", "surface": "academic careers",      "entity_type": "existential"},
-        {"id": "e5", "surface": "educational opportunities","entity_type": "existential"},
-        {"id": "e6", "surface": "students",              "entity_type": "existential"},
-        {"id": "e7", "surface": "school",                "entity_type": "existential"}
+        {"id": "e1", "surface": "analysts",           "entity_type": "universal"},
+        {"id": "e2", "surface": "interns",            "entity_type": "universal"},
+        {"id": "e3", "surface": "firm",               "entity_type": "existential"},
+        {"id": "e4", "surface": "technical skills",   "entity_type": "existential"},
+        {"id": "e5", "surface": "leadership abilities","entity_type": "existential"},
+        {"id": "e6", "surface": "candidates",         "entity_type": "existential"},
+        {"id": "e7", "surface": "mentorship program", "entity_type": "existential"}
       ],
       "facts": [
-        {"pred": "young",          "args": ["e1"],       "negated": false},
-        {"pred": "in",             "args": ["e1", "e3"], "negated": false},
-        {"pred": "in",             "args": ["e2", "e3"], "negated": false},
-        {"pred": "wish to further","args": ["e1", "e4"], "negated": false},
-        {"pred": "wish to further","args": ["e1", "e5"], "negated": false},
-        {"pred": "wish to further","args": ["e2", "e4"], "negated": false},
-        {"pred": "wish to further","args": ["e2", "e5"], "negated": false},
-        {"pred": "students",       "args": ["e1"],       "negated": false},
-        {"pred": "students",       "args": ["e2"],       "negated": false},
-        {"pred": "attend",         "args": ["e1", "e7"], "negated": false},
-        {"pred": "attend",         "args": ["e2", "e7"], "negated": false}
+        {"pred": "junior",            "args": ["e1"],       "negated": false},
+        {"pred": "at",                "args": ["e1", "e3"], "negated": false},
+        {"pred": "at",                "args": ["e2", "e3"], "negated": false},
+        {"pred": "aspire to advance", "args": ["e1", "e4"], "negated": false},
+        {"pred": "aspire to advance", "args": ["e1", "e5"], "negated": false},
+        {"pred": "aspire to advance", "args": ["e2", "e4"], "negated": false},
+        {"pred": "aspire to advance", "args": ["e2", "e5"], "negated": false},
+        {"pred": "candidates",        "args": ["e1"],       "negated": false},
+        {"pred": "candidates",        "args": ["e2"],       "negated": false},
+        {"pred": "participate in",    "args": ["e1", "e7"], "negated": false},
+        {"pred": "participate in",    "args": ["e2", "e7"], "negated": false}
       ],
       "macro_template": "universal_affirmative"
     }
   },
   {
-    "description": "Named constant with prepositional decomposition",
+    "description": "Named constant with prepositional decomposition and conjunction",
     "compound_analysis": "(no compound modifiers detected)",
-    "sentence": "Bonnie is in this club and she attends and is very engaged with school events.",
+    "sentence": "Marcus is in this team and he coaches and actively mentors the new recruits.",
     "response": {
       "constants": [
-        {"id": "bonnie", "surface": "Bonnie"}
+        {"id": "marcus", "surface": "Marcus"}
       ],
       "entities": [
-        {"id": "e1", "surface": "club",         "entity_type": "existential"},
-        {"id": "e2", "surface": "school events","entity_type": "existential"}
+        {"id": "e1", "surface": "team",        "entity_type": "existential"},
+        {"id": "e2", "surface": "new recruits","entity_type": "existential"}
       ],
       "facts": [
-        {"pred": "in",              "args": ["bonnie", "e1"], "negated": false},
-        {"pred": "attends",         "args": ["bonnie", "e2"], "negated": false},
-        {"pred": "very engaged with","args": ["bonnie", "e2"], "negated": false}
+        {"pred": "in",               "args": ["marcus", "e1"], "negated": false},
+        {"pred": "coaches",          "args": ["marcus", "e2"], "negated": false},
+        {"pred": "actively mentors", "args": ["marcus", "e2"], "negated": false}
       ],
       "macro_template": "ground_positive"
     }

@@ -20,6 +20,29 @@ from typing import List, Dict, Optional
 from enum import Enum
 
 
+# FIX C1: raised by the scorer when a caller computes a SIV score for an
+# extraction that contains schema violations.
+class ExtractionInvalidError(RuntimeError):
+    """
+    Raised by the scorer when a caller attempts to compute a SIV score
+    for an extraction that contains schema violations. Violating
+    extractions are scored as SIV=0 with the extraction_invalid flag
+    set; callers that want to see the score must read the
+    VerificationResult directly rather than calling verify() with
+    strict_mode=True.
+    """
+
+
+# FIX B1: raised in strict_mode=True when any test is unresolved by the prover.
+class ProverUnavailableError(RuntimeError):
+    """
+    Raised in strict_mode=True when one or more tests could not be resolved
+    because the Vampire theorem prover was unavailable or timed out. SIV's
+    published scores require a working prover; silently degrading to
+    vocabulary-level credit is a Tenet-1 violation.
+    """
+
+
 class EntityType(Enum):
     CONSTANT = "constant"        # Named individual (backward compat): nancy, garfield
     EXISTENTIAL = "existential"  # "a car", "some bears"
@@ -44,6 +67,24 @@ class MacroTemplate(Enum):
     # Compositional
     CONDITIONAL = "conditional"          # A → B (where A, B are from above)
     BICONDITIONAL = "biconditional"      # A ↔ B or ¬(A ⊕ B)
+
+
+@dataclass
+class SchemaViolation:
+    """
+    A single Neo-Davidsonian violation detected in an extraction.
+    See Tenet 2 in the refactor context: all facts must decompose into
+    unary properties or binary relations; prepositional phrases must
+    be reified into separate entities and binary edges.
+
+    # FIX C1: prepositional_unary and high_arity violations detected by
+    # validate_neo_davidsonian in siv/compiler.py.
+    """
+    sentence_nl: str
+    fact_pred: str
+    fact_args: List[str]
+    violation_type: str       # e.g. "prepositional_unary", "high_arity"
+    message: str              # human-readable explanation
 
 
 @dataclass
@@ -142,10 +183,18 @@ class TestSuite:
     problem_id: str
     positive_tests: List[UnitTest]
     negative_tests: List[UnitTest]
+    # FIX C1: schema violations from validate_neo_davidsonian; non-empty means
+    # the extraction violated the Neo-Davidsonian imperative (Tenet 2).
+    violations: List["SchemaViolation"] = field(default_factory=list)
 
     @property
     def total_tests(self) -> int:
         return len(self.positive_tests) + len(self.negative_tests)
+
+    @property
+    def has_violations(self) -> bool:
+        # FIX C1: True when the extraction failed the Neo-Davidsonian validator.
+        return len(self.violations) > 0
 
 
 @dataclass
@@ -161,22 +210,44 @@ class VerificationResult:
     tier2_skips: int           # Tests resolved at Tier 2 (AST)
     prover_calls: int          # Tests requiring Tier 3 (Vampire)
     partial_credits: Dict[str, float] = field(default_factory=dict)
+    # FIX B1: counts of tests that could not be resolved by the prover.
+    # In non-strict mode these are excluded from the denominator so they neither
+    # help nor hurt the candidate. In strict mode the verifier raises before
+    # these fields are ever populated.
+    unresolved_recall: int = 0
+    unresolved_precision: int = 0
+    # FIX C1: set to True when the test suite carried Neo-Davidsonian violations;
+    # the verifier short-circuits and siv_score returns 0.0.
+    extraction_invalid: bool = False
+    schema_violations: List["SchemaViolation"] = field(default_factory=list)
 
     @property
     def recall_rate(self) -> float:
-        if self.recall_total == 0:
+        # FIX B1: unresolved tests are excluded from the denominator in
+        # non-strict mode; in strict mode the verifier raises before we ever
+        # compute rates.
+        effective_denom = self.recall_total - self.unresolved_recall
+        if effective_denom <= 0:
             return 0.0
         total_credit = sum(self.partial_credits.values())
-        return (self.recall_passed + total_credit) / self.recall_total
+        return (self.recall_passed + total_credit) / effective_denom
 
     @property
     def precision_rate(self) -> float:
-        if self.precision_total == 0:
+        # FIX B1: unresolved tests are excluded from the denominator in
+        # non-strict mode; in strict mode the verifier raises before we ever
+        # compute rates.
+        effective_denom = self.precision_total - self.unresolved_precision
+        if effective_denom <= 0:
             return 1.0
-        return self.precision_passed / self.precision_total
+        return self.precision_passed / effective_denom
 
     @property
     def siv_score(self) -> float:
+        # FIX C1: schema violations short-circuit the score to 0.0. Under Tenet 4
+        # we do not silently degrade — invalid extractions score zero.
+        if self.extraction_invalid:
+            return 0.0
         r, p = self.recall_rate, self.precision_rate
         if r + p == 0:
             return 0.0

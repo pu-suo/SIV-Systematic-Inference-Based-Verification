@@ -22,7 +22,7 @@ from siv.fol_utils import (
     NLTK_AVAILABLE, extract_predicates, is_valid_fol, parse_fol,
 )
 from siv.partial_credit import tier1_credit
-from siv.schema import TestSuite, UnitTest, VerificationResult
+from siv.schema import ProverUnavailableError, TestSuite, UnitTest, VerificationResult
 from siv.vampire_interface import check_entailment
 
 
@@ -162,6 +162,24 @@ def verify(
     strict_mode=True:             Tier 1 returns only 1.0 or 0.0 — no partial credit
                                   (strict mathematical verification for leaderboards).
     """
+    # FIX C1: schema violations short-circuit the verifier. No prover calls
+    # are made; the result is marked extraction_invalid=True and siv_score=0.0.
+    # Placed before Tier 0 so no work is done on an invalid extraction.
+    if test_suite.has_violations:
+        return VerificationResult(
+            candidate_fol=candidate_fol,
+            syntax_valid=_tier0_syntax(candidate_fol),
+            recall_passed=0,
+            recall_total=len(test_suite.positive_tests),
+            precision_passed=0,
+            precision_total=len(test_suite.negative_tests),
+            tier1_skips=0,
+            tier2_skips=0,
+            prover_calls=0,
+            extraction_invalid=True,
+            schema_violations=list(test_suite.violations),
+        )
+
     # ── Tier 0: syntax ──────────────────────────────────────────────────────
     syntax_valid = _tier0_syntax(candidate_fol)
     n_pos = len(test_suite.positive_tests)
@@ -180,12 +198,15 @@ def verify(
             prover_calls=0,
         )
 
-    recall_passed   = 0
+    recall_passed    = 0
     precision_passed = 0
-    tier1_skips     = 0
-    tier2_skips     = 0
-    prover_calls    = 0
+    tier1_skips      = 0
+    tier2_skips      = 0
+    prover_calls     = 0
     partial_credits: Dict[str, float] = {}
+    # FIX B1: track tests that could not be resolved by the prover.
+    unresolved_recall    = 0
+    unresolved_precision = 0
 
     candidate_expr = parse_fol(candidate_fol) if NLTK_AVAILABLE else None
 
@@ -218,8 +239,10 @@ def verify(
             if result is True:
                 recall_passed += 1
             elif result is None:
-                # Unresolved: give full vocabulary credit as partial
-                partial_credits[f"pos_{i}"] = credit
+                # FIX B1: prover unresolved → no credit, no partial, no lexical
+                # fallback. Excluded from denominator via unresolved_recall.
+                unresolved_recall += 1
+            # result is False → fall through, no increment, no exclusion
         else:
             # Partial vocabulary match (credit = 0.5)
             # Try Tier 2 / Tier 3 to upgrade
@@ -239,7 +262,12 @@ def verify(
             result = _tier3_prover(candidate_fol, test.fol_string, prover_timeout)
             if result is True:
                 recall_passed += 1
+            elif result is None:
+                # FIX B1: prover unresolved → no partial credit fallback.
+                # Excluded from denominator via unresolved_recall.
+                unresolved_recall += 1
             else:
+                # result is False → partial vocabulary credit applies
                 partial_credits[f"pos_{i}"] = credit
 
     # ── PRECISION: negative tests ────────────────────────────────────────────
@@ -266,9 +294,26 @@ def verify(
         if not resolved:
             prover_calls += 1
             result = _tier3_prover(candidate_fol, test.fol_string, prover_timeout)
-            if result is not True:
-                # Not entailed (or unknown) → precision passes
+            if result is False:
+                # FIX B1: candidate provably does NOT entail the negative test
+                # → a real precision pass.
                 precision_passed += 1
+            elif result is None:
+                # FIX B1: prover unresolved → exclude from precision denominator.
+                unresolved_precision += 1
+            # result is True → candidate wrongly entails the negative test,
+            # precision fails (no increment)
+
+    # FIX B1: in strict mode, any unresolved test aborts the run rather than
+    # silently producing a degraded (or inflated) score.
+    if strict_mode and (unresolved_recall > 0 or unresolved_precision > 0):
+        raise ProverUnavailableError(
+            f"{unresolved_recall} recall and {unresolved_precision} precision "
+            f"tests were unresolved because the theorem prover was unavailable "
+            f"or timed out. Published SIV scores require strict_mode=True with "
+            f"a working prover. Configure Vampire via siv.vampire_interface "
+            f"or run with strict_mode=False (reward-shaping mode)."
+        )
 
     return VerificationResult(
         candidate_fol=candidate_fol,
@@ -281,4 +326,6 @@ def verify(
         tier2_skips=tier2_skips,
         prover_calls=prover_calls,
         partial_credits=partial_credits,
+        unresolved_recall=unresolved_recall,
+        unresolved_precision=unresolved_precision,
     )

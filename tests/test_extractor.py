@@ -1,7 +1,7 @@
 """Tests for siv/extractor.py (no API required)."""
 import pytest
-from siv.extractor import extract_sentence, _parse_response, _dict_to_extraction
-from siv.schema import EntityType, MacroTemplate, Constant
+from siv.extractor import extract_sentence, _parse_response, _dict_to_extraction, _register_entities_across_sentences
+from siv.schema import Entity, EntityType, Fact, MacroTemplate, Constant, SentenceExtraction
 from siv.pre_analyzer import analyze_sentence
 
 
@@ -90,3 +90,54 @@ def test_dict_to_extraction_entity_type_constant_routes_to_constants():
     const_ids = [c.id for c in sent.constants]
     assert "bonnie" in const_ids
     assert all(e.surface.lower() != "bonnie" for e in sent.entities)
+
+
+# ── FIX E1: whitespace-normalised registry key ────────────────────────────────
+
+def _make_sent(nl: str, entity_surface: str, entity_id: str = "e1") -> SentenceExtraction:
+    """Helper: build a minimal SentenceExtraction with one entity."""
+    return SentenceExtraction(
+        nl=nl,
+        entities=[Entity(id=entity_id, surface=entity_surface, entity_type=EntityType.EXISTENTIAL)],
+        facts=[],
+        macro_template=MacroTemplate.GROUND_POSITIVE,
+        compound_analyses=[],
+        constants=[],
+    )
+
+
+def test_fix_E1_whitespace_normalized_registry():
+    """
+    FIX E1 (narrow): internal whitespace in entity surface forms must not
+    cause duplicate registry entries.
+
+    Positive case: "company building" vs "company  building" (two spaces)
+      → same canonical id after registration.
+    Case-insensitive case: "company building" vs "Company Building"
+      → same canonical id (pre-existing .lower() behaviour, confirmed no regression).
+    Negative case: "company building" vs "building"
+      → different ids (Tenet-1 guardrail: distinct surface forms stay distinct).
+    """
+    # --- Positive case: whitespace collapse ---
+    s1 = _make_sent("Sent 1.", "company building")
+    s2 = _make_sent("Sent 2.", "company  building")   # two spaces
+    result = _register_entities_across_sentences([s1, s2])
+    assert result[0].entities[0].id == result[1].entities[0].id, (
+        "single-space and double-space surface must resolve to the same entity id"
+    )
+
+    # --- Case-insensitive case: confirm no regression on .lower() ---
+    s3 = _make_sent("Sent 3.", "company building")
+    s4 = _make_sent("Sent 4.", "Company Building")
+    result2 = _register_entities_across_sentences([s3, s4])
+    assert result2[0].entities[0].id == result2[1].entities[0].id, (
+        "different casing of the same surface must resolve to the same entity id"
+    )
+
+    # --- Negative case: Tenet-1 guardrail — distinct surfaces stay distinct ---
+    s5 = _make_sent("Sent 5.", "company building")
+    s6 = _make_sent("Sent 6.", "building")
+    result3 = _register_entities_across_sentences([s5, s6])
+    assert result3[0].entities[0].id != result3[1].entities[0].id, (
+        "'company building' and 'building' are different surface forms and must NOT collapse"
+    )

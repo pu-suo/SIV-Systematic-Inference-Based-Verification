@@ -1,12 +1,13 @@
 """Tests for siv/verifier.py"""
 import pytest
-from siv.schema import UnitTest, TestSuite
+from siv.schema import ProverUnavailableError, UnitTest, TestSuite
 from siv.verifier import (
     _tier0_syntax,
     _tier1_vocabulary,
     _tier2_ast,
     verify,
 )
+import siv.verifier as _verifier_module
 from siv.partial_credit import camelcase_components as _camelcase_components
 from siv.fol_utils import NLTK_AVAILABLE
 
@@ -146,3 +147,109 @@ def test_verify_recall_vocab_fail():
     result = verify("exists x.Car(x)", suite)
     assert result.recall_passed == 0
     assert result.tier1_skips >= 1
+
+
+# ── FIX B1: Prover-unresolved handling ───────────────────────────────────────
+
+@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
+def test_fix_B1_strict_mode_raises_when_prover_unavailable(monkeypatch):
+    """
+    FIX B1: verify(..., strict_mode=True) must raise ProverUnavailableError
+    when the prover returns None for any test.
+
+    Design: candidate has both predicates P and Q (Tier 1 passes, credit=1.0),
+    but the structural forms differ so Tier 2 returns None, pushing to Tier 3.
+    Candidate: exists x.(P(x) & Q(x))  — existential conjunction
+    Test:      all x.(P(x) -> Q(x))    — universal conditional (structurally different)
+    """
+    suite = _make_suite(["all x.(P(x) -> Q(x))"], [])
+    candidate = "exists x.(P(x) & Q(x))"
+    monkeypatch.setattr(_verifier_module, "_tier3_prover", lambda *a, **kw: None)
+
+    with pytest.raises(ProverUnavailableError):
+        verify(candidate, suite, strict_mode=True)
+
+
+@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
+def test_fix_B1_non_strict_mode_excludes_unresolved_from_denominator(monkeypatch):
+    """
+    FIX B1: in non-strict mode, an unresolved recall test is excluded from the
+    denominator. With one positive test that is unresolved, the effective
+    denominator is zero → recall_rate == 0.0, and partial_credits is empty.
+
+    Same candidate/test pair as the strict-mode test above.
+    """
+    suite = _make_suite(["all x.(P(x) -> Q(x))"], [])
+    candidate = "exists x.(P(x) & Q(x))"
+    monkeypatch.setattr(_verifier_module, "_tier3_prover", lambda *a, **kw: None)
+
+    result = verify(candidate, suite, strict_mode=False)
+
+    assert result.recall_total >= 1
+    assert result.recall_passed == 0
+    assert result.unresolved_recall >= 1
+    assert result.recall_rate == pytest.approx(0.0)
+    assert result.partial_credits == {}
+
+
+@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
+def test_fix_B1_unresolved_precision_excluded(monkeypatch):
+    """
+    FIX B1: a precision test whose prover call returns None must NOT count as
+    a precision pass. The test is excluded from the precision denominator.
+
+    Candidate: exists x.(P(x) & Q(x))
+    Negative test: all x.(P(x) -> Q(x))  — predicates present (Tier 1 credit>0),
+    structurally different (Tier 2 returns None), so Tier 3 is called.
+    """
+    suite = _make_suite([], ["all x.(P(x) -> Q(x))"])
+    candidate = "exists x.(P(x) & Q(x))"
+    monkeypatch.setattr(_verifier_module, "_tier3_prover", lambda *a, **kw: None)
+
+    result = verify(candidate, suite, strict_mode=False)
+
+    assert result.unresolved_precision >= 1
+    # The unresolved test must NOT have generated a precision pass.
+    assert result.precision_passed == 0
+
+
+@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
+def test_fix_B1_resolved_tests_unaffected():
+    """
+    FIX B1: a test that resolves at Tier 2 (structural identity) must still
+    count as recall_passed, and unresolved_recall must remain 0.
+    """
+    fol = "exists x.(Car(x) & Red(x))"
+    suite = _make_suite([fol], [])
+
+    result = verify(fol, suite, strict_mode=False)
+
+    assert result.unresolved_recall == 0
+    assert result.recall_passed == 1
+
+
+@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
+def test_fix_B1_mixed_resolved_and_unresolved(monkeypatch):
+    """
+    FIX B1: with two positive tests — one definitively failed at Tier 1 (absent
+    predicate), the other unresolved by the prover — the effective denominator
+    drops to 1 (the absent-predicate test counts against, the unresolved is
+    excluded), so recall_rate == 0.0 / 1 == 0.0.
+
+    Test 1: exists x.Crimson(x)        — Crimson absent from candidate → Tier 1 skip
+    Test 2: all x.(P(x) -> Q(x))       — P and Q present, structurally different → Tier 3
+    Candidate: exists x.(P(x) & Q(x))  — contains P and Q but not Crimson
+    """
+    suite = _make_suite(
+        ["exists x.Crimson(x)", "all x.(P(x) -> Q(x))"],
+        [],
+    )
+    candidate = "exists x.(P(x) & Q(x))"
+    monkeypatch.setattr(_verifier_module, "_tier3_prover", lambda *a, **kw: None)
+
+    result = verify(candidate, suite, strict_mode=False)
+
+    assert result.recall_passed == 0
+    assert result.unresolved_recall == 1
+    # effective_denom = 2 - 1 = 1; recall_rate = 0/1 = 0.0
+    assert result.recall_rate == pytest.approx(0.0)

@@ -86,6 +86,8 @@ class ProblemScore(NamedTuple):
     best_precision: float
     num_candidates: int
     best_candidate: str
+    # FIX C1: True when the best candidate's result has extraction_invalid=True.
+    extraction_invalid: bool = False
 
 
 def aggregate_scores(
@@ -120,6 +122,8 @@ def aggregate_scores(
             best_precision=best.precision_rate,
             num_candidates=len(scores),
             best_candidate=best.candidate_fol,
+            # FIX C1: propagate extraction_invalid from the best result.
+            extraction_invalid=best.result.extraction_invalid,
         ))
     return sorted(out, key=lambda p: p.best_siv_score, reverse=True)
 
@@ -136,12 +140,16 @@ def aggregate_sentence_scores(
     Returns a dict with keys: siv, recall, precision.
     """
     if not sentence_results:
-        return {"siv": 0.0, "recall": 0.0, "precision": 0.0}
+        return {"siv": 0.0, "recall": 0.0, "precision": 0.0, "num_invalid": 0}
     n = len(sentence_results)
+    # FIX C1: invalid results contribute 0.0 to the average (siv_score returns
+    # 0.0 when extraction_invalid=True) and are counted in num_invalid.
+    # They are included in the denominator so they drag down the problem score.
     return {
-        "siv":       sum(r.siv_score      for r in sentence_results) / n,
-        "recall":    sum(r.recall_rate    for r in sentence_results) / n,
-        "precision": sum(r.precision_rate for r in sentence_results) / n,
+        "siv":         sum(r.siv_score      for r in sentence_results) / n,
+        "recall":      sum(r.recall_rate    for r in sentence_results) / n,
+        "precision":   sum(r.precision_rate for r in sentence_results) / n,
+        "num_invalid": sum(1 for r in sentence_results if r.extraction_invalid),
     }
 
 
@@ -152,10 +160,13 @@ def macro_average(problem_scores: List[ProblemScore]) -> Dict[str, float]:
     Returns a dict with keys: siv, recall, precision.
     """
     if not problem_scores:
-        return {"siv": 0.0, "recall": 0.0, "precision": 0.0}
+        return {"siv": 0.0, "recall": 0.0, "precision": 0.0, "num_invalid_problems": 0}
     n = len(problem_scores)
+    # FIX C1: invalid problems contribute best_siv_score=0.0 (already enforced
+    # by VerificationResult.siv_score) and are counted in num_invalid_problems.
     return {
-        "siv":       sum(p.best_siv_score for p in problem_scores) / n,
-        "recall":    sum(p.best_recall    for p in problem_scores) / n,
-        "precision": sum(p.best_precision for p in problem_scores) / n,
+        "siv":                  sum(p.best_siv_score for p in problem_scores) / n,
+        "recall":               sum(p.best_recall    for p in problem_scores) / n,
+        "precision":            sum(p.best_precision for p in problem_scores) / n,
+        "num_invalid_problems": sum(1 for p in problem_scores if p.extraction_invalid),
     }

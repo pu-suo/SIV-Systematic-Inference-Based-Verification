@@ -355,9 +355,28 @@ def extract_problem(
             raw_extractions = list(pool.map(_extract_one, zip(problem_sentences, all_analyses)))
 
     # Sequential entity-ID deduplication (stateful — must not be parallelised)
+    # FIX E1 (narrow): extraction moved to helper so tests can call it directly.
+    sentence_extractions = _register_entities_across_sentences(raw_extractions)
+
+    return ProblemExtraction(problem_id=problem_id, sentences=sentence_extractions)
+
+
+def _register_entities_across_sentences(
+    raw_extractions: List[SentenceExtraction],
+) -> List[SentenceExtraction]:
+    """
+    Assign canonical cross-sentence entity/constant IDs.
+
+    Stateful — processes extractions in order; must not be parallelised.
+
+    # FIX E1 (narrow): registry keys are whitespace-normalised so that
+    # "company building" and "company  building" (two spaces) resolve to the
+    # same canonical entity.  This is the ONLY normalisation applied — no
+    # article stripping, no lemmatisation, no synonym handling (Tenet 1).
+    """
     sentence_extractions: List[SentenceExtraction] = []
-    entity_registry: dict = {}    # surface (lower) → canonical id
-    constant_registry: dict = {}  # surface (lower) → canonical id
+    entity_registry: dict = {}    # normalised surface (lower) → canonical id
+    constant_registry: dict = {}  # normalised surface (lower) → canonical id
     id_counter = {"e": 1, "c": 1}
 
     for extraction in raw_extractions:
@@ -365,7 +384,10 @@ def extract_problem(
         id_remap: dict = {}
         new_entities = []
         for ent in extraction.entities:
-            key = ent.surface.lower()
+            # FIX E1 (narrow): collapse internal whitespace and trim edges so
+            # "company building" and "company  building" register as the same
+            # entity.  No other normalisation is permitted (Tenet 1).
+            key = re.sub(r"\s+", " ", ent.surface).strip().lower()
             if key in entity_registry:
                 new_id = entity_registry[key]
             else:
@@ -381,7 +403,8 @@ def extract_problem(
         # Remap constant IDs — use camelCase surface as canonical id when possible
         new_constants = []
         for const in extraction.constants:
-            key = const.surface.lower()
+            # FIX E1 (narrow): same whitespace normalisation for constants.
+            key = re.sub(r"\s+", " ", const.surface).strip().lower()
             if key in constant_registry:
                 new_id = constant_registry[key]
             else:
@@ -408,4 +431,4 @@ def extract_problem(
             )
         )
 
-    return ProblemExtraction(problem_id=problem_id, sentences=sentence_extractions)
+    return sentence_extractions

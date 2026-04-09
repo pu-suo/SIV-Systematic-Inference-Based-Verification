@@ -44,10 +44,46 @@ ENTITY TYPE (entities only)
   • existential  → indefinite: "a car", "some bears", "the tree"
   • universal    → quantified over all: "all kids", "every student", "no bird"
 
-FACT ARITY (implicit from len(args)):
+FACT ARITY (unary or binary only):
   • 1-arg → unary predicate (type or property): Tall(e1), Queen(bonnie)
   • 2-arg → binary relation: Directed(lanaWilson, afterTiller), Likes(e1, e2)
-  • 3-arg → ternary relation: Gave(bonnie, e1, e2)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NEO-DAVIDSONIAN FORM — MANDATORY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Facts may have arity 1 or 2 ONLY. Facts with 3 or more arguments are
+FORBIDDEN. Ditransitive verbs (give, tell, send, show, offer) must be
+reified into a primary binary fact plus a secondary binary edge for
+the indirect argument.
+
+DITRANSITIVE DECOMPOSITION:
+  "Alice gave the book to Bob"
+    → constants: [{id: alice, surface: Alice}, {id: bob, surface: Bob}]
+    → entities:  [{id: e1, surface: book, entity_type: existential}]
+    → facts:     [{pred: gave, args: [alice, e1]},
+                  {pred: to,   args: [e1, bob]}]
+  VIOLATION: {pred: gave, args: [alice, e1, bob]} — NEVER emit a fact with three or more args.
+
+  "The company sent the document to the client"
+    → entities: [e1=company, e2=document, e3=client]
+    → facts:    [{pred: sent, args: [e1, e2]},
+                 {pred: to,   args: [e2, e3]}]
+  VIOLATION: {pred: sent, args: [e1, e2, e3]}
+
+PREPOSITIONAL WELDING IN UNARY PREDICATES — ALSO FORBIDDEN:
+  A 1-arg fact whose predicate contains a preposition token
+  (from, to, in, at, on, by, with, of, for, about, over, under,
+  through, across, between, among, against, toward) means you have
+  welded a second argument into the verb. REIFY it as a binary fact.
+    "No managers work remotely from home"
+    RIGHT: entities: [e1=managers, e2=home]
+           facts: [{pred: managers, args: [e1]},
+                   {pred: work remotely from, args: [e1, e2], negated: true}]
+           — or equivalently —
+           facts: [{pred: managers, args: [e1]},
+                   {pred: work remotely, args: [e1], negated: true},
+                   {pred: from, args: [e1, e2], negated: true}]
+    WRONG: {pred: work remotely from home, args: [e1], negated: true}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 DECOMPOSITION RULES — MANDATORY

@@ -49,6 +49,25 @@
     }
   },
   {
+    "description": "Ditransitive decomposition (Stage 3 addition: demonstrates binary-only arity for ditransitive verbs)",
+    "compound_analysis": "(no compound modifiers detected)",
+    "sentence": "Alice gave the book to Bob.",
+    "response": {
+      "constants": [
+        {"id": "alice", "surface": "Alice"},
+        {"id": "bob", "surface": "Bob"}
+      ],
+      "entities": [
+        {"id": "e1", "surface": "book", "entity_type": "existential"}
+      ],
+      "facts": [
+        {"pred": "gave", "args": ["alice", "e1"], "negated": false},
+        {"pred": "to", "args": ["e1", "bob"], "negated": false}
+      ],
+      "macro_template": "ground_positive"
+    }
+  },
+  {
     "description": "Universal affirmative (TYPE A)",
     "compound_analysis": "(no compound modifiers detected)",
     "sentence": "All kids are young.",

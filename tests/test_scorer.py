@@ -14,7 +14,7 @@ from siv.fol_utils import NLTK_AVAILABLE
 
 
 def _make_result(recall_passed, recall_total, precision_passed, precision_total,
-                 partial_credits=None, syntax_valid=True):
+                 syntax_valid=True):
     return VerificationResult(
         candidate_fol="x",
         syntax_valid=syntax_valid,
@@ -25,7 +25,6 @@ def _make_result(recall_passed, recall_total, precision_passed, precision_total,
         tier1_skips=0,
         tier2_skips=0,
         prover_calls=0,
-        partial_credits=partial_credits or {},
     )
 
 
@@ -66,7 +65,7 @@ def test_score_candidates_sorted():
         "exists x.(Car(x) & Crimson(x))",  # has both predicates → higher score
         "exists x.Car(x)",                  # missing Crimson → lower score
     ]
-    scores = score_candidates(candidates, suite)
+    scores = score_candidates(candidates, suite, unresolved_policy="exclude")
     assert len(scores) == 2
     assert scores[0].siv_score >= scores[1].siv_score
 
@@ -75,7 +74,7 @@ def test_score_candidates_sorted():
 def test_best_candidate_returns_first():
     suite = _make_suite(["exists x.Car(x)"], [])
     candidates = ["exists x.Car(x)", "exists x.Dog(x)"]
-    best = best_candidate(candidates, suite)
+    best = best_candidate(candidates, suite, unresolved_policy="exclude")
     assert best is not None
     assert isinstance(best, CandidateScore)
 

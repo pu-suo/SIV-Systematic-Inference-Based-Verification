@@ -779,7 +779,7 @@ def test_fix_C1_verify_short_circuits_on_invalid_extraction():
     from siv.verifier import verify
     prob = _make_problem_with_fact("work remotely from home", ["e1"])
     suite = compile_test_suite(prob)
-    result = verify("exists x.WorkRemotelyFromHome(x)", suite, strict_mode=False)
+    result = verify("exists x.WorkRemotelyFromHome(x)", suite, unresolved_policy="exclude")
     assert result.extraction_invalid is True, (
         f"Expected extraction_invalid=True; got {result.extraction_invalid}"
     )
@@ -809,7 +809,7 @@ def test_fix_C1_clean_extraction_unaffected():
         f"Expected no violations for clean extraction; got {suite.violations}"
     )
     result = verify("all x.(Students(x) -> exists y.(Books(y) & Read(x, y)))", suite,
-                    strict_mode=False)
+                    unresolved_policy="exclude")
     assert result.extraction_invalid is False, (
         f"Expected extraction_invalid=False for clean extraction; got {result.extraction_invalid}"
     )

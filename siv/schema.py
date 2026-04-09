@@ -16,7 +16,7 @@ using the Aristotelian categorical forms (A, E, I, O) plus ground
 facts and conditionals.
 """
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional
+from typing import List, Optional
 from enum import Enum
 
 
@@ -28,18 +28,17 @@ class ExtractionInvalidError(RuntimeError):
     for an extraction that contains schema violations. Violating
     extractions are scored as SIV=0 with the extraction_invalid flag
     set; callers that want to see the score must read the
-    VerificationResult directly rather than calling verify() with
-    strict_mode=True.
+    VerificationResult directly.
     """
 
 
-# FIX B1: raised in strict_mode=True when any test is unresolved by the prover.
+# FIX B1: raised when unresolved_policy="raise" and any test is unresolved.
 class ProverUnavailableError(RuntimeError):
     """
-    Raised in strict_mode=True when one or more tests could not be resolved
-    because the Vampire theorem prover was unavailable or timed out. SIV's
-    published scores require a working prover; silently degrading to
-    vocabulary-level credit is a Tenet-1 violation.
+    Raised when unresolved_policy="raise" (the default) and one or more tests
+    could not be resolved because the Vampire theorem prover was unavailable or
+    timed out. SIV's published scores require a working prover; silently
+    degrading to vocabulary-level credit is a Tenet-1 violation.
     """
 
 
@@ -209,10 +208,9 @@ class VerificationResult:
     tier1_skips: int           # Tests resolved at Tier 1 (vocabulary)
     tier2_skips: int           # Tests resolved at Tier 2 (AST)
     prover_calls: int          # Tests requiring Tier 3 (Vampire)
-    partial_credits: Dict[str, float] = field(default_factory=dict)
     # FIX B1: counts of tests that could not be resolved by the prover.
-    # In non-strict mode these are excluded from the denominator so they neither
-    # help nor hurt the candidate. In strict mode the verifier raises before
+    # In "exclude" mode these are excluded from the denominator so they neither
+    # help nor hurt the candidate. In "raise" mode the verifier raises before
     # these fields are ever populated.
     unresolved_recall: int = 0
     unresolved_precision: int = 0
@@ -223,14 +221,11 @@ class VerificationResult:
 
     @property
     def recall_rate(self) -> float:
-        # FIX B1: unresolved tests are excluded from the denominator in
-        # non-strict mode; in strict mode the verifier raises before we ever
-        # compute rates.
+        # FIX B1: unresolved tests are excluded from the effective denominator.
         effective_denom = self.recall_total - self.unresolved_recall
         if effective_denom <= 0:
             return 0.0
-        total_credit = sum(self.partial_credits.values())
-        return (self.recall_passed + total_credit) / effective_denom
+        return self.recall_passed / effective_denom
 
     @property
     def precision_rate(self) -> float:

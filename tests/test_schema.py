@@ -160,7 +160,8 @@ def test_recall_rate_simple():
     assert vr.recall_rate == pytest.approx(0.75)
 
 
-def test_recall_rate_with_partial_credit():
+def test_recall_rate_no_partial_credit():
+    """Tenet 1: recall_rate is recall_passed / effective_denom, no partial credit."""
     vr = VerificationResult(
         candidate_fol="exists x.Tall(x)",
         syntax_valid=True,
@@ -171,10 +172,9 @@ def test_recall_rate_with_partial_credit():
         tier1_skips=0,
         tier2_skips=0,
         prover_calls=0,
-        partial_credits={"test_0": 0.5, "test_1": 0.5},
     )
-    # (2 full + 1.0 partial) / 4 = 0.75
-    assert vr.recall_rate == pytest.approx(0.75)
+    # 2 / 4 = 0.5 (no credit for components)
+    assert vr.recall_rate == pytest.approx(0.5)
 
 
 def test_precision_rate_perfect():

@@ -206,7 +206,7 @@ def test_baseline_matches_diagnostic_trace():
         zip(problem.sentences, GOLD_FOLS, expected), start=1
     ):
         suite = compile_sentence_test_suite(sent, problem_id=f"1208_p{idx}")
-        result = verify(gold_fol, suite, prover_timeout=1, strict_mode=False)
+        result = verify(gold_fol, suite, prover_timeout=1, unresolved_policy="exclude")
 
         assert result.recall_total == exp_rt, (
             f"P{idx} recall_total: got {result.recall_total}, expected {exp_rt}"
@@ -235,7 +235,7 @@ def test_p6_extraction_invalid():
         f"Expected suite.has_violations=True for P6; got violations={suite.violations}"
     )
 
-    result = verify(GOLD_FOLS[5], suite, prover_timeout=1, strict_mode=False)
+    result = verify(GOLD_FOLS[5], suite, prover_timeout=1, unresolved_policy="exclude")
 
     assert result.extraction_invalid is True, (
         f"P6 expected extraction_invalid=True; got {result.extraction_invalid}"
@@ -275,7 +275,7 @@ def test_final_state_siv_scores_per_premise():
     suites = []
     for idx, (sent, gold) in enumerate(zip(problem.sentences, GOLD_FOLS), 1):
         suite = compile_sentence_test_suite(sent, problem_id=f"1208_p{idx}")
-        result = verify(gold, suite, prover_timeout=1, strict_mode=False)
+        result = verify(gold, suite, prover_timeout=1, unresolved_policy="exclude")
         results.append(result)
         suites.append(suite)
 
@@ -369,17 +369,3 @@ def test_final_state_siv_scores_per_premise():
     )
 
 
-def test_partial_credit_has_no_canonicalization():
-    """
-    Trip-wire: confirm that siv.partial_credit has NOT re-introduced any
-    Tenet-1-violating normalization. If any of these names appear in the
-    module namespace, a later task silently introduced lemmatization/stemming.
-    """
-    import siv.partial_credit as pc
-
-    forbidden = ["canonicalize_predicate", "canonicalize_set", "_light_stem"]
-    for name in forbidden:
-        assert not hasattr(pc, name), (
-            f"Tenet-1 violation: siv.partial_credit exposes '{name}'. "
-            "Remove it before proceeding."
-        )

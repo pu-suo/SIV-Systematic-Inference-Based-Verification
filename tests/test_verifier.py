@@ -8,21 +8,7 @@ from siv.verifier import (
     verify,
 )
 import siv.verifier as _verifier_module
-from siv.partial_credit import camelcase_components as _camelcase_components
 from siv.fol_utils import NLTK_AVAILABLE
-
-
-# ── _camelcase_components ─────────────────────────────────────────────────────
-
-def test_camel_split_two():
-    assert _camelcase_components("CrimsonCar") == ["Crimson", "Car"]
-
-def test_camel_split_three():
-    assert _camelcase_components("MovesQuickly") == ["Moves", "Quickly"]
-
-def test_camel_single():
-    comps = _camelcase_components("Tall")
-    assert comps == ["Tall"]
 
 
 # ── _tier0_syntax ─────────────────────────────────────────────────────────────
@@ -48,13 +34,13 @@ def test_full_credit_standalone():
     assert result == (True, 1.0)
 
 @pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
-def test_partial_credit_for_component():
-    """Spec: CrimsonCar(x) should get 0.5 credit for test expecting Crimson(x)."""
+def test_component_match_gives_zero_credit():
+    """Tenet 1: CrimsonCar(x) gives ZERO credit for a test expecting Crimson(x)."""
     result = _tier1_vocabulary(
         "all x.(CrimsonCar(x) -> MovesQuickly(x))",
         UnitTest(fol_string="exists x.Crimson(x)", test_type="vocabulary", is_positive=True),
     )
-    assert result[1] == pytest.approx(0.5)
+    assert result == (False, 0.0)
 
 @pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
 def test_zero_credit_absent_predicate():
@@ -152,12 +138,12 @@ def test_verify_recall_vocab_fail():
 # ── FIX B1: Prover-unresolved handling ───────────────────────────────────────
 
 @pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
-def test_fix_B1_strict_mode_raises_when_prover_unavailable(monkeypatch):
+def test_unresolved_raises_by_default(monkeypatch):
     """
-    FIX B1: verify(..., strict_mode=True) must raise ProverUnavailableError
+    verify() with default unresolved_policy="raise" must raise ProverUnavailableError
     when the prover returns None for any test.
 
-    Design: candidate has both predicates P and Q (Tier 1 passes, credit=1.0),
+    Candidate has both predicates P and Q (Tier 1 passes, credit=1.0),
     but the structural forms differ so Tier 2 returns None, pushing to Tier 3.
     Candidate: exists x.(P(x) & Q(x))  — existential conjunction
     Test:      all x.(P(x) -> Q(x))    — universal conditional (structurally different)
@@ -167,29 +153,27 @@ def test_fix_B1_strict_mode_raises_when_prover_unavailable(monkeypatch):
     monkeypatch.setattr(_verifier_module, "_tier3_prover", lambda *a, **kw: None)
 
     with pytest.raises(ProverUnavailableError):
-        verify(candidate, suite, strict_mode=True)
+        verify(candidate, suite)
 
 
 @pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
-def test_fix_B1_non_strict_mode_excludes_unresolved_from_denominator(monkeypatch):
+def test_unresolved_excluded_when_policy_exclude(monkeypatch):
     """
-    FIX B1: in non-strict mode, an unresolved recall test is excluded from the
-    denominator. With one positive test that is unresolved, the effective
-    denominator is zero → recall_rate == 0.0, and partial_credits is empty.
+    verify(..., unresolved_policy="exclude") must NOT raise, and must return a
+    VerificationResult with unresolved_recall >= 1.
 
-    Same candidate/test pair as the strict-mode test above.
+    Same candidate/test pair as the raise test above.
     """
     suite = _make_suite(["all x.(P(x) -> Q(x))"], [])
     candidate = "exists x.(P(x) & Q(x))"
     monkeypatch.setattr(_verifier_module, "_tier3_prover", lambda *a, **kw: None)
 
-    result = verify(candidate, suite, strict_mode=False)
+    result = verify(candidate, suite, unresolved_policy="exclude")
 
     assert result.recall_total >= 1
     assert result.recall_passed == 0
     assert result.unresolved_recall >= 1
     assert result.recall_rate == pytest.approx(0.0)
-    assert result.partial_credits == {}
 
 
 @pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
@@ -206,7 +190,7 @@ def test_fix_B1_unresolved_precision_excluded(monkeypatch):
     candidate = "exists x.(P(x) & Q(x))"
     monkeypatch.setattr(_verifier_module, "_tier3_prover", lambda *a, **kw: None)
 
-    result = verify(candidate, suite, strict_mode=False)
+    result = verify(candidate, suite, unresolved_policy="exclude")
 
     assert result.unresolved_precision >= 1
     # The unresolved test must NOT have generated a precision pass.
@@ -222,7 +206,7 @@ def test_fix_B1_resolved_tests_unaffected():
     fol = "exists x.(Car(x) & Red(x))"
     suite = _make_suite([fol], [])
 
-    result = verify(fol, suite, strict_mode=False)
+    result = verify(fol, suite)
 
     assert result.unresolved_recall == 0
     assert result.recall_passed == 1
@@ -247,7 +231,7 @@ def test_fix_B1_mixed_resolved_and_unresolved(monkeypatch):
     candidate = "exists x.(P(x) & Q(x))"
     monkeypatch.setattr(_verifier_module, "_tier3_prover", lambda *a, **kw: None)
 
-    result = verify(candidate, suite, strict_mode=False)
+    result = verify(candidate, suite, unresolved_policy="exclude")
 
     assert result.recall_passed == 0
     assert result.unresolved_recall == 1

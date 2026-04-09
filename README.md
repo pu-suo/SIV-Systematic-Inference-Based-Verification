@@ -13,8 +13,8 @@ Instead of checking whether a model's output exactly matches a gold formula, SIV
 | **Stage 1 Pre-Analysis** | Symbolic analysis of modifier+noun compounds before calling the LLM — computes WordNet, PMI, POS, and dependency signals to decide KEEP vs. SPLIT |
 | **Stage 2 Extraction** | GPT-4o (or rule-based fallback) extracts entities and facts into a minimal JSON schema guided by the pre-analysis |
 | **Stage 3 Compilation** | Deterministic mapping from the JSON extraction to FOL unit tests using arity-based templates and Aristotelian macro-forms |
-| **Tiered Verifier** | Tier 0 (syntax) → Tier 1 (vocabulary, with partial credit) → Tier 2 (AST patterns) → Tier 3 (Vampire prover) |
-| **SIV Score** | F1 of recall rate (positive tests passed, including partial credit) and precision rate (negative/contrastive tests rejected) |
+| **Tiered Verifier** | Tier 0 (syntax) → Tier 1 (strict vocabulary) → Tier 2 (AST patterns) → Tier 3 (Vampire prover) |
+| **SIV Score** | F1 of recall rate (positive tests passed) and precision rate (negative/contrastive tests rejected) |
 
 ---
 
@@ -186,20 +186,17 @@ Tests are evaluated with escalating cost:
 
 ```
 Tier 0 (syntax)       — NLTK parse check; fails fast on unparseable candidates
-Tier 1 (vocabulary)   — predicate presence check with CamelCase-aware partial credit
+Tier 1 (vocabulary)   — strict predicate presence check (full match or zero)
 Tier 2 (AST)          — lightweight structural matching without the prover
 Tier 3 (Vampire)      — full theorem proving (only ~30% of tests reach this tier)
 ```
 
-**Partial credit** at Tier 1:
-- `CrimsonCar(x)` scores **0.5** for a test expecting `Crimson(x)` (found as a CamelCase component)
-- `Car(x) & Crimson(x)` scores **1.0** for the same test (standalone match)
-- Absent predicate scores **0.0** and the test is skipped (no prover call)
+Tier 1 is strict: a predicate must appear as a standalone identifier in the candidate. A predicate embedded in a CamelCase compound (e.g. `CrimsonCar` for a test expecting `Crimson`) scores **0.0** — no partial credit. This directly enforces Tenet 1 (Strict Lexical Faithfulness).
 
 ### SIV Score (`siv/scorer.py`)
 
 ```
-recall_rate    = (full_passes + Σ partial_credits) / total_positive_tests
+recall_rate    = recall_passed / effective_positive_tests
 precision_rate = negative_tests_rejected / total_negative_tests
 SIV score      = 2 · recall · precision / (recall + precision)   # F1
 ```

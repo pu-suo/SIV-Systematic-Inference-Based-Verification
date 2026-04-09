@@ -5,7 +5,7 @@ SIV Score = F1(recall_rate, precision_rate)
           = 2 * recall * precision / (recall + precision)
 
 Where:
-  recall_rate    = (full_passes + sum(partial_credits)) / total_positive_tests
+  recall_rate    = recall_passed / effective_positive_tests
   precision_rate = negative_tests_rejected / total_negative_tests
 
 This module provides:
@@ -13,7 +13,7 @@ This module provides:
   - score_candidates()   — rank a list of candidates for one test suite
   - aggregate_scores()   — problem-level aggregation across multiple problems
 """
-from typing import Dict, List, NamedTuple, Optional
+from typing import Dict, List, Literal, NamedTuple, Optional
 
 from siv.schema import TestSuite, VerificationResult
 from siv.verifier import verify
@@ -47,6 +47,7 @@ def score_candidates(
     candidates: List[str],
     test_suite: TestSuite,
     prover_timeout: int = 5,
+    unresolved_policy: Literal["raise", "exclude"] = "raise",
 ) -> List[CandidateScore]:
     """
     Verify and score a list of FOL candidates against a single test suite.
@@ -55,7 +56,8 @@ def score_candidates(
     """
     scores: List[CandidateScore] = []
     for cand in candidates:
-        result = verify(cand, test_suite, prover_timeout=prover_timeout)
+        result = verify(cand, test_suite, prover_timeout=prover_timeout,
+                        unresolved_policy=unresolved_policy)
         scores.append(CandidateScore(
             candidate_fol=cand,
             siv_score=result.siv_score,
@@ -71,9 +73,10 @@ def best_candidate(
     candidates: List[str],
     test_suite: TestSuite,
     prover_timeout: int = 5,
+    unresolved_policy: Literal["raise", "exclude"] = "raise",
 ) -> Optional[CandidateScore]:
     """Return the highest-scoring candidate, or None if list is empty."""
-    scored = score_candidates(candidates, test_suite, prover_timeout)
+    scored = score_candidates(candidates, test_suite, prover_timeout, unresolved_policy)
     return scored[0] if scored else None
 
 

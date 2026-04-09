@@ -1,27 +1,23 @@
 """
-Tiered Verification Pipeline with Partial Credit.
+Tiered Verification Pipeline.
 
 Tier 0: Syntax check  — does the candidate parse as valid FOL?
-Tier 1: Vocabulary    — CamelCase-aware predicate presence check with partial credit
+Tier 1: Vocabulary    — strict predicate presence check (full match or zero)
 Tier 2: AST patterns  — lightweight structural check (no prover)
 Tier 3: Vampire       — full theorem proving (only for unresolved tests)
 
-Partial credit system (applied at Tier 1 for recall tests):
+Vocabulary check at Tier 1 (recall tests):
   Full match   (predicate present as standalone):     1.0
-  Partial match (predicate is a CamelCase component): 0.5
   No match     (predicate absent entirely):           0.0
 
 A test resolved at Tier 1 with full credit counts as recall_passed.
-A test resolved at Tier 1 with partial credit is recorded in partial_credits
-but does NOT increment recall_passed.
 A test definitively failed at Tier 1 (credit = 0.0) is skipped (no prover call).
 """
-from typing import Dict, Optional, Set, Tuple
+from typing import Literal, Optional, Set, Tuple
 
 from siv.fol_utils import (
     NLTK_AVAILABLE, extract_predicates, is_valid_fol, parse_fol,
 )
-from siv.partial_credit import tier1_credit
 from siv.schema import ProverUnavailableError, TestSuite, UnitTest, VerificationResult
 from siv.vampire_interface import check_entailment
 
@@ -45,19 +41,12 @@ def _tier0_syntax(candidate: str) -> bool:
 def _tier1_vocabulary(
     candidate: str,
     test: UnitTest,
-    strict_mode: bool = False,
 ) -> Tuple[bool, float]:
     """
-    CamelCase-aware vocabulary check.
+    Strict vocabulary check.
 
-    strict_mode=False (default for backward compat):
-      (True,  1.0) → all predicates found as standalone → full credit
-      (False, 0.5) → predicate is a CamelCase component → partial credit
-      (False, 0.0) → predicate absent entirely → definitive fail
-
-    strict_mode=True:
-      (True,  1.0) → all predicates found as standalone
-      (False, 0.0) → any predicate absent or only a component → fail
+    (True,  1.0) → all predicates found as standalone → full credit
+    (False, 0.0) → any predicate absent → definitive fail
 
     For NEGATIVE tests the semantics are inverted by the caller.
     """
@@ -67,11 +56,8 @@ def _tier1_vocabulary(
     if not test_preds:
         return (True, 1.0)
 
-    credit = tier1_credit(candidate_preds, test_preds, strict_mode=strict_mode)
-    if credit >= 1.0:
+    if test_preds.issubset(candidate_preds):
         return (True, 1.0)
-    if credit > 0.0:
-        return (False, credit)
     return (False, 0.0)
 
 
@@ -149,7 +135,7 @@ def verify(
     candidate_fol: str,
     test_suite: TestSuite,
     prover_timeout: int = 5,
-    strict_mode: bool = False,
+    unresolved_policy: Literal["raise", "exclude"] = "raise",
 ) -> VerificationResult:
     """
     Run the full tiered verification of one candidate against a test suite.
@@ -157,10 +143,11 @@ def verify(
     For POSITIVE tests: candidate must entail → counted in recall.
     For NEGATIVE tests: candidate must NOT entail → counted in precision.
 
-    strict_mode=False (default): CamelCase component matching gives 0.5 partial
-                                  credit at Tier 1 (dense reward signal for training).
-    strict_mode=True:             Tier 1 returns only 1.0 or 0.0 — no partial credit
-                                  (strict mathematical verification for leaderboards).
+    unresolved_policy="raise" (default, published-metric behavior):
+        Any test unresolved by the prover raises ProverUnavailableError.
+    unresolved_policy="exclude":
+        Unresolved tests are excluded from the effective denominator via
+        unresolved_recall / unresolved_precision. Run completes normally.
     """
     # FIX C1: schema violations short-circuit the verifier. No prover calls
     # are made; the result is marked extraction_invalid=True and siv_score=0.0.
@@ -203,7 +190,6 @@ def verify(
     tier1_skips      = 0
     tier2_skips      = 0
     prover_calls     = 0
-    partial_credits: Dict[str, float] = {}
     # FIX B1: track tests that could not be resolved by the prover.
     unresolved_recall    = 0
     unresolved_precision = 0
@@ -211,68 +197,39 @@ def verify(
     candidate_expr = parse_fol(candidate_fol) if NLTK_AVAILABLE else None
 
     # ── RECALL: positive tests ───────────────────────────────────────────────
-    for i, test in enumerate(test_suite.positive_tests):
-        definitive, credit = _tier1_vocabulary(candidate_fol, test, strict_mode=strict_mode)
+    for test in test_suite.positive_tests:
+        definitive, credit = _tier1_vocabulary(candidate_fol, test)
 
         if credit == 0.0:
             # Predicate completely absent → definitive fail
             tier1_skips += 1
             continue
 
-        if definitive and credit == 1.0:
-            # Full vocabulary match → still need structural / prover check
-            # Try Tier 2 first
-            test_expr = parse_fol(test.fol_string) if NLTK_AVAILABLE else None
-            if candidate_expr is not None and test_expr is not None:
-                t2 = _tier2_ast(candidate_expr, test_expr)
-                if t2 is True:
-                    recall_passed += 1
-                    tier2_skips += 1
-                    continue
-                elif t2 is False:
-                    tier2_skips += 1
-                    continue
-
-            # Tier 3
-            prover_calls += 1
-            result = _tier3_prover(candidate_fol, test.fol_string, prover_timeout)
-            if result is True:
+        # credit == 1.0: full vocabulary match → need structural / prover check
+        test_expr = parse_fol(test.fol_string) if NLTK_AVAILABLE else None
+        if candidate_expr is not None and test_expr is not None:
+            t2 = _tier2_ast(candidate_expr, test_expr)
+            if t2 is True:
                 recall_passed += 1
-            elif result is None:
-                # FIX B1: prover unresolved → no credit, no partial, no lexical
-                # fallback. Excluded from denominator via unresolved_recall.
-                unresolved_recall += 1
-            # result is False → fall through, no increment, no exclusion
-        else:
-            # Partial vocabulary match (credit = 0.5)
-            # Try Tier 2 / Tier 3 to upgrade
-            test_expr = parse_fol(test.fol_string) if NLTK_AVAILABLE else None
-            if candidate_expr is not None and test_expr is not None:
-                t2 = _tier2_ast(candidate_expr, test_expr)
-                if t2 is True:
-                    recall_passed += 1
-                    tier2_skips += 1
-                    continue
-                elif t2 is False:
-                    partial_credits[f"pos_{i}"] = credit
-                    tier2_skips += 1
-                    continue
+                tier2_skips += 1
+                continue
+            elif t2 is False:
+                tier2_skips += 1
+                continue
 
-            prover_calls += 1
-            result = _tier3_prover(candidate_fol, test.fol_string, prover_timeout)
-            if result is True:
-                recall_passed += 1
-            elif result is None:
-                # FIX B1: prover unresolved → no partial credit fallback.
-                # Excluded from denominator via unresolved_recall.
-                unresolved_recall += 1
-            else:
-                # result is False → partial vocabulary credit applies
-                partial_credits[f"pos_{i}"] = credit
+        # Tier 3
+        prover_calls += 1
+        result = _tier3_prover(candidate_fol, test.fol_string, prover_timeout)
+        if result is True:
+            recall_passed += 1
+        elif result is None:
+            # FIX B1: prover unresolved → excluded from denominator.
+            unresolved_recall += 1
+        # result is False → fall through, no increment, no exclusion
 
     # ── PRECISION: negative tests ────────────────────────────────────────────
-    for i, test in enumerate(test_suite.negative_tests):
-        _, credit = _tier1_vocabulary(candidate_fol, test, strict_mode=strict_mode)
+    for test in test_suite.negative_tests:
+        _, credit = _tier1_vocabulary(candidate_fol, test)
 
         if credit == 0.0:
             # Candidate lacks the perturbed predicate entirely → trivially safe
@@ -304,15 +261,15 @@ def verify(
             # result is True → candidate wrongly entails the negative test,
             # precision fails (no increment)
 
-    # FIX B1: in strict mode, any unresolved test aborts the run rather than
+    # FIX B1: in "raise" mode, any unresolved test aborts the run rather than
     # silently producing a degraded (or inflated) score.
-    if strict_mode and (unresolved_recall > 0 or unresolved_precision > 0):
+    if unresolved_policy == "raise" and (unresolved_recall > 0 or unresolved_precision > 0):
         raise ProverUnavailableError(
             f"{unresolved_recall} recall and {unresolved_precision} precision "
             f"tests were unresolved because the theorem prover was unavailable "
-            f"or timed out. Published SIV scores require strict_mode=True with "
-            f"a working prover. Configure Vampire via siv.vampire_interface "
-            f"or run with strict_mode=False (reward-shaping mode)."
+            f"or timed out. Published SIV scores require a working prover. "
+            f"Configure Vampire via siv.vampire_interface or run with "
+            f'unresolved_policy="exclude" (unresolved tests excluded from denominator).'
         )
 
     return VerificationResult(
@@ -325,7 +282,6 @@ def verify(
         tier1_skips=tier1_skips,
         tier2_skips=tier2_skips,
         prover_calls=prover_calls,
-        partial_credits=partial_credits,
         unresolved_recall=unresolved_recall,
         unresolved_precision=unresolved_precision,
     )

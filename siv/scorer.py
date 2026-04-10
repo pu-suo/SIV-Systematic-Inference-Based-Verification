@@ -156,6 +156,26 @@ def aggregate_sentence_scores(
     }
 
 
+def aggregate_per_candidate(
+    candidate_results: Dict[str, List[VerificationResult]],
+) -> Dict[str, Dict[str, float]]:
+    """
+    Aggregate per-premise VerificationResults for each candidate name.
+
+    Args:
+        candidate_results: mapping from candidate_name → list of VerificationResult
+                           (one per premise, in order)
+
+    Returns:
+        Mapping from candidate_name → aggregate dict with keys:
+        siv, recall, precision, num_invalid (via aggregate_sentence_scores).
+    """
+    return {
+        name: aggregate_sentence_scores(results)
+        for name, results in candidate_results.items()
+    }
+
+
 def macro_average(problem_scores: List[ProblemScore]) -> Dict[str, float]:
     """
     Compute macro-average SIV, recall, and precision across problems.

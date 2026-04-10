@@ -226,6 +226,65 @@ Or set the `VAMPIRE_PATH` environment variable to point to an existing binary.
 
 ---
 
+## Running the Evaluator
+
+`scripts/siv_score.py` is the CLI entry point described in the Master Document §5.1. It scores FOL candidate translations against NL premises using the full frozen SIV pipeline.
+
+### Prerequisites
+
+```bash
+export OPENAI_API_KEY=sk-...
+```
+
+### Basic usage
+
+```bash
+# Score all problems in an input file (human-readable output)
+python -m scripts.siv_score path/to/input.json
+
+# Machine-readable JSON output
+python -m scripts.siv_score path/to/input.json --format json
+
+# Write output to a file
+python -m scripts.siv_score path/to/input.json --format json --output results.json
+
+# Score a single problem by ID
+python -m scripts.siv_score path/to/input.json --problem-id folio_1208
+
+# Allow prover-unresolved tests (exclude from denominator instead of aborting)
+python -m scripts.siv_score path/to/input.json --unresolved-policy exclude
+```
+
+### Input format
+
+```json
+[
+  {
+    "problem_id": "folio_1208",
+    "premises": [
+      "All employees who schedule a meeting with their customers will go to the company building today.",
+      "Everyone who goes to the company building today will eat in the company building."
+    ],
+    "candidates": {
+      "gold": "all x.((Employee(x) & exists y.(Meeting(y) & Schedule(x,y))) -> AppearIn(x,companyBuilding))",
+      "model_a": "..."
+    }
+  }
+]
+```
+
+Each `candidates` dict can contain any number of named FOL strings. Candidate names are arbitrary strings used to label the output (e.g. `"gold"`, `"gpt-4"`, `"clean-folio"`).
+
+### Exit codes
+
+| Code | Meaning |
+|---|---|
+| `0` | Normal run (low scores are not errors) |
+| `1` | Catastrophic failure (API error, unhandled exception) |
+| `2` | Configuration error (missing `OPENAI_API_KEY`, invalid input) |
+
+---
+
 ## Running Tests
 
 ```bash

@@ -32,6 +32,7 @@ from siv.frozen_config import (
     CACHE_DIR,
     CACHE_FILE,
     get_extraction_json_schema,
+    get_generation_json_schema,
 )
 
 logger = logging.getLogger("siv.frozen_client")
@@ -89,6 +90,59 @@ class FrozenClient:
             seed=SEED,
             max_tokens=MAX_TOKENS,
             response_format={"type": "json_schema", "json_schema": get_extraction_json_schema()},
+        )
+
+        fingerprint = getattr(response, "system_fingerprint", None)
+        self._check_fingerprint_drift(fingerprint)
+
+        raw = response.choices[0].message.content
+        data = json.loads(raw)  # JSON Schema binding guarantees valid JSON
+
+        self._cache_put(cache_key, data)
+        return data, FrozenCallMetadata(
+            model=self._model,
+            system_fingerprint=fingerprint,
+            cached=False,
+            cache_key=cache_key,
+        )
+
+    def generate(
+        self,
+        system_prompt: str,
+        few_shot_messages: List[dict],
+        user_content: str,
+    ) -> tuple:
+        """
+        Make a frozen generation call. Returns (parsed_dict, metadata) where
+        parsed_dict has keys 'fol' (str or None) and 'refusal_reason' (str or None).
+
+        Uses the generation JSON schema, not the extraction schema.
+        Uses a separate cache namespace (prefix "gen:") so generation calls do not
+        collide with extraction calls that happen to have the same input text.
+        """
+        raw_key = self._cache_key(system_prompt, few_shot_messages, user_content)
+        cache_key = f"gen:{raw_key}"
+
+        cached = self._cache_get(cache_key)
+        if cached is not None:
+            return cached, FrozenCallMetadata(
+                model=self._model,
+                system_fingerprint=None,
+                cached=True,
+                cache_key=cache_key,
+            )
+
+        messages = [{"role": "system", "content": system_prompt}]
+        messages.extend(few_shot_messages)
+        messages.append({"role": "user", "content": user_content})
+
+        response = self._client.chat.completions.create(
+            model=self._model,
+            messages=messages,
+            temperature=TEMPERATURE,
+            seed=SEED,
+            max_tokens=MAX_TOKENS,
+            response_format={"type": "json_schema", "json_schema": get_generation_json_schema()},
         )
 
         fingerprint = getattr(response, "system_fingerprint", None)

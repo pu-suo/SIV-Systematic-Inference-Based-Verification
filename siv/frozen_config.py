@@ -28,6 +28,27 @@ CACHE_DIR = Path(".siv_cache")
 CACHE_FILE = CACHE_DIR / "extraction_cache.jsonl"
 
 
+def get_generation_json_schema() -> dict:
+    """
+    JSON Schema for the Generator's output. The Generator either returns
+    a FOL string under the 'fol' key, or refuses with fol=null and a
+    refusal_reason string.
+    """
+    return {
+        "name": "siv_generation",
+        "strict": True,
+        "schema": {
+            "type": "object",
+            "additionalProperties": False,
+            "required": ["fol", "refusal_reason"],
+            "properties": {
+                "fol": {"type": ["string", "null"]},
+                "refusal_reason": {"type": ["string", "null"]},
+            },
+        },
+    }
+
+
 def get_extraction_json_schema() -> dict:
     """
     Return the OpenAI-compatible JSON Schema for the SIV extraction output.

@@ -285,6 +285,105 @@ Each `candidates` dict can contain any number of named FOL strings. Candidate na
 
 ---
 
+## Running the Generator
+
+`scripts/siv_generate.py` is the CLI entry point for the Generator described in the Master Document §5.2. It produces **Clean-FOLIO**: the same premises as FOLIO, but with FOL translations that are Neo-Davidsonian, extensible, and provably SIV-compliant.
+
+### Prerequisites
+
+```bash
+export OPENAI_API_KEY=sk-...
+```
+
+### Basic usage
+
+```bash
+# Generate Clean-FOLIO JSON for all problems in an input file
+python -m scripts.siv_generate path/to/input.json
+
+# Human-readable output
+python -m scripts.siv_generate path/to/input.json --format human
+
+# Write output to a file
+python -m scripts.siv_generate path/to/input.json --output clean_folio.json
+
+# Process a single problem by ID
+python -m scripts.siv_generate path/to/input.json --problem-id folio_1208
+
+# Head-to-head comparison: generated FOL vs. an existing gold candidate
+python -m scripts.siv_generate path/to/input.json --compare-to-gold gold
+```
+
+### Input format
+
+Same as `siv_score.py`. The `candidates` dict is optional unless `--compare-to-gold` is used:
+
+```json
+[
+  {
+    "problem_id": "folio_1208",
+    "premises": [
+      "All employees who schedule a meeting with their customers will go to the company building today."
+    ],
+    "candidates": {
+      "gold": "all x.((Employee(x) & exists y.(Meeting(y) & Schedule(x,y))) -> AppearIn(x,companyBuilding))"
+    }
+  }
+]
+```
+
+### Output format (JSON)
+
+```json
+{
+  "schema_version": "siv_generate_report_v1",
+  "input_file": "path/to/input.json",
+  "problems": [
+    {
+      "problem_id": "folio_1208",
+      "num_premises": 1,
+      "num_generated": 1,
+      "num_refused_pre_call": 0,
+      "num_refused_post_call": 0,
+      "premises": [
+        {
+          "premise_index": 1,
+          "nl": "All employees who ...",
+          "fol": "(exists x.Employees(x)) & all x.(Employees(x) -> exists y.(Meetings(y) & Schedule(x,y)))",
+          "refused": false,
+          "refusal_reason": null,
+          "refusal_stage": null,
+          "invariant_failures": []
+        }
+      ]
+    }
+  ]
+}
+```
+
+When `--compare-to-gold` is used, each premise entry also contains `generated_siv` and `<gold_name>_siv` blocks with `siv_score`, `recall_rate`, and `precision_rate` for the head-to-head comparison.
+
+### Refusals
+
+The Generator refuses at two stages:
+
+| Stage | Cause | `refusal_stage` |
+|---|---|---|
+| Pre-call | Extraction has Neo-Davidsonian violations (ternary facts, prepositional unary) | `"pre_call"` |
+| Post-call | Generated FOL fails one or more of the five invariants | `"post_call"` |
+
+Pre-call refusals do NOT make an API call. Post-call refusals list the specific invariant failures in `invariant_failures`.
+
+### Exit codes
+
+| Code | Meaning |
+|---|---|
+| `0` | Normal run |
+| `1` | Catastrophic failure (API error, unhandled exception) |
+| `2` | Configuration error (missing `OPENAI_API_KEY`, invalid input) |
+
+---
+
 ## Running Tests
 
 ```bash

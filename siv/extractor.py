@@ -10,8 +10,14 @@ guiding the LLM's split/keep decisions with objective evidence.
 The LLM also identifies the macro_template (one of the 8 Aristotelian forms).
 
 Exactly one backend must be provided per call:
-  - client: an OpenAI-compatible API client (OpenAI, DeepSeek, Together AI)
-  - vllm_extractor: a VLLMExtractor instance for local GPU batch inference
+  - client: an OpenAI-compatible API client (OpenAI, DeepSeek, Together AI),
+            or a FrozenClient instance. Raw API clients are automatically
+            wrapped in FrozenClient so every call uses the pinned snapshot,
+            seed, and JSON Schema binding.
+  - vllm_extractor: a VLLMExtractor instance for local GPU batch inference.
+            NOTE: Outputs produced via vllm_extractor are NOT published SIV
+            scores. Published scores require the frozen API extractor
+            (FrozenClient).
 
 No fallbacks. If neither backend is provided, a RuntimeError is raised.
 """
@@ -26,6 +32,7 @@ from siv.schema import (
     MacroTemplate, ProblemExtraction, SentenceExtraction,
 )
 from siv.pre_analyzer import analyze_sentence, format_analyses_for_prompt
+from siv.frozen_client import FrozenClient
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
@@ -60,38 +67,6 @@ _SYSTEM_PROMPT: str = _load_system_prompt()
 _EXAMPLES: List[dict] = _load_examples()
 
 
-def _build_prompt(
-    sentence: str,
-    compound_analyses: List[CompoundAnalysis],
-) -> List[dict]:
-    """
-    Build the chat messages list for the LLM call.
-
-    Structure (OpenAI chat format):
-      [0] system: full instructions
-      [1-2*N] user/assistant: few-shot examples (1 pair per example)
-      [-1] user: compound analysis block + sentence to extract
-    """
-    messages: List[dict] = [{"role": "system", "content": _SYSTEM_PROMPT}]
-
-    for ex in _EXAMPLES:
-        compound_block = ex.get("compound_analysis", "(no compound modifiers detected)")
-        user_content = (
-            f"COMPOUND ANALYSIS:\n{compound_block}\n\n"
-            f"SENTENCE: {ex['sentence']}"
-        )
-        messages.append({"role": "user", "content": user_content})
-        messages.append({"role": "assistant", "content": json.dumps(ex["response"])})
-
-    analysis_block = format_analyses_for_prompt(compound_analyses)
-    final_user = (
-        f"COMPOUND ANALYSIS:\n{analysis_block}\n\n"
-        f"SENTENCE: {sentence}"
-    )
-    messages.append({"role": "user", "content": final_user})
-    return messages
-
-
 def _build_vllm_prompt(
     sentence: str,
     compound_analyses: List[CompoundAnalysis],
@@ -102,6 +77,9 @@ def _build_vllm_prompt(
     Concatenates system prompt + few-shot examples + the target sentence
     into a single string with <|im_start|> role delimiters that instruct-tuned
     models (Qwen, DeepSeek) understand.
+
+    NOTE: Outputs produced via vllm_extractor are NOT published SIV scores.
+    Published scores require the frozen API extractor (FrozenClient).
     """
     analysis_block = format_analyses_for_prompt(compound_analyses)
 
@@ -124,47 +102,6 @@ def _build_vllm_prompt(
     parts.append("<|im_start|>assistant\n")
 
     return "\n".join(parts)
-
-
-# ── Response parsing ──────────────────────────────────────────────────────────
-
-def _parse_response(response_text: str) -> dict:
-    """
-    Parse and validate the LLM JSON response.
-    Strips markdown fencing if present.
-    Raises ValueError on schema violations.
-    Accepts both the old single-list format and the new two-list format.
-    """
-    text = response_text.strip()
-    # Strip ```json ... ``` or ``` ... ```
-    text = re.sub(r"^```(?:json)?\s*", "", text)
-    text = re.sub(r"\s*```$", "", text)
-    data = json.loads(text)
-
-    # New two-list format: must have "entities" or "constants" (or both)
-    # Old format: must have "entities"
-    if "constants" not in data and "entities" not in data:
-        raise ValueError("Missing both 'constants' and 'entities' lists")
-    if "entities" not in data:
-        data["entities"] = []
-    if "constants" not in data:
-        data["constants"] = []
-    if not isinstance(data.get("entities"), list):
-        raise ValueError("Missing or invalid 'entities' list")
-    if not isinstance(data.get("constants"), list):
-        raise ValueError("Missing or invalid 'constants' list")
-    if not isinstance(data.get("facts"), list):
-        raise ValueError("Missing or invalid 'facts' list")
-    for e in data["entities"]:
-        if "id" not in e or "surface" not in e:
-            raise ValueError(f"Entity missing id/surface: {e}")
-    for c in data["constants"]:
-        if "id" not in c or "surface" not in c:
-            raise ValueError(f"Constant missing id/surface: {c}")
-    for f in data["facts"]:
-        if "pred" not in f or "args" not in f:
-            raise ValueError(f"Fact missing pred/args: {f}")
-    return data
 
 
 def _dict_to_extraction(
@@ -231,15 +168,19 @@ def extract_sentence(
     sentence: str,
     compound_analyses: List[CompoundAnalysis],
     client=None,
-    model: str = "gpt-4o",
     vllm_extractor=None,
 ) -> SentenceExtraction:
     """
     Extract entities, constants, and facts from one sentence.
 
     Exactly one backend must be provided:
-      - client: an OpenAI-compatible API client (OpenAI, DeepSeek, Together AI)
-      - vllm_extractor: a VLLMExtractor instance for local GPU inference
+      - client: an OpenAI-compatible API client or a FrozenClient instance.
+                Raw clients are automatically wrapped in FrozenClient so
+                every call uses the pinned snapshot, seed, and JSON Schema
+                binding from siv/frozen_config.py.
+      - vllm_extractor: a VLLMExtractor instance for local GPU inference.
+                NOTE: Outputs produced via vllm_extractor are NOT published
+                SIV scores. Published scores require FrozenClient.
 
     Raises RuntimeError if neither backend is provided. No fallbacks.
     """
@@ -249,15 +190,23 @@ def extract_sentence(
         return _dict_to_extraction(sentence, data, compound_analyses)
 
     if client is not None:
-        messages = _build_prompt(sentence, compound_analyses)
-        response = client.chat.completions.create(
-            model=model,
-            messages=messages,
-            temperature=0.0,
-            max_tokens=1200,
-        )
-        raw = response.choices[0].message.content
-        data = _parse_response(raw)
+        if not isinstance(client, FrozenClient):
+            client = FrozenClient(client)
+        system_prompt = _SYSTEM_PROMPT
+        few_shot_messages = []
+        for ex in _EXAMPLES:
+            compound_block = ex.get("compound_analysis", "(no compound modifiers detected)")
+            few_shot_messages.append({
+                "role": "user",
+                "content": f"COMPOUND ANALYSIS:\n{compound_block}\n\nSENTENCE: {ex['sentence']}",
+            })
+            few_shot_messages.append({
+                "role": "assistant",
+                "content": json.dumps(ex["response"]),
+            })
+        analysis_block = format_analyses_for_prompt(compound_analyses)
+        user_content = f"COMPOUND ANALYSIS:\n{analysis_block}\n\nSENTENCE: {sentence}"
+        data, _meta = client.extract(system_prompt, few_shot_messages, user_content)
         return _dict_to_extraction(sentence, data, compound_analyses)
 
     raise RuntimeError(
@@ -272,7 +221,6 @@ def extract_sentences_batch(
     sentences: List[str],
     compound_analyses_list: List[List[CompoundAnalysis]],
     client=None,
-    model: str = "gpt-4o",
     vllm_extractor=None,
 ) -> List[SentenceExtraction]:
     """
@@ -282,6 +230,7 @@ def extract_sentences_batch(
     SINGLE vllm_extractor.extract_batch() call, parses all results.
 
     When client is provided: uses ThreadPoolExecutor for parallel API calls.
+    Raw clients are automatically wrapped in FrozenClient.
 
     Returns a list of SentenceExtraction in the same order as input.
     """
@@ -301,9 +250,14 @@ def extract_sentences_batch(
             for sent, data, analyses in zip(sentences, batch_results, compound_analyses_list)
         ]
 
+    # Wrap once so all parallel workers share the same FrozenClient instance
+    # (and therefore the same cache and fingerprint baseline).
+    if not isinstance(client, FrozenClient):
+        client = FrozenClient(client)
+
     def _extract_one(args) -> SentenceExtraction:
         sent, analyses = args
-        return extract_sentence(sent, analyses, client=client, model=model)
+        return extract_sentence(sent, analyses, client=client)
 
     workers = min(10, len(sentences)) if sentences else 1
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -313,7 +267,6 @@ def extract_sentences_batch(
 def extract_problem(
     problem_sentences: List[str],
     client=None,
-    model: str = "gpt-4o",
     problem_id: str = "unknown",
     max_workers: int = 5,
     vllm_extractor=None,
@@ -323,7 +276,8 @@ def extract_problem(
 
     When vllm_extractor is provided, uses batch inference (all sentences in one
     GPU pass). When client is provided, uses parallel API calls via
-    ThreadPoolExecutor. Raises RuntimeError if neither backend is provided.
+    ThreadPoolExecutor. Raw clients are automatically wrapped in FrozenClient.
+    Raises RuntimeError if neither backend is provided.
     """
     if client is None and vllm_extractor is None:
         raise RuntimeError(
@@ -345,10 +299,14 @@ def extract_problem(
             for sent, data, analyses in zip(problem_sentences, batch_results, all_analyses)
         ]
     else:
+        # Wrap once so all workers share the same FrozenClient instance.
+        if not isinstance(client, FrozenClient):
+            client = FrozenClient(client)
+
         # API mode: parallel calls via ThreadPoolExecutor
         def _extract_one(args) -> SentenceExtraction:
             sent, analyses = args
-            return extract_sentence(sent, analyses, client=client, model=model)
+            return extract_sentence(sent, analyses, client=client)
 
         workers = min(max_workers, len(problem_sentences)) if problem_sentences else 1
         with ThreadPoolExecutor(max_workers=workers) as pool:

@@ -203,6 +203,10 @@ SIV score      = 2 · recall · precision / (recall + precision)   # F1
 
 ---
 
+## Frozen Extraction Pipeline
+
+All published SIV scores are produced by the **frozen extraction pipeline** (`siv/frozen_client.py`). Every API call to the LLM extractor uses a hardcoded model snapshot (`gpt-4o-2024-08-06`), a fixed random seed (42), temperature 0.0, and a JSON Schema `response_format` binding that structurally constrains the model's output — eliminating the need for hand-written JSON validation. The `system_fingerprint` returned by the API is logged on every call; drift from the session baseline triggers a warning so reproducibility claims remain honest. Responses are cached to `.siv_cache/extraction_cache.jsonl` (the cache directory is tracked in git via `.siv_cache/.gitkeep`; cache entries themselves are gitignored). Raw OpenAI clients passed to `extract_sentence` or `extract_problem` are automatically wrapped in `FrozenClient` — callers do not need to construct one explicitly. All reproducibility-relevant parameters (`PRIMARY_MODEL`, `SEED`, `TEMPERATURE`, `MAX_TOKENS`, `CACHE_DIR`) live in `siv/frozen_config.py`; no magic constants appear elsewhere in the codebase.
+
 ## Vampire Setup
 
 Vampire is optional. Tests unresolvable at Tier 1–2 are marked "unresolved" when Vampire is unavailable.

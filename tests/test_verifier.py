@@ -334,3 +334,19 @@ def test_candidate_inconsistent_field_exists():
         "VerificationResult must have a 'candidate_inconsistent' field"
     )
     assert r.candidate_inconsistent is False  # default value
+
+
+def test_tier2_existential_conjunct_containment():
+    from siv.verifier import verify
+    from siv.schema import TestSuite, UnitTest
+    suite = TestSuite(
+        problem_id="tier2_ext",
+        positive_tests=[
+            UnitTest(fol_string="exists x.Tall(x)", test_type="vocabulary", is_positive=True),
+        ],
+        negative_tests=[],
+    )
+    candidate = "exists x.(Tree(x) & Tall(x))"
+    result = verify(candidate, suite, unresolved_policy="exclude")
+    assert result.recall_passed == 1
+    assert result.prover_calls == 0

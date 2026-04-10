@@ -122,9 +122,18 @@ def _tier2_ast(candidate_expr, test_expr) -> Optional[bool]:
             inner = test_expr.term
             if inner in candidate_conjuncts:
                 return True
-            # Check exists-body against candidate conjuncts (variable renaming)
+
+            # Walk into every ExistsExpression in the candidate's top-level conjuncts
             for conj in candidate_conjuncts:
-                if isinstance(conj, ExistsExpression) and conj.term == inner:
+                if isinstance(conj, ExistsExpression):
+                    inner_body_conjuncts = collect_conjuncts(conj.term)
+                    if inner in inner_body_conjuncts:
+                        return True
+
+            # Handle the case where the top-level candidate expression IS an ExistsExpression
+            if isinstance(candidate_expr, ExistsExpression):
+                candidate_body_conjuncts = collect_conjuncts(candidate_expr.term)
+                if inner in candidate_body_conjuncts:
                     return True
 
         # 4. Test is all x.(P(x) -> Q(x)) — check candidate structural match

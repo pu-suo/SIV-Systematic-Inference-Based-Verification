@@ -1,6 +1,12 @@
 """
 vLLM-based local extraction backend for SIV.
 
+NOT A PUBLISHED METRIC PATH. Outputs produced through this module are
+NOT valid SIV scores. The published SIV metric requires the frozen API
+extractor defined in siv/frozen_config.py (see Master Document §4.2).
+This module exists only for local training and development experiments
+where API costs are prohibitive. When in doubt, use FrozenClient.
+
 Uses PagedAttention for high-throughput batch inference on A100 GPUs.
 Supports guided JSON decoding for 0% parse failure rate.
 

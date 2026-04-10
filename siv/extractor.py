@@ -185,6 +185,8 @@ def extract_sentence(
     Raises RuntimeError if neither backend is provided. No fallbacks.
     """
     if vllm_extractor is not None:
+        # NOT A PUBLISHED METRIC PATH — see siv/vllm_backend.py for details.
+        # Outputs from this branch are NOT valid SIV scores.
         prompt = _build_vllm_prompt(sentence, compound_analyses)
         data = vllm_extractor.extract_single(prompt)
         return _dict_to_extraction(sentence, data, compound_analyses)
@@ -288,6 +290,8 @@ def extract_problem(
     all_analyses = [analyze_sentence(sent) for sent in problem_sentences]
 
     if vllm_extractor is not None:
+        # NOT A PUBLISHED METRIC PATH — see siv/vllm_backend.py for details.
+        # Outputs from this branch are NOT valid SIV scores.
         # Batch mode: build all prompts, run in one vLLM pass
         prompts = [
             _build_vllm_prompt(sent, analyses)

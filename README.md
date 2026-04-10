@@ -1,61 +1,176 @@
 # SIV: Systematic Inference-Based Verification for NL-to-FOL Translation
 
-SIV is a **neuro-symbolic evaluation framework** that replaces sparse dataset supervision with dense, faithful unit tests for scoring natural language → first-order logic (FOL) translation.
+SIV is a neuro-symbolic evaluation framework for Natural Language to
+First-Order Logic translation. It replaces Exact Match, Denotation
+Accuracy, and n-gram metrics with a deterministic, atomic-faithfulness
+test-suite approach.
 
-Instead of checking whether a model's output exactly matches a gold formula, SIV compiles each natural language sentence into a **test suite** of positive and negative FOL unit tests, then verifies candidates against it using a tiered pipeline that escalates from cheap string matching to full theorem proving only when necessary.
+This README is a quickstart and CLI reference. For the full philosophical
+and architectural rationale, read the SIV Master Document.
 
 ---
 
-## Key Ideas
+## Quickstart
 
-| Concept | Description |
-|---|---|
-| **Stage 1 Pre-Analysis** | Symbolic analysis of modifier+noun compounds before calling the LLM — computes WordNet, PMI, POS, and dependency signals to decide KEEP vs. SPLIT |
-| **Stage 2 Extraction** | GPT-4o (or rule-based fallback) extracts entities and facts into a minimal JSON schema guided by the pre-analysis |
-| **Stage 3 Compilation** | Deterministic mapping from the JSON extraction to FOL unit tests using arity-based templates and Aristotelian macro-forms |
-| **Tiered Verifier** | Tier 0 (syntax) → Tier 1 (strict vocabulary) → Tier 2 (AST patterns) → Tier 3 (Vampire prover) |
-| **SIV Score** | F1 of recall rate (positive tests passed) and precision rate (negative/contrastive tests rejected) |
+### Evaluator (scoring existing candidates)
+
+    python -m scripts.siv_score path/to/input.json --format human
+
+### Generator (producing Clean-FOLIO)
+
+    python -m scripts.siv_generate path/to/input.json --format json > clean_folio.json
+
+### Head-to-head comparison
+
+    python -m scripts.siv_generate path/to/input.json \
+        --compare-to-gold gold --format json > comparison.json
+
+---
+
+## The Four Tenets
+
+1. **Strict Lexical Faithfulness.** No stemming, no lemmatization, no
+   WordNet, no synonym substitution. Exact surface forms only.
+2. **Neo-Davidsonian Imperative.** Facts are unary or binary. Ternary and
+   higher-arity predicates are schema violations.
+3. **Structural Overlap over Deep Pragmatics.** SIV evaluates atomic
+   logical n-grams, not full pragmatic parses.
+4. **A Standard, Not a Safety Net.** Benchmark annotations that violate
+   Tenets 1–3 score lower under SIV. SIV does not paper over bad
+   annotations with multi-reference tolerance.
+
+---
+
+## The Pipeline
+
+    NL sentence
+         │
+         ▼
+    Stage 1: symbolic pre-analysis  (siv/pre_analyzer.py)
+         │   (WordNet, PMI, POS, dep parse) → CompoundAnalysis
+         ▼
+    Stage 2: frozen LLM extraction  (siv/extractor.py + siv/frozen_client.py)
+         │   (gpt-4o-2024-08-06, seed=42, temperature=0, JSON Schema binding)
+         ▼
+    Stage 3: Neo-Davidsonian validation  (siv/compiler.py::validate_neo_davidsonian)
+         │   → SchemaViolation list; invalid extractions short-circuit to SIV=0
+         ▼
+    Stage 4: deterministic test-suite compilation  (siv/compiler.py)
+         │   (vocabulary + binding + macro + contrastive perturbation tests)
+         ▼
+    Stage 5: tiered verification  (siv/verifier.py)
+         │   Tier 0 syntax + consistency
+         │   Tier 1 vocabulary
+         │   Tier 2 AST
+         │   Tier 3 Vampire
+         ▼
+    SIV score = F1(recall, precision)
+
+---
+
+## Two Modes
+
+### Mode 1 — Evaluator (`scripts/siv_score.py`)
+
+Score existing NL-to-FOL translations against a test suite derived from
+the source sentences. Takes NL premises + candidate FOL strings, emits
+per-premise and aggregate SIV scores.
+
+### Mode 2 — Generator (`scripts/siv_generate.py`)
+
+Compile validated extractions into Neo-Davidsonian-compliant FOL. The
+Generator receives only the structured JSON extraction — never the
+source NL — and its output must satisfy five programmatic invariants
+before being accepted. Paired with `--compare-to-gold`, it produces the
+head-to-head comparison the paper's empirical claims rest on.
+
+---
+
+## Soundness Defenses
+
+SIV defends against the two general-purpose exploits of entailment-based
+FOL evaluation:
+
+1. **Inhabitation Preconditions** — every universal binding test is
+   wrapped with `(exists x.T(x)) & all x.(T(x) -> ...)`. A candidate
+   asserting an empty domain cannot vacuously satisfy universal tests.
+2. **Tier 0 Consistency Check** — internally inconsistent candidates are
+   flagged and short-circuited to SIV=0 before any entailment test runs.
+   Ex falso quodlibet cannot produce a spurious perfect score.
+
+See `tests/test_soundness_tripwires.py` for mechanical enforcement and
+`tests/test_metric_properties.py` for property-test coverage.
+
+---
+
+## Reproducibility
+
+All API calls route through `siv/frozen_client.py`, which pins:
+- Model snapshot: `gpt-4o-2024-08-06`
+- Seed: 42
+- Temperature: 0.0
+- Max tokens: 1200
+- Response format: JSON Schema binding against `siv/schema.py`
+
+The OpenAI `system_fingerprint` is logged on every call; drift emits a
+WARNING. Extraction and generation results are cached on disk at
+`.siv_cache/extraction_cache.jsonl` (gitignored) keyed by a SHA256 of
+(model, system_prompt, few_shots, user_content).
+
+Published SIV scores require the frozen API extractor. Outputs from
+`siv/vllm_backend.py` are not published SIV scores.
+
+---
+
+## Running Tests
+
+    pytest tests/ -v
+
+Key test files:
+- `tests/test_regression_1208.py` — FOLIO Problem 1208 end-to-end
+- `tests/test_soundness_tripwires.py` — philosophical trip-wires
+- `tests/test_metric_properties.py` — mathematical property tests
+- `tests/test_generator.py` — Generator invariants
 
 ---
 
 ## Project Structure
 
-```
-siv-project/
-├── siv/                        # Core library
-│   ├── schema.py               # Dataclasses: Entity, Fact, TestSuite, VerificationResult, …
-│   ├── pre_analyzer.py         # Stage 1: compound analysis (spaCy + WordNet + PMI)
-│   ├── extractor.py            # Stage 2: LLM / fallback entity+fact extraction
-│   ├── compiler.py             # Stage 3: JSON extraction → FOL unit tests
-│   ├── verifier.py             # Tiered verification with partial credit
-│   ├── scorer.py               # SIV score computation and aggregation
-│   ├── fol_utils.py            # FOL parsing, normalization, TPTP conversion (NLTK)
-│   └── vampire_interface.py    # Vampire theorem prover interface
-│
-├── data/
-│   ├── pmi_cache.json          # Pre-computed PMI from NLTK Brown corpus
-│   └── perturbation_map.json   # Antonym vocabulary for contrastive tests
-│
-├── prompts/
-│   ├── extraction_system.txt   # System prompt for Stage 2 LLM extraction
-│   ├── extraction_examples.json# 5 few-shot examples covering all macro-forms
-│   └── predicability_check.txt # Prompt template for plausibility checking
-│
-├── notebooks/
-│   └── main.ipynb              # End-to-end pipeline (Colab-ready)
-│
-├── tests/                      # pytest test suite (98 tests)
-│   ├── test_schema.py
-│   ├── test_fol_utils.py
-│   ├── test_pre_analyzer.py
-│   ├── test_extractor.py
-│   ├── test_compiler.py
-│   ├── test_verifier.py
-│   └── test_scorer.py
-│
-├── requirements.txt
-└── CLAUDE_CODE_SPEC.md         # Full design specification
-```
+    siv/
+      schema.py             # Dataclasses: Entity, Fact, TestSuite, VerificationResult, ...
+      pre_analyzer.py       # Stage 1 symbolic pre-analysis
+      frozen_config.py      # Pinned model, seed, temperature, cache paths
+      frozen_client.py      # FrozenClient wrapper for extract() and generate()
+      extractor.py          # Stage 2 LLM extraction through FrozenClient
+      compiler.py           # Stage 3 Neo-Davidsonian validation + test compilation
+      verifier.py           # Tiered verification with Tier 0 consistency
+      scorer.py             # SIV score aggregation
+      generator.py          # Mode 2: JSON-only compilation to Neo-Davidsonian FOL
+      invariants.py         # Five invariants enforced on Generator outputs
+      vampire_interface.py  # Vampire prover + satisfiability
+      vllm_backend.py       # NOT A PUBLISHED METRIC PATH
+    prompts/
+      extraction_system.txt
+      extraction_examples.json
+      generation_system.txt
+      generation_examples.json
+    scripts/
+      siv_score.py          # Evaluator CLI
+      siv_generate.py       # Generator CLI
+    tests/
+      test_schema.py
+      test_compiler.py
+      test_verifier.py
+      test_extractor.py
+      test_frozen_client.py
+      test_scorer.py
+      test_generator.py
+      test_invariants.py
+      test_metric_properties.py
+      test_soundness_tripwires.py
+      test_regression_1208.py
+      test_siv_score_script.py
+      test_siv_generate_script.py
 
 ---
 
@@ -80,133 +195,6 @@ Open `notebooks/main.ipynb` in Colab. Cell 1 runs all installs automatically.
 
 ---
 
-## Quickstart
-
-```python
-from siv.pre_analyzer import analyze_sentence
-from siv.extractor import extract_problem
-from siv.compiler import compile_test_suite
-from siv.verifier import verify
-from siv.scorer import score_candidates
-
-# Stage 1: symbolic pre-analysis
-analyses = analyze_sentence("The tall tree grows quickly.")
-# → [CompoundAnalysis(modifier='tall', noun='tree', recommendation='SPLIT', …)]
-
-# Stage 2: extraction (rule-based fallback, no API key needed)
-problem = extract_problem(
-    ["The crimson car is running.", "All cars have engines."],
-    client=None, use_api=False, problem_id="demo"
-)
-
-# Stage 3: compile unit tests
-suite = compile_test_suite(problem)
-print(f"{suite.total_tests} tests: "
-      f"{len(suite.positive_tests)} recall + {len(suite.negative_tests)} precision")
-
-# Score FOL candidates
-candidates = [
-    "exists x.(Car(x) & Crimson(x) & Running(x))",
-    "exists x.Car(x)",
-]
-scored = score_candidates(candidates, suite)
-for cs in scored:
-    print(f"SIV={cs.siv_score:.3f}  {cs.candidate_fol}")
-```
-
-With a GPT-4o API key:
-
-```python
-import openai
-client = openai.OpenAI(api_key="sk-...")
-
-problem = extract_problem(sentences, client=client, use_api=True)
-```
-
----
-
-## The Pipeline in Detail
-
-### Stage 1 — Symbolic Pre-Analysis (`siv/pre_analyzer.py`)
-
-Runs **before** the LLM. For each modifier+noun pair in a sentence (detected via spaCy dependency parsing), four signals are computed:
-
-| Signal | Method | Effect |
-|---|---|---|
-| **A** WordNet hit | `wn.synsets(modifier_noun)` | If lexicalized → KEEP |
-| **B** PMI score | log₂(P(m,n) / P(m)P(n)) from Brown corpus | High PMI → KEEP |
-| **C** Proper noun | spaCy POS = PROPN | Named category → KEEP |
-| **D** Dependency scope | Head noun's dep_ label | Subject-targeting + low PMI → SPLIT |
-
-The recommendations are injected as structured context into the LLM prompt, giving the model objective evidence for its split/keep decisions.
-
-### Stage 2 — LLM Extraction (`siv/extractor.py`)
-
-A structured few-shot prompt asks GPT-4o to output:
-
-```json
-{
-  "entities": [{"id": "e1", "surface": "tree", "entity_type": "existential"}],
-  "facts":    [{"pred": "tall", "args": ["e1"], "negated": false}],
-  "macro_template": "ground_positive"
-}
-```
-
-**Macro templates** follow the Aristotelian Square of Opposition:
-
-| Template | NL form | FOL skeleton |
-|---|---|---|
-| `universal_affirmative` (A) | All P are Q | `∀x(P(x) → Q(x))` |
-| `universal_negative` (E) | No P are Q | `∀x(P(x) → ¬Q(x))` |
-| `existential_affirmative` (I) | Some P are Q | `∃x(P(x) ∧ Q(x))` |
-| `existential_negative` (O) | Some P are not Q | `∃x(P(x) ∧ ¬Q(x))` |
-| `ground_positive` | P(c) | `P(c)` |
-| `ground_negative` | ¬P(c) | `¬P(c)` |
-| `conditional` | If A then B | `A → B` |
-| `biconditional` | A iff B | `A ↔ B` |
-
-A rule-based fallback (spaCy + NLTK POS) is used when no API key is available.
-
-### Stage 3 — Test Compilation (`siv/compiler.py`)
-
-Three categories of positive tests are generated:
-
-1. **Vocabulary tests** — `exists x.Pred(x)` for every predicate
-2. **Binding tests** — typed existentials and grounded atoms:
-   - 1-arg existential: `exists x.(Tree(x) & Tall(x))`
-   - 1-arg constant: `Queen(elizabeth)`
-   - 2-arg relation: `Directed(lanaWilson, afterTiller)` or `exists x.(exists y.(SubjType(x) & ObjType(y) & Pred(x,y)))`
-3. **Macro tests** — structural tests matching the sentence's logical form (e.g. `all x.(Kid(x) -> Young(x))` for TYPE_A)
-
-**Negative (contrastive) tests** are generated by substituting each 1-arg predicate with its antonym from `data/perturbation_map.json`. The candidate must *not* entail these.
-
-### Tiered Verifier (`siv/verifier.py`)
-
-Tests are evaluated with escalating cost:
-
-```
-Tier 0 (syntax)       — NLTK parse check; fails fast on unparseable candidates
-Tier 1 (vocabulary)   — strict predicate presence check (full match or zero)
-Tier 2 (AST)          — lightweight structural matching without the prover
-Tier 3 (Vampire)      — full theorem proving (only ~30% of tests reach this tier)
-```
-
-Tier 1 is strict: a predicate must appear as a standalone identifier in the candidate. A predicate embedded in a CamelCase compound (e.g. `CrimsonCar` for a test expecting `Crimson`) scores **0.0** — no partial credit. This directly enforces Tenet 1 (Strict Lexical Faithfulness).
-
-### SIV Score (`siv/scorer.py`)
-
-```
-recall_rate    = recall_passed / effective_positive_tests
-precision_rate = negative_tests_rejected / total_negative_tests
-SIV score      = 2 · recall · precision / (recall + precision)   # F1
-```
-
----
-
-## Frozen Extraction Pipeline
-
-All published SIV scores are produced by the **frozen extraction pipeline** (`siv/frozen_client.py`). Every API call to the LLM extractor uses a hardcoded model snapshot (`gpt-4o-2024-08-06`), a fixed random seed (42), temperature 0.0, and a JSON Schema `response_format` binding that structurally constrains the model's output — eliminating the need for hand-written JSON validation. The `system_fingerprint` returned by the API is logged on every call; drift from the session baseline triggers a warning so reproducibility claims remain honest. Responses are cached to `.siv_cache/extraction_cache.jsonl` (the cache directory is tracked in git via `.siv_cache/.gitkeep`; cache entries themselves are gitignored). Raw OpenAI clients passed to `extract_sentence` or `extract_problem` are automatically wrapped in `FrozenClient` — callers do not need to construct one explicitly. All reproducibility-relevant parameters (`PRIMARY_MODEL`, `SEED`, `TEMPERATURE`, `MAX_TOKENS`, `CACHE_DIR`) live in `siv/frozen_config.py`; no magic constants appear elsewhere in the codebase.
-
 ## Vampire Setup
 
 Vampire is optional. Tests unresolvable at Tier 1–2 are marked "unresolved" when Vampire is unavailable.
@@ -226,9 +214,9 @@ Or set the `VAMPIRE_PATH` environment variable to point to an existing binary.
 
 ---
 
-## Running the Evaluator
+## Evaluator CLI (`scripts/siv_score.py`)
 
-`scripts/siv_score.py` is the CLI entry point described in the Master Document §5.1. It scores FOL candidate translations against NL premises using the full frozen SIV pipeline.
+Scores FOL candidate translations against NL premises using the full frozen SIV pipeline.
 
 ### Prerequisites
 
@@ -236,7 +224,7 @@ Or set the `VAMPIRE_PATH` environment variable to point to an existing binary.
 export OPENAI_API_KEY=sk-...
 ```
 
-### Basic usage
+### Usage
 
 ```bash
 # Score all problems in an input file (human-readable output)
@@ -273,8 +261,6 @@ python -m scripts.siv_score path/to/input.json --unresolved-policy exclude
 ]
 ```
 
-Each `candidates` dict can contain any number of named FOL strings. Candidate names are arbitrary strings used to label the output (e.g. `"gold"`, `"gpt-4"`, `"clean-folio"`).
-
 ### Exit codes
 
 | Code | Meaning |
@@ -285,17 +271,11 @@ Each `candidates` dict can contain any number of named FOL strings. Candidate na
 
 ---
 
-## Running the Generator
+## Generator CLI (`scripts/siv_generate.py`)
 
-`scripts/siv_generate.py` is the CLI entry point for the Generator described in the Master Document §5.2. It produces **Clean-FOLIO**: the same premises as FOLIO, but with FOL translations that are Neo-Davidsonian, extensible, and provably SIV-compliant.
+Produces Clean-FOLIO: Neo-Davidsonian, extensible, provably SIV-compliant FOL.
 
-### Prerequisites
-
-```bash
-export OPENAI_API_KEY=sk-...
-```
-
-### Basic usage
+### Usage
 
 ```bash
 # Generate Clean-FOLIO JSON for all problems in an input file
@@ -314,55 +294,6 @@ python -m scripts.siv_generate path/to/input.json --problem-id folio_1208
 python -m scripts.siv_generate path/to/input.json --compare-to-gold gold
 ```
 
-### Input format
-
-Same as `siv_score.py`. The `candidates` dict is optional unless `--compare-to-gold` is used:
-
-```json
-[
-  {
-    "problem_id": "folio_1208",
-    "premises": [
-      "All employees who schedule a meeting with their customers will go to the company building today."
-    ],
-    "candidates": {
-      "gold": "all x.((Employee(x) & exists y.(Meeting(y) & Schedule(x,y))) -> AppearIn(x,companyBuilding))"
-    }
-  }
-]
-```
-
-### Output format (JSON)
-
-```json
-{
-  "schema_version": "siv_generate_report_v1",
-  "input_file": "path/to/input.json",
-  "problems": [
-    {
-      "problem_id": "folio_1208",
-      "num_premises": 1,
-      "num_generated": 1,
-      "num_refused_pre_call": 0,
-      "num_refused_post_call": 0,
-      "premises": [
-        {
-          "premise_index": 1,
-          "nl": "All employees who ...",
-          "fol": "(exists x.Employees(x)) & all x.(Employees(x) -> exists y.(Meetings(y) & Schedule(x,y)))",
-          "refused": false,
-          "refusal_reason": null,
-          "refusal_stage": null,
-          "invariant_failures": []
-        }
-      ]
-    }
-  ]
-}
-```
-
-When `--compare-to-gold` is used, each premise entry also contains `generated_siv` and `<gold_name>_siv` blocks with `siv_score`, `recall_rate`, and `precision_rate` for the head-to-head comparison.
-
 ### Refusals
 
 The Generator refuses at two stages:
@@ -371,8 +302,6 @@ The Generator refuses at two stages:
 |---|---|---|
 | Pre-call | Extraction has Neo-Davidsonian violations (ternary facts, prepositional unary) | `"pre_call"` |
 | Post-call | Generated FOL fails one or more of the five invariants | `"post_call"` |
-
-Pre-call refusals do NOT make an API call. Post-call refusals list the specific invariant failures in `invariant_failures`.
 
 ### Exit codes
 
@@ -384,50 +313,7 @@ Pre-call refusals do NOT make an API call. Post-call refusals list the specific 
 
 ---
 
-## Running Tests
-
-```bash
-pytest tests/ -v
-```
-
-98 tests covering all modules. Tests that require spaCy or NLTK are automatically skipped if the models/data are not installed.
-
----
-
-## Configuration
-
-| Variable | Default | Description |
-|---|---|---|
-| `OPENAI_API_KEY` | `""` | OpenAI key for Stage 2 LLM extraction |
-| `VAMPIRE_PATH` | `./vampire` | Path to Vampire binary |
-
-In Google Colab, set `OPENAI_API_KEY` as a Colab secret (key icon in the left sidebar).
-
----
-
-## Data
-
-### `data/pmi_cache.json`
-
-Pre-computed word and bigram frequencies from the NLTK Brown corpus (~1M words). Used by Stage 1 to compute PMI scores for modifier+noun pairs. Regenerate with:
-
-```python
-# Included in siv/pre_analyzer.py setup — runs automatically on first import
-# To rebuild manually:
-python -c "
-import json, math, re
-from collections import defaultdict
-import nltk; nltk.download('brown')
-from nltk.corpus import brown
-# ... (see pre_analyzer.py _load_pmi_cache)
-"
-```
-
-### `data/perturbation_map.json`
-
-Hand-curated antonym vocabulary (~60 entries) used to generate contrastive negative tests. Extend this file to improve negative test quality.
-
-### FOLIO Dataset
+## FOLIO Dataset
 
 The FOLIO evaluation dataset is downloaded at runtime from HuggingFace (`yale-nlp/FOLIO`) if `data/folio_problems.json` is not present. To use a local copy, place it at `data/folio_problems.json` in the format:
 
@@ -442,16 +328,6 @@ The FOLIO evaluation dataset is downloaded at runtime from HuggingFace (`yale-nl
   }
 ]
 ```
-
----
-
-## Roadmap
-
-- [ ] Phase 2: SIV-guided BRIO training (`notebooks/03_training.ipynb`)
-- [ ] `data/calibration_set.json`: 50-example manually annotated calibration set
-- [ ] `notebooks/01_pre_analysis_demo.ipynb`, `02_extraction_demo.ipynb`
-- [ ] EPR vs. SIV score comparison table
-- [ ] FOLIO schema inconsistency analysis
 
 ---
 

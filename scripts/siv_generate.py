@@ -12,6 +12,7 @@ See --help for the full option list.
 
 Entry point: main()
 """
+import siv._bootstrap  # noqa: F401 — loads .env, ensures NLTK data
 import argparse
 import json
 import os

@@ -1,0 +1,10 @@
+# Optional GPU dependencies for local vLLM extraction (A100 recommended).
+# Outputs from this path are NOT published SIV scores.
+# Most users do not need this file.
+-r requirements.txt
+torch>=2.0
+transformers>=4.35
+datasets>=2.14
+accelerate>=0.24
+sentencepiece
+# vllm>=0.6.0  # uncomment when vLLM is needed

@@ -8,22 +8,74 @@ test-suite approach.
 This README is a quickstart and CLI reference. For the full philosophical
 and architectural rationale, read the SIV Master Document.
 
+> **No GPU required.** SIV's published metric path uses the OpenAI API for
+> extraction and generation. All compilation, verification, and scoring is pure
+> CPU. GPU is only needed for the optional vLLM backend (training experiments).
+
 ---
 
-## Quickstart
+## Quick Start
 
-### Evaluator (scoring existing candidates)
+### 1. Setup (one time)
 
-    python -m scripts.siv_score path/to/input.json --format human
+    git clone <repo>
+    cd siv-project
+    bash scripts/setup.sh
+    # Edit .env and add your OpenAI API key
 
-### Generator (producing Clean-FOLIO)
+### 2. Inspect a sentence
 
-    python -m scripts.siv_generate path/to/input.json --format json > clean_folio.json
+    python -m siv inspect "All dogs are mammals."
 
-### Head-to-head comparison
+### 3. Inspect with candidate scoring
 
-    python -m scripts.siv_generate path/to/input.json \
-        --compare-to-gold gold --format json > comparison.json
+    python -m siv inspect "All dogs are mammals." \
+        --candidate "all x.(Dog(x) -> Mammal(x))"
+
+### 4. Score existing FOL candidates
+
+    python -m siv score input.json --format human
+
+### 5. Generate Clean-FOLIO translations
+
+    python -m siv generate input.json --format json
+
+### 6. Head-to-head comparison
+
+    python -m siv generate input.json --compare-to-gold gold
+
+---
+
+## Environment
+
+SIV reads its configuration from environment variables. The easiest
+approach is to copy `.env.example` to `.env` and fill in your values:
+
+    cp .env.example .env
+    # Edit .env: set OPENAI_API_KEY=sk-...
+
+The `.env` file is gitignored. You can also export variables directly:
+
+    export OPENAI_API_KEY=sk-...
+
+On Google Colab, use Colab Secrets (key icon in the left sidebar) to
+set `OPENAI_API_KEY`.
+
+---
+
+## Vampire Theorem Prover
+
+Vampire is optional but recommended for full-strength scoring.
+`scripts/setup.sh` downloads it automatically. To install manually:
+
+    python -c "from siv.vampire_interface import setup_vampire; setup_vampire()"
+
+Or set `VAMPIRE_PATH` in your `.env` to point to an existing installation.
+
+Without Vampire, SIV resolves tests at Tiers 0–2 only. Tests requiring
+Tier 3 (full theorem proving) are marked "unresolved" and excluded from
+the score denominator. This produces valid but less discriminating scores
+for complex universally-quantified sentences.
 
 ---
 
@@ -155,8 +207,10 @@ Key test files:
       generation_system.txt
       generation_examples.json
     scripts/
-      siv_score.py          # Evaluator CLI
-      siv_generate.py       # Generator CLI
+      setup.sh              # One-command setup
+      siv_inspect.py        # Mode 1: inspect extraction and test suite
+      siv_score.py          # Mode 2: score FOL candidates (Evaluator)
+      siv_generate.py       # Mode 3: generate FOL (Generator)
     tests/
       test_schema.py
       test_compiler.py
@@ -327,25 +381,6 @@ The FOLIO evaluation dataset is downloaded at runtime from HuggingFace (`yale-nl
     "label": "True"
   }
 ]
-```
-
----
-
-## Citation
-
-If you use this framework, please cite the original SIV paper and the FOLIO dataset:
-
-```bibtex
-@misc{siv2024,
-  title  = {SIV: Systematic Inference-Based Verification for NL-to-FOL Translation},
-  year   = {2024}
-}
-
-@inproceedings{han2022folio,
-  title     = {FOLIO: Natural Language Reasoning with First-Order Logic},
-  author    = {Han, Simeng and Schoelkopf, Hailey and Zhao, Yilun and Qi, Zhenting and Riddell, Martin and Benson, Luke and Sun, Lucy and Zubova, Ekaterina and Qiao, Yujie and Burtell, Matthew and others},
-  year      = {2022}
-}
 ```
 
 ---

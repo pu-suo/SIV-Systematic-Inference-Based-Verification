@@ -1,0 +1,106 @@
+[
+  {
+    "description": "ground_positive with a single named constant",
+    "input": {
+      "constants": [{"id": "elizabeth", "surface": "Elizabeth"}],
+      "entities": [],
+      "facts": [{"pred": "queen", "args": ["elizabeth"], "negated": false}],
+      "macro_template": "ground_positive"
+    },
+    "output": {"fol": "Queen(elizabeth)"}
+  },
+  {
+    "description": "ground_positive with a conjunction of unary property facts on an existential entity",
+    "input": {
+      "constants": [],
+      "entities": [
+        {"id": "e1", "surface": "tree", "entity_type": "existential"}
+      ],
+      "facts": [
+        {"pred": "tall",          "args": ["e1"], "negated": false},
+        {"pred": "grows quickly", "args": ["e1"], "negated": false}
+      ],
+      "macro_template": "ground_positive"
+    },
+    "output": {"fol": "exists x.(Tree(x) & Tall(x) & GrowsQuickly(x))"}
+  },
+  {
+    "description": "universal_affirmative (TYPE A) — unary property in consequent",
+    "input": {
+      "constants": [],
+      "entities": [
+        {"id": "e1", "surface": "kids", "entity_type": "universal"},
+        {"id": "e2", "surface": "young", "entity_type": "existential"}
+      ],
+      "facts": [
+        {"pred": "kids",  "args": ["e1"], "negated": false},
+        {"pred": "young", "args": ["e1"], "negated": false}
+      ],
+      "macro_template": "universal_affirmative"
+    },
+    "output": {"fol": "(exists x.Kids(x)) & all x.(Kids(x) -> Young(x))"}
+  },
+  {
+    "description": "existential_affirmative (TYPE I) — some entity has two unary properties",
+    "input": {
+      "constants": [],
+      "entities": [
+        {"id": "e1", "surface": "dogs", "entity_type": "existential"}
+      ],
+      "facts": [
+        {"pred": "dogs",  "args": ["e1"], "negated": false},
+        {"pred": "brown", "args": ["e1"], "negated": false}
+      ],
+      "macro_template": "existential_affirmative"
+    },
+    "output": {"fol": "exists x.(Dogs(x) & Brown(x))"}
+  },
+  {
+    "description": "conditional — binary-fact antecedent and binary-fact consequent sharing subject entity",
+    "input": {
+      "constants": [],
+      "entities": [
+        {"id": "e1", "surface": "workers",     "entity_type": "universal"},
+        {"id": "e2", "surface": "meetings",    "entity_type": "existential"},
+        {"id": "e3", "surface": "conferences", "entity_type": "existential"}
+      ],
+      "facts": [
+        {"pred": "schedule", "args": ["e1", "e2"], "negated": false},
+        {"pred": "attend",   "args": ["e1", "e3"], "negated": false}
+      ],
+      "macro_template": "conditional"
+    },
+    "output": {"fol": "(exists x.Workers(x)) & all x.((Workers(x) & exists y.(Meetings(y) & Schedule(x,y))) -> exists z.(Conferences(z) & Attend(x,z)))"}
+  },
+  {
+    "description": "universal_negative (TYPE E) — negated unary consequent with inhabitation",
+    "input": {
+      "constants": [],
+      "entities": [
+        {"id": "e1", "surface": "birds", "entity_type": "universal"}
+      ],
+      "facts": [
+        {"pred": "birds",   "args": ["e1"], "negated": false},
+        {"pred": "mammals", "args": ["e1"], "negated": true}
+      ],
+      "macro_template": "universal_negative"
+    },
+    "output": {"fol": "(exists x.Birds(x)) & all x.(Birds(x) -> -Mammals(x))"}
+  },
+  {
+    "description": "refusal — 1-argument fact whose predicate contains a preposition token (prepositional_unary violation)",
+    "input": {
+      "constants": [],
+      "entities": [
+        {"id": "e1", "surface": "managers", "entity_type": "universal"},
+        {"id": "e2", "surface": "home",     "entity_type": "existential"}
+      ],
+      "facts": [
+        {"pred": "managers",              "args": ["e1"],       "negated": false},
+        {"pred": "work remotely from home","args": ["e1"],      "negated": true}
+      ],
+      "macro_template": "universal_negative"
+    },
+    "output": {"fol": null, "refusal_reason": "extraction_violates_neo_davidsonian"}
+  }
+]

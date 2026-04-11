@@ -220,65 +220,6 @@ def check_entailment(
     return proved
 
 
-def check_satisfiability(candidate_fol: str, timeout: int = 2) -> Optional[bool]:
-    """
-    Check whether *candidate_fol* is internally consistent (satisfiable).
-
-    Returns:
-      True  — candidate is consistent (Vampire found a model or reported SAT)
-      False — candidate is provably inconsistent (Vampire derived False)
-      None  — unresolved (Vampire unavailable, timed out, or returned unknown)
-
-    Implementation: encodes the candidate as a single TPTP axiom with no
-    conjecture, invokes Vampire in finite-model-builder mode, and parses the
-    result.
-    """
-    if not NLTK_AVAILABLE:
-        return None
-
-    expr = parse_fol(candidate_fol)
-    if expr is None:
-        return None
-
-    tptp_input = f"fof(candidate, axiom, {convert_to_tptp(expr)})."
-
-    global _VAMPIRE_PATH
-    if _VAMPIRE_PATH is None:
-        _VAMPIRE_PATH = _find_vampire()
-    if _VAMPIRE_PATH is None:
-        return None
-
-    try:
-        process = subprocess.Popen(
-            [_VAMPIRE_PATH, "--input_syntax", "tptp", "--mode", "fmb",
-             "-t", str(timeout)],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
-        stdout, stderr = process.communicate(tptp_input, timeout=timeout + 5)
-        output = stdout + stderr
-
-        if ("Satisfiable" in output or "SATISFIABLE" in output
-                or "Termination reason: Satisfiable" in output):
-            return True
-        if ("Unsatisfiable" in output or "UNSATISFIABLE" in output
-                or "Termination reason: Refutation" in output
-                or "Refutation found" in output):
-            return False
-        return None
-
-    except subprocess.TimeoutExpired:
-        try:
-            process.kill()
-        except Exception:
-            pass
-        return None
-    except Exception:
-        return None
-
-
 def check_entailment_multi(
     premises_fol: List[str],
     conclusion_fol: str,

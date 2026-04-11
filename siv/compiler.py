@@ -197,10 +197,7 @@ def _compile_binding_tests(extraction: ProblemExtraction) -> List[UnitTest]:
                         ent_pred = _entity_pred(ent)
                         if ent.entity_type == EntityType.UNIVERSAL:
                             pred_atom = _to_fol_string(pred, ['x'], fact.negated)
-                            inner = (
-                                f"(exists x.{ent_pred}(x)) & "
-                                f"all x.({ent_pred}(x) -> {pred_atom})"
-                            )
+                            inner = f"all x.({ent_pred}(x) -> {pred_atom})"
                         else:
                             inner = (
                                 f"exists x.({ent_pred}(x) & "
@@ -261,7 +258,6 @@ def _compile_binding_tests(extraction: ProblemExtraction) -> List[UnitTest]:
                     )
                     if subj_is_universal:
                         # FIX A: all x.(SubjType(x) -> exists y.(ObjType(y) & Pred(x, y)))
-                        # Task 03 — Defense 1: prepend inhabitation precondition
                         subj_ent: Entity = subj_entry[1]  # type: ignore[assignment]
                         subj_ent_pred = _entity_pred(subj_ent)
                         inner_parts = []
@@ -269,10 +265,7 @@ def _compile_binding_tests(extraction: ProblemExtraction) -> List[UnitTest]:
                             inner_parts.append(f"{_entity_pred(obj_entry[1])}(y)")  # type: ignore[arg-type]
                         inner_parts.append(_to_fol_string(pred, ["x", "y"], fact.negated))
                         inner = f"exists y.({' & '.join(inner_parts)})"
-                        fol = (
-                            f"(exists x.{subj_ent_pred}(x)) & "
-                            f"all x.({subj_ent_pred}(x) -> {inner})"
-                        )
+                        fol = f"all x.({subj_ent_pred}(x) -> {inner})"
                     else:
                         # Both entities, neither is universal: exists x.(exists y.(SubjType(x) & ObjType(y) & Pred(x,y)))
                         parts = []
@@ -390,29 +383,21 @@ def _compile_macro_tests(extraction: ProblemExtraction) -> List[UnitTest]:
 
         if mt == MacroTemplate.TYPE_A:
             # FIX G2: subj_ent now correctly bound to universal entity above
-            # Task 03 — Defense 1: prepend inhabitation precondition
             if not prop_facts:
                 continue
             obj_fact = prop_facts[-1]
             obj_pred = _fact_pred(obj_fact)
-            fol = (
-                f"(exists x.{subj_pred}(x)) & "
-                f"all x.({subj_pred}(x) -> {obj_pred}(x))"
-            )
+            fol = f"all x.({subj_pred}(x) -> {obj_pred}(x))"
             tests.append(UnitTest(fol_string=fol, test_type="entailment",
                                   is_positive=True, source_fact=obj_fact))
 
         elif mt == MacroTemplate.TYPE_E:
             # FIX G2: subj_ent now correctly bound to universal entity above
-            # Task 03 — Defense 1: prepend inhabitation precondition
             if not prop_facts:
                 continue
             obj_fact = prop_facts[-1]
             obj_pred = _fact_pred(obj_fact)
-            fol = (
-                f"(exists x.{subj_pred}(x)) & "
-                f"all x.({subj_pred}(x) -> -{obj_pred}(x))"
-            )
+            fol = f"all x.({subj_pred}(x) -> -{obj_pred}(x))"
             tests.append(UnitTest(fol_string=fol, test_type="entailment",
                                   is_positive=True, source_fact=obj_fact))
 
@@ -486,15 +471,11 @@ def _compile_macro_tests(extraction: ProblemExtraction) -> List[UnitTest]:
                 continue
 
             # Wrap the subject entity type, if the shared arg is an entity
-            # Task 03 — Defense 1: prepend inhabitation precondition when entity-typed
             shared_entry = id_map.get(shared_arg)
             if shared_entry and shared_entry[0] == "entity":
                 subj_type = _entity_pred(shared_entry[1])  # type: ignore[arg-type]
                 body = f"({subj_type}(x) & {ant_shape}) -> {con_shape}"
-                fol = (
-                    f"(exists x.{subj_type}(x)) & "
-                    f"all x.({body})"
-                )
+                fol = f"all x.({body})"
             else:
                 body = f"{ant_shape} -> {con_shape}"
                 fol = f"all x.({body})"
@@ -503,13 +484,9 @@ def _compile_macro_tests(extraction: ProblemExtraction) -> List[UnitTest]:
                                   is_positive=True, source_fact=con_fact))
 
         elif mt == MacroTemplate.BICONDITIONAL and len(prop_facts) >= 2:
-            # Task 03 — Defense 1: prepend inhabitation precondition
             ant_pred = _fact_pred(prop_facts[0])
             con_pred = _fact_pred(prop_facts[1])
-            fol = (
-                f"(exists x.{subj_pred}(x)) & "
-                f"all x.({ant_pred}(x) <-> {con_pred}(x))"
-            )
+            fol = f"all x.({ant_pred}(x) <-> {con_pred}(x))"
             tests.append(UnitTest(fol_string=fol, test_type="entailment",
                                   is_positive=True, source_fact=prop_facts[1]))
 

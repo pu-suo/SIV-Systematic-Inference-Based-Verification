@@ -7,12 +7,6 @@
   `.siv_cache/`. All API calls pin `gpt-4o-2024-08-06`, seed=42,
   temperature=0.0, and bind output to a JSON Schema derived from
   `siv/schema.py`.
-- Soundness Defense 1: inhabitation preconditions on every universal
-  binding test in `siv/compiler.py`.
-- Soundness Defense 2: Tier 0 consistency check in `siv/verifier.py`,
-  `check_satisfiability` in `siv/vampire_interface.py`, and a cheap
-  AST-level contradiction detector.
-- `VerificationResult.candidate_inconsistent` field.
 - `scripts/siv_score.py` — CLI Evaluator with human and JSON output.
 - `scripts/siv_generate.py` — CLI Generator with `--compare-to-gold` mode.
 - `siv/generator.py`, `siv/invariants.py` — the Generator and its five
@@ -30,9 +24,8 @@
 - `siv/verifier.py`: `strict_mode` parameter removed. New parameter
   `unresolved_policy: Literal["raise", "exclude"]` with default `"raise"`.
 - `siv/schema.py`: `VerificationResult.partial_credits` field removed.
-  `siv_score` property short-circuits on `candidate_inconsistent` and
-  `extraction_invalid`, and handles precision-only / recall-only cases
-  correctly.
+  `siv_score` property short-circuits on `extraction_invalid` and handles
+  precision-only / recall-only cases correctly.
 - `siv/extractor.py`: routes all API calls through `FrozenClient`. The
   `model` parameter has been removed from public APIs.
 - `prompts/extraction_system.txt`: ternary-fact rule removed; new

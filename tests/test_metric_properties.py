@@ -23,18 +23,16 @@ def test_property_boundedness_handwritten_cases():
     """
     cases = [
         # (recall_passed, recall_total, precision_passed, precision_total,
-        #  unresolved_recall, unresolved_precision, extraction_invalid,
-        #  candidate_inconsistent)
-        (0, 0, 0, 0, 0, 0, False, False),
-        (5, 5, 3, 3, 0, 0, False, False),
-        (0, 5, 0, 3, 0, 0, False, False),
-        (2, 5, 2, 3, 0, 0, False, False),
-        (5, 5, 3, 3, 0, 0, True, False),    # extraction_invalid
-        (5, 5, 3, 3, 0, 0, False, True),    # candidate_inconsistent
-        (0, 5, 3, 3, 5, 0, False, False),   # all recall unresolved
-        (5, 5, 0, 3, 0, 3, False, False),   # all precision unresolved
+        #  unresolved_recall, unresolved_precision, extraction_invalid)
+        (0, 0, 0, 0, 0, 0, False),
+        (5, 5, 3, 3, 0, 0, False),
+        (0, 5, 0, 3, 0, 0, False),
+        (2, 5, 2, 3, 0, 0, False),
+        (5, 5, 3, 3, 0, 0, True),    # extraction_invalid
+        (0, 5, 3, 3, 5, 0, False),   # all recall unresolved
+        (5, 5, 0, 3, 0, 3, False),   # all precision unresolved
     ]
-    for rp, rt, pp, pt, ur, up, ei, ci in cases:
+    for rp, rt, pp, pt, ur, up, ei in cases:
         r = VerificationResult(
             candidate_fol="x",
             syntax_valid=True,
@@ -48,7 +46,6 @@ def test_property_boundedness_handwritten_cases():
             unresolved_recall=ur,
             unresolved_precision=up,
             extraction_invalid=ei,
-            candidate_inconsistent=ci,
         )
         assert 0.0 <= r.siv_score <= 1.0, f"siv_score out of bounds: {r.siv_score} for {cases}"
 
@@ -80,7 +77,6 @@ def test_property_boundedness_fuzz():
             unresolved_recall=ur,
             unresolved_precision=up,
             extraction_invalid=rng.random() < 0.1,
-            candidate_inconsistent=rng.random() < 0.1,
         )
         assert 0.0 <= r.siv_score <= 1.0
 
@@ -122,11 +118,10 @@ def test_property_determinism_ten_runs():
         assert r.unresolved_recall == first.unresolved_recall
         assert r.unresolved_precision == first.unresolved_precision
         assert r.extraction_invalid == first.extraction_invalid
-        assert r.candidate_inconsistent == first.candidate_inconsistent
         assert r.siv_score == first.siv_score
 
 
-# ── Property 3 — Short-circuit on extraction_invalid / candidate_inconsistent ─
+# ── Property 3 — Short-circuit on extraction_invalid ─────────────────────────
 
 def test_property_extraction_invalid_forces_zero():
     """
@@ -144,26 +139,6 @@ def test_property_extraction_invalid_forces_zero():
         tier2_skips=0,
         prover_calls=0,
         extraction_invalid=True,
-    )
-    assert r.siv_score == 0.0
-
-
-def test_property_candidate_inconsistent_forces_zero():
-    """
-    Property: candidate_inconsistent=True → siv_score=0.0 regardless of
-    recall and precision. This is §4.5 Defense 2.
-    """
-    r = VerificationResult(
-        candidate_fol="x",
-        syntax_valid=True,
-        recall_passed=99,
-        recall_total=99,
-        precision_passed=99,
-        precision_total=99,
-        tier1_skips=0,
-        tier2_skips=0,
-        prover_calls=0,
-        candidate_inconsistent=True,
     )
     assert r.siv_score == 0.0
 

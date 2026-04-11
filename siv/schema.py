@@ -218,10 +218,6 @@ class VerificationResult:
     # the verifier short-circuits and siv_score returns 0.0.
     extraction_invalid: bool = False
     schema_violations: List["SchemaViolation"] = field(default_factory=list)
-    # Task 03: set to True when the candidate is provably internally inconsistent
-    # (contains P(a) & -P(a) or equivalent); siv_score short-circuits to 0.0.
-    candidate_inconsistent: bool = False
-
     @property
     def recall_rate(self) -> float:
         # FIX B1: unresolved tests are excluded from the effective denominator.
@@ -244,7 +240,7 @@ class VerificationResult:
     def siv_score(self) -> float:
         # FIX C1: schema violations short-circuit the score to 0.0. Under Tenet 4
         # we do not silently degrade — invalid extractions score zero.
-        if self.extraction_invalid or self.candidate_inconsistent:
+        if self.extraction_invalid:
             return 0.0
         effective_recall_total = self.recall_total - self.unresolved_recall
         effective_precision_total = self.precision_total - self.unresolved_precision

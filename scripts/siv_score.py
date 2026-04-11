@@ -183,7 +183,6 @@ def _result_to_dict(result: VerificationResult) -> dict:
         "unresolved_recall": result.unresolved_recall,
         "unresolved_precision": result.unresolved_precision,
         "extraction_invalid": result.extraction_invalid,
-        "candidate_inconsistent": result.candidate_inconsistent,
         "schema_violations": [_violation_to_dict(v) for v in result.schema_violations],
     }
 
@@ -193,8 +192,6 @@ def _result_to_dict(result: VerificationResult) -> dict:
 def _result_status(result: VerificationResult) -> str:
     if result.extraction_invalid:
         return "EXTRACTION_INVALID"
-    if result.candidate_inconsistent:
-        return "CANDIDATE_INCONSISTENT"
     if not result.syntax_valid:
         return "SYNTAX_ERROR"
     return "OK"

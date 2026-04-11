@@ -280,7 +280,7 @@ def test_fix_A_universal_binary_binding_emits_universal_shape():
     suite = compile_test_suite(prob)
     pos = [t.fol_string for t in suite.positive_tests]
 
-    # Must contain a universal-shaped binding test (with inhabitation conjunct prefix)
+    # Must contain a universal-shaped binding test
     assert any(
         "all x." in f and "Students(x) ->" in f and "Books(y)" in f and "Read(x, y)" in f
         for f in pos
@@ -815,115 +815,14 @@ def test_fix_C1_clean_extraction_unaffected():
     )
 
 
-# ── Task 03: Inhabitation preconditions (Defense 1) ──────────────────────────
-
-def test_universal_binding_test_has_inhabitation_conjunct():
-    """Task 03 Part A: universal-subject binding test must be prefixed with (exists x.T(x)) &."""
-    sentence = SentenceExtraction(
-        nl="All employees schedule meetings with customers.",
-        entities=[
-            Entity(id="e1", surface="employees", entity_type=EntityType.UNIVERSAL),
-            Entity(id="e2", surface="meetings",  entity_type=EntityType.EXISTENTIAL),
-            Entity(id="e3", surface="customers", entity_type=EntityType.EXISTENTIAL),
-        ],
-        facts=[
-            Fact(pred="schedule", args=["e1", "e2"]),
-            Fact(pred="with",     args=["e2", "e3"]),
-        ],
-        macro_template=MacroTemplate.TYPE_A,
-    )
-    prob = ProblemExtraction(problem_id="inhab_binding", sentences=[sentence])
-    suite = compile_test_suite(prob)
-    pos = [t.fol_string for t in suite.positive_tests]
-    assert any(f.startswith("(exists x.Employees(x))") for f in pos), (
-        f"Expected at least one positive test starting with '(exists x.Employees(x))'; got {pos}"
-    )
-
-
-def test_type_a_macro_has_inhabitation_conjunct():
-    """Task 03 Part A: TYPE_A macro test must carry inhabitation precondition."""
-    sentence = SentenceExtraction(
-        nl="All kids are young.",
-        entities=[Entity(id="e1", surface="kid", entity_type=EntityType.UNIVERSAL)],
-        facts=[Fact(pred="kid", args=["e1"]), Fact(pred="young", args=["e1"])],
-        macro_template=MacroTemplate.TYPE_A,
-    )
-    prob = ProblemExtraction(problem_id="inhab_macro", sentences=[sentence])
-    suite = compile_test_suite(prob)
-    pos = [t.fol_string for t in suite.positive_tests]
-    assert any(
-        "(exists x.Kid(x)) & all x.(Kid(x) -> Young(x))" in f for f in pos
-    ), (
-        f"Expected TYPE_A macro test '(exists x.Kid(x)) & all x.(Kid(x) -> Young(x))'; got {pos}"
-    )
-
-
-def test_vacuous_universal_candidate_fails_recall():
-    """Task 03 Part A: a candidate all x.(-Employees(x)) must score recall_passed==0.
-
-    This is the canonical vacuous-universal exploit that the inhabitation defense closes.
-    Without the defence the all x.(Employees(x) -> ...) binding test was vacuously
-    satisfied; with the (exists x.Employees(x)) & ... prefix it is not.
-    """
-    from siv.verifier import verify
-
-    sentence = SentenceExtraction(
-        nl="All employees schedule meetings.",
-        entities=[
-            Entity(id="e1", surface="employees", entity_type=EntityType.UNIVERSAL),
-            Entity(id="e2", surface="meetings",  entity_type=EntityType.EXISTENTIAL),
-        ],
-        facts=[Fact(pred="schedule", args=["e1", "e2"])],
-        macro_template=MacroTemplate.TYPE_A,
-    )
-    prob = ProblemExtraction(problem_id="vacuous_univ", sentences=[sentence])
-    suite = compile_test_suite(prob)
-
-    # This candidate asserts no employees exist (vacuous universal exploit)
-    vacuous_candidate = "all x.(-Employees(x))"
-    result = verify(vacuous_candidate, suite, prover_timeout=1, unresolved_policy="exclude")
-    assert result.recall_passed == 0, (
-        f"Vacuous-universal candidate must score recall_passed=0; got {result.recall_passed}"
-    )
-
-
-def test_inhabitation_not_added_to_existential_tests():
-    """Anti-drift: existential binding tests must NOT have an inhabitation conjunct."""
-    sentence = SentenceExtraction(
-        nl="A student reads a book.",
-        entities=[
-            Entity(id="e1", surface="students", entity_type=EntityType.EXISTENTIAL),
-            Entity(id="e2", surface="books",    entity_type=EntityType.EXISTENTIAL),
-        ],
-        facts=[Fact(pred="reads", args=["e1", "e2"])],
-        macro_template=MacroTemplate.GROUND_POSITIVE,
-    )
-    prob = ProblemExtraction(problem_id="no_inhab_exist", sentences=[sentence])
-    suite = compile_test_suite(prob)
-    pos = [t.fol_string for t in suite.positive_tests]
-    # None of the tests should be prefixed with the inhabitation pattern
-    assert not any(f.startswith("(exists x.") and " & all x." in f for f in pos), (
-        f"Existential tests must not carry inhabitation conjuncts; got {pos}"
-    )
-
-
-# ── Task 03 Part F: dedup preserves highest-priority test_type ───────────────
+# ── Dedup preserves highest-priority test_type ────────────────────────────────
 
 def test_dedup_preserves_entailment_tag():
-    """Task 03 Part F: when vocab and entailment paths produce the same FOL string,
+    """When binding and entailment paths produce the same FOL string,
     the resulting UnitTest must have test_type=='entailment'."""
-    # Construct a case where the macro (entailment) and vocab tests might collide:
-    # A single 1-arg universal entity with a single 1-arg fact.
-    # The vocab test is suppressed by Fix A (universal fact), so there's no actual
-    # collision in the default pipeline. We test the priority dict directly via
-    # a problem where binding==entailment string collision can occur.
-    # Strategy: create a TYPE_A sentence where the macro test FOL matches a binding
-    # test FOL. Since inhabitation was just added, the binding test for a 1-arg
-    # universal entity is now:
-    #   (exists x.Kid(x)) & all x.(Kid(x) -> Young(x))
-    # And the macro test is also:
-    #   (exists x.Kid(x)) & all x.(Kid(x) -> Young(x))
-    # These are identical → the dedup must keep the entailment tag.
+    # A TYPE_A sentence with a single 1-arg universal entity and two facts:
+    # binding test for 'young' and macro test both produce all x.(Kid(x) -> Young(x)).
+    # The dedup must keep the entailment tag.
     sentence = SentenceExtraction(
         nl="All kids are young.",
         entities=[Entity(id="e1", surface="kid", entity_type=EntityType.UNIVERSAL)],
@@ -933,7 +832,7 @@ def test_dedup_preserves_entailment_tag():
     prob = ProblemExtraction(problem_id="dedup_tag", sentences=[sentence])
     suite = compile_test_suite(prob)
 
-    target_fol = "(exists x.Kid(x)) & all x.(Kid(x) -> Young(x))"
+    target_fol = "all x.(Kid(x) -> Young(x))"
     matching = [t for t in suite.positive_tests if t.fol_string == target_fol]
     assert len(matching) == 1, (
         f"Expected exactly one test with the macro FOL string; got {[t.fol_string for t in suite.positive_tests]}"

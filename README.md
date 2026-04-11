@@ -111,7 +111,7 @@ for complex universally-quantified sentences.
          │   (vocabulary + binding + macro + contrastive perturbation tests)
          ▼
     Stage 5: tiered verification  (siv/verifier.py)
-         │   Tier 0 syntax + consistency
+         │   Tier 0 syntax
          │   Tier 1 vocabulary
          │   Tier 2 AST
          │   Tier 3 Vampire
@@ -137,21 +137,6 @@ before being accepted. Paired with `--compare-to-gold`, it produces the
 head-to-head comparison the paper's empirical claims rest on.
 
 ---
-
-## Soundness Defenses
-
-SIV defends against the two general-purpose exploits of entailment-based
-FOL evaluation:
-
-1. **Inhabitation Preconditions** — every universal binding test is
-   wrapped with `(exists x.T(x)) & all x.(T(x) -> ...)`. A candidate
-   asserting an empty domain cannot vacuously satisfy universal tests.
-2. **Tier 0 Consistency Check** — internally inconsistent candidates are
-   flagged and short-circuited to SIV=0 before any entailment test runs.
-   Ex falso quodlibet cannot produce a spurious perfect score.
-
-See `tests/test_soundness_tripwires.py` for mechanical enforcement and
-`tests/test_metric_properties.py` for property-test coverage.
 
 ---
 
@@ -195,7 +180,7 @@ Key test files:
       frozen_client.py      # FrozenClient wrapper for extract() and generate()
       extractor.py          # Stage 2 LLM extraction through FrozenClient
       compiler.py           # Stage 3 Neo-Davidsonian validation + test compilation
-      verifier.py           # Tiered verification with Tier 0 consistency
+      verifier.py           # Tiered verification (Tier 0 syntax → Tier 3 Vampire)
       scorer.py             # SIV score aggregation
       generator.py          # Mode 2: JSON-only compilation to Neo-Davidsonian FOL
       invariants.py         # Five invariants enforced on Generator outputs

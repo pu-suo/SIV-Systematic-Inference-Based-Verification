@@ -239,42 +239,7 @@ def test_fix_B1_mixed_resolved_and_unresolved(monkeypatch):
     assert result.recall_rate == pytest.approx(0.0)
 
 
-# ── Task 03: Tier 0 consistency check (Defense 2) ────────────────────────────
-
-@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
-def test_inconsistent_candidate_short_circuits_to_zero():
-    """Task 03 Part D: a candidate of 'P(a) & -P(a)' is detected as inconsistent
-    via the AST-level check and produces candidate_inconsistent=True, siv_score=0.0."""
-    suite = _make_suite(
-        pos_fols=["exists x.P(x)", "exists x.Q(x)"],
-        neg_fols=["exists x.R(x)"],
-    )
-    result = verify("P(a) & -P(a)", suite, unresolved_policy="exclude")
-    assert result.candidate_inconsistent is True, (
-        f"Expected candidate_inconsistent=True; got {result.candidate_inconsistent}"
-    )
-    assert result.siv_score == pytest.approx(0.0), (
-        f"Expected siv_score=0.0 for inconsistent candidate; got {result.siv_score}"
-    )
-
-
-@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
-def test_consistency_check_failure_does_not_raise(monkeypatch):
-    """Task 03 Part D: when check_satisfiability returns None (prover unavailable),
-    verify() does NOT raise; it proceeds normally and returns a real score."""
-    import siv.verifier as _vm
-    monkeypatch.setattr(_vm, "_tier0_consistency", lambda *a, **kw: None)
-
-    suite = _make_suite(["exists x.Car(x)"], [])
-    fol = "exists x.Car(x)"
-    # Should not raise, and result should be a normal VerificationResult
-    result = verify(fol, suite, unresolved_policy="exclude")
-    assert result.candidate_inconsistent is False
-    # candidate is consistent (or unknown) so scoring proceeds normally
-    assert result.syntax_valid is True
-
-
-# ── Task 03 Part E/F: schema fields and edge-case arithmetic ──────────────────
+# ── Task 03 Part F: edge-case arithmetic ──────────────────────────────────────
 
 def test_siv_score_recall_only():
     """Task 03 Part F: when recall_total=0 (or all unresolved) but precision passes,
@@ -314,26 +279,6 @@ def test_siv_score_precision_only():
     assert r.siv_score == pytest.approx(1.0), (
         f"Recall-only case: expected siv_score=1.0; got {r.siv_score}"
     )
-
-
-def test_candidate_inconsistent_field_exists():
-    """Task 03 Part E: VerificationResult must have a candidate_inconsistent field."""
-    from siv.schema import VerificationResult
-    r = VerificationResult(
-        candidate_fol="P(a)",
-        syntax_valid=True,
-        recall_passed=0,
-        recall_total=1,
-        precision_passed=0,
-        precision_total=1,
-        tier1_skips=0,
-        tier2_skips=0,
-        prover_calls=0,
-    )
-    assert hasattr(r, "candidate_inconsistent"), (
-        "VerificationResult must have a 'candidate_inconsistent' field"
-    )
-    assert r.candidate_inconsistent is False  # default value
 
 
 def test_tier2_existential_conjunct_containment():

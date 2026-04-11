@@ -15,12 +15,11 @@ A test definitively failed at Tier 1 (credit = 0.0) is skipped (no prover call).
 """
 from typing import Literal, Optional, Set, Tuple
 
-from siv.consistency import ast_level_inconsistency
 from siv.fol_utils import (
     NLTK_AVAILABLE, extract_predicates, is_valid_fol, parse_fol,
 )
 from siv.schema import ProverUnavailableError, TestSuite, UnitTest, VerificationResult
-from siv.vampire_interface import check_entailment, check_satisfiability
+from siv.vampire_interface import check_entailment
 
 
 # ── Predicate helpers ─────────────────────────────────────────────────────────
@@ -35,24 +34,6 @@ def _extract_predicates_from_fol(fol_string: str) -> Set[str]:
 def _tier0_syntax(candidate: str) -> bool:
     """Return True if *candidate* parses as valid NLTK FOL."""
     return is_valid_fol(candidate)
-
-
-# ── Tier 0b: Consistency ──────────────────────────────────────────────────────
-
-def _tier0_consistency(candidate_fol: str, timeout: int = 2) -> Optional[bool]:
-    """
-    Check candidate internal consistency via two-stage approach.
-
-    Returns:
-      False — candidate is provably inconsistent (short-circuit to SIV=0)
-      True  — candidate is known consistent
-      None  — unresolved (prover unavailable or timeout); caller proceeds normally
-    """
-    # First, cheap AST-level check (no prover needed)
-    if ast_level_inconsistency(candidate_fol):
-        return False
-    # Then, prover-level check if available
-    return check_satisfiability(candidate_fol, timeout=timeout)
 
 
 # ── Tier 1: Vocabulary ────────────────────────────────────────────────────────
@@ -211,24 +192,6 @@ def verify(
             tier1_skips=n_pos + n_neg,
             tier2_skips=0,
             prover_calls=0,
-        )
-
-    # ── Tier 0b: consistency (Defense 2 against ex-falso exploits) ────────────
-    consistency = _tier0_consistency(candidate_fol, prover_timeout)
-    if consistency is False:
-        # Candidate is provably inconsistent — short-circuit to SIV=0.
-        # None means "unresolved" → proceed normally (no error raised).
-        return VerificationResult(
-            candidate_fol=candidate_fol,
-            syntax_valid=True,
-            recall_passed=0,
-            recall_total=n_pos,
-            precision_passed=0,
-            precision_total=n_neg,
-            tier1_skips=0,
-            tier2_skips=0,
-            prover_calls=1 if consistency is not None else 0,
-            candidate_inconsistent=True,
         )
 
     recall_passed    = 0

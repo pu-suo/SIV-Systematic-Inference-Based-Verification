@@ -25,7 +25,7 @@ from siv.schema import (
     ProblemExtraction, SentenceExtraction, TestSuite, UnitTest,
 )
 from siv.verifier import (
-    _tier0_consistency, _tier0_syntax, _tier1_vocabulary, _tier2_ast,
+    _tier0_syntax, _tier1_vocabulary, _tier2_ast,
     _tier3_prover, verify,
 )
 from siv.fol_utils import NLTK_AVAILABLE, parse_fol
@@ -251,13 +251,7 @@ def _format_candidate_result(
     lines.append(f"  Candidate: {candidate}")
 
     syntax_ok = "OK" if result.syntax_valid else "FAIL"
-    if result.candidate_inconsistent:
-        consist_str = "FAIL"
-    elif result.syntax_valid:
-        consist_str = "OK"
-    else:
-        consist_str = "UNKNOWN"
-    lines.append(f"    Tier 0: syntax={syntax_ok}  consistency={consist_str}")
+    lines.append(f"    Tier 0: syntax={syntax_ok}")
     lines.append("")
 
     if not result.syntax_valid:
@@ -337,7 +331,6 @@ def _candidate_result_to_dict(candidate: str, result) -> dict:
     return {
         "candidate_fol": candidate,
         "syntax_valid": result.syntax_valid,
-        "candidate_inconsistent": result.candidate_inconsistent,
         "recall_passed": result.recall_passed,
         "recall_total": result.recall_total - result.unresolved_recall,
         "precision_passed": result.precision_passed,

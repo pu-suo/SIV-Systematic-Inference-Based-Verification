@@ -157,7 +157,7 @@ def test_json_output_shape(tmp_path, monkeypatch, capsys):
             "siv_score", "recall_rate", "precision_rate",
             "recall_total", "precision_total",
             "unresolved_recall", "unresolved_precision",
-            "extraction_invalid", "candidate_inconsistent",
+            "extraction_invalid",
             "schema_violations",
         ):
             assert key in cand, f"Missing key '{key}' in candidate '{cand_name}'"

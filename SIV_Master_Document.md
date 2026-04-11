@@ -129,7 +129,7 @@ Critically, **all precision perturbations use only predicates and entities that 
 
 The resulting tests are evaluated through a tiered verifier:
 
-- **Tier 0 (Syntax + Consistency):** NLTK parses the candidate; if the candidate is internally inconsistent, the metric records a violation.
+- **Tier 0 (Syntax):** NLTK parses the candidate; invalid FOL is rejected before any test is run.
 - **Tier 1 (Vocabulary):** Strict set-equality check for predicate presence.
 - **Tier 2 (AST):** Lightweight structural matching without the prover.
 - **Tier 3 (Vampire):** Full theorem proving for the tests that require it.
@@ -141,24 +141,6 @@ recall_rate     = positive_tests_entailed / positive_tests_total
 precision_rate  = contrastive_tests_rejected / contrastive_tests_total
 SIV             = 2 · recall · precision / (recall + precision)
 ```
-
-### 4.5 Soundness and Adversarial Robustness
-
-Two pathological candidates could, in a naïve implementation, score perfectly against the SIV test suite without having said anything correct about the source sentence. Both are mathematically possible exploits of first-order logic; both are closed by explicit architectural defenses.
-
-**Defense 1 — Inhabitation Preconditions against Vacuous-Universal Exploits.**  
-A candidate that simply asserts `∀x.(Employees(x) → ⊥)` — in effect declaring that no employees exist — will vacuously satisfy every universal-quantified binding test for statements about employees, because any universal over an empty domain is trivially true. SIV defends against this by prepending an **inhabitation precondition** to every universal binding test:
-
-```
-(∃x. Employees(x)) ∧ ∀x.(Employees(x) → ∃y.(Meeting(y) ∧ Schedule(x, y)))
-```
-
-The existential conjunct forces the candidate to commit to a non-empty domain for the quantified type before receiving credit for the universal claim. Vacuous-universal exploitation — the `∀x.P(x) → Q(x)` for empty `P` trick that has plagued formal evaluation in the past — is closed off at the compilation layer. No new modules, no new concepts; ten characters per test.
-
-**Defense 2 — Tier 0 Consistency Checks against *Ex Falso* Exploits.**  
-A candidate that contains an internal contradiction (any formula `φ ∧ ¬φ`) will, under classical FOL, entail *every* well-formed formula, including every positive SIV test. This is the `ex falso quodlibet` exploit, and it is mathematically real. SIV closes it by flagging internally inconsistent candidates at Tier 0 and refusing to score them. The justification is both soundness-driven and philosophically aligned with Tenet 2: **a contradictory candidate is downstream-unusable by definition**. You cannot put it in a knowledge graph. You cannot query it. You cannot extend it. A metric designed to measure structural usability must, and does, assign inconsistent candidates a score of zero rather than the spurious perfect score that unguarded entailment checking would produce.
-
-Together, these two defenses close the only two general-purpose exploits of entailment-based FOL evaluation. SIV is **not** a metric that a pathological candidate can game by exploiting the semantics of first-order logic. It is a metric whose mathematical substrate has been audited against its own formal properties.
 
 ---
 

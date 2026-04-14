@@ -369,7 +369,15 @@ For each `SentenceExtraction`, the generator produces candidate negative tests b
    For each connective node the operator emits exactly the mutants listed for that connective's type.
 6. **`replace_subformula_with_negation`** — for each non-root non-atomic sub-formula, emit a mutant wrapping that sub-formula in `Formula.negation`.
 
-Each mutant is compiled via `compile_canonical_fol`. Vampire checks whether `(original ∧ mutant)` is unsat. **Accept only on `unsat`.** Drop on `sat`, `timeout`, or `unknown`. Every accepted contrastive is provably inconsistent with the original — not merely different.
+Each mutant is compiled via `compile_canonical_fol`. Vampire checks whether `(original ∧ mutant)` is unsat.
+
+**Witness axioms.** Before each `(original ∧ mutant)` unsat check, Vampire's axiom set is augmented with witness axioms derived from the extraction's predicate declarations. For each `PredicateDecl` with arity 1 and name `P`, add `exists x.P(x)`. For each `PredicateDecl` with arity 2 and name `R`, add `exists x.exists y.R(x, y)`. These are derived mechanically from `extraction.predicates`; no hand-rolling.
+
+This formalizes the existential import that natural-language restrictor domains carry (Barwise & Cooper 1981). Without it, universal conditionals like *"All dogs are mammals"* are compatible with empty-domain models, and structural mutations (`flip_quantifier`, `drop_restrictor_conjunct`, `negate_atom` in a restrictor) remain `sat` under free-domain semantics even though they are natural-language contradictions of the source.
+
+Witness axioms are applied uniformly to every unsat check in the generator (§6.5) and scorer (§6.6) and invariants (§8). They are **not** applied during the two-path compile equivalence check (C9a / §8 monotonicity invariant), because that check is purely about compiler-path agreement and should not depend on domain assumptions.
+
+**Accept only on `unsat`.** Drop on `sat`, `timeout`, or `unknown`. Every accepted contrastive is provably inconsistent with the original (under the witness axioms) — not merely different.
 
 **Note on `flip_connective` and Vampire filtering.** The `implies → iff` and `iff → implies` mutations are often entailment-neutral in concrete interpretations; Vampire will return `sat` and the mutants will be dropped. This is expected and correct per the acceptance rule; it contributes to `dropped_neutral` in telemetry and is not by itself evidence of a permissive operator.
 
@@ -387,6 +395,8 @@ SIV       = 2 · recall · precision / (recall + precision)
 ```
 
 **No coverage fraction. No adjustment. Just F1.**
+
+The scorer applies the same witness axioms as §6.5 when checking entailment and contrastive rejection, so scoring is consistent with generation.
 
 ### 6.7 Soundness invariants
 
@@ -551,7 +561,7 @@ def generate_contrastives(
 
 - **Output:** list of accepted contrastive `UnitTest`s plus telemetry dict with keys `generated`, `accepted`, `dropped_neutral`, `dropped_unknown`, `unknown_rate`, `per_operator`.
 - **Operators:** exactly the six in §6.5.
-- **Acceptance rule:** a mutant is accepted iff Vampire proves `(original ∧ mutant)` is `unsat`.
+- **Acceptance rule:** a mutant is accepted iff Vampire proves `(original ∧ mutant ∧ witness_axioms)` is `unsat`, where `witness_axioms` is the set of `exists`-closures over `extraction.predicates` per §6.5.
 - **Drop rule:** mutants whose Vampire result is `sat`, `timeout`, or `unknown` are dropped.
 - **Every accepted contrastive is provably inconsistent with the original.**
 
@@ -574,7 +584,7 @@ def score(test_suite: TestSuite, candidate_fol: str) -> ScoreReport: ...
 
 - **Computation per §6.6.**
 - **Does not return a coverage fraction.** No scope-adjustment term.
-- **Uses Vampire** to check each positive (should entail) and each contrastive (should not entail).
+- **Uses Vampire with witness axioms (§6.5)** to check each positive (should entail) and each contrastive (should not entail).
 
 ### C9a. `check_entailment_monotonicity`
 
@@ -588,6 +598,7 @@ def check_entailment_monotonicity(
 - **Semantics:** with `P` = conjunction of `test_suite`'s positives and `Q` = `compile_canonical_fol(extraction)`, Vampire-check both `P ⊨ Q` and `Q ⊨ P`.
 - **Returns `(True, None)`** iff both directions proved.
 - **Returns `(False, reason)`** if either direction fails, times out, or returns unknown. **Timeout is a failure, not a skip.**
+- **Witness axioms are NOT applied.** The bidirectional entailment check runs without them; it is a pure compiler-path equivalence check and must not depend on domain assumptions.
 
 ### C9b. `check_contrastive_soundness`
 
@@ -600,6 +611,7 @@ def check_contrastive_soundness(
 - **Semantics:** with `P` = conjunction of positives, for each contrastive `C`, Vampire-check that `(P ∧ C)` is `unsat`.
 - **Returns `(True, None)`** iff every contrastive is unsat against the positives.
 - **Returns `(False, reason)`** on the first `C` that is `sat`, `timeout`, or `unknown`. **Timeout is a failure, not a skip.**
+- **Witness axioms ARE applied** to the `(P ∧ C)` unsat check, matching the generator's acceptance rule (§6.5).
 
 ---
 

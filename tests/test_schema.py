@@ -1,249 +1,298 @@
-"""Tests for siv/schema.py"""
+"""Tests for siv/schema.py and siv/json_schema.py — Phase 1 rewrite."""
+import json
+
 import pytest
+from pydantic import ValidationError
+
+from siv.json_schema import derive_extraction_schema
 from siv.schema import (
-    Constant, Entity, EntityType, Fact, CompoundAnalysis,
-    SentenceExtraction, ProblemExtraction,
-    UnitTest, TestSuite, VerificationResult,
-    MacroTemplate,
+    AtomicFormula,
+    Constant,
+    Entity,
+    Formula,
+    InnerQuantification,
+    PredicateDecl,
+    SchemaViolation,
+    SentenceExtraction,
+    TestSuite as _TestSuite,
+    TripartiteQuantification,
+    UnitTest,
+    validate_extraction,
 )
 
 
-def _make_sentence(nl="The tree is tall.", entity_id="e1", entity_surface="tree",
-                   pred="tall", macro=MacroTemplate.GROUND_POSITIVE):
-    entity = Entity(id=entity_id, surface=entity_surface, entity_type=EntityType.EXISTENTIAL)
-    fact = Fact(pred=pred, args=[entity_id])
-    return SentenceExtraction(nl=nl, entities=[entity], facts=[fact], macro_template=macro)
+# ── Helpers ─────────────────────────────────────────────────────────────────
+
+def _preds(*triples):
+    return [PredicateDecl(name=n, arity=ar, arg_types=ts) for (n, ar, ts) in triples]
 
 
-# ── Constant ──────────────────────────────────────────────────────────────────
-
-def test_constant_fields():
-    c = Constant(id="bonnie", surface="Bonnie")
-    assert c.id == "bonnie"
-    assert c.surface == "Bonnie"
-
-
-def test_constant_camelcase_id():
-    c = Constant(id="lanaWilson", surface="Lana Wilson")
-    assert c.id == "lanaWilson"
-
-
-def test_sentence_extraction_constants_field():
-    c = Constant(id="elizabeth", surface="Elizabeth")
-    e = Entity(id="e1", surface="club", entity_type=EntityType.EXISTENTIAL)
-    f = Fact(pred="member", args=["elizabeth", "e1"])
-    sent = SentenceExtraction(
-        nl="Elizabeth is in the club.",
-        entities=[e],
-        facts=[f],
-        macro_template=MacroTemplate.GROUND_POSITIVE,
-        constants=[c],
+def _ext(formula, preds=None, constants=None, entities=None, nl="x"):
+    return SentenceExtraction(
+        nl=nl,
+        predicates=preds or [],
+        constants=constants or [],
+        entities=entities or [],
+        formula=formula,
     )
-    assert len(sent.constants) == 1
-    assert sent.constants[0].id == "elizabeth"
 
 
-def test_problem_extraction_all_constants():
-    c1 = Constant(id="bonnie", surface="Bonnie")
-    c2 = Constant(id="bonnie", surface="Bonnie")  # duplicate — should deduplicate
-    s1 = SentenceExtraction(
-        nl="Bonnie sings.",
-        entities=[],
-        facts=[Fact(pred="sings", args=["bonnie"])],
-        macro_template=MacroTemplate.GROUND_POSITIVE,
-        constants=[c1],
+def _atom(pred, *args, negated=False):
+    return AtomicFormula(pred=pred, args=list(args), negated=negated)
+
+
+def _atomic_f(*args, **kwargs):
+    return Formula(atomic=_atom(*args, **kwargs))
+
+
+# ── UnitTest invariants (C0) ────────────────────────────────────────────────
+
+def test_unit_test_contrastive_requires_mutation_kind_positive():
+    t = UnitTest(fol="P(a)", kind="contrastive", mutation_kind="negate_atom")
+    assert t.mutation_kind == "negate_atom"
+
+
+def test_unit_test_contrastive_without_mutation_kind_fails():
+    with pytest.raises((SchemaViolation, ValidationError)):
+        UnitTest(fol="P(a)", kind="contrastive", mutation_kind=None)
+
+
+def test_unit_test_positive_with_mutation_kind_fails():
+    with pytest.raises((SchemaViolation, ValidationError)):
+        UnitTest(fol="P(a)", kind="positive", mutation_kind="negate_atom")
+
+
+def test_unit_test_positive_without_mutation_kind_passes():
+    t = UnitTest(fol="P(a)", kind="positive")
+    assert t.mutation_kind is None
+
+
+# ── PredicateDecl arity invariant ───────────────────────────────────────────
+
+def test_predicate_decl_arg_types_must_match_arity():
+    with pytest.raises((SchemaViolation, ValidationError)):
+        PredicateDecl(name="P", arity=2, arg_types=["e"])
+
+
+def test_predicate_decl_valid():
+    p = PredicateDecl(name="P", arity=2, arg_types=["e", "e"])
+    assert p.arity == 2
+
+
+# ── Formula exclusivity (C1) ─────────────────────────────────────────────────
+
+def _valid_scope():
+    preds = _preds(("P", 1, ["e"]))
+    constants = [Constant(id="a", surface="a", type="entity")]
+    return preds, constants
+
+
+def test_validate_rejects_empty_formula():
+    preds, constants = _valid_scope()
+    with pytest.raises(SchemaViolation):
+        validate_extraction(_ext(Formula(), preds=preds, constants=constants))
+
+
+def test_validate_rejects_multiple_cases():
+    preds, constants = _valid_scope()
+    f = Formula(atomic=_atom("P", "a"), connective="and", operands=[
+        _atomic_f("P", "a"), _atomic_f("P", "a"),
+    ])
+    with pytest.raises(SchemaViolation):
+        validate_extraction(_ext(f, preds=preds, constants=constants))
+
+
+# ── Connective arity ────────────────────────────────────────────────────────
+
+def test_validate_rejects_connective_without_operands():
+    preds, constants = _valid_scope()
+    f = Formula(connective="and")
+    with pytest.raises(SchemaViolation):
+        validate_extraction(_ext(f, preds=preds, constants=constants))
+
+
+def test_validate_rejects_operands_without_connective():
+    preds, constants = _valid_scope()
+    f = Formula(operands=[_atomic_f("P", "a"), _atomic_f("P", "a")])
+    with pytest.raises(SchemaViolation):
+        validate_extraction(_ext(f, preds=preds, constants=constants))
+
+
+def test_validate_rejects_implies_with_three_operands():
+    preds, constants = _valid_scope()
+    f = Formula(
+        connective="implies",
+        operands=[_atomic_f("P", "a"), _atomic_f("P", "a"), _atomic_f("P", "a")],
     )
-    s2 = SentenceExtraction(
-        nl="Bonnie dances.",
-        entities=[],
-        facts=[Fact(pred="dances", args=["bonnie"])],
-        macro_template=MacroTemplate.GROUND_POSITIVE,
-        constants=[c2],
+    with pytest.raises(SchemaViolation):
+        validate_extraction(_ext(f, preds=preds, constants=constants))
+
+
+def test_validate_rejects_iff_with_one_operand():
+    preds, constants = _valid_scope()
+    f = Formula(connective="iff", operands=[_atomic_f("P", "a")])
+    with pytest.raises(SchemaViolation):
+        validate_extraction(_ext(f, preds=preds, constants=constants))
+
+
+def test_validate_rejects_and_with_single_operand():
+    preds, constants = _valid_scope()
+    f = Formula(connective="and", operands=[_atomic_f("P", "a")])
+    with pytest.raises(SchemaViolation):
+        validate_extraction(_ext(f, preds=preds, constants=constants))
+
+
+def test_validate_accepts_nary_and():
+    preds, constants = _valid_scope()
+    f = Formula(connective="and", operands=[
+        _atomic_f("P", "a"), _atomic_f("P", "a"), _atomic_f("P", "a"),
+    ])
+    validate_extraction(_ext(f, preds=preds, constants=constants))
+
+
+def test_validate_accepts_binary_implies():
+    preds, constants = _valid_scope()
+    f = Formula(connective="implies", operands=[
+        _atomic_f("P", "a"), _atomic_f("P", "a"),
+    ])
+    validate_extraction(_ext(f, preds=preds, constants=constants))
+
+
+# ── Predicate/arg resolution (C2) ────────────────────────────────────────────
+
+def test_validate_rejects_undeclared_predicate():
+    f = _atomic_f("Undeclared", "a")
+    ext = _ext(
+        f,
+        preds=_preds(("P", 1, ["e"])),
+        constants=[Constant(id="a", surface="a", type="entity")],
     )
-    prob = ProblemExtraction(problem_id="p1", sentences=[s1, s2])
-    assert len(prob.all_constants) == 1
-    assert prob.all_constants[0].id == "bonnie"
+    with pytest.raises(SchemaViolation):
+        validate_extraction(ext)
 
 
-# ── Entity ────────────────────────────────────────────────────────────────────
-
-def test_entity_fields():
-    e = Entity(id="c1", surface="nancy", entity_type=EntityType.CONSTANT)
-    assert e.id == "c1"
-    assert e.surface == "nancy"
-    assert e.entity_type == EntityType.CONSTANT
-
-
-# ── Fact ──────────────────────────────────────────────────────────────────────
-
-def test_fact_default_not_negated():
-    f = Fact(pred="tall", args=["e1"])
-    assert f.negated is False
-
-
-def test_fact_negated():
-    f = Fact(pred="tall", args=["e1"], negated=True)
-    assert f.negated is True
-
-
-def test_fact_binary():
-    f = Fact(pred="directed by", args=["c1", "c2"])
-    assert len(f.args) == 2
-
-
-# ── ProblemExtraction ─────────────────────────────────────────────────────────
-
-def test_all_entities_deduplicates():
-    """Entity appearing in two sentences is returned once."""
-    shared = Entity(id="e1", surface="tree", entity_type=EntityType.EXISTENTIAL)
-    s1 = SentenceExtraction(
-        nl="A tree is tall.",
-        entities=[shared],
-        facts=[Fact(pred="tall", args=["e1"])],
-        macro_template=MacroTemplate.GROUND_POSITIVE,
+def test_validate_rejects_arity_mismatch():
+    f = _atomic_f("P", "a", "b")  # P declared unary
+    ext = _ext(
+        f,
+        preds=_preds(("P", 1, ["e"])),
+        constants=[
+            Constant(id="a", surface="a", type="entity"),
+            Constant(id="b", surface="b", type="entity"),
+        ],
     )
-    s2 = SentenceExtraction(
-        nl="The tree grows.",
-        entities=[shared],
-        facts=[Fact(pred="grows", args=["e1"])],
-        macro_template=MacroTemplate.GROUND_POSITIVE,
+    with pytest.raises(SchemaViolation):
+        validate_extraction(ext)
+
+
+def test_validate_rejects_undeclared_argument():
+    f = _atomic_f("P", "ghost")
+    ext = _ext(
+        f,
+        preds=_preds(("P", 1, ["e"])),
+        constants=[Constant(id="a", surface="a", type="entity")],
     )
-    prob = ProblemExtraction(problem_id="p1", sentences=[s1, s2])
-    assert len(prob.all_entities) == 1
-    assert prob.all_entities[0].id == "e1"
+    with pytest.raises(SchemaViolation):
+        validate_extraction(ext)
 
 
-def test_all_entities_multiple():
-    s1 = _make_sentence(entity_id="e1", entity_surface="tree")
-    s2 = _make_sentence(nl="Nancy runs.", entity_id="c1", entity_surface="nancy",
-                        pred="runs", macro=MacroTemplate.GROUND_POSITIVE)
-    prob = ProblemExtraction(problem_id="p2", sentences=[s1, s2])
-    ids = {e.id for e in prob.all_entities}
-    assert ids == {"e1", "c1"}
+def test_validate_accepts_bound_variable():
+    f = Formula(quantification=TripartiteQuantification(
+        quantifier="universal", variable="x", var_type="entity",
+        restrictor=[_atom("P", "x")],
+        nucleus=_atomic_f("Q", "x"),
+    ))
+    ext = _ext(f, preds=_preds(("P", 1, ["e"]), ("Q", 1, ["e"])))
+    validate_extraction(ext)
 
 
-def test_all_facts():
-    s1 = _make_sentence(pred="tall")
-    s2 = _make_sentence(nl="It grows.", pred="grows")
-    prob = ProblemExtraction(problem_id="p3", sentences=[s1, s2])
-    preds = [f.pred for f in prob.all_facts]
-    assert "tall" in preds
-    assert "grows" in preds
+# ── Degenerate tripartite quantification ────────────────────────────────────
+
+def test_validate_rejects_empty_restrictor_with_nucleus_single_atom_over_bound_var():
+    f = Formula(quantification=TripartiteQuantification(
+        quantifier="universal", variable="x", var_type="entity",
+        restrictor=[],
+        nucleus=_atomic_f("P", "x"),
+    ))
+    ext = _ext(f, preds=_preds(("P", 1, ["e"])))
+    with pytest.raises(SchemaViolation):
+        validate_extraction(ext)
 
 
-# ── TestSuite ─────────────────────────────────────────────────────────────────
+def test_validate_accepts_empty_restrictor_with_nonatomic_nucleus():
+    # Empty restrictor with a compound nucleus is not degenerate.
+    f = Formula(quantification=TripartiteQuantification(
+        quantifier="existential", variable="x", var_type="entity",
+        restrictor=[],
+        nucleus=Formula(connective="and", operands=[
+            _atomic_f("P", "x"), _atomic_f("Q", "x"),
+        ]),
+    ))
+    ext = _ext(f, preds=_preds(("P", 1, ["e"]), ("Q", 1, ["e"])))
+    validate_extraction(ext)
 
-def test_test_suite_total():
-    pos = [UnitTest(fol_string="exists x.Tall(x)", test_type="vocabulary", is_positive=True)]
-    neg = [
-        UnitTest(fol_string="exists x.Short(x)", test_type="contrastive", is_positive=False),
-        UnitTest(fol_string="exists x.Old(x)", test_type="contrastive", is_positive=False),
-    ]
-    suite = TestSuite(problem_id="t1", positive_tests=pos, negative_tests=neg)
-    assert suite.total_tests == 3
+
+# ── JSON Schema derivation (C3 / §6.2.7) ────────────────────────────────────
+
+def test_json_schema_deterministic_across_runs():
+    s1 = derive_extraction_schema()
+    s2 = derive_extraction_schema()
+    assert json.dumps(s1, sort_keys=True) == json.dumps(s2, sort_keys=True)
 
 
-# ── VerificationResult ────────────────────────────────────────────────────────
+def test_json_schema_inlines_non_recursive_refs():
+    # Formula is self-referential (negation, operands, nucleus all recurse
+    # back to Formula). A self-referential type cannot be fully inlined, so
+    # we preserve Formula as a $def and $ref to it. Non-recursive leaves
+    # (AtomicFormula, PredicateDecl, Entity, Constant, ...) must be inlined.
+    s = derive_extraction_schema()
+    defs = s.get("$defs", {})
+    # Only Formula (and structures that necessarily recurse through it, e.g.
+    # TripartiteQuantification) may remain as $defs.
+    for name in defs.keys():
+        assert name in {"Formula", "TripartiteQuantification"}, (
+            f"unexpected non-recursive type retained in $defs: {name}"
+        )
 
-def test_recall_rate_simple():
-    vr = VerificationResult(
-        candidate_fol="exists x.Tall(x)",
-        syntax_valid=True,
-        recall_passed=3,
-        recall_total=4,
-        precision_passed=2,
-        precision_total=2,
-        tier1_skips=1,
-        tier2_skips=0,
-        prover_calls=0,
+
+def test_json_schema_objects_forbid_additional_properties():
+    s = derive_extraction_schema()
+
+    def walk(node):
+        if isinstance(node, dict):
+            if node.get("type") == "object" or "properties" in node:
+                assert node.get("additionalProperties") is False
+                props = node.get("properties", {})
+                if props:
+                    assert set(node.get("required", [])) == set(props.keys())
+            for v in node.values():
+                walk(v)
+        elif isinstance(node, list):
+            for x in node:
+                walk(x)
+
+    walk(s)
+
+
+def test_json_schema_strips_title_and_description():
+    s = derive_extraction_schema()
+    text = json.dumps(s)
+    assert '"title"' not in text
+    assert '"description"' not in text
+    assert '"default"' not in text
+
+
+# ── Exercise TestSuite container ────────────────────────────────────────────
+
+def test_test_suite_holds_extraction_and_positives():
+    preds, constants = _valid_scope()
+    ext = _ext(_atomic_f("P", "a"), preds=preds, constants=constants)
+    suite = _TestSuite(
+        extraction=ext,
+        positives=[UnitTest(fol="P(a)", kind="positive")],
+        contrastives=[
+            UnitTest(fol="-P(a)", kind="contrastive", mutation_kind="negate_atom"),
+        ],
     )
-    assert vr.recall_rate == pytest.approx(0.75)
-
-
-def test_recall_rate_no_partial_credit():
-    """Tenet 1: recall_rate is recall_passed / effective_denom, no partial credit."""
-    vr = VerificationResult(
-        candidate_fol="exists x.Tall(x)",
-        syntax_valid=True,
-        recall_passed=2,
-        recall_total=4,
-        precision_passed=2,
-        precision_total=2,
-        tier1_skips=0,
-        tier2_skips=0,
-        prover_calls=0,
-    )
-    # 2 / 4 = 0.5 (no credit for components)
-    assert vr.recall_rate == pytest.approx(0.5)
-
-
-def test_precision_rate_perfect():
-    vr = VerificationResult(
-        candidate_fol="x", syntax_valid=True,
-        recall_passed=1, recall_total=1,
-        precision_passed=3, precision_total=3,
-        tier1_skips=0, tier2_skips=0, prover_calls=0,
-    )
-    assert vr.precision_rate == pytest.approx(1.0)
-
-
-def test_precision_rate_zero_total():
-    """No negative tests → precision defaults to 1.0."""
-    vr = VerificationResult(
-        candidate_fol="x", syntax_valid=True,
-        recall_passed=1, recall_total=1,
-        precision_passed=0, precision_total=0,
-        tier1_skips=0, tier2_skips=0, prover_calls=0,
-    )
-    assert vr.precision_rate == pytest.approx(1.0)
-
-
-def test_siv_score_f1():
-    vr = VerificationResult(
-        candidate_fol="x", syntax_valid=True,
-        recall_passed=3, recall_total=4,   # recall = 0.75
-        precision_passed=2, precision_total=2,  # precision = 1.0
-        tier1_skips=0, tier2_skips=0, prover_calls=0,
-    )
-    expected = 2 * 0.75 * 1.0 / (0.75 + 1.0)
-    assert vr.siv_score == pytest.approx(expected)
-
-
-def test_siv_score_zero_both():
-    vr = VerificationResult(
-        candidate_fol="x", syntax_valid=False,
-        recall_passed=0, recall_total=0,
-        precision_passed=0, precision_total=0,
-        tier1_skips=0, tier2_skips=0, prover_calls=0,
-    )
-    assert vr.siv_score == 0.0
-
-
-# ── MacroTemplate ─────────────────────────────────────────────────────────────
-
-def test_macro_template_values():
-    assert MacroTemplate.TYPE_A.value == "universal_affirmative"
-    assert MacroTemplate.TYPE_E.value == "universal_negative"
-    assert MacroTemplate.TYPE_I.value == "existential_affirmative"
-    assert MacroTemplate.TYPE_O.value == "existential_negative"
-    assert MacroTemplate.GROUND_POSITIVE.value == "ground_positive"
-    assert MacroTemplate.GROUND_NEGATIVE.value == "ground_negative"
-    assert MacroTemplate.CONDITIONAL.value == "conditional"
-    assert MacroTemplate.BICONDITIONAL.value == "biconditional"
-
-
-# ── CompoundAnalysis ──────────────────────────────────────────────────────────
-
-def test_compound_analysis_fields():
-    ca = CompoundAnalysis(
-        modifier="tall",
-        noun="tree",
-        wordnet_hit=False,
-        pmi_score=0.3,
-        is_proper_noun=False,
-        dep_scope="nsubj",
-        recommendation="SPLIT",
-        reason="Low PMI; modifier targets subject entity.",
-    )
-    assert ca.recommendation == "SPLIT"
-    assert ca.dep_scope == "nsubj"
+    assert len(suite.positives) == 1
+    assert len(suite.contrastives) == 1

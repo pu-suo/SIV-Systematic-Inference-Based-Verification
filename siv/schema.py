@@ -1,256 +1,280 @@
 """
-SIV Schema: Core data structures for the pipeline.
+SIV Schema: Formula-based extraction schema (Phase 1).
 
-The JSON extraction schema has three sections:
-  - constants: named individuals (proper nouns, specific entities)
-  - entities:  quantified things that exist in the world
-  - facts:     what is true about them (pred + args)
-
-Each fact's arity (len(args)) implicitly encodes its type:
-  1-arg → unary predicate (type or property)
-  2-arg → binary relation or reified attribute
-  3-arg → ternary relation
-
-The macro_template field on sentences captures the logical skeleton
-using the Aristotelian categorical forms (A, E, I, O) plus ground
-facts and conditionals.
+Defined per SIV.md §6.2 and §7 (C0–C3). The Formula sum type is the
+complete grammar; it has exactly four cases (atomic, quantification,
+negation, connective+operands). No fifth case.
 """
-from dataclasses import dataclass, field
-from typing import List, Optional
-from enum import Enum
+from __future__ import annotations
+
+from typing import List, Literal, Optional
+
+from pydantic import BaseModel, ConfigDict, model_validator
 
 
-# FIX C1: raised by the scorer when a caller computes a SIV score for an
-# extraction that contains schema violations.
-class ExtractionInvalidError(RuntimeError):
+class SchemaViolation(Exception):
+    """Raised by validate_extraction on any structural schema violation."""
+
+
+# ── Core leaf models ─────────────────────────────────────────────────────────
+
+class PredicateDecl(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    arity: Literal[1, 2]
+    arg_types: List[str]
+
+    @model_validator(mode="after")
+    def _arg_types_matches_arity(self) -> "PredicateDecl":
+        if len(self.arg_types) != self.arity:
+            raise SchemaViolation(
+                f"PredicateDecl {self.name!r}: arg_types length "
+                f"{len(self.arg_types)} != arity {self.arity}"
+            )
+        return self
+
+
+class Entity(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    surface: str
+    type: str
+
+
+class Constant(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    surface: str
+    type: str
+
+
+class AtomicFormula(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    pred: str
+    args: List[str]
+    negated: bool = False
+
+
+class InnerQuantification(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    quantifier: Literal["universal", "existential"]
+    variable: str
+    var_type: str
+
+
+class TripartiteQuantification(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    quantifier: Literal["universal", "existential"]
+    variable: str
+    var_type: str
+    restrictor: List[AtomicFormula]
+    nucleus: "Formula"
+    inner_quantifications: List[InnerQuantification] = []
+
+
+class Formula(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    atomic: Optional[AtomicFormula] = None
+    quantification: Optional[TripartiteQuantification] = None
+    negation: Optional["Formula"] = None
+    connective: Optional[Literal["and", "or", "implies", "iff"]] = None
+    operands: Optional[List["Formula"]] = None
+
+
+class SentenceExtraction(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    nl: str
+    predicates: List[PredicateDecl] = []
+    entities: List[Entity] = []
+    constants: List[Constant] = []
+    formula: Formula
+
+
+# ── Test suite models (C0) ───────────────────────────────────────────────────
+
+class UnitTest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    fol: str
+    kind: Literal["positive", "contrastive"]
+    mutation_kind: Optional[str] = None
+
+    @model_validator(mode="after")
+    def _mutation_kind_iff_contrastive(self) -> "UnitTest":
+        if self.kind == "contrastive" and self.mutation_kind is None:
+            raise SchemaViolation(
+                "UnitTest.kind == 'contrastive' requires mutation_kind"
+            )
+        if self.kind == "positive" and self.mutation_kind is not None:
+            raise SchemaViolation(
+                "UnitTest.kind == 'positive' forbids mutation_kind"
+            )
+        return self
+
+
+class TestSuite(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    extraction: SentenceExtraction
+    positives: List[UnitTest] = []
+    contrastives: List[UnitTest] = []
+
+
+TripartiteQuantification.model_rebuild()
+Formula.model_rebuild()
+SentenceExtraction.model_rebuild()
+TestSuite.model_rebuild()
+
+
+# ── Validation (C3) ──────────────────────────────────────────────────────────
+
+_BINARY_CONNECTIVES = {"implies", "iff"}
+_NARY_CONNECTIVES = {"and", "or"}
+
+
+def _formula_active_cases(f: Formula) -> int:
+    count = 0
+    if f.atomic is not None:
+        count += 1
+    if f.quantification is not None:
+        count += 1
+    if f.negation is not None:
+        count += 1
+    if f.connective is not None or f.operands is not None:
+        count += 1
+    return count
+
+
+def _validate_formula(
+    f: Formula,
+    predicates: dict,
+    global_scope: set,
+    bound_scope: set,
+) -> None:
+    # Exclusivity: exactly one case populated.
+    cases = _formula_active_cases(f)
+    if cases == 0:
+        raise SchemaViolation("Formula has zero cases populated")
+    if cases > 1:
+        raise SchemaViolation("Formula has more than one case populated")
+
+    if f.atomic is not None:
+        _validate_atom(f.atomic, predicates, global_scope, bound_scope)
+        return
+
+    if f.negation is not None:
+        _validate_formula(f.negation, predicates, global_scope, bound_scope)
+        return
+
+    if f.quantification is not None:
+        _validate_quantification(f.quantification, predicates, global_scope, bound_scope)
+        return
+
+    # Connective case.
+    if f.connective is None:
+        raise SchemaViolation("Formula operands populated without connective")
+    if f.operands is None:
+        raise SchemaViolation("Formula connective populated without operands")
+    ops = f.operands
+    if f.connective in _BINARY_CONNECTIVES:
+        if len(ops) != 2:
+            raise SchemaViolation(
+                f"Connective {f.connective!r} requires exactly 2 operands, "
+                f"got {len(ops)}"
+            )
+    elif f.connective in _NARY_CONNECTIVES:
+        if len(ops) < 2:
+            raise SchemaViolation(
+                f"Connective {f.connective!r} requires at least 2 operands, "
+                f"got {len(ops)}"
+            )
+    for op in ops:
+        _validate_formula(op, predicates, global_scope, bound_scope)
+
+
+def _validate_atom(
+    atom: AtomicFormula,
+    predicates: dict,
+    global_scope: set,
+    bound_scope: set,
+) -> None:
+    if atom.pred not in predicates:
+        raise SchemaViolation(
+            f"AtomicFormula references undeclared predicate {atom.pred!r}"
+        )
+    decl: PredicateDecl = predicates[atom.pred]
+    if len(atom.args) != decl.arity:
+        raise SchemaViolation(
+            f"AtomicFormula {atom.pred!r}: args length {len(atom.args)} "
+            f"!= declared arity {decl.arity}"
+        )
+    in_scope = global_scope | bound_scope
+    for a in atom.args:
+        if a not in in_scope:
+            raise SchemaViolation(
+                f"AtomicFormula {atom.pred!r}: argument {a!r} is not a "
+                f"declared entity/constant or bound variable"
+            )
+
+
+def _validate_quantification(
+    q: TripartiteQuantification,
+    predicates: dict,
+    global_scope: set,
+    bound_scope: set,
+) -> None:
+    inner_vars = {iq.variable for iq in q.inner_quantifications}
+    restrictor_scope = bound_scope | {q.variable} | inner_vars
+    for atom in q.restrictor:
+        _validate_atom(atom, predicates, global_scope, restrictor_scope)
+
+    # Empty-restrictor + single-atom-over-bound-variable nucleus is forbidden:
+    # this is the degenerate pattern the §6.2 TripartiteQuantification is
+    # designed to preclude.
+    if len(q.restrictor) == 0:
+        nuc = q.nucleus
+        if (
+            nuc.atomic is not None
+            and len(nuc.atomic.args) == 1
+            and nuc.atomic.args[0] == q.variable
+        ):
+            raise SchemaViolation(
+                "TripartiteQuantification with empty restrictor and nucleus "
+                "of a single atom over the bound variable is forbidden"
+            )
+
+    nucleus_scope = bound_scope | {q.variable}
+    _validate_formula(q.nucleus, predicates, global_scope, nucleus_scope)
+
+
+def validate_extraction(extraction: SentenceExtraction) -> None:
+    """Validate a SentenceExtraction per SIV.md §7 C2 and C3.
+
+    Raises SchemaViolation on any violation. Returns None on success.
+    Deterministic; no LLM/network calls.
     """
-    Raised by the scorer when a caller attempts to compute a SIV score
-    for an extraction that contains schema violations. Violating
-    extractions are scored as SIV=0 with the extraction_invalid flag
-    set; callers that want to see the score must read the
-    VerificationResult directly.
-    """
+    predicates: dict = {}
+    for p in extraction.predicates:
+        if p.name in predicates:
+            raise SchemaViolation(f"Duplicate PredicateDecl name {p.name!r}")
+        predicates[p.name] = p
 
+    global_scope: set = set()
+    for e in extraction.entities:
+        if e.id in global_scope:
+            raise SchemaViolation(f"Duplicate entity/constant id {e.id!r}")
+        global_scope.add(e.id)
+    for c in extraction.constants:
+        if c.id in global_scope:
+            raise SchemaViolation(f"Duplicate entity/constant id {c.id!r}")
+        global_scope.add(c.id)
 
-# FIX B1: raised when unresolved_policy="raise" and any test is unresolved.
-class ProverUnavailableError(RuntimeError):
-    """
-    Raised when unresolved_policy="raise" (the default) and one or more tests
-    could not be resolved because the Vampire theorem prover was unavailable or
-    timed out. SIV's published scores require a working prover; silently
-    degrading to vocabulary-level credit is a Tenet-1 violation.
-    """
-
-
-class EntityType(Enum):
-    CONSTANT = "constant"        # Named individual (backward compat): nancy, garfield
-    EXISTENTIAL = "existential"  # "a car", "some bears"
-    UNIVERSAL = "universal"      # "all kids", "every student"
-
-
-class MacroTemplate(Enum):
-    """
-    The 7 canonical sentence forms, grounded in the Aristotelian
-    Square of Opposition (A, E, I, O) + ground facts + conditional.
-
-    Reference: Russell & Norvig AIMA Ch. 8; Aristotle's Prior Analytics.
-    """
-    # Categorical propositions (quantified)
-    TYPE_A = "universal_affirmative"    # All P are Q:      ∀x(P(x) → Q(x))
-    TYPE_E = "universal_negative"       # No P are Q:       ∀x(P(x) → ¬Q(x))
-    TYPE_I = "existential_affirmative"  # Some P are Q:     ∃x(P(x) ∧ Q(x))
-    TYPE_O = "existential_negative"     # Some P are not Q: ∃x(P(x) ∧ ¬Q(x))
-    # Ground facts (about constants)
-    GROUND_POSITIVE = "ground_positive"  # P(c) or P(c) ∧ Q(c)
-    GROUND_NEGATIVE = "ground_negative"  # ¬P(c)
-    # Compositional
-    CONDITIONAL = "conditional"          # A → B (where A, B are from above)
-    BICONDITIONAL = "biconditional"      # A ↔ B or ¬(A ⊕ B)
-
-
-@dataclass
-class SchemaViolation:
-    """
-    A single Neo-Davidsonian violation detected in an extraction.
-    See Tenet 2 in the refactor context: all facts must decompose into
-    unary properties or binary relations; prepositional phrases must
-    be reified into separate entities and binary edges.
-
-    # FIX C1: prepositional_unary and high_arity violations detected by
-    # validate_neo_davidsonian in siv/compiler.py.
-    """
-    sentence_nl: str
-    fact_pred: str
-    fact_args: List[str]
-    violation_type: str       # e.g. "prepositional_unary", "high_arity"
-    message: str              # human-readable explanation
-
-
-@dataclass
-class Constant:
-    """A named individual (proper noun) in the sentence."""
-    id: str      # camelCase logical name: "bonnie", "schoolTalentShow", "c1"
-    surface: str # original surface form: "Bonnie", "school talent show"
-
-
-@dataclass
-class Entity:
-    id: str                    # e1, e2, c1, c2, ...
-    surface: str               # "nancy", "car", "Harvard student"
-    entity_type: EntityType    # constant (compat), existential, universal
-
-
-@dataclass
-class Fact:
-    pred: str                  # predicate surface form: "tall", "directed by"
-    args: List[str]            # argument IDs or literal constants
-    negated: bool = False      # explicit negation in the source sentence
-
-
-@dataclass
-class CompoundAnalysis:
-    """Result of Stage 1 pre-analysis for one modifier+noun pair."""
-    modifier: str
-    noun: str
-    wordnet_hit: bool
-    pmi_score: float
-    is_proper_noun: bool
-    dep_scope: str             # "nsubj", "dobj", "pobj", etc.
-    recommendation: str        # "KEEP" or "SPLIT"
-    reason: str                # human-readable justification
-
-
-@dataclass
-class SentenceExtraction:
-    """Complete extraction for one NL sentence."""
-    nl: str                    # original natural language
-    entities: List[Entity]     # quantified entities (existential / universal)
-    facts: List[Fact]
-    macro_template: MacroTemplate
-    compound_analyses: List[CompoundAnalysis] = field(default_factory=list)
-    constants: List[Constant] = field(default_factory=list)  # named individuals
-
-
-@dataclass
-class ProblemExtraction:
-    """Complete extraction for one FOLIO problem (multiple sentences)."""
-    problem_id: str
-    sentences: List[SentenceExtraction]
-
-    @property
-    def all_constants(self) -> List[Constant]:
-        """Deduplicated constants across all sentences."""
-        seen: set = set()
-        result: List[Constant] = []
-        for s in self.sentences:
-            for c in s.constants:
-                if c.id not in seen:
-                    seen.add(c.id)
-                    result.append(c)
-        return result
-
-    @property
-    def all_entities(self) -> List[Entity]:
-        """Deduplicated entities across all sentences."""
-        seen = set()
-        result = []
-        for s in self.sentences:
-            for e in s.entities:
-                if e.id not in seen:
-                    seen.add(e.id)
-                    result.append(e)
-        return result
-
-    @property
-    def all_facts(self) -> List[Fact]:
-        """All facts across all sentences."""
-        return [f for s in self.sentences for f in s.facts]
-
-
-@dataclass
-class UnitTest:
-    """A single FOL unit test."""
-    fol_string: str            # The FOL formula (NLTK format)
-    test_type: str             # "vocabulary", "binding", "entailment", "contrastive"
-    is_positive: bool          # True = candidate MUST entail; False = must NOT entail
-    source_fact: Optional[Fact] = None  # Which fact generated this test
-
-
-@dataclass
-class TestSuite:
-    """Complete test suite for one FOLIO problem."""
-    problem_id: str
-    positive_tests: List[UnitTest]
-    negative_tests: List[UnitTest]
-    # FIX C1: schema violations from validate_neo_davidsonian; non-empty means
-    # the extraction violated the Neo-Davidsonian imperative (Tenet 2).
-    violations: List["SchemaViolation"] = field(default_factory=list)
-
-    @property
-    def total_tests(self) -> int:
-        return len(self.positive_tests) + len(self.negative_tests)
-
-    @property
-    def has_violations(self) -> bool:
-        # FIX C1: True when the extraction failed the Neo-Davidsonian validator.
-        return len(self.violations) > 0
-
-
-@dataclass
-class VerificationResult:
-    """Result of verifying one candidate FOL against a test suite."""
-    candidate_fol: str
-    syntax_valid: bool
-    recall_passed: int
-    recall_total: int
-    precision_passed: int
-    precision_total: int
-    tier1_skips: int           # Tests resolved at Tier 1 (vocabulary)
-    tier2_skips: int           # Tests resolved at Tier 2 (AST)
-    prover_calls: int          # Tests requiring Tier 3 (Vampire)
-    # FIX B1: counts of tests that could not be resolved by the prover.
-    # In "exclude" mode these are excluded from the denominator so they neither
-    # help nor hurt the candidate. In "raise" mode the verifier raises before
-    # these fields are ever populated.
-    unresolved_recall: int = 0
-    unresolved_precision: int = 0
-    # FIX C1: set to True when the test suite carried Neo-Davidsonian violations;
-    # the verifier short-circuits and siv_score returns 0.0.
-    extraction_invalid: bool = False
-    schema_violations: List["SchemaViolation"] = field(default_factory=list)
-    @property
-    def recall_rate(self) -> float:
-        # FIX B1: unresolved tests are excluded from the effective denominator.
-        effective_denom = self.recall_total - self.unresolved_recall
-        if effective_denom <= 0:
-            return 0.0
-        return self.recall_passed / effective_denom
-
-    @property
-    def precision_rate(self) -> float:
-        # FIX B1: unresolved tests are excluded from the denominator in
-        # non-strict mode; in strict mode the verifier raises before we ever
-        # compute rates.
-        effective_denom = self.precision_total - self.unresolved_precision
-        if effective_denom <= 0:
-            return 1.0
-        return self.precision_passed / effective_denom
-
-    @property
-    def siv_score(self) -> float:
-        # FIX C1: schema violations short-circuit the score to 0.0. Under Tenet 4
-        # we do not silently degrade — invalid extractions score zero.
-        if self.extraction_invalid:
-            return 0.0
-        effective_recall_total = self.recall_total - self.unresolved_recall
-        effective_precision_total = self.precision_total - self.unresolved_precision
-        if effective_recall_total <= 0 and effective_precision_total <= 0:
-            return 0.0
-        if effective_recall_total <= 0:
-            return self.precision_rate
-        if effective_precision_total <= 0:
-            return self.recall_rate
-        r, p = self.recall_rate, self.precision_rate
-        if r + p == 0:
-            return 0.0
-        return 2.0 * r * p / (r + p)
+    _validate_formula(extraction.formula, predicates, global_scope, set())

@@ -1,145 +1,82 @@
-You are a precise semantic analyzer for First-Order Logic translation.
+You extract First-Order Logic structure from natural language sentences.
 
-Given a natural language sentence (plus optional compound-modifier analysis), extract ALL
-entities and facts into the minimal JSON schema defined below.
+Return a single JSON object conforming to the SentenceExtraction schema.
+Output JSON only — no markdown, no commentary, no prose.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-JSON SCHEMA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-{
-  "constants": [
-    {
-      "id":      "<camelCase name, e.g. bonnie, schoolTalentShow>",
-      "surface": "<exact surface form from text, e.g. Bonnie, school talent show>"
-    }
-  ],
-  "entities": [
-    {
-      "id":          "<e1 | e2 | …>",
-      "surface":     "<exact surface form from text>",
-      "entity_type": "<existential | universal>"
-    }
-  ],
-  "facts": [
-    {
-      "pred":    "<predicate surface form>",
-      "args":    ["<entity id or constant id>"],
-      "negated": <true | false>
-    }
-  ],
-  "macro_template": "<one of the 8 values below>"
-}
+═══════════════════════════════════════════════════════════════════════════
+SCHEMA
+═══════════════════════════════════════════════════════════════════════════
 
-CONSTANTS vs ENTITIES — CRITICAL DISTINCTION
-  • constants  → Proper nouns, named individuals, specific events/places.
-                 MUST go in the constants array, NEVER in entities.
-                 Use the camelCase form of the name as the ID.
-                 Examples: Bonnie → id="bonnie", Lana Wilson → id="lanaWilson",
-                           After Tiller → id="afterTiller", Harvard → id="harvard"
-  • entities   → Quantified things: indefinite nouns ("a car"), universal ("all kids"),
-                 definite generics ("the tree", "the region").
-                 Use e1, e2, … as IDs.
+SentenceExtraction has five top-level fields:
 
-ENTITY TYPE (entities only)
-  • existential  → indefinite: "a car", "some bears", "the tree"
-  • universal    → quantified over all: "all kids", "every student", "no bird"
+  nl          — the original sentence.
+  predicates  — list of PredicateDecl: name (str), arity (1 or 2),
+                arg_types (list matching arity).
+  entities    — list of Entity: id, surface, type.
+  constants   — list of Constant: id, surface, type.
+  formula     — a Formula (see below).
 
-FACT ARITY (unary or binary only):
-  • 1-arg → unary predicate (type or property): Tall(e1), Queen(bonnie)
-  • 2-arg → binary relation: Directed(lanaWilson, afterTiller), Likes(e1, e2)
+An AtomicFormula has:  pred (str), args (list of ids), negated (bool).
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NEO-DAVIDSONIAN FORM — MANDATORY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Facts may have arity 1 or 2 ONLY. Facts with 3 or more arguments are
-FORBIDDEN. Ditransitive verbs (give, tell, send, show, offer) must be
-reified into a primary binary fact plus a secondary binary edge for
-the indirect argument.
+A TripartiteQuantification has:
+  quantifier             — "universal" or "existential".
+  variable, var_type     — the bound variable name and its type.
+  restrictor             — a list of AtomicFormulas bounding the domain.
+  nucleus                — a Formula (the claim over that domain).
+  inner_quantifications  — list of InnerQuantification entries for extra
+                           variables referenced in the restrictor beyond
+                           the bound variable itself (each has
+                           quantifier/variable/var_type).
 
-DITRANSITIVE DECOMPOSITION:
-  "Alice gave the book to Bob"
-    → constants: [{id: alice, surface: Alice}, {id: bob, surface: Bob}]
-    → entities:  [{id: e1, surface: book, entity_type: existential}]
-    → facts:     [{pred: gave, args: [alice, e1]},
-                  {pred: to,   args: [e1, bob]}]
-  VIOLATION: {pred: gave, args: [alice, e1, bob]} — NEVER emit a fact with three or more args.
+A Formula has exactly ONE of four cases populated per instance:
 
-  "The company sent the document to the client"
-    → entities: [e1=company, e2=document, e3=client]
-    → facts:    [{pred: sent, args: [e1, e2]},
-                 {pred: to,   args: [e2, e3]}]
-  VIOLATION: {pred: sent, args: [e1, e2, e3]}
+  atomic          — an AtomicFormula. Leaf.
+  quantification  — a TripartiteQuantification.
+  negation        — a nested Formula (unary logical negation).
+  connective      — one of "and", "or", "implies", "iff" — set together
+                    with `operands` (list of Formulas). "implies" and
+                    "iff" require exactly two operands; "and" and "or"
+                    require at least two.
 
-PREPOSITIONAL WELDING IN UNARY PREDICATES — ALSO FORBIDDEN:
-  A 1-arg fact whose predicate contains a preposition token
-  (from, to, in, at, on, by, with, of, for, about, over, under,
-  through, across, between, among, against, toward) means you have
-  welded a second argument into the verb. REIFY it as a binary fact.
-    "No managers work remotely from home"
-    RIGHT: entities: [e1=managers, e2=home]
-           facts: [{pred: managers, args: [e1]},
-                   {pred: work remotely from, args: [e1, e2], negated: true}]
-           — or equivalently —
-           facts: [{pred: managers, args: [e1]},
-                   {pred: work remotely, args: [e1], negated: true},
-                   {pred: from, args: [e1, e2], negated: true}]
-    WRONG: {pred: work remotely from home, args: [e1], negated: true}
+Exactly one case active. Every other case field is null.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-DECOMPOSITION RULES — MANDATORY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-You MUST decompose complex noun phrases into their atomic components.
-Each entity surface must be a SINGLE NOUN or COMPOUND NOUN — never a clause,
-never a phrase containing verbs or prepositions.
+═══════════════════════════════════════════════════════════════════════════
+TYPES
+═══════════════════════════════════════════════════════════════════════════
 
-PREPOSITIONAL PHRASES — separate entity + binary relation fact:
-  "people in this club" → entity "people" + entity "club" + fact in(people, club)
-  "members of the community" → entity "members" + entity "community" + fact of(members, community)
-  VIOLATION: creating entity with surface "people in this club" — NEVER DO THIS
+`type` (on Entity and Constant) and `var_type`/`arg_types` are grammatical,
+not ontological. Always use the string "entity". Do not use "person",
+"animal", "place", or any ontological category.
 
-RELATIVE CLAUSES — decompose the clause into its own facts:
-  "students who attend the school" → entity "students" + entity "school" + fact attend(students, school)
-  "people who chaperone dances" → entity "people" + entity "dances" + fact chaperone(people, dances)
-  VIOLATION: creating entity with surface "students who attend the school" — NEVER DO THIS
+═══════════════════════════════════════════════════════════════════════════
+IDENTIFIERS
+═══════════════════════════════════════════════════════════════════════════
 
-CONJUNCTION/DISJUNCTION — preserve each conjunct as a separate fact:
-  "attend and are very engaged with school events" → fact attend(e1, e2) + fact very engaged with(e1, e2)
-  "inactive and disinterested" → fact inactive(e1) + fact disinterested(e1)
+- Constant ids are lowercase camelCase of the surface form (e.g. "Miroslav
+  Venhoda" → "miroslav", "L-2021 monitor" → "monitor").
+- Entity ids are bound-variable names ("x", "y", "z", ...).
+- Predicate names are UpperCamelCase (e.g. "CzechChoralConductor",
+  "Schedule", "HasFunctionalBrainstems").
 
-NEGATION — use the negated field on facts, NEVER use "not" as a predicate:
-  "are not students" → fact students(e1) with negated=true
-  VIOLATION: fact with pred="not" — NEVER DO THIS
+═══════════════════════════════════════════════════════════════════════════
+PATTERNS (examples are authoritative — use them as your reference)
+═══════════════════════════════════════════════════════════════════════════
 
-ADVERB + ADJECTIVE/VERB — keep adverbs attached to the predicate they modify:
-  "very engaged with" → pred "very engaged with"
-  "perform often" → pred "perform often in" or separate fact often(e1)
+- A bare proper-noun claim becomes an atomic Formula over a Constant.
+- "All X are Y" / "Every X is Y" becomes a universal quantification whose
+  restrictor is the X predicate and whose nucleus is the Y predicate.
+- "All X who/that R are Y" populates the restrictor with X and the R
+  predicate(s); `inner_quantifications` names any variables introduced
+  within the restrictor (e.g. "who schedule meetings" adds an existential
+  on the meeting variable).
+- "No X is Y" is a universal with a negated atom in the nucleus (or
+  equivalently `negated=True` on the nucleus atom).
+- "Only X are Y" is a universal of the converse: Y(x) → X(x).
+- "A and B" / "A or B" / "If A then B" / "A iff B" become Formulas with
+  the matching `connective`.
+- Negation of a compound wraps the compound in `Formula.negation`.
+- Zero-place predicates are forbidden: "It rains" becomes Rains(weather)
+  with `weather` declared as a Constant.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CRITICAL RULES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. EXACT SURFACE FORMS — never lemmatize, normalize, or substitute synonyms.
-   "crimson" → pred "crimson", NOT "red".
-   "running" → pred "running", NOT "run".
-   "difficult" → pred "difficult", NOT "hard".
-
-2. USE COMPOUND ANALYSIS — the "COMPOUND ANALYSIS" block (when present) shows
-   pre-computed recommendations:
-   • KEEP  → treat the modifier+noun as a single compound predicate.
-             E.g. "Harvard student" → one entity with surface "Harvard student",
-             fact pred "HarvardStudent".
-   • SPLIT → encode the modifier as a separate unary property fact.
-             E.g. "tall tree" → entity surface "tree" + separate fact pred "tall".
-   • [Route to constants array] → this modifier is a proper noun; place the
-             whole compound in constants, not entities.
-
-3. MACRO TEMPLATE — choose the single best-matching template:
-   • universal_affirmative   (TYPE A):  All P are Q       → ∀x(P(x) → Q(x))
-   • universal_negative      (TYPE E):  No P are Q        → ∀x(P(x) → ¬Q(x))
-   • existential_affirmative (TYPE I):  Some P are Q      → ∃x(P(x) ∧ Q(x))
-   • existential_negative    (TYPE O):  Some P are not Q  → ∃x(P(x) ∧ ¬Q(x))
-   • ground_positive                    P(c) or P(c) ∧ Q(c)
-   • ground_negative                    ¬P(c)
-   • conditional                        A → B
-   • biconditional                      A ↔ B
-
-4. OUTPUT JSON ONLY — no markdown fencing, no explanation.
+Follow the few-shot examples for structural patterns. Return valid JSON
+matching the schema exactly.

@@ -1,194 +1,448 @@
 [
   {
-    "description": "Splittable adjective properties",
-    "compound_analysis": "  • \"tall red\" tree  [WordNet:NO  PMI=0.8  ProperNoun:NO  dep=nsubj]  → SPLIT (Low PMI; modifier targets subject entity → separate property.)",
-    "sentence": "The tall red tree grows quickly.",
-    "response": {
-      "constants": [],
-      "entities": [
-        {"id": "e1", "surface": "tree", "entity_type": "existential"}
-      ],
-      "facts": [
-        {"pred": "tall",    "args": ["e1"], "negated": false},
-        {"pred": "red",     "args": ["e1"], "negated": false},
-        {"pred": "grows quickly", "args": ["e1"], "negated": false}
-      ],
-      "macro_template": "ground_positive"
+    "sentence": "Miroslav Venhoda was a Czech choral conductor.",
+    "extraction": {
+      "nl": "Miroslav Venhoda was a Czech choral conductor.",
+      "predicates": [{"name": "CzechChoralConductor", "arity": 1, "arg_types": ["entity"]}],
+      "entities": [],
+      "constants": [{"id": "miroslav", "surface": "Miroslav Venhoda", "type": "entity"}],
+      "formula": {
+        "atomic": {"pred": "CzechChoralConductor", "args": ["miroslav"], "negated": false},
+        "quantification": null,
+        "negation": null,
+        "connective": null,
+        "operands": null
+      }
     }
   },
   {
-    "description": "Named individuals in constants, binary relation",
-    "compound_analysis": "  • \"Lana Wilson\" director  [WordNet:NO  PMI=0.0  ProperNoun:YES  dep=nsubj]  → KEEP (Proper-noun modifier denotes a named category.)  [Route to constants array]",
-    "sentence": "Lana Wilson directed After Tiller.",
-    "response": {
+    "sentence": "Alice taught Bob.",
+    "extraction": {
+      "nl": "Alice taught Bob.",
+      "predicates": [{"name": "Taught", "arity": 2, "arg_types": ["entity", "entity"]}],
+      "entities": [],
       "constants": [
-        {"id": "lanaWilson",  "surface": "Lana Wilson"},
-        {"id": "afterTiller", "surface": "After Tiller"}
+        {"id": "alice", "surface": "Alice", "type": "entity"},
+        {"id": "bob", "surface": "Bob", "type": "entity"}
+      ],
+      "formula": {
+        "atomic": {"pred": "Taught", "args": ["alice", "bob"], "negated": false},
+        "quantification": null,
+        "negation": null,
+        "connective": null,
+        "operands": null
+      }
+    }
+  },
+  {
+    "sentence": "All dogs are mammals.",
+    "extraction": {
+      "nl": "All dogs are mammals.",
+      "predicates": [
+        {"name": "Dog", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Mammal", "arity": 1, "arg_types": ["entity"]}
       ],
       "entities": [],
-      "facts": [
-        {"pred": "directed", "args": ["lanaWilson", "afterTiller"], "negated": false}
-      ],
-      "macro_template": "ground_positive"
-    }
-  },
-  {
-    "description": "Reified attribute (KEEP compound)",
-    "compound_analysis": "  • \"low\" rainfall  [WordNet:NO  PMI=4.2  ProperNoun:NO  dep=dobj]  → KEEP (High PMI (4.2 > 3.0) → fixed collocation.)",
-    "sentence": "The region has low rainfall.",
-    "response": {
       "constants": [],
-      "entities": [
-        {"id": "e1", "surface": "region",        "entity_type": "existential"},
-        {"id": "e2", "surface": "low rainfall",  "entity_type": "existential"}
-      ],
-      "facts": [
-        {"pred": "has", "args": ["e1", "e2"], "negated": false}
-      ],
-      "macro_template": "ground_positive"
+      "formula": {
+        "atomic": null,
+        "quantification": {
+          "quantifier": "universal",
+          "variable": "x",
+          "var_type": "entity",
+          "restrictor": [{"pred": "Dog", "args": ["x"], "negated": false}],
+          "nucleus": {
+            "atomic": {"pred": "Mammal", "args": ["x"], "negated": false},
+            "quantification": null,
+            "negation": null,
+            "connective": null,
+            "operands": null
+          },
+          "inner_quantifications": []
+        },
+        "negation": null,
+        "connective": null,
+        "operands": null
+      }
     }
   },
   {
-    "description": "Ditransitive decomposition (Stage 3 addition: demonstrates binary-only arity for ditransitive verbs)",
-    "compound_analysis": "(no compound modifiers detected)",
-    "sentence": "Alice gave the book to Bob.",
-    "response": {
-      "constants": [
-        {"id": "alice", "surface": "Alice"},
-        {"id": "bob", "surface": "Bob"}
-      ],
-      "entities": [
-        {"id": "e1", "surface": "book", "entity_type": "existential"}
-      ],
-      "facts": [
-        {"pred": "gave", "args": ["alice", "e1"], "negated": false},
-        {"pred": "to", "args": ["e1", "bob"], "negated": false}
-      ],
-      "macro_template": "ground_positive"
-    }
-  },
-  {
-    "description": "Universal affirmative (TYPE A)",
-    "compound_analysis": "(no compound modifiers detected)",
-    "sentence": "All kids are young.",
-    "response": {
-      "constants": [],
-      "entities": [
-        {"id": "e1", "surface": "kid", "entity_type": "universal"}
-      ],
-      "facts": [
-        {"pred": "young", "args": ["e1"], "negated": false}
-      ],
-      "macro_template": "universal_affirmative"
-    }
-  },
-  {
-    "description": "Ground fact about a named constant",
-    "compound_analysis": "(no compound modifiers detected)",
-    "sentence": "Elizabeth is a queen.",
-    "response": {
-      "constants": [
-        {"id": "elizabeth", "surface": "Elizabeth"}
+    "sentence": "All employees who schedule meetings attend the company building.",
+    "extraction": {
+      "nl": "All employees who schedule meetings attend the company building.",
+      "predicates": [
+        {"name": "Employee", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Meeting", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Schedule", "arity": 2, "arg_types": ["entity", "entity"]},
+        {"name": "CompanyBuilding", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Attend", "arity": 2, "arg_types": ["entity", "entity"]}
       ],
       "entities": [],
-      "facts": [
-        {"pred": "queen", "args": ["elizabeth"], "negated": false}
-      ],
-      "macro_template": "ground_positive"
-    }
-  },
-  {
-    "description": "Complex: prepositional decomposition, relative clause, conjunction of facts",
-    "compound_analysis": "(no compound modifiers detected)",
-    "sentence": "Workers at the factory who operate heavy machinery regularly inspect and carefully maintain the production equipment.",
-    "response": {
       "constants": [],
-      "entities": [
-        {"id": "e1", "surface": "workers",              "entity_type": "existential"},
-        {"id": "e2", "surface": "factory",              "entity_type": "existential"},
-        {"id": "e3", "surface": "heavy machinery",      "entity_type": "existential"},
-        {"id": "e4", "surface": "production equipment", "entity_type": "existential"}
-      ],
-      "facts": [
-        {"pred": "at",                "args": ["e1", "e2"], "negated": false},
-        {"pred": "operate",           "args": ["e1", "e3"], "negated": false},
-        {"pred": "regularly inspect", "args": ["e1", "e4"], "negated": false},
-        {"pred": "carefully maintain","args": ["e1", "e4"], "negated": false}
-      ],
-      "macro_template": "conditional"
+      "formula": {
+        "atomic": null,
+        "quantification": {
+          "quantifier": "universal",
+          "variable": "x",
+          "var_type": "entity",
+          "restrictor": [
+            {"pred": "Employee", "args": ["x"], "negated": false},
+            {"pred": "Schedule", "args": ["x", "y"], "negated": false},
+            {"pred": "Meeting", "args": ["y"], "negated": false}
+          ],
+          "nucleus": {
+            "atomic": null,
+            "quantification": {
+              "quantifier": "existential",
+              "variable": "z",
+              "var_type": "entity",
+              "restrictor": [{"pred": "CompanyBuilding", "args": ["z"], "negated": false}],
+              "nucleus": {
+                "atomic": {"pred": "Attend", "args": ["x", "z"], "negated": false},
+                "quantification": null,
+                "negation": null,
+                "connective": null,
+                "operands": null
+              },
+              "inner_quantifications": []
+            },
+            "negation": null,
+            "connective": null,
+            "operands": null
+          },
+          "inner_quantifications": [
+            {"quantifier": "existential", "variable": "y", "var_type": "entity"}
+          ]
+        },
+        "negation": null,
+        "connective": null,
+        "operands": null
+      }
     }
   },
   {
-    "description": "Universal negative: decomposed relative clauses, negation on fact field",
-    "compound_analysis": "(no compound modifiers detected)",
-    "sentence": "Volunteers at the shelter who supervise weekend activities are not employees who receive a salary.",
-    "response": {
+    "sentence": "Some student read a book.",
+    "extraction": {
+      "nl": "Some student read a book.",
+      "predicates": [
+        {"name": "Student", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Book", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Read", "arity": 2, "arg_types": ["entity", "entity"]}
+      ],
+      "entities": [],
       "constants": [],
-      "entities": [
-        {"id": "e1", "surface": "volunteers",        "entity_type": "universal"},
-        {"id": "e2", "surface": "shelter",           "entity_type": "existential"},
-        {"id": "e3", "surface": "weekend activities","entity_type": "existential"},
-        {"id": "e4", "surface": "employees",         "entity_type": "existential"},
-        {"id": "e5", "surface": "salary",            "entity_type": "existential"}
-      ],
-      "facts": [
-        {"pred": "at",        "args": ["e1", "e2"], "negated": false},
-        {"pred": "supervise", "args": ["e1", "e3"], "negated": false},
-        {"pred": "employees", "args": ["e1"],       "negated": true},
-        {"pred": "receive",   "args": ["e1", "e5"], "negated": true}
-      ],
-      "macro_template": "universal_negative"
+      "formula": {
+        "atomic": null,
+        "quantification": {
+          "quantifier": "existential",
+          "variable": "x",
+          "var_type": "entity",
+          "restrictor": [{"pred": "Student", "args": ["x"], "negated": false}],
+          "nucleus": {
+            "atomic": null,
+            "quantification": {
+              "quantifier": "existential",
+              "variable": "y",
+              "var_type": "entity",
+              "restrictor": [{"pred": "Book", "args": ["y"], "negated": false}],
+              "nucleus": {
+                "atomic": {"pred": "Read", "args": ["x", "y"], "negated": false},
+                "quantification": null,
+                "negation": null,
+                "connective": null,
+                "operands": null
+              },
+              "inner_quantifications": []
+            },
+            "negation": null,
+            "connective": null,
+            "operands": null
+          },
+          "inner_quantifications": []
+        },
+        "negation": null,
+        "connective": null,
+        "operands": null
+      }
     }
   },
   {
-    "description": "Universal affirmative: conjoined subjects, split modifier, prepositional decomposition",
-    "compound_analysis": "  • \"junior\" analysts  [WordNet:NO  PMI=0.0  ProperNoun:NO  dep=nsubj]  → SPLIT (Low PMI; modifier targets subject entity → separate property.)",
-    "sentence": "All junior analysts and interns at this firm who aspire to advance their technical skills and leadership abilities are candidates who participate in the mentorship program.",
-    "response": {
+    "sentence": "Every student who takes a class that is taught by a professor passes.",
+    "extraction": {
+      "nl": "Every student who takes a class that is taught by a professor passes.",
+      "predicates": [
+        {"name": "Student", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Class", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Professor", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Takes", "arity": 2, "arg_types": ["entity", "entity"]},
+        {"name": "TaughtBy", "arity": 2, "arg_types": ["entity", "entity"]},
+        {"name": "Passes", "arity": 1, "arg_types": ["entity"]}
+      ],
+      "entities": [],
       "constants": [],
-      "entities": [
-        {"id": "e1", "surface": "analysts",           "entity_type": "universal"},
-        {"id": "e2", "surface": "interns",            "entity_type": "universal"},
-        {"id": "e3", "surface": "firm",               "entity_type": "existential"},
-        {"id": "e4", "surface": "technical skills",   "entity_type": "existential"},
-        {"id": "e5", "surface": "leadership abilities","entity_type": "existential"},
-        {"id": "e6", "surface": "candidates",         "entity_type": "existential"},
-        {"id": "e7", "surface": "mentorship program", "entity_type": "existential"}
-      ],
-      "facts": [
-        {"pred": "junior",            "args": ["e1"],       "negated": false},
-        {"pred": "at",                "args": ["e1", "e3"], "negated": false},
-        {"pred": "at",                "args": ["e2", "e3"], "negated": false},
-        {"pred": "aspire to advance", "args": ["e1", "e4"], "negated": false},
-        {"pred": "aspire to advance", "args": ["e1", "e5"], "negated": false},
-        {"pred": "aspire to advance", "args": ["e2", "e4"], "negated": false},
-        {"pred": "aspire to advance", "args": ["e2", "e5"], "negated": false},
-        {"pred": "candidates",        "args": ["e1"],       "negated": false},
-        {"pred": "candidates",        "args": ["e2"],       "negated": false},
-        {"pred": "participate in",    "args": ["e1", "e7"], "negated": false},
-        {"pred": "participate in",    "args": ["e2", "e7"], "negated": false}
-      ],
-      "macro_template": "universal_affirmative"
+      "formula": {
+        "atomic": null,
+        "quantification": {
+          "quantifier": "universal",
+          "variable": "x",
+          "var_type": "entity",
+          "restrictor": [
+            {"pred": "Student", "args": ["x"], "negated": false},
+            {"pred": "Takes", "args": ["x", "y"], "negated": false},
+            {"pred": "Class", "args": ["y"], "negated": false},
+            {"pred": "TaughtBy", "args": ["y", "z"], "negated": false},
+            {"pred": "Professor", "args": ["z"], "negated": false}
+          ],
+          "nucleus": {
+            "atomic": {"pred": "Passes", "args": ["x"], "negated": false},
+            "quantification": null,
+            "negation": null,
+            "connective": null,
+            "operands": null
+          },
+          "inner_quantifications": [
+            {"quantifier": "existential", "variable": "y", "var_type": "entity"},
+            {"quantifier": "existential", "variable": "z", "var_type": "entity"}
+          ]
+        },
+        "negation": null,
+        "connective": null,
+        "operands": null
+      }
     }
   },
   {
-    "description": "Named constant with prepositional decomposition and conjunction",
-    "compound_analysis": "(no compound modifiers detected)",
-    "sentence": "Marcus is in this team and he coaches and actively mentors the new recruits.",
-    "response": {
+    "sentence": "No dog is a cat.",
+    "extraction": {
+      "nl": "No dog is a cat.",
+      "predicates": [
+        {"name": "Dog", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Cat", "arity": 1, "arg_types": ["entity"]}
+      ],
+      "entities": [],
+      "constants": [],
+      "formula": {
+        "atomic": null,
+        "quantification": {
+          "quantifier": "universal",
+          "variable": "x",
+          "var_type": "entity",
+          "restrictor": [{"pred": "Dog", "args": ["x"], "negated": false}],
+          "nucleus": {
+            "atomic": {"pred": "Cat", "args": ["x"], "negated": true},
+            "quantification": null,
+            "negation": null,
+            "connective": null,
+            "operands": null
+          },
+          "inner_quantifications": []
+        },
+        "negation": null,
+        "connective": null,
+        "operands": null
+      }
+    }
+  },
+  {
+    "sentence": "Only managers attend the meeting.",
+    "extraction": {
+      "nl": "Only managers attend the meeting.",
+      "predicates": [
+        {"name": "Manager", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Attend", "arity": 2, "arg_types": ["entity", "entity"]}
+      ],
+      "entities": [],
+      "constants": [{"id": "theMeeting", "surface": "the meeting", "type": "entity"}],
+      "formula": {
+        "atomic": null,
+        "quantification": {
+          "quantifier": "universal",
+          "variable": "x",
+          "var_type": "entity",
+          "restrictor": [{"pred": "Attend", "args": ["x", "theMeeting"], "negated": false}],
+          "nucleus": {
+            "atomic": {"pred": "Manager", "args": ["x"], "negated": false},
+            "quantification": null,
+            "negation": null,
+            "connective": null,
+            "operands": null
+          },
+          "inner_quantifications": []
+        },
+        "negation": null,
+        "connective": null,
+        "operands": null
+      }
+    }
+  },
+  {
+    "sentence": "Alice is tall and Bob is short.",
+    "extraction": {
+      "nl": "Alice is tall and Bob is short.",
+      "predicates": [
+        {"name": "Tall", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Short", "arity": 1, "arg_types": ["entity"]}
+      ],
+      "entities": [],
       "constants": [
-        {"id": "marcus", "surface": "Marcus"}
+        {"id": "alice", "surface": "Alice", "type": "entity"},
+        {"id": "bob", "surface": "Bob", "type": "entity"}
       ],
-      "entities": [
-        {"id": "e1", "surface": "team",        "entity_type": "existential"},
-        {"id": "e2", "surface": "new recruits","entity_type": "existential"}
+      "formula": {
+        "atomic": null,
+        "quantification": null,
+        "negation": null,
+        "connective": "and",
+        "operands": [
+          {"atomic": {"pred": "Tall", "args": ["alice"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null},
+          {"atomic": {"pred": "Short", "args": ["bob"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null}
+        ]
+      }
+    }
+  },
+  {
+    "sentence": "The L-2021 monitor is either used in the library or has a type-c port.",
+    "extraction": {
+      "nl": "The L-2021 monitor is either used in the library or has a type-c port.",
+      "predicates": [
+        {"name": "UsedIn", "arity": 2, "arg_types": ["entity", "entity"]},
+        {"name": "HasTypeC", "arity": 1, "arg_types": ["entity"]}
       ],
-      "facts": [
-        {"pred": "in",               "args": ["marcus", "e1"], "negated": false},
-        {"pred": "coaches",          "args": ["marcus", "e2"], "negated": false},
-        {"pred": "actively mentors", "args": ["marcus", "e2"], "negated": false}
+      "entities": [],
+      "constants": [
+        {"id": "monitor", "surface": "L-2021 monitor", "type": "entity"},
+        {"id": "library", "surface": "library", "type": "entity"}
       ],
-      "macro_template": "ground_positive"
+      "formula": {
+        "atomic": null,
+        "quantification": null,
+        "negation": null,
+        "connective": "or",
+        "operands": [
+          {"atomic": {"pred": "UsedIn", "args": ["monitor", "library"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null},
+          {"atomic": {"pred": "HasTypeC", "args": ["monitor"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null}
+        ]
+      }
+    }
+  },
+  {
+    "sentence": "If it rains, the ground is wet.",
+    "extraction": {
+      "nl": "If it rains, the ground is wet.",
+      "predicates": [
+        {"name": "Rains", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Wet", "arity": 1, "arg_types": ["entity"]}
+      ],
+      "entities": [],
+      "constants": [
+        {"id": "weather", "surface": "weather", "type": "entity"},
+        {"id": "ground", "surface": "ground", "type": "entity"}
+      ],
+      "formula": {
+        "atomic": null,
+        "quantification": null,
+        "negation": null,
+        "connective": "implies",
+        "operands": [
+          {"atomic": {"pred": "Rains", "args": ["weather"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null},
+          {"atomic": {"pred": "Wet", "args": ["ground"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null}
+        ]
+      }
+    }
+  },
+  {
+    "sentence": "Archie can walk if and only if he has functional brainstems.",
+    "extraction": {
+      "nl": "Archie can walk if and only if he has functional brainstems.",
+      "predicates": [
+        {"name": "CanWalk", "arity": 1, "arg_types": ["entity"]},
+        {"name": "HasFunctionalBrainstems", "arity": 1, "arg_types": ["entity"]}
+      ],
+      "entities": [],
+      "constants": [{"id": "archie", "surface": "Archie", "type": "entity"}],
+      "formula": {
+        "atomic": null,
+        "quantification": null,
+        "negation": null,
+        "connective": "iff",
+        "operands": [
+          {"atomic": {"pred": "CanWalk", "args": ["archie"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null},
+          {"atomic": {"pred": "HasFunctionalBrainstems", "args": ["archie"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null}
+        ]
+      }
+    }
+  },
+  {
+    "sentence": "If the forecast calls for rain, then all employees work from home.",
+    "extraction": {
+      "nl": "If the forecast calls for rain, then all employees work from home.",
+      "predicates": [
+        {"name": "ForecastRain", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Employee", "arity": 1, "arg_types": ["entity"]},
+        {"name": "WorkFromHome", "arity": 1, "arg_types": ["entity"]}
+      ],
+      "entities": [],
+      "constants": [{"id": "weather", "surface": "weather", "type": "entity"}],
+      "formula": {
+        "atomic": null,
+        "quantification": null,
+        "negation": null,
+        "connective": "implies",
+        "operands": [
+          {"atomic": {"pred": "ForecastRain", "args": ["weather"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null},
+          {
+            "atomic": null,
+            "quantification": {
+              "quantifier": "universal",
+              "variable": "x",
+              "var_type": "entity",
+              "restrictor": [{"pred": "Employee", "args": ["x"], "negated": false}],
+              "nucleus": {
+                "atomic": {"pred": "WorkFromHome", "args": ["x"], "negated": false},
+                "quantification": null,
+                "negation": null,
+                "connective": null,
+                "operands": null
+              },
+              "inner_quantifications": []
+            },
+            "negation": null,
+            "connective": null,
+            "operands": null
+          }
+        ]
+      }
+    }
+  },
+  {
+    "sentence": "It is not the case that Alice is tall and Bob is short.",
+    "extraction": {
+      "nl": "It is not the case that Alice is tall and Bob is short.",
+      "predicates": [
+        {"name": "Tall", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Short", "arity": 1, "arg_types": ["entity"]}
+      ],
+      "entities": [],
+      "constants": [
+        {"id": "alice", "surface": "Alice", "type": "entity"},
+        {"id": "bob", "surface": "Bob", "type": "entity"}
+      ],
+      "formula": {
+        "atomic": null,
+        "quantification": null,
+        "negation": {
+          "atomic": null,
+          "quantification": null,
+          "negation": null,
+          "connective": "and",
+          "operands": [
+            {"atomic": {"pred": "Tall", "args": ["alice"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null},
+            {"atomic": {"pred": "Short", "args": ["bob"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null}
+          ]
+        },
+        "connective": null,
+        "operands": null
+      }
     }
   }
 ]

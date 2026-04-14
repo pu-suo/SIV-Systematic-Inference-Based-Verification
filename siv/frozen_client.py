@@ -31,9 +31,9 @@ from siv.frozen_config import (
     MAX_TOKENS,
     CACHE_DIR,
     CACHE_FILE,
-    get_extraction_json_schema,
     get_generation_json_schema,
 )
+from siv.json_schema import derive_extraction_schema
 
 logger = logging.getLogger("siv.frozen_client")
 
@@ -89,7 +89,11 @@ class FrozenClient:
             temperature=TEMPERATURE,
             seed=SEED,
             max_tokens=MAX_TOKENS,
-            response_format={"type": "json_schema", "json_schema": get_extraction_json_schema()},
+            response_format={"type": "json_schema", "json_schema": {
+                "name": "siv_extraction",
+                "strict": True,
+                "schema": derive_extraction_schema(),
+            }},
         )
 
         fingerprint = getattr(response, "system_fingerprint", None)

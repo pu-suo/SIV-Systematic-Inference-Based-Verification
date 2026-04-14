@@ -1,228 +1,343 @@
-"""Tests for siv/extractor.py (no API required)."""
-import json
-from dataclasses import dataclass
-from unittest.mock import MagicMock
+"""Tests for siv/extractor.py — mocked LLM client (no API required)."""
+from __future__ import annotations
+
+import copy
+from typing import List
 
 import pytest
 
-from siv.extractor import extract_sentence, _dict_to_extraction, _register_entities_across_sentences
-from siv.frozen_client import FrozenClient
-from siv.schema import Entity, EntityType, Fact, MacroTemplate, Constant, SentenceExtraction
-from siv.pre_analyzer import analyze_sentence
+from siv.extractor import _walk_formula, extract_sentence
+from siv.schema import (
+    AtomicFormula,
+    Formula,
+    SchemaViolation,
+)
 
 
-# ── Stub helpers ──────────────────────────────────────────────────────────────
+# ── Mock client ─────────────────────────────────────────────────────────────
 
-@dataclass
-class _StubMessage:
-    content: str
+class MockClient:
+    """Mimics FrozenClient.extract(): returns queued extraction dicts."""
 
+    def __init__(self, responses: List[dict]):
+        self._responses = list(responses)
+        self.calls: List[dict] = []
 
-@dataclass
-class _StubChoice:
-    message: object
-
-
-@dataclass
-class _StubResponse:
-    choices: list
-    system_fingerprint: str = "fp_test"
-
-
-def _make_stub_client(response_json: dict):
-    stub = MagicMock()
-    stub.chat.completions.create.return_value = _StubResponse(
-        choices=[_StubChoice(message=_StubMessage(content=json.dumps(response_json)))]
-    )
-    return stub
+    def extract(self, system_prompt, few_shot_messages, user_content):
+        self.calls.append({
+            "system_prompt": system_prompt,
+            "few_shot_messages": few_shot_messages,
+            "user_content": user_content,
+        })
+        if not self._responses:
+            raise RuntimeError("MockClient ran out of queued responses")
+        data = self._responses.pop(0)
+        return data, None
 
 
-def _minimal_response():
+# ── Fixtures: extraction dicts ─────────────────────────────────────────────
+
+def _good_atomic_extraction(nl="Miroslav Venhoda was a Czech choral conductor."):
     return {
-        "constants": [],
-        "entities": [{"id": "e1", "surface": "tree", "entity_type": "existential"}],
-        "facts": [{"pred": "tall", "args": ["e1"], "negated": False}],
-        "macro_template": "ground_positive",
-    }
-
-
-# ── _dict_to_extraction: replacement tests for deleted _parse_response ────────
-#
-# _parse_response has been deleted (Task 05). The JSON Schema response_format
-# binding now guarantees that FrozenClient.extract() returns pre-parsed,
-# structurally valid JSON. The tests below verify the same semantic behaviors
-# via _dict_to_extraction, which is the layer that receives the parsed dict.
-
-def test_dict_to_extraction_handles_clean_json():
-    """Replacement for test_parse_response_clean_json:
-    _dict_to_extraction must correctly map a well-formed dict."""
-    data = {
-        "constants": [],
-        "entities": [{"id": "e1", "surface": "tree", "entity_type": "existential"}],
-        "facts": [{"pred": "tall", "args": ["e1"], "negated": False}],
-        "macro_template": "ground_positive",
-    }
-    sent = _dict_to_extraction("The tall tree.", data, [])
-    assert sent.entities[0].id == "e1"
-    assert sent.facts[0].pred == "tall"
-
-
-def test_dict_to_extraction_handles_entities_only_format():
-    """Replacement for test_parse_response_strips_markdown:
-    _dict_to_extraction must handle the old format (no constants key)."""
-    data = {
-        "entities": [{"id": "e1", "surface": "tree", "entity_type": "existential"}],
-        "facts": [{"pred": "tall", "args": ["e1"], "negated": False}],
-        "macro_template": "ground_positive",
-    }
-    sent = _dict_to_extraction("The tall tree.", data, [])
-    assert sent.entities[0].surface == "tree"
-    assert sent.facts[0].pred == "tall"
-    assert sent.constants == []
-
-
-def test_dict_to_extraction_missing_facts_raises():
-    """Replacement for test_parse_response_missing_entities_raises:
-    _dict_to_extraction must raise if facts is absent."""
-    data = {
-        "constants": [],
-        "entities": [{"id": "e1", "surface": "tree", "entity_type": "existential"}],
-        "macro_template": "ground_positive",
-    }
-    with pytest.raises(Exception):
-        _dict_to_extraction("The tall tree.", data, [])
-
-
-def test_extract_sentence_wraps_raw_client_in_frozen_client(tmp_path, monkeypatch):
-    """Replacement for test_parse_response_invalid_json_raises:
-    extract_sentence must auto-wrap a raw OpenAI client in FrozenClient."""
-    monkeypatch.setattr("siv.frozen_client.CACHE_FILE", tmp_path / "cache.jsonl")
-    monkeypatch.setattr("siv.frozen_client.CACHE_DIR", tmp_path)
-
-    stub = _make_stub_client(_minimal_response())
-    result = extract_sentence("A tall tree.", analyze_sentence("A tall tree."), client=stub)
-    assert result.entities[0].surface == "tree"
-    # Raw client was wrapped — call still went through
-    assert stub.chat.completions.create.call_count == 1
-
-
-# ── _dict_to_extraction two-list format ──────────────────────────────────────
-
-def test_dict_to_extraction_new_two_list_format():
-    """Replacement for test_parse_response_new_two_list_format:
-    new format with separate constants and entities arrays."""
-    data = {
-        "constants": [{"id": "lanaWilson", "surface": "Lana Wilson"}],
-        "entities": [{"id": "e1", "surface": "film", "entity_type": "existential"}],
-        "facts": [{"pred": "directed", "args": ["lanaWilson", "e1"], "negated": False}],
-        "macro_template": "ground_positive",
-    }
-    sent = _dict_to_extraction("Lana Wilson directed a film.", data, [])
-    assert len(sent.constants) == 1
-    assert sent.constants[0].id == "lanaWilson"
-    assert len(sent.entities) == 1
-
-
-def test_dict_to_extraction_old_entity_type_constant_accepted():
-    """Replacement for test_parse_response_old_entity_type_constant_accepted:
-    old-format entity_type='constant' in entities list must not raise and must
-    be routed to the constants list by _dict_to_extraction."""
-    data = {
-        "entities": [{"id": "bonnie", "surface": "Bonnie", "entity_type": "constant"}],
-        "facts": [{"pred": "sings", "args": ["bonnie"], "negated": False}],
-        "macro_template": "ground_positive",
-    }
-    sent = _dict_to_extraction("Bonnie sings.", data, [])
-    # entity_type='constant' must be routed to constants, not entities
-    const_ids = [c.id for c in sent.constants]
-    assert "bonnie" in const_ids
-    assert len(sent.entities) == 0
-
-
-# ── extract_sentence backend guard ───────────────────────────────────────────
-
-def test_extract_sentence_no_backend_raises():
-    """Must raise RuntimeError if neither client nor vllm_extractor is provided."""
-    with pytest.raises(RuntimeError, match="No extraction backend"):
-        extract_sentence("Test.", analyze_sentence("Test."))
-
-
-# ── _dict_to_extraction constants routing ────────────────────────────────────
-
-def test_dict_to_extraction_populates_constants():
-    """constants key in data → Constant objects in SentenceExtraction.constants."""
-    data = {
-        "constants": [{"id": "bonnie", "surface": "Bonnie"}],
+        "nl": nl,
+        "predicates": [{"name": "CzechChoralConductor", "arity": 1, "arg_types": ["entity"]}],
         "entities": [],
-        "facts": [{"pred": "sings", "args": ["bonnie"], "negated": False}],
-        "macro_template": "ground_positive",
+        "constants": [{"id": "miroslav", "surface": "Miroslav Venhoda", "type": "entity"}],
+        "formula": {
+            "atomic": {"pred": "CzechChoralConductor", "args": ["miroslav"], "negated": False},
+            "quantification": None, "negation": None, "connective": None, "operands": None,
+        },
     }
-    sent = _dict_to_extraction("Bonnie sings.", data, [])
-    assert len(sent.constants) == 1
-    assert sent.constants[0].id == "bonnie"
-    assert len(sent.entities) == 0
 
 
-def test_dict_to_extraction_entity_type_constant_routes_to_constants():
-    """Old-format entity_type='constant' must be routed to constants list."""
-    data = {
+def _restrictor_extraction():
+    return {
+        "nl": "All employees who schedule meetings attend the company building.",
+        "predicates": [
+            {"name": "Employee", "arity": 1, "arg_types": ["entity"]},
+            {"name": "Meeting", "arity": 1, "arg_types": ["entity"]},
+            {"name": "Schedule", "arity": 2, "arg_types": ["entity", "entity"]},
+            {"name": "Attend", "arity": 2, "arg_types": ["entity", "entity"]},
+            {"name": "CompanyBuilding", "arity": 1, "arg_types": ["entity"]},
+        ],
+        "entities": [],
         "constants": [],
-        "entities": [{"id": "bonnie", "surface": "Bonnie", "entity_type": "constant"}],
-        "facts": [{"pred": "sings", "args": ["bonnie"], "negated": False}],
-        "macro_template": "ground_positive",
+        "formula": {
+            "atomic": None,
+            "quantification": {
+                "quantifier": "universal", "variable": "x", "var_type": "entity",
+                "restrictor": [
+                    {"pred": "Employee", "args": ["x"], "negated": False},
+                    {"pred": "Schedule", "args": ["x", "y"], "negated": False},
+                    {"pred": "Meeting", "args": ["y"], "negated": False},
+                ],
+                "nucleus": {
+                    "atomic": None,
+                    "quantification": {
+                        "quantifier": "existential", "variable": "z", "var_type": "entity",
+                        "restrictor": [{"pred": "CompanyBuilding", "args": ["z"], "negated": False}],
+                        "nucleus": {
+                            "atomic": {"pred": "Attend", "args": ["x", "z"], "negated": False},
+                            "quantification": None, "negation": None, "connective": None, "operands": None,
+                        },
+                        "inner_quantifications": [],
+                    },
+                    "negation": None, "connective": None, "operands": None,
+                },
+                "inner_quantifications": [
+                    {"quantifier": "existential", "variable": "y", "var_type": "entity"},
+                ],
+            },
+            "negation": None, "connective": None, "operands": None,
+        },
     }
-    sent = _dict_to_extraction("Bonnie sings.", data, [])
-    const_ids = [c.id for c in sent.constants]
-    assert "bonnie" in const_ids
-    assert all(e.surface.lower() != "bonnie" for e in sent.entities)
 
 
-# ── FIX E1: whitespace-normalised registry key ────────────────────────────────
+def _empty_restrictor_universal_bad():
+    """Universal over Dog(x) with compound nucleus — no restrictor, fails tripwire."""
+    return {
+        "nl": "All employees who schedule meetings attend the company building.",
+        "predicates": [
+            {"name": "Employee", "arity": 1, "arg_types": ["entity"]},
+            {"name": "Attend", "arity": 1, "arg_types": ["entity"]},
+        ],
+        "entities": [],
+        "constants": [],
+        "formula": {
+            "atomic": None,
+            "quantification": {
+                "quantifier": "universal", "variable": "x", "var_type": "entity",
+                "restrictor": [],
+                "nucleus": {
+                    "atomic": None, "quantification": None, "negation": None,
+                    "connective": "implies",
+                    "operands": [
+                        {"atomic": {"pred": "Employee", "args": ["x"], "negated": False},
+                         "quantification": None, "negation": None, "connective": None, "operands": None},
+                        {"atomic": {"pred": "Attend", "args": ["x"], "negated": False},
+                         "quantification": None, "negation": None, "connective": None, "operands": None},
+                    ],
+                },
+                "inner_quantifications": [],
+            },
+            "negation": None, "connective": None, "operands": None,
+        },
+    }
 
-def _make_sent(nl: str, entity_surface: str, entity_id: str = "e1") -> SentenceExtraction:
-    """Helper: build a minimal SentenceExtraction with one entity."""
-    return SentenceExtraction(
-        nl=nl,
-        entities=[Entity(id=entity_id, surface=entity_surface, entity_type=EntityType.EXISTENTIAL)],
-        facts=[],
-        macro_template=MacroTemplate.GROUND_POSITIVE,
-        compound_analyses=[],
-        constants=[],
+
+def _no_negation_extraction():
+    """For 'No dog is a cat.' — a valid extraction that lacks any negation."""
+    return {
+        "nl": "No dog is a cat.",
+        "predicates": [
+            {"name": "Dog", "arity": 1, "arg_types": ["entity"]},
+            {"name": "Cat", "arity": 1, "arg_types": ["entity"]},
+        ],
+        "entities": [],
+        "constants": [],
+        "formula": {
+            "atomic": None,
+            "quantification": {
+                "quantifier": "universal", "variable": "x", "var_type": "entity",
+                "restrictor": [{"pred": "Dog", "args": ["x"], "negated": False}],
+                "nucleus": {
+                    "atomic": {"pred": "Cat", "args": ["x"], "negated": False},  # NOT negated — tripwire miss
+                    "quantification": None, "negation": None, "connective": None, "operands": None,
+                },
+                "inner_quantifications": [],
+            },
+            "negation": None, "connective": None, "operands": None,
+        },
+    }
+
+
+def _with_negation_added(base: dict) -> dict:
+    """Flip the nucleus atom's negated flag to True."""
+    new = copy.deepcopy(base)
+    new["formula"]["quantification"]["nucleus"]["atomic"]["negated"] = True
+    return new
+
+
+def _malformed_two_cases():
+    """A Formula with two cases populated — should fail validate_extraction."""
+    return {
+        "nl": "Alice is tall.",
+        "predicates": [{"name": "Tall", "arity": 1, "arg_types": ["entity"]}],
+        "entities": [],
+        "constants": [{"id": "alice", "surface": "Alice", "type": "entity"}],
+        "formula": {
+            "atomic": {"pred": "Tall", "args": ["alice"], "negated": False},
+            "quantification": None,
+            "negation": {
+                "atomic": {"pred": "Tall", "args": ["alice"], "negated": False},
+                "quantification": None, "negation": None, "connective": None, "operands": None,
+            },
+            "connective": None, "operands": None,
+        },
+    }
+
+
+# ── Success path ────────────────────────────────────────────────────────────
+
+def test_extract_simple_success_no_retry():
+    client = MockClient([_good_atomic_extraction()])
+    extraction = extract_sentence(
+        "Miroslav Venhoda was a Czech choral conductor.", client
     )
+    assert extraction.formula.atomic.pred == "CzechChoralConductor"
+    assert len(client.calls) == 1
 
 
-def test_fix_E1_whitespace_normalized_registry():
-    """
-    FIX E1 (narrow): internal whitespace in entity surface forms must not
-    cause duplicate registry entries.
+# ── Retry-once on validation failure ───────────────────────────────────────
 
-    Positive case: "company building" vs "company  building" (two spaces)
-      → same canonical id after registration.
-    Case-insensitive case: "company building" vs "Company Building"
-      → same canonical id (pre-existing .lower() behaviour, confirmed no regression).
-    Negative case: "company building" vs "building"
-      → different ids (Tenet-1 guardrail: distinct surface forms stay distinct).
-    """
-    # --- Positive case: whitespace collapse ---
-    s1 = _make_sent("Sent 1.", "company building")
-    s2 = _make_sent("Sent 2.", "company  building")   # two spaces
-    result = _register_entities_across_sentences([s1, s2])
-    assert result[0].entities[0].id == result[1].entities[0].id, (
-        "single-space and double-space surface must resolve to the same entity id"
+def test_validation_failure_triggers_one_retry():
+    bad = _malformed_two_cases()
+    good = _good_atomic_extraction(nl="Alice is tall.")
+    good["predicates"] = [{"name": "Tall", "arity": 1, "arg_types": ["entity"]}]
+    good["constants"] = [{"id": "alice", "surface": "Alice", "type": "entity"}]
+    good["formula"]["atomic"] = {"pred": "Tall", "args": ["alice"], "negated": False}
+    client = MockClient([bad, good])
+    extraction = extract_sentence("Alice is tall.", client)
+    assert extraction.formula.atomic.pred == "Tall"
+    assert len(client.calls) == 2
+    # Retry prompt must include the violation context.
+    assert "RETRY" in client.calls[1]["system_prompt"]
+
+
+# ── Retry-once on tripwire failure ─────────────────────────────────────────
+
+def test_restrictor_tripwire_failure_triggers_one_retry():
+    bad = _empty_restrictor_universal_bad()
+    good = _restrictor_extraction()
+    client = MockClient([bad, good])
+    extraction = extract_sentence(
+        "All employees who schedule meetings attend the company building.", client,
     )
+    assert extraction.formula.quantification is not None
+    assert len(extraction.formula.quantification.restrictor) > 0
+    assert len(client.calls) == 2
 
-    # --- Case-insensitive case: confirm no regression on .lower() ---
-    s3 = _make_sent("Sent 3.", "company building")
-    s4 = _make_sent("Sent 4.", "Company Building")
-    result2 = _register_entities_across_sentences([s3, s4])
-    assert result2[0].entities[0].id == result2[1].entities[0].id, (
-        "different casing of the same surface must resolve to the same entity id"
-    )
 
-    # --- Negative case: Tenet-1 guardrail — distinct surfaces stay distinct ---
-    s5 = _make_sent("Sent 5.", "company building")
-    s6 = _make_sent("Sent 6.", "building")
-    result3 = _register_entities_across_sentences([s5, s6])
-    assert result3[0].entities[0].id != result3[1].entities[0].id, (
-        "'company building' and 'building' are different surface forms and must NOT collapse"
+def test_negation_tripwire_failure_triggers_one_retry():
+    bad = _no_negation_extraction()
+    good = _with_negation_added(bad)
+    client = MockClient([bad, good])
+    extraction = extract_sentence("No dog is a cat.", client)
+    # Confirm negation is now present in the tree.
+    assert extraction.formula.quantification.nucleus.atomic.negated is True
+    assert len(client.calls) == 2
+
+
+# ── Both attempts fail → raise ─────────────────────────────────────────────
+
+def test_both_retries_fail_raises_schema_violation():
+    bad = _empty_restrictor_universal_bad()
+    client = MockClient([bad, bad])
+    with pytest.raises(SchemaViolation):
+        extract_sentence(
+            "All employees who schedule meetings attend the company building.", client,
+        )
+    assert len(client.calls) == 2
+
+
+def test_no_third_retry_even_when_responses_available():
+    bad = _empty_restrictor_universal_bad()
+    client = MockClient([bad, bad, bad])
+    with pytest.raises(SchemaViolation):
+        extract_sentence(
+            "All employees who schedule meetings attend the company building.", client,
+        )
+    # Exactly two calls — no third attempt.
+    assert len(client.calls) == 2
+
+
+# ── Tripwire tree-walk covers all Formula cases ────────────────────────────
+
+def test_tripwire_finds_negation_inside_connective():
+    """requires_negation must walk into connective operands."""
+    # "Students are not diligent or teachers are lazy." triggers requires_negation.
+    # We construct an extraction whose negation lives inside an `and`/`or`.
+    data = {
+        "nl": "Students are not diligent or teachers are lazy.",
+        "predicates": [
+            {"name": "Diligent", "arity": 1, "arg_types": ["entity"]},
+            {"name": "Lazy", "arity": 1, "arg_types": ["entity"]},
+        ],
+        "entities": [],
+        "constants": [
+            {"id": "students", "surface": "students", "type": "entity"},
+            {"id": "teachers", "surface": "teachers", "type": "entity"},
+        ],
+        "formula": {
+            "atomic": None, "quantification": None, "negation": None,
+            "connective": "or",
+            "operands": [
+                {"atomic": {"pred": "Diligent", "args": ["students"], "negated": True},
+                 "quantification": None, "negation": None, "connective": None, "operands": None},
+                {"atomic": {"pred": "Lazy", "args": ["teachers"], "negated": False},
+                 "quantification": None, "negation": None, "connective": None, "operands": None},
+            ],
+        },
+    }
+    client = MockClient([data])
+    extraction = extract_sentence(
+        "Students are not diligent or teachers are lazy.", client,
     )
+    # Pre-analyzer flagged requires_negation (lemma "not" / neg dep), and the
+    # extraction satisfies it because the tripwire walker descended into the
+    # `or` operand. Single call; no retry.
+    assert len(client.calls) == 1
+    assert extraction.formula.connective == "or"
+
+
+def test_tripwire_finds_negation_inside_quantification_restrictor():
+    """requires_negation tree-walker must descend into restrictor atoms."""
+    data = {
+        "nl": "No student who has not studied passes.",
+        "predicates": [
+            {"name": "Student", "arity": 1, "arg_types": ["entity"]},
+            {"name": "Studied", "arity": 1, "arg_types": ["entity"]},
+            {"name": "Passes", "arity": 1, "arg_types": ["entity"]},
+        ],
+        "entities": [],
+        "constants": [],
+        "formula": {
+            "atomic": None,
+            "quantification": {
+                "quantifier": "universal", "variable": "x", "var_type": "entity",
+                "restrictor": [
+                    {"pred": "Student", "args": ["x"], "negated": False},
+                    {"pred": "Studied", "args": ["x"], "negated": True},  # negation deep in restrictor
+                ],
+                "nucleus": {
+                    "atomic": {"pred": "Passes", "args": ["x"], "negated": False},
+                    "quantification": None, "negation": None, "connective": None, "operands": None,
+                },
+                "inner_quantifications": [],
+            },
+            "negation": None, "connective": None, "operands": None,
+        },
+    }
+    client = MockClient([data])
+    extract_sentence("No student who has not studied passes.", client)
+    assert len(client.calls) == 1
+
+
+# ── _walk_formula visits every subtree ─────────────────────────────────────
+
+def test_walk_formula_visits_every_node():
+    atom_a = AtomicFormula(pred="A", args=["x"], negated=False)
+    atom_b = AtomicFormula(pred="B", args=["x"], negated=False)
+    f = Formula(connective="and", operands=[
+        Formula(atomic=atom_a),
+        Formula(negation=Formula(atomic=atom_b)),
+    ])
+    seen = []
+    _walk_formula(f, lambda n: seen.append(n))
+    kinds = [
+        "root",
+        "op0-atom" if seen[1].atomic is not None else "op0-other",
+        "op1-negation" if seen[2].negation is not None else "op1-other",
+        "op1-inner-atom" if seen[3].atomic is not None else "op1-other",
+    ]
+    assert kinds == ["root", "op0-atom", "op1-negation", "op1-inner-atom"]

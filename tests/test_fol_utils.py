@@ -117,3 +117,39 @@ def test_tptp_conjunction():
     expr = parse_fol("Car(x) & Red(x)")
     tptp = convert_to_tptp(expr)
     assert "&" in tptp
+
+
+# ── Regression: variable-casing in TPTP conversion ────────────────────────────
+
+@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
+def test_tptp_bound_variable_cased_consistently_in_body():
+    """Quantifier binder and body references must agree on casing.
+
+    TPTP requires variables to start with uppercase and constants with
+    lowercase. The prior implementation uppercased the binder (e.g. `![X]`)
+    but let body references fall through to `str(expr).lower()`, producing
+    `![X] : legislator(x)` — a binder/body mismatch that makes Vampire treat
+    `x` as a free constant and fail to prove alpha-equivalences.
+    """
+    expr = parse_fol("all x.(Dog(x) -> Animal(x))")
+    tptp = convert_to_tptp(expr)
+    # Binder is uppercase X; every X-argument in the body must also be X,
+    # not x.
+    assert "![X]" in tptp
+    assert "dog(X)" in tptp
+    assert "animal(X)" in tptp
+    assert "dog(x)" not in tptp
+
+
+@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
+def test_tptp_multichar_variable_name_uppercased():
+    """Multi-character bound variables (e.g. `v0`, introduced by the Phase 1
+    Path-B alpha-renamer) must also render as TPTP variables. Previously the
+    single-letter heuristic `len(name) == 1` failed `v0`, sending it through
+    the lowercase fallback and breaking alpha-equivalence proofs entirely.
+    """
+    expr = parse_fol("all v0.(Dog(v0) -> Animal(v0))")
+    tptp = convert_to_tptp(expr)
+    assert "![V0]" in tptp
+    assert "dog(V0)" in tptp
+    assert "animal(V0)" in tptp

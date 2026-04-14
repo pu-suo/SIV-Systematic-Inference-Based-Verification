@@ -21,6 +21,7 @@ try:
         Variable, AllExpression, ExistsExpression,
         AndExpression, OrExpression,
         ImpExpression, IffExpression, EqualityExpression,
+        IndividualVariableExpression,
     )
     read_expr = Expression.fromstring
     NLTK_AVAILABLE = True
@@ -148,9 +149,9 @@ def convert_to_tptp(expr) -> str:
         raise RuntimeError("NLTK is required for TPTP conversion.")
 
     if isinstance(expr, ExistsExpression):
-        return f"?[{str(expr.variable).upper()}] : ({convert_to_tptp(expr.term)})"
+        return f"?[{_tptp_var(str(expr.variable))}] : ({convert_to_tptp(expr.term)})"
     elif isinstance(expr, AllExpression):
-        return f"![{str(expr.variable).upper()}] : ({convert_to_tptp(expr.term)})"
+        return f"![{_tptp_var(str(expr.variable))}] : ({convert_to_tptp(expr.term)})"
     elif isinstance(expr, NegatedExpression):
         return f"~({convert_to_tptp(expr.term)})"
     elif isinstance(expr, AndExpression):
@@ -173,9 +174,16 @@ def convert_to_tptp(expr) -> str:
         pred_name = str(func).lower()
         args_str = ", ".join(convert_to_tptp(a) for a in args)
         return f"{pred_name}({args_str})"
+    elif isinstance(expr, IndividualVariableExpression):
+        # NLTK treats lowercase u-z identifiers as bound-variable expressions;
+        # TPTP requires variables to be uppercase identifiers.
+        return _tptp_var(str(expr.variable))
     elif isinstance(expr, Variable):
-        name = str(expr)
-        # Single-letter variables → uppercase (TPTP convention)
-        return name.upper() if len(name) == 1 else name.lower()
+        return _tptp_var(str(expr))
     else:
         return str(expr).lower()
+
+
+def _tptp_var(name: str) -> str:
+    """Render an NLTK variable name as a valid TPTP variable identifier."""
+    return name[0].upper() + name[1:] if name else name

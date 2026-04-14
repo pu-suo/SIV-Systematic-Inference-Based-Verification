@@ -186,6 +186,10 @@ def _run_vampire(tptp_input: str, timeout: int) -> Tuple[Optional[bool], str]:
             return True, output
         if "Termination reason: CounterSatisfiable" in output:
             return False, output
+        # Satisfiable (when goal is $false): the axiom set has a model, so
+        # it is *not* unsatisfiable.
+        if "Termination reason: Satisfiable" in output:
+            return False, output
         return None, output
 
     except subprocess.TimeoutExpired:
@@ -235,6 +239,69 @@ def check_entailment_multi(
         return None
     proved, _ = _run_vampire(tptp, timeout)
     return proved
+
+
+VampireVerdict = str  # Literal["sat", "unsat", "timeout", "unknown"]
+
+
+def vampire_check(
+    fol_a: str,
+    fol_b: str,
+    check: str,  # Literal["unsat", "entails"]
+    timeout: int = 5,
+    axioms: Optional[List[str]] = None,
+) -> str:
+    """Vampire-check a pair of FOL strings. Returns one of:
+    ``"unsat"``, ``"sat"``, ``"timeout"``, ``"unknown"``.
+
+    - ``check="entails"``: does ``(fol_a ∧ ⋀axioms)`` entail ``fol_b``?
+      Verdict is the status of ``(fol_a ∧ ⋀axioms ∧ ¬fol_b)``. ``"unsat"``
+      ⇒ entailment proved.
+    - ``check="unsat"``: is ``(fol_a ∧ fol_b ∧ ⋀axioms)`` unsatisfiable?
+      ``"unsat"`` ⇒ the formulas are jointly inconsistent under the
+      supplied axioms.
+
+    ``axioms`` is an optional list of FOL-string side-axioms added to
+    Vampire's axiom set before the check. Used by the §6.5 witness-axiom
+    protocol; omit to preserve free-domain semantics.
+    """
+    if check not in ("unsat", "entails"):
+        raise ValueError(f"unknown check mode: {check!r}")
+
+    extra = list(axioms) if axioms else []
+    if check == "entails":
+        tptp = _build_tptp([fol_a, *extra], fol_b)
+    else:
+        tptp = _build_unsat_tptp([fol_a, fol_b, *extra])
+
+    if tptp is None:
+        return "unknown"
+    proved, output = _run_vampire(tptp, timeout)
+    if proved is True:
+        return "unsat"
+    if proved is False:
+        return "sat"
+    if output == "Timeout":
+        return "timeout"
+    return "unknown"
+
+
+def _build_unsat_tptp(fol_axioms: List[str]) -> Optional[str]:
+    """Build a TPTP problem whose conjecture is ``$false``.
+
+    Vampire refutes iff the axioms are jointly inconsistent — i.e., the
+    conjunction of the axioms is unsatisfiable.
+    """
+    if not NLTK_AVAILABLE:
+        return None
+    exprs = [parse_fol(p) for p in fol_axioms]
+    if any(e is None for e in exprs):
+        return None
+    lines = []
+    for i, expr in enumerate(exprs):
+        lines.append(f"fof(axiom{i}, axiom, {convert_to_tptp(expr)}).")
+    lines.append("fof(goal, conjecture, $false).")
+    return "\n".join(lines)
 
 
 def prove_strict(

@@ -142,6 +142,25 @@ def test_tptp_bound_variable_cased_consistently_in_body():
 
 
 @pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
+def test_vampire_check_axioms_flip_sat_to_unsat():
+    """Witness axioms close the empty-domain escape hatch.
+
+    `all x.(Dog(x) -> Mammal(x))` and `all x.(Dog(x) -> -Mammal(x))` are
+    both satisfied by the empty-domain model where no dog exists, so without
+    extra axioms Vampire reports `sat`. Adding `exists x.Dog(x)` forces a
+    non-empty Dog extension and collapses the joint theory to `unsat`.
+    """
+    from siv.vampire_interface import is_vampire_available, vampire_check
+    if not is_vampire_available():
+        pytest.skip("Vampire not available")
+    a = "all x.(Dog(x) -> Mammal(x))"
+    b = "all x.(Dog(x) -> -Mammal(x))"
+    assert vampire_check(a, b, check="unsat", timeout=5) == "sat"
+    assert vampire_check(a, b, check="unsat", timeout=5,
+                         axioms=["exists x.Dog(x)"]) == "unsat"
+
+
+@pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
 def test_tptp_multichar_variable_name_uppercased():
     """Multi-character bound variables (e.g. `v0`, introduced by the Phase 1
     Path-B alpha-renamer) must also render as TPTP variables. Previously the

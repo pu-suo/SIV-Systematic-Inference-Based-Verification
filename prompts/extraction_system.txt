@@ -77,6 +77,9 @@ PATTERNS (examples are authoritative — use them as your reference)
 - Negation of a compound wraps the compound in `Formula.negation`.
 - Zero-place predicates are forbidden: "It rains" becomes Rains(weather)
   with `weather` declared as a Constant.
+- Relative clauses in negated positions (e.g., "not Xs who Y") translate
+  as additional atomic conjuncts about the outer bound variable, not as
+  new existential quantifications.
 
 Follow the few-shot examples for structural patterns. Return valid JSON
 matching the schema exactly.

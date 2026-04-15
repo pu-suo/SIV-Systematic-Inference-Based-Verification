@@ -2,11 +2,11 @@
 
 These tests are gated behind ``@pytest.mark.requires_llm`` and require both
 ``OPENAI_API_KEY`` to be set and the ``openai`` package to be installed.
-They parametrize over the fourteen few-shot gold examples and assert that
+They parametrize over the fifteen few-shot gold examples and assert that
 the live LLM, when shown the same prompt, returns a structurally-equivalent
 extraction for each sentence.
 
-Gate (Phase 2): at least 12 / 14 equivalences pass.
+Gate (Phase 2): at least 13 / 15 equivalences pass.
 """
 from __future__ import annotations
 

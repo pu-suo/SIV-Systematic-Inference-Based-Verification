@@ -56,6 +56,7 @@ EXPECTED_CLASSIFICATION = {
     "Some student read a book.": "existential_compound_nucleus",
     "Every student who takes a class that is taught by a professor passes.": "compound_restrictor_universal",
     "No dog is a cat.": "simple_universal",
+    "People in this club who chaperone high school dances are not students who attend the school.": "compound_restrictor_universal",
     # "Only managers attend the meeting." → all x.(Attend(x, theMeeting) -> Manager(x))
     # Singleton restrictor, no inner_quantifications — simple by the
     # structural definition (compound requires >=2 atoms or inner-quants).

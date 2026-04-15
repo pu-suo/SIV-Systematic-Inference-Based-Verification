@@ -244,6 +244,51 @@
     }
   },
   {
+    "sentence": "People in this club who chaperone high school dances are not students who attend the school.",
+    "extraction": {
+      "nl": "People in this club who chaperone high school dances are not students who attend the school.",
+      "predicates": [
+        {"name": "PersonInClub", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Chaperone", "arity": 2, "arg_types": ["entity", "entity"]},
+        {"name": "HighSchoolDance", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Student", "arity": 1, "arg_types": ["entity"]},
+        {"name": "Attend", "arity": 2, "arg_types": ["entity", "entity"]}
+      ],
+      "entities": [],
+      "constants": [{"id": "theSchool", "surface": "the school", "type": "entity"}],
+      "formula": {
+        "atomic": null,
+        "quantification": {
+          "quantifier": "universal",
+          "variable": "x",
+          "var_type": "entity",
+          "restrictor": [
+            {"pred": "PersonInClub", "args": ["x"], "negated": false},
+            {"pred": "Chaperone", "args": ["x", "y"], "negated": false},
+            {"pred": "HighSchoolDance", "args": ["y"], "negated": false}
+          ],
+          "nucleus": {
+            "atomic": null,
+            "quantification": null,
+            "negation": {
+              "atomic": null, "quantification": null, "negation": null,
+              "connective": "and",
+              "operands": [
+                {"atomic": {"pred": "Student", "args": ["x"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null},
+                {"atomic": {"pred": "Attend", "args": ["x", "theSchool"], "negated": false}, "quantification": null, "negation": null, "connective": null, "operands": null}
+              ]
+            },
+            "connective": null, "operands": null
+          },
+          "inner_quantifications": [
+            {"quantifier": "existential", "variable": "y", "var_type": "entity"}
+          ]
+        },
+        "negation": null, "connective": null, "operands": null
+      }
+    }
+  },
+  {
     "sentence": "Only managers attend the meeting.",
     "extraction": {
       "nl": "Only managers attend the meeting.",

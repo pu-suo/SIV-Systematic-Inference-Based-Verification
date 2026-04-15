@@ -690,7 +690,7 @@ Seven phases. Each phase is one commit and one review gate. Do not merge a phase
 |-------|-----------|---------|------|
 | 0 | Revert + docs | `docs/`, `reports/archive/` | Repo at `v1-final` + canonical doc; v1 test suite green |
 | 1 | Schema (`Formula` + tripartite + `TestSuite`/`UnitTest`) + recursive compiler | `schema.py`, `compiler.py`, `json_schema.py` | All nine Formula-case tests pass; two-path equivalence via Vampire |
-| 2 | Pre-analyzer + extractor + prompts | `pre_analyzer.py`, `extractor.py`, `prompts/` | Live round-trip ≥ 12/14 |
+| 2 | Pre-analyzer + extractor + prompts | `pre_analyzer.py`, `extractor.py`, `prompts/` | Live round-trip ≥ 13/15 |
 | 3 | Contrastive + scorer | `contrastive_generator.py`, `scorer.py` | Telemetry thresholds met on 14 examples |
 | 4 | Invariants in CI | `invariants.py`, CI config | Invariants green on 22-sentence corpus; deliberate-bug test catches it |
 | 5 | FOLIO validation | `scripts/run_folio_evaluation.py` | F1 ≥ 0.85 on target class; per-Formula-case breakdown reported |
@@ -1022,7 +1022,7 @@ The tripwire tree-walk is recursive, mirroring the compiler's recursion. Impleme
 - Points to examples as the authoritative pattern.
 - Explicitly describes the four Formula cases (atomic, quantification, negation, connective). Schema fragment plus one-sentence descriptions of each case; examples carry the pattern-matching burden.
 
-2.4 — Few-shot examples. prompts/extraction_examples.json: exactly fourteen examples covering the four Formula cases and their common combinations:
+2.4 — Few-shot examples. prompts/extraction_examples.json: exactly fifteen examples covering the four Formula cases and their common combinations (example 8, "negated relative clause", added in a Phase 5 layer-3 fix):
 
 1. Atomic — "Miroslav Venhoda was a Czech choral conductor."
 2. Atomic with binary relation — "Alice taught Bob."
@@ -1062,12 +1062,12 @@ tests/test_extractor.py (mocked LLM):
 - One test per Formula case confirming the tripwire walks the tree: a negation buried inside a connective must satisfy requires_negation.
 
 tests/test_extraction_roundtrip.py (live LLM, @pytest.mark.requires_llm):
-- Parametrized over all fourteen examples.
+- Parametrized over all fifteen examples.
 - Each example's extraction from the live LLM must be semantically equivalent to the gold extraction: same predicates modulo renaming, same Formula tree structure modulo commutativity of and/or.
 
 Gate:
 - All mocked tests pass.
-- Live round-trip ≥ 12/14 when run with OPENAI_API_KEY. Below 12/14, iterate on prompt/examples; do not loosen the equivalence check.
+- Live round-trip ≥ 13/15 when run with OPENAI_API_KEY. Below 13/15, iterate on prompt/examples; do not loosen the equivalence check.
 - Manual smoke: `python -m siv extract "All employees who schedule meetings attend the company building."` returns an extraction whose formula contains a TripartiteQuantification with populated restrictor containing the Schedule atom.
 
 Explicit non-goals:

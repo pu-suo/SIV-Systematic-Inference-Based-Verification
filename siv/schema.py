@@ -251,6 +251,19 @@ def _validate_quantification(
                 "of a single atom over the bound variable is forbidden"
             )
 
+    # Bound-variable-in-restrictor invariant (C2, §7). A non-empty restrictor
+    # must collectively mention the bound variable at least once; a
+    # "restrictor" that doesn't restrict its own variable is a modeling error
+    # and its contents belong at another scope.
+    if len(q.restrictor) > 0:
+        mentions_bound = any(q.variable in a.args for a in q.restrictor)
+        if not mentions_bound:
+            raise SchemaViolation(
+                f"TripartiteQuantification on {q.variable!r}: restrictor has "
+                f"{len(q.restrictor)} atom(s) but none mention {q.variable!r} "
+                f"— the restrictor is not restricting the bound variable"
+            )
+
     nucleus_scope = bound_scope | {q.variable}
     _validate_formula(q.nucleus, predicates, global_scope, nucleus_scope)
 

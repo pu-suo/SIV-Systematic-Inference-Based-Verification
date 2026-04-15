@@ -219,6 +219,81 @@ def test_validate_rejects_empty_restrictor_with_nucleus_single_atom_over_bound_v
         validate_extraction(ext)
 
 
+def test_validate_rejects_restrictor_missing_bound_variable():
+    """Bound-variable-in-restrictor invariant (C2, §7). A non-empty restrictor
+    whose atoms never mention the quantification's own bound variable is a
+    modeling error: the atoms belong at another scope."""
+    # Construct premise-2-shaped extraction: inner existential on z whose
+    # restrictor only mentions outer-x.
+    predicates = _preds(
+        ("PersonInClub", 1, ["entity"]),
+        ("Chaperone", 2, ["entity", "entity"]),
+        ("HighSchoolDance", 1, ["entity"]),
+        ("Student", 1, ["entity"]),
+        ("Attend", 2, ["entity", "entity"]),
+        ("School", 1, ["entity"]),
+    )
+    constants = [Constant(id="theSchool", surface="the school", type="entity")]
+    inner_z = TripartiteQuantification(
+        quantifier="existential", variable="z", var_type="entity",
+        restrictor=[
+            _atom("Student", "x"),
+            _atom("Attend", "x", "theSchool"),
+            _atom("School", "theSchool"),
+        ],
+        nucleus=_atomic_f("Attend", "x", "z"),
+    )
+    outer = TripartiteQuantification(
+        quantifier="universal", variable="x", var_type="entity",
+        restrictor=[
+            _atom("PersonInClub", "x"),
+            _atom("Chaperone", "x", "y"),
+            _atom("HighSchoolDance", "y"),
+        ],
+        nucleus=Formula(negation=Formula(quantification=inner_z)),
+        inner_quantifications=[
+            InnerQuantification(quantifier="existential", variable="y", var_type="entity"),
+        ],
+    )
+    ext = _ext(
+        Formula(quantification=outer),
+        preds=predicates, constants=constants,
+        nl="People in this club who chaperone high school dances are not students who attend the school.",
+    )
+    with pytest.raises(SchemaViolation) as exc:
+        validate_extraction(ext)
+    # Message must name the offending quantification's bound variable.
+    assert "'z'" in str(exc.value) or "z" in str(exc.value)
+
+
+def test_validate_accepts_legitimate_dependent_inner_quantification():
+    """'Every student x owns a book y that x likes.' Inner restrictor
+    mentions BOTH the inner bound variable (via Book(y), Likes(x,y))
+    and the outer variable x (via Likes(x,y)). That's a legitimate
+    dependent quantification and must validate."""
+    predicates = _preds(
+        ("Student", 1, ["entity"]),
+        ("Book", 1, ["entity"]),
+        ("Likes", 2, ["entity", "entity"]),
+        ("Owns", 2, ["entity", "entity"]),
+    )
+    inner_y = TripartiteQuantification(
+        quantifier="existential", variable="y", var_type="entity",
+        restrictor=[
+            _atom("Book", "y"),
+            _atom("Likes", "x", "y"),
+        ],
+        nucleus=_atomic_f("Owns", "x", "y"),
+    )
+    outer = TripartiteQuantification(
+        quantifier="universal", variable="x", var_type="entity",
+        restrictor=[_atom("Student", "x")],
+        nucleus=Formula(quantification=inner_y),
+    )
+    ext = _ext(Formula(quantification=outer), preds=predicates)
+    validate_extraction(ext)  # no raise
+
+
 def test_validate_accepts_empty_restrictor_with_nonatomic_nucleus():
     # Empty restrictor with a compound nucleus is not degenerate.
     f = Formula(quantification=TripartiteQuantification(

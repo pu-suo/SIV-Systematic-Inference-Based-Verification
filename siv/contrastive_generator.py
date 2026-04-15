@@ -53,16 +53,72 @@ def derive_witness_axioms(extraction: SentenceExtraction) -> List[str]:
         elif decl.arity == 2:
             axioms.append(f"exists x.exists y.{decl.name}(x, y)")
 
+    # Build an ancestor-scope map keyed by each TripartiteQuantification,
+    # listing every enclosing quantifier's bound variable (outer + outer
+    # inner-quantifications). Restrictor free variables that are neither
+    # `q.variable` nor declared in `q.inner_quantifications` must be bound
+    # by some enclosing quantification; their names are prepended to the
+    # existential prefix so the axiom is closed.
+    enclosing = _collect_enclosing(extraction.formula)
+
     for q in _walk_quantifications(extraction.formula):
         if not q.restrictor:
             continue
-        bound_vars = [q.variable] + [iq.variable for iq in q.inner_quantifications]
+        own_binders = [q.variable] + [iq.variable for iq in q.inner_quantifications]
+        free_vars = _restrictor_free_vars(q, extraction)
+        extra = [v for v in free_vars if v not in own_binders]
+        for v in extra:
+            # A free variable not bound by any enclosing quantification would
+            # indicate a schema violation that validate_extraction should
+            # have caught (C3). Assert rather than silently skipping.
+            assert v in enclosing[id(q)], (
+                f"witness axiom derivation: restrictor of {q.quantifier}({q.variable!r}) "
+                f"references {v!r} which is not bound by any enclosing quantification "
+                f"— should have been caught by validate_extraction"
+            )
+        closure_vars = own_binders + extra
         conj_parts = [_compile_atom(a) for a in q.restrictor]
         conj = conj_parts[0] if len(conj_parts) == 1 else "(" + " & ".join(conj_parts) + ")"
-        prefix = "".join(f"exists {v}." for v in bound_vars)
+        prefix = "".join(f"exists {v}." for v in closure_vars)
         axioms.append(f"{prefix}{conj}")
 
     return axioms
+
+
+def _restrictor_free_vars(q: "TripartiteQuantification", extraction: SentenceExtraction) -> List[str]:
+    """Return restrictor-atom argument names that are not declared
+    constant/entity ids — i.e., variable names — deduplicated in first-seen
+    order."""
+    ids = {c.id for c in extraction.constants} | {e.id for e in extraction.entities}
+    seen: List[str] = []
+    for atom in q.restrictor:
+        for a in atom.args:
+            if a in ids:
+                continue
+            if a in seen:
+                continue
+            seen.append(a)
+    return seen
+
+
+def _collect_enclosing(f: Formula, stack: Optional[List[str]] = None, out: Optional[dict] = None) -> dict:
+    """Walk the Formula tree and record, for each TripartiteQuantification,
+    the set of variable names bound by enclosing quantifications."""
+    if stack is None:
+        stack = []
+    if out is None:
+        out = {}
+    if f.quantification is not None:
+        q = f.quantification
+        out[id(q)] = set(stack)
+        deeper = stack + [q.variable] + [iq.variable for iq in q.inner_quantifications]
+        _collect_enclosing(q.nucleus, deeper, out)
+    if f.negation is not None:
+        _collect_enclosing(f.negation, stack, out)
+    if f.connective is not None:
+        for op in f.operands or []:
+            _collect_enclosing(op, stack, out)
+    return out
 
 
 STRUCTURAL_CLASSES = (

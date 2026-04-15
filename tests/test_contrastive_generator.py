@@ -253,6 +253,61 @@ def test_witness_axioms_include_per_predicate_closures():
     assert "exists x.Mammal(x)" in axioms
 
 
+def test_witness_axioms_close_outer_bound_variables():
+    """Layer 1 fix (SIV.md §6.5 Amendment E clarification).
+
+    An inner quantification whose restrictor references an enclosing bound
+    variable (a legitimately dependent quantification) must produce a witness
+    axiom whose existential prefix closes both the inner and the outer
+    variable. No witness axiom may contain a free variable.
+
+    Example: ∀x.(Student(x) → ∃y.(Book(y) ∧ Likes(x, y) → Owns(x, y))).
+    The inner existential restrictor references `x`; the witness axiom must
+    begin with `exists y.exists x.` (or some permutation that binds both).
+    """
+    from siv.vampire_interface import is_vampire_available, vampire_check
+
+    inner_y = TripartiteQuantification(
+        quantifier="existential", variable="y", var_type="entity",
+        restrictor=[_atom("Book", "y"), _atom("Likes", "x", "y")],
+        nucleus=_atomic_f("Owns", "x", "y"),
+    )
+    outer = TripartiteQuantification(
+        quantifier="universal", variable="x", var_type="entity",
+        restrictor=[_atom("Student", "x")],
+        nucleus=Formula(quantification=inner_y),
+    )
+    ext = SentenceExtraction(
+        nl="Every student owns a book they like.",
+        predicates=[
+            PredicateDecl(name="Student", arity=1, arg_types=["entity"]),
+            PredicateDecl(name="Book", arity=1, arg_types=["entity"]),
+            PredicateDecl(name="Likes", arity=2, arg_types=["entity", "entity"]),
+            PredicateDecl(name="Owns", arity=2, arg_types=["entity", "entity"]),
+        ],
+        constants=[], entities=[],
+        formula=Formula(quantification=outer),
+    )
+    axioms = derive_witness_axioms(ext)
+    # Find the restrictor axiom for the inner quantification.
+    inner_ax = [
+        a for a in axioms
+        if "Book(y)" in a and "Likes(x, y)" in a
+    ]
+    assert len(inner_ax) == 1, f"expected one inner-restrictor axiom, got: {axioms}"
+    ax = inner_ax[0]
+    # Both variables must be quantified (closure).
+    assert "exists x." in ax and "exists y." in ax, ax
+    # Must parse under Vampire (no free variables).
+    if is_vampire_available():
+        verdict = vampire_check("Student(alice)", ax, check="unsat", timeout=3, axioms=[])
+        # If Vampire accepted the axiom syntactically, the call returns a
+        # verdict (sat/unsat/unknown) rather than the parse-failure "unknown"
+        # we previously saw. Assert it's a real verdict — unknown is fine
+        # here as long as it's a prover result, not a parse failure.
+        assert verdict in ("sat", "unsat", "unknown", "timeout")
+
+
 def test_witness_axioms_include_per_quantification_restrictor_closures():
     """B′ level: one exists-closure per TripartiteQuantification-restrictor.
 

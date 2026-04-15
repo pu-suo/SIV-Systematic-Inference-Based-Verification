@@ -80,6 +80,10 @@ PATTERNS (examples are authoritative — use them as your reference)
 - Relative clauses in negated positions (e.g., "not Xs who Y") translate
   as additional atomic conjuncts about the outer bound variable, not as
   new existential quantifications.
+- Declare only predicates that actually appear as atoms in the formula.
+  Constants need no type predicate and no dedicated `P(constant)` atom
+  unless the sentence asserts a predication over them; an unused predicate
+  declaration is an error.
 
 Follow the few-shot examples for structural patterns. Return valid JSON
 matching the schema exactly.

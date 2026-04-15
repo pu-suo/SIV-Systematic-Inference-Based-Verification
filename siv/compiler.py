@@ -110,13 +110,22 @@ def _a_quant(q: TripartiteQuantification) -> str:
 #   alpha-equivalent output to Path A.
 # ════════════════════════════════════════════════════════════════════════════
 
-def compile_sentence_test_suite(extraction: SentenceExtraction) -> TestSuite:
+def compile_sentence_test_suite(
+    extraction: SentenceExtraction,
+    with_contrastives: bool = True,
+    timeout_s: int = 5,
+) -> TestSuite:
     """Emit a TestSuite for the extraction.
 
     Emits the full canonical FOL (via Path B) as the first positive, plus one
     positive `UnitTest` per sub-entailment test per SIV.md §6.4 "Sub-entailment
     test construction" (Amendment B-revised). Sub-tests are emitted only from
     positions where the canonical freestanding entails the closure, per C9a.
+
+    When ``with_contrastives=True`` (default), the test suite's ``contrastives``
+    list is populated by ``generate_contrastives`` (§6.5); this requires
+    Vampire. Pass ``with_contrastives=False`` for fast path-structure tests
+    that only care about positives.
     """
     validate_extraction(extraction)
     counter = [0]
@@ -133,7 +142,14 @@ def compile_sentence_test_suite(extraction: SentenceExtraction) -> TestSuite:
         seen.add(fol)
         positives.append(UnitTest(fol=fol, kind="positive", mutation_kind=None))
 
-    return TestSuite(extraction=extraction, positives=positives, contrastives=[])
+    contrastives: List[UnitTest] = []
+    if with_contrastives:
+        # Import here to avoid circular import (contrastive_generator imports
+        # _a_formula from this module).
+        from siv.contrastive_generator import generate_contrastives
+        contrastives, _telemetry = generate_contrastives(extraction, timeout_s=timeout_s)
+
+    return TestSuite(extraction=extraction, positives=positives, contrastives=contrastives)
 
 
 # ── Sub-test walker (Amendment B-revised rules a/b/c) ─────────────────────────

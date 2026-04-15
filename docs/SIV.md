@@ -505,6 +505,7 @@ Defined in §6.2.5.
 - **Required fields:** `nl` and `formula`.
 - **Predicate-atom invariant:** every `AtomicFormula.pred` anywhere in the `formula` tree matches the `name` of some `PredicateDecl` in `predicates`; `args` length equals that predicate's arity.
 - **Argument-resolution invariant:** every `AtomicFormula.args` string resolves to (a) a declared `Entity.id` or `Constant.id`, or (b) a variable bound by an enclosing `TripartiteQuantification` or `InnerQuantification`.
+- **Bound-variable-in-restrictor invariant:** for every `TripartiteQuantification` with variable `v`, at least one atom in its `restrictor` must have `v` among its `args`. The restrictor may additionally mention outer bound variables or declared `inner_quantifications` variables, but it must mention `v` itself. A `TripartiteQuantification` with a non-empty restrictor whose atoms collectively never mention the bound variable is a modeling error: the "restrictor" is not restricting the quantified variable and its contents belong at another scope.
 
 ### C3. `validate_extraction`
 
@@ -513,7 +514,7 @@ def validate_extraction(extraction: SentenceExtraction) -> None: ...
 ```
 
 - **Returns:** `None` on success.
-- **Raises `SchemaViolation`** on: Formula exclusivity violations (C1); connective/operand arity violations (C1); predicate-atom violations (C2); argument-resolution violations (C2); a `TripartiteQuantification` with empty `restrictor` whose nucleus is a single atom over the bound variable.
+- **Raises `SchemaViolation`** on: Formula exclusivity violations (C1); connective/operand arity violations (C1); predicate-atom violations (C2); argument-resolution violations (C2); a `TripartiteQuantification` with empty `restrictor` whose nucleus is a single atom over the bound variable; a `TripartiteQuantification` whose restrictor is non-empty and whose atoms collectively never mention the bound variable (bound-variable-in-restrictor invariant, C2).
 - **Deterministic.** No LLM call. No network call. No randomness.
 
 ### C4. `compute_required_features`

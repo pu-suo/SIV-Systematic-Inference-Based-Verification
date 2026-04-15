@@ -34,11 +34,23 @@ def _make_stub_client(response_json: dict, fingerprint: str = "fp_test_baseline"
 
 
 def _minimal_response():
+    """Minimal SentenceExtraction-shaped response stub.
+
+    FrozenClient does not validate the response against the schema; it only
+    parses JSON and caches. Shape just needs to be JSON-parseable.
+    """
     return {
-        "constants": [],
-        "entities": [{"id": "e1", "surface": "tree", "entity_type": "existential"}],
-        "facts": [{"pred": "tall", "args": ["e1"], "negated": False}],
-        "macro_template": "ground_positive",
+        "nl": "Alice is tall.",
+        "predicates": [{"name": "Tall", "arity": 1, "arg_types": ["entity"]}],
+        "entities": [],
+        "constants": [{"id": "alice", "surface": "Alice", "type": "entity"}],
+        "formula": {
+            "atomic": {"pred": "Tall", "args": ["alice"], "negated": False},
+            "quantification": None,
+            "negation": None,
+            "connective": None,
+            "operands": None,
+        },
     }
 
 

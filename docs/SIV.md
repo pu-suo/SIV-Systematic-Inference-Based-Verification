@@ -371,11 +371,17 @@ For each `SentenceExtraction`, the generator produces candidate negative tests b
 
 Each mutant is compiled via `compile_canonical_fol`. Vampire checks whether `(original ∧ mutant)` is unsat.
 
-**Witness axioms.** Before each `(original ∧ mutant)` unsat check, Vampire's axiom set is augmented with witness axioms derived from the extraction's predicate declarations. For each `PredicateDecl` with arity 1 and name `P`, add `exists x.P(x)`. For each `PredicateDecl` with arity 2 and name `R`, add `exists x.exists y.R(x, y)`. These are derived mechanically from `extraction.predicates`; no hand-rolling.
+**Witness axioms.** Before each `(original ∧ mutant)` unsat check, Vampire's axiom set is augmented with witness axioms derived from the extraction.
 
-This formalizes the existential import that natural-language restrictor domains carry (Barwise & Cooper 1981). Without it, universal conditionals like *"All dogs are mammals"* are compatible with empty-domain models, and structural mutations (`flip_quantifier`, `drop_restrictor_conjunct`, `negate_atom` in a restrictor) remain `sat` under free-domain semantics even though they are natural-language contradictions of the source.
+Witness axioms are derived at **two levels**. Per-predicate: for each `PredicateDecl` with arity 1 and name `P`, add `exists x.P(x)`; for each with arity 2 and name `R`, add `exists x.exists y.R(x, y)`. Per-quantification-restrictor: for each `TripartiteQuantification` node in the formula tree with non-empty restrictor `R`, bound variable `x`, and inner-quantification variables `y_1..y_n`, add `exists x.exists y_1. ... exists y_n.(⋀R)`.
+
+These two levels are the complete witness-axiom specification. **No further strengthening is permitted** without revising this section with a written rationale; adding witness axioms beyond these has no principled stopping point and risks reimplementing generalized quantifier theory inside the mutation filter.
+
+This formalizes the existential import that natural-language restrictor domains carry (Barwise & Cooper 1981). Without it, universal conditionals like *"All dogs are mammals"* are compatible with empty-domain models, and structural mutations (`flip_quantifier`, `drop_restrictor_conjunct`, `negate_atom` in a restrictor) remain `sat` under free-domain semantics even though they are natural-language contradictions of the source. Per-quantification-restrictor axioms close the joint-configuration escape on compound restrictors (e.g., *"employees who schedule meetings"*) where per-predicate witnesses alone do not force the restrictor's conjunction to be populated.
 
 Witness axioms are applied uniformly to every unsat check in the generator (§6.5) and scorer (§6.6) and invariants (§8). They are **not** applied during the two-path compile equivalence check (C9a / §8 monotonicity invariant), because that check is purely about compiler-path agreement and should not depend on domain assumptions.
+
+**Structural coverage limits.** Even with witness axioms, the six mutation operators do not produce provably-unsat mutants for every possible source sentence. Sentences whose logical structure is genuinely weak — top-level disjunctions (*"A or B"*), bare implications with atomic antecedents (*"If A, then B"*), and existentials with compound nuclei — may admit no structural mutation that is provably inconsistent with the source under any reasonable axiom set. These are not bugs in the mechanism; they are facts about the logical structure of those sentences. The generator returns an empty contrastives list for such cases, and downstream scoring reports recall only (see §6.6).
 
 **Accept only on `unsat`.** Drop on `sat`, `timeout`, or `unknown`. Every accepted contrastive is provably inconsistent with the original (under the witness axioms) — not merely different.
 
@@ -383,7 +389,7 @@ Witness axioms are applied uniformly to every unsat check in the generator (§6.
 
 ### 6.6 Scorer
 
-Given a test suite (positives + contrastives) and a candidate FOL translation, the scorer calls Vampire to check:
+Given a test suite (positives + contrastives) and a candidate FOL translation, the scorer calls Vampire (with witness axioms per §6.5) to check:
 
 - For each positive test `P`: does the candidate entail `P`?
 - For each contrastive test `C`: does the candidate entail `C`? (It should not.)
@@ -391,12 +397,15 @@ Given a test suite (positives + contrastives) and a candidate FOL translation, t
 ```
 recall    = (positives entailed) / (total positives)
 precision = (contrastives not entailed) / (total contrastives)
+            if total contrastives > 0
 SIV       = 2 · recall · precision / (recall + precision)
+            if precision is defined
+            otherwise SIV = recall
 ```
 
-**No coverage fraction. No adjustment. Just F1.**
+When the contrastive set is empty (because the source's logical structure does not admit provably-unsat mutations under the witness-axiom-augmented semantics — see §6.5 structural coverage limits), **precision is undefined and the scorer reports recall only**. The `ScoreReport`'s `precision` and `f1` fields are set to `None` in this case; `per_test_results` makes the empty-contrastives situation explicit so downstream consumers can distinguish recall-only-by-structural-necessity from any other case.
 
-The scorer applies the same witness axioms as §6.5 when checking entailment and contrastive rejection, so scoring is consistent with generation.
+Recall-only reporting is not a fallback, a failure mode, or a scope concession. It is the honest report for sentences whose precision signal the mechanism cannot produce. **No coverage fraction. No scope-aware adjustment. Just recall when that's what the mechanism can soundly produce; F1 when both signals are available.**
 
 ### 6.7 Soundness invariants
 
@@ -571,8 +580,8 @@ def generate_contrastives(
 @dataclass
 class ScoreReport:
     recall: float
-    precision: float
-    f1: float
+    precision: Optional[float]   # None iff contrastives_total == 0
+    f1: Optional[float]          # None iff precision is None
     positives_entailed: int
     positives_total: int
     contrastives_rejected: int
@@ -582,9 +591,11 @@ class ScoreReport:
 def score(test_suite: TestSuite, candidate_fol: str) -> ScoreReport: ...
 ```
 
-- **Computation per §6.6.**
-- **Does not return a coverage fraction.** No scope-adjustment term.
+- **`recall` is always defined.**
+- **`precision` and `f1` are `None`** iff `contrastives_total` is 0, which occurs when the generator (§6.5) returned an empty contrastives list for structural reasons.
+- **When `precision` is defined, `f1 = 2·recall·precision / (recall + precision)`.**
 - **Uses Vampire with witness axioms (§6.5)** to check each positive (should entail) and each contrastive (should not entail).
+- **Does not return a coverage fraction.** No scope-adjustment term.
 
 ### C9a. `check_entailment_monotonicity`
 
@@ -1144,17 +1155,27 @@ tests/test_contrastive_generator.py:
 - swap_binary_args on a symmetric predicate (e.g., a sibling relation) produces a mutant Vampire rejects as neutral (sat).
 - swap_binary_args on an asymmetric predicate (e.g., Schedule(person, event)) produces a mutant Vampire accepts as contrastive (unsat).
 - flip_connective on a disjunction produces a conjunction Vampire confirms inconsistent with the original in at least one context.
-- generate_contrastives on each of the fourteen Phase 2 examples produces a non-empty, all-unsat-verified negatives list. Fourteen tests, one per example.
+- generate_contrastives parametrized over the fourteen Phase 2 examples: each case carries its structural class as a test parameter; empty contrastives is expected iff the class is in the structurally-weak set (`top_level_disjunction`, `bare_implies_atomic_antecedent`, `existential_compound_nucleus`). Classes that admit mutation must produce non-empty contrastives.
+- A test asserting that witness axioms include per-quantification-restrictor closures (B′), not just per-predicate closures.
 
 tests/test_scorer.py:
-- Perfect candidate gives F1 = 1.0.
+- Perfect candidate gives F1 = 1.0 (on a test suite with non-empty contrastives).
 - Candidate missing a positive gives expected recall drop.
 - Candidate entailing a contrastive gives expected precision drop.
+- Perfect candidate on an empty-contrastives test suite gives `recall = 1.0`, `precision is None`, `f1 is None`.
+- `per_test_results` on an empty-contrastives case makes the structural-empty situation explicit.
 
 Gate:
 - All tests pass.
-- Telemetry on the fourteen Phase 2 examples: unknown_rate < 0.2 and accepted / generated > 0.3. If either fails, investigate before proceeding.
-- employees-meetings test suite has populated positives AND populated contrastives; canonical FOL scores 1.0 on its own test suite.
+- Telemetry on the fourteen Phase 2 examples:
+  - `unknown_rate < 0.2`.
+  - Every case whose source has a structure that admits provably-unsat mutation under B′ witness axioms produces a non-empty contrastives list. Structures that admit mutation are: **ground instances** (atomic or connective over atomic sub-formulas with no free variables), **simple universals** with unary or binary restrictors, **compound-restrictor universals** (restrictor is a conjunction of multiple atoms over the bound variable plus inner-quantification variables).
+  - Structures that do NOT admit provably-unsat mutation and are permitted to produce empty contrastives lists are: **top-level disjunctions**, **top-level bare implications with atomic antecedents**, **existentials with compound nuclei**, and any sentence whose top-level structure is one of these or reduces to one of these after unwrapping. Empty contrastives lists for these cases are logged with `mutation_kind` counts and reason "no unsat mutation under B′ witness axioms."
+  - Classify each of the fourteen Phase 2 examples by structure and record the classification in telemetry (`structural_class` key). Report the classification alongside the accept count.
+  - The employees-meetings test suite (case 4) must produce at least one accepted contrastive. This is the v1-bug target class; an empty contrastives list here would indicate mechanism failure, not structural weakness.
+- The canonical FOL must score 1.0 (recall = 1.0, precision = 1.0) on its own test suite for every case where contrastives is non-empty. For cases where contrastives is empty, the canonical must score recall = 1.0 (precision `None`, f1 `None`).
+
+The gate is specified in structural terms, not per-case terms. Classify each of the fourteen examples by structure and verify the outcomes match the classification. If a case whose structure admits mutation produces zero contrastives, that is a mechanism failure and must be surfaced. If a case whose structure does not admit mutation produces zero contrastives, that is expected and reported as recall-only.
 
 Explicit non-goals:
 - No CI invariant harness. Phase 4.

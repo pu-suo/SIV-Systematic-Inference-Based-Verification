@@ -667,6 +667,8 @@ SIV has two modes, sharing all seven components above.
 
 **Output:** aggregate F1 across the dataset, plus per-sentence reports.
 
+The Evaluator scores candidates against SIV-derived tests. It does not presume the candidate comes from the same translator as the source of the NL; candidates may originate from a benchmark's gold annotations, a model's predicted translations, or any other source. The reference is always SIV's test suite derived from the NL, never the candidate itself. Agreement metrics between independently-produced translations (e.g., SIV canonical vs. a benchmark gold) are measured by running each through the Evaluator against the SIV test suite and reporting both results; **SIV does not perform vocabulary alignment between candidates** (see §5, §20.2).
+
 ### 10.2 Generator (Clean-FOLIO)
 
 **Input:** natural language sentences only.
@@ -1268,7 +1270,9 @@ Before writing any code, read:
 - SIV.md §5 (forbidden concepts).
 - SIV.md §11 (ground rules).
 
-Goal: Measure how well the system handles real FOLIO premises. This is the empirical validation underwriting the paper's claims.
+Goal: Run SIV against the full FOLIO corpus in **two measurement modes**: pipeline self-consistency (SIV canonical scored against SIV tests) and FOLIO-gold faithfulness (FOLIO gold scored against SIV tests). The first validates that the pipeline handles real-world NL; the second is the paper's empirical validation of the thesis that existing benchmarks have faithfulness problems.
+
+FOLIO's gold FOL is not ground truth — it is a candidate translation produced by human annotators without the faithfulness guarantees SIV enforces. Scoring FOLIO gold against SIV tests measures how faithful the benchmark's translations are to the NL source, which is the paper's headline claim.
 
 Files touched:
 - scripts/run_folio_evaluation.py — new.
@@ -1277,33 +1281,38 @@ Files touched:
 What to implement:
 
 1. Load the public FOLIO dataset (premises only; this phase does not evaluate conclusions).
-2. For each premise, run the full pipeline: extract → compile → generate contrastives → score against FOLIO's gold FOL as the candidate.
-3. Aggregate:
-   - Mean F1 across all premises.
-   - F1 distribution (histogram).
-   - Per-Formula-case breakdown: F1 restricted to premises whose top-level Formula case is atomic, quantification, connective, negation respectively.
-   - Premises where F1 < 0.5 (manual review list).
-   - Premises where extraction failed (manual review list).
-4. Write reports/folio_agreement.json with the aggregates.
+2. For each of the ~300 premises, run the extractor once to produce a `SentenceExtraction` and its derived `TestSuite`. Then score **twice**:
+   - candidate = `compile_canonical_fol(extraction)` → `self_consistency_report`.
+   - candidate = FOLIO gold FOL (parsed and rendered into NLTK-compatible ASCII; no vocabulary changes, no predicate renaming) → `folio_faithfulness_report`.
+3. Aggregate each measurement separately. For each, report: mean recall, mean precision, mean F1 (where defined), F1 distribution, per-Formula-case breakdown (atomic / quantification / connective / negation by top-level `Formula` case of the extraction), premises where F1 < 0.5 (manual review list), extraction failures.
+4. Write `reports/folio_agreement.json` with both reports as separate top-level keys: `self_consistency` and `folio_faithfulness`.
 
 Forbidden moves:
 - No coverage fraction in the report.
 - No claim about sentences outside the FOL-translatable class. A genuinely modal or proportional premise reports whatever F1 it reports with no commentary categorizing it as "out of scope."
-- No is_fol_expressible filter to skip premises.
+- No `is_fol_expressible` filter to skip premises.
 - No scope-aware F1 adjustment.
 - No scope-rejection taxonomy for extraction failures. Failures are categorized for manual review only as "user-scope issue" (real sentence SIV cannot handle) or "actionable bug." This binary categorization does not affect reported F1.
 - Do not modify the pipeline in this phase. Phase 5 is measurement only. If measurement reveals a bug, STOP and surface rather than patch silently.
+- **No predicate-name alignment between SIV and FOLIO vocabularies.** No WordNet lookup. No embedding similarity. No heuristic renaming. If a predicate in FOLIO's gold has a different name than SIV's extraction, that divergence is part of the measurement; erasing it by alignment would contaminate the result with a vocabulary assumption SIV does not make.
 
 Tests required: no new tests mandated; the existing suite must remain green. The script and its numbers are the deliverable.
 
 Gate:
-- Script runs to completion on the full FOLIO dataset (300 premises).
-- Mean F1 on the employees-meetings class (universal-with-restrictive-relative) ≥ 0.85. Headline empirical claim: the system handles the v1 bug class.
-- Mean F1 on atomic (ground) predications ≥ 0.90.
-- Mean F1 on connective-only sentences ≥ 0.80.
-- Extraction failure rate documented; failures manually reviewed and categorized; categorization recorded in reports/folio_agreement.json.
 
-If a threshold misses: stop, surface the result with diagnosis (which Formula case, which premises). Do not loosen the threshold. Do not move to Phase 6.
+**Self-consistency measurement:**
+- Mean recall ≥ 0.98 across all premises. Canonical scoring below 1.0 on its own tests should be rare; aggregate below 0.98 indicates a systemic pipeline issue.
+- No premise class (atomic / quantification / connective / negation) has mean recall below 0.95.
+- Extraction failure rate below 10% of premises. Failures categorized as **user-scope issue** (sentence outside FOL — e.g., modal attitudes, proportional quantifiers) or **actionable bug** (extractor shortcoming to fix).
+
+**FOLIO-faithfulness measurement:**
+- Gate is **descriptive, not pass/fail**. Report the full distribution.
+- Headline claim (for the paper): mean F1 on the universal-with-restrictive-relative class is substantially below 1.0, with manual review confirming at least 3 identified cases of **restrictor collapse** matching the v1-bug failure mode. This confirms the thesis: the v1 bug exists in the wild, in a widely-used benchmark, and SIV catches it.
+- The report is the deliverable; no threshold determines pass/fail on this measurement.
+
+If a self-consistency threshold misses: stop, surface the result with diagnosis (which Formula case, which premises). Do not loosen. Do not move to Phase 6.
+
+A FOLIO-faithfulness F1 below 1.0 is **not** a Phase 5 failure — it is the expected result and the empirical basis for the paper's claim.
 
 After Phase 5 completes, also revisit the Deferred Decisions list in SIV.md §20 — in particular, the open question on whether §10.2 Clean-FOLIO should use an LLM translation step. Inspect Phase 5 sample outputs and the F1 per-case breakdown for evidence on this; do not act on it within Phase 5, but surface findings as a note for the user.
 
@@ -1421,6 +1430,18 @@ Open questions recorded here so they are not lost. Each has a revisit trigger an
 **Doc-update order (if adopted):** SIV.md §5 review (is an eighth component consistent with the negative list?) → SIV.md §6 (add component) → SIV.md §7 (add contract) → SIV.md §10.2 (specify use).
 
 **Do not add this during Phases 1–6.** The spec is executing; scope creep here is what §2 warns against.
+
+### 20.2 Cross-translation agreement metric
+
+**Status:** deferred from Phase 5. Revisit after Phase 5 results are published.
+
+**Context.** Phase 5 measures each translation (SIV canonical, FOLIO gold) independently against SIV tests (§17, Amendment H). It does not measure whether SIV and FOLIO agree with each other — the vocabulary divergence between independent translators makes direct Vampire entailment ≈ 0 by construction. A principled agreement metric (e.g., structural Formula-tree comparison with predicate-arity matching but not name matching) is post-v2.0 research.
+
+**Why deferred.** Vocabulary alignment heuristics (WordNet, embeddings, predicate renaming) are forbidden by §5 and by §17's Amendment H. A structural agreement metric that sidesteps vocabulary alignment is a new component and a new contract; both require doc revision first. Post-v2.0 research, not a Phase 5 add-on.
+
+**Revisit trigger.** After Phase 5 publishes its two-measurement results and the paper's thesis is empirically supported, evaluate whether a structural-agreement metric is worth the architectural cost.
+
+**If adopted.** New dedicated contract (C10 or similar); new component. Do not fold into the Evaluator.
 
 ---
 

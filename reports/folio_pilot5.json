@@ -1,0 +1,412 @@
+{
+  "n_pairs_total": 377,
+  "n_evaluated": 4,
+  "n_failures": 1,
+  "extraction_failure_rate": 0.002652519893899204,
+  "runtime_seconds": 23.034512758255005,
+  "self_consistency": {
+    "overall": {
+      "count": 4,
+      "scored_count": 4,
+      "mean_recall": 1.0,
+      "mean_precision": 1.0,
+      "mean_f1_where_defined": 1.0,
+      "f1_defined_count": 4,
+      "recall_only_count": 0
+    },
+    "by_top_formula_case": {
+      "quantification": {
+        "count": 4,
+        "scored_count": 4,
+        "mean_recall": 1.0,
+        "mean_precision": 1.0,
+        "mean_f1_where_defined": 1.0,
+        "f1_defined_count": 4,
+        "recall_only_count": 0
+      }
+    },
+    "by_structural_class": {
+      "simple_universal": {
+        "count": 1,
+        "scored_count": 1,
+        "mean_recall": 1.0,
+        "mean_precision": 1.0,
+        "mean_f1_where_defined": 1.0,
+        "f1_defined_count": 1,
+        "recall_only_count": 0
+      },
+      "compound_restrictor_universal": {
+        "count": 3,
+        "scored_count": 3,
+        "mean_recall": 1.0,
+        "mean_precision": 1.0,
+        "mean_f1_where_defined": 1.0,
+        "f1_defined_count": 3,
+        "recall_only_count": 0
+      }
+    },
+    "f1_histogram_bins_0_to_1_by_0p1": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4
+    ],
+    "low_f1_review_list": []
+  },
+  "folio_faithfulness": {
+    "overall": {
+      "count": 4,
+      "scored_count": 2,
+      "mean_recall": 0.25,
+      "mean_precision": 1.0,
+      "mean_f1_where_defined": 0.3333333333333333,
+      "f1_defined_count": 2,
+      "recall_only_count": 0
+    },
+    "by_top_formula_case": {
+      "quantification": {
+        "count": 4,
+        "scored_count": 2,
+        "mean_recall": 0.25,
+        "mean_precision": 1.0,
+        "mean_f1_where_defined": 0.3333333333333333,
+        "f1_defined_count": 2,
+        "recall_only_count": 0
+      }
+    },
+    "by_structural_class": {
+      "simple_universal": {
+        "count": 1,
+        "scored_count": 0,
+        "mean_recall": null,
+        "mean_precision": null,
+        "mean_f1_where_defined": null,
+        "f1_defined_count": 0,
+        "recall_only_count": 0
+      },
+      "compound_restrictor_universal": {
+        "count": 3,
+        "scored_count": 2,
+        "mean_recall": 0.25,
+        "mean_precision": 1.0,
+        "mean_f1_where_defined": 0.3333333333333333,
+        "f1_defined_count": 2,
+        "recall_only_count": 0
+      }
+    },
+    "f1_histogram_bins_0_to_1_by_0p1": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "low_f1_review_list": [
+      {
+        "story_id": 380,
+        "nl": "People in this club who chaperone high school dances are not students who attend the school.",
+        "f1": 0.0,
+        "recall": 0.0,
+        "precision": 1.0,
+        "canonical_fol": "all x.(exists y.((PersonInClub(x) & Chaperone(x, y) & HighSchoolDance(y))) -> -((Student(x) & Attend(x, theSchool))))",
+        "top_formula_case": "quantification",
+        "structural_class": "compound_restrictor_universal",
+        "gold_fol_raw": "\u2200x (InThisClub(x) \u2227 Chaperone(x, highSchoolDance) \u2192 \u00ac(Studen(x) \u2227 AttendSchool(x)))",
+        "gold_fol_normalized": "all x (InThisClub(x) & Chaperone(x, highSchoolDance) -> -(Studen(x) & AttendSchool(x)))"
+      },
+      {
+        "story_id": 380,
+        "nl": "People in this club either perform in school talent shows often or are inactive and disinterested community members.",
+        "f1": null,
+        "reason": "parse_error",
+        "canonical_fol": "all x.(PersonInClub(x) -> (PerformInTalentShowsOften(x) | (InactiveCommunityMember(x) & DisinterestedCommunityMember(x))))",
+        "gold_fol_raw": "\u2200x (InThisClub(x) \u2192 PerformOftenIn(x, schoolTalentShow) \u2295 (InActive(x) \u2227 Disinterested(x) \u2227 MemberOf(x, community)))",
+        "top_formula_case": "quantification",
+        "structural_class": "simple_universal"
+      },
+      {
+        "story_id": 380,
+        "nl": "All young children and teenagers in this club who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "f1": null,
+        "reason": "parse_error",
+        "canonical_fol": "all x.((YoungChild(x) & Teenager(x) & InClub(x) & WishToFurtherCareers(x)) -> (Student(x) & Attend(x, theSchool)))",
+        "gold_fol_raw": "\u2200x (InThisClub(x) \u2227 (YoungChildren(x) \u2295 Teenager(x)) \u2227 WishToFurther(x, academicCareer)) \u2192 Studen(x) \u2227 AttendSchool(x))",
+        "top_formula_case": "quantification",
+        "structural_class": "compound_restrictor_universal"
+      }
+    ]
+  },
+  "per_pair": [
+    {
+      "story_id": 380,
+      "nl": "People in this club either perform in school talent shows often or are inactive and disinterested community members.",
+      "canonical_fol": "all x.(PersonInClub(x) -> (PerformInTalentShowsOften(x) | (InactiveCommunityMember(x) & DisinterestedCommunityMember(x))))",
+      "top_formula_case": "quantification",
+      "structural_class": "simple_universal",
+      "self_consistency": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
+        "positives_total": 1,
+        "positives_entailed": 1,
+        "contrastives_total": 1,
+        "contrastives_rejected": 1,
+        "per_test_results": [
+          {
+            "kind": "positive",
+            "fol": "all v0.(PersonInClub(v0) -> (PerformInTalentShowsOften(v0) | (InactiveCommunityMember(v0) & DisinterestedCommunityMember(v0))))",
+            "verdict": "entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all x.(PersonInClub(x) -> -((PerformInTalentShowsOften(x) | (InactiveCommunityMember(x) & DisinterestedCommunityMember(x)))))",
+            "verdict": "not_entailed"
+          }
+        ]
+      },
+      "folio_faithfulness": {
+        "gold_fol_raw": "\u2200x (InThisClub(x) \u2192 PerformOftenIn(x, schoolTalentShow) \u2295 (InActive(x) \u2227 Disinterested(x) \u2227 MemberOf(x, community)))",
+        "gold_fol_normalized": "all x (InThisClub(x) -> PerformOftenIn(x, schoolTalentShow) (InActive(x) & Disinterested(x) & MemberOf(x, community)))",
+        "parse_error": true,
+        "score": null
+      }
+    },
+    {
+      "story_id": 380,
+      "nl": "People in this club who chaperone high school dances are not students who attend the school.",
+      "canonical_fol": "all x.(exists y.((PersonInClub(x) & Chaperone(x, y) & HighSchoolDance(y))) -> -((Student(x) & Attend(x, theSchool))))",
+      "top_formula_case": "quantification",
+      "structural_class": "compound_restrictor_universal",
+      "self_consistency": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
+        "positives_total": 1,
+        "positives_entailed": 1,
+        "contrastives_total": 1,
+        "contrastives_rejected": 1,
+        "per_test_results": [
+          {
+            "kind": "positive",
+            "fol": "all v0.(exists v1.((PersonInClub(v0) & Chaperone(v0,v1) & HighSchoolDance(v1))) -> -((Student(v0) & Attend(v0,theSchool))))",
+            "verdict": "entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all x.(exists y.((PersonInClub(x) & Chaperone(x, y) & HighSchoolDance(y))) -> -(-((Student(x) & Attend(x, theSchool)))))",
+            "verdict": "not_entailed"
+          }
+        ]
+      },
+      "folio_faithfulness": {
+        "gold_fol_raw": "\u2200x (InThisClub(x) \u2227 Chaperone(x, highSchoolDance) \u2192 \u00ac(Studen(x) \u2227 AttendSchool(x)))",
+        "gold_fol_normalized": "all x (InThisClub(x) & Chaperone(x, highSchoolDance) -> -(Studen(x) & AttendSchool(x)))",
+        "parse_error": false,
+        "score": {
+          "recall": 0.0,
+          "precision": 1.0,
+          "f1": 0.0,
+          "positives_total": 1,
+          "positives_entailed": 0,
+          "contrastives_total": 1,
+          "contrastives_rejected": 1,
+          "per_test_results": [
+            {
+              "kind": "positive",
+              "fol": "all v0.(exists v1.((PersonInClub(v0) & Chaperone(v0,v1) & HighSchoolDance(v1))) -> -((Student(v0) & Attend(v0,theSchool))))",
+              "verdict": "not_entailed"
+            },
+            {
+              "kind": "contrastive",
+              "fol": "all x.(exists y.((PersonInClub(x) & Chaperone(x, y) & HighSchoolDance(y))) -> -(-((Student(x) & Attend(x, theSchool)))))",
+              "verdict": "not_entailed"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "story_id": 380,
+      "nl": "All people in this club who are inactive and disinterested members of their community chaperone high school dances.",
+      "canonical_fol": "all x.((PersonInClub(x) & InactiveMember(x) & DisinterestedMember(x) & Community(x)) -> exists y.(HighSchoolDance(y) & Chaperone(x, y)))",
+      "top_formula_case": "quantification",
+      "structural_class": "compound_restrictor_universal",
+      "self_consistency": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
+        "positives_total": 2,
+        "positives_entailed": 2,
+        "contrastives_total": 1,
+        "contrastives_rejected": 1,
+        "per_test_results": [
+          {
+            "kind": "positive",
+            "fol": "all v0.((PersonInClub(v0) & InactiveMember(v0) & DisinterestedMember(v0) & Community(v0)) -> exists v1.(HighSchoolDance(v1) & Chaperone(v0,v1)))",
+            "verdict": "entailed"
+          },
+          {
+            "kind": "positive",
+            "fol": "all v0.((PersonInClub(v0) & InactiveMember(v0) & DisinterestedMember(v0) & Community(v0)) -> exists v1.(HighSchoolDance(v1)))",
+            "verdict": "entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all x.((PersonInClub(x) & InactiveMember(x) & DisinterestedMember(x) & Community(x)) -> -(exists y.(HighSchoolDance(y) & Chaperone(x, y))))",
+            "verdict": "not_entailed"
+          }
+        ]
+      },
+      "folio_faithfulness": {
+        "gold_fol_raw": "\u2200x (InThisClub(x) \u2227 (InActive(x) \u2227 Disinterested(x) \u2227 MemberOf(x, community)) \u2192 Chaperone(x, highSchoolDances))",
+        "gold_fol_normalized": "all x (InThisClub(x) & (InActive(x) & Disinterested(x) & MemberOf(x, community)) -> Chaperone(x, highSchoolDances))",
+        "parse_error": false,
+        "score": {
+          "recall": 0.5,
+          "precision": 1.0,
+          "f1": 0.6666666666666666,
+          "positives_total": 2,
+          "positives_entailed": 1,
+          "contrastives_total": 1,
+          "contrastives_rejected": 1,
+          "per_test_results": [
+            {
+              "kind": "positive",
+              "fol": "all v0.((PersonInClub(v0) & InactiveMember(v0) & DisinterestedMember(v0) & Community(v0)) -> exists v1.(HighSchoolDance(v1) & Chaperone(v0,v1)))",
+              "verdict": "not_entailed"
+            },
+            {
+              "kind": "positive",
+              "fol": "all v0.((PersonInClub(v0) & InactiveMember(v0) & DisinterestedMember(v0) & Community(v0)) -> exists v1.(HighSchoolDance(v1)))",
+              "verdict": "entailed"
+            },
+            {
+              "kind": "contrastive",
+              "fol": "all x.((PersonInClub(x) & InactiveMember(x) & DisinterestedMember(x) & Community(x)) -> -(exists y.(HighSchoolDance(y) & Chaperone(x, y))))",
+              "verdict": "not_entailed"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "story_id": 380,
+      "nl": "All young children and teenagers in this club who wish to further their academic careers and educational opportunities are students who attend the school.",
+      "canonical_fol": "all x.((YoungChild(x) & Teenager(x) & InClub(x) & WishToFurtherCareers(x)) -> (Student(x) & Attend(x, theSchool)))",
+      "top_formula_case": "quantification",
+      "structural_class": "compound_restrictor_universal",
+      "self_consistency": {
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
+        "positives_total": 3,
+        "positives_entailed": 3,
+        "contrastives_total": 3,
+        "contrastives_rejected": 3,
+        "per_test_results": [
+          {
+            "kind": "positive",
+            "fol": "all v0.((YoungChild(v0) & Teenager(v0) & InClub(v0) & WishToFurtherCareers(v0)) -> (Student(v0) & Attend(v0,theSchool)))",
+            "verdict": "entailed"
+          },
+          {
+            "kind": "positive",
+            "fol": "all v0.((YoungChild(v0) & Teenager(v0) & InClub(v0) & WishToFurtherCareers(v0)) -> Student(v0))",
+            "verdict": "entailed"
+          },
+          {
+            "kind": "positive",
+            "fol": "all v0.((YoungChild(v0) & Teenager(v0) & InClub(v0) & WishToFurtherCareers(v0)) -> Attend(v0,theSchool))",
+            "verdict": "entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all x.((YoungChild(x) & Teenager(x) & InClub(x) & WishToFurtherCareers(x)) -> (-Student(x) & Attend(x, theSchool)))",
+            "verdict": "not_entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all x.((YoungChild(x) & Teenager(x) & InClub(x) & WishToFurtherCareers(x)) -> (Student(x) & -Attend(x, theSchool)))",
+            "verdict": "not_entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all x.((YoungChild(x) & Teenager(x) & InClub(x) & WishToFurtherCareers(x)) -> -((Student(x) & Attend(x, theSchool))))",
+            "verdict": "not_entailed"
+          }
+        ]
+      },
+      "folio_faithfulness": {
+        "gold_fol_raw": "\u2200x (InThisClub(x) \u2227 (YoungChildren(x) \u2295 Teenager(x)) \u2227 WishToFurther(x, academicCareer)) \u2192 Studen(x) \u2227 AttendSchool(x))",
+        "gold_fol_normalized": "all x (InThisClub(x) & (YoungChildren(x) Teenager(x)) & WishToFurther(x, academicCareer)) -> Studen(x) & AttendSchool(x))",
+        "parse_error": true,
+        "score": null
+      }
+    }
+  ],
+  "failures": [
+    {
+      "story_id": 380,
+      "nl": "People in this club who perform in school talent shows often attend and are very engaged with school events.",
+      "error_kind": "schema_violation",
+      "error": "AtomicFormula 'Attend': argument 'z' is not a declared entity/constant or bound variable"
+    }
+  ],
+  "self_consistency_gate": {
+    "checks": [
+      {
+        "label": "self_consistency.overall.mean_recall >= 0.98",
+        "value": 1.0,
+        "threshold": 0.98,
+        "pass": true
+      },
+      {
+        "label": "atomic.mean_recall >= 0.95",
+        "value": null,
+        "threshold": 0.95,
+        "pass": true,
+        "note": "no premises in class"
+      },
+      {
+        "label": "quantification.mean_recall >= 0.95",
+        "value": 1.0,
+        "threshold": 0.95,
+        "pass": true
+      },
+      {
+        "label": "connective.mean_recall >= 0.95",
+        "value": null,
+        "threshold": 0.95,
+        "pass": true,
+        "note": "no premises in class"
+      },
+      {
+        "label": "negation.mean_recall >= 0.95",
+        "value": null,
+        "threshold": 0.95,
+        "pass": true,
+        "note": "no premises in class"
+      },
+      {
+        "label": "extraction_failure_rate < 0.10",
+        "value": 0.002652519893899204,
+        "threshold": 0.1,
+        "pass": true
+      }
+    ],
+    "all_pass": true
+  }
+}

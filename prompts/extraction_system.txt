@@ -85,5 +85,40 @@ PATTERNS (examples are authoritative — use them as your reference)
   unless the sentence asserts a predication over them; an unused predicate
   declaration is an error.
 
+═══════════════════════════════════════════════════════════════════════════
+DECOMPOSITION (non-negotiable)
+═══════════════════════════════════════════════════════════════════════════
+
+Every prepositional phrase whose object names a distinct entity must produce
+a binary predicate with that entity as a separate argument. Never bury
+entities inside predicate names.
+
+- Locatives, instrumentals, agents, indirect objects: the noun phrase after
+  the preposition is a Constant or a quantified variable, not part of the
+  predicate name.
+  - "work from home" → WorkFrom(x, home) with `home` as a Constant.
+    NOT WorkFromHome(x).
+  - "has lunch at the office" → HasLunchAt(x, office) with `office` as a
+    Constant. NOT HasLunchAtTheOffice(x).
+  - "attend the company building" → Attend(x, y) + CompanyBuilding(y) with
+    an existential on y. NOT AttendCompanyBuilding(x).
+  - "made by Japanese companies" → MadeBy(x, y) + JapaneseCompany(y).
+    NOT MadeByJapaneseCompany(x).
+  - "lives in tax havens" → LiveIn(x, y) + TaxHaven(y). NOT LiveInTaxHaven(x).
+
+- "Of" relations are always binary.
+  - "symptoms of Monkeypox" → SymptomOf(x, monkeypox), arity 2.
+    NOT SymptomOfMonkeypox(x).
+  - "capital city of the nation" → CapitalCityOf(x, y), arity 2.
+
+Test: if a downstream query might ask "which X involves [this noun]?", that
+noun must be a separate argument. "home" in "work from home" is queryable;
+buried in WorkFromHome(x), the query is impossible.
+
+True monadic properties (no prepositional argument) remain unary: Tall(x),
+Spicy(x), CanWalk(x). Compound adjective+noun properties whose noun is not
+independently queryable as a separate entity may stay unary:
+HasFunctionalBrainstems(x), HasTypeC(x).
+
 Follow the few-shot examples for structural patterns. Return valid JSON
 matching the schema exactly.

@@ -38,7 +38,7 @@ independently refuted.**
 
 ```bash
 # 1. Create a virtualenv, install dependencies.
-pip install pydantic openai nltk spacy pytest python-dotenv datasets
+pip install pydantic openai nltk spacy pytest python-dotenv
 python -m spacy download en_core_web_sm
 
 # 2. Install Vampire for your platform (macOS/Linux binaries auto-downloaded).
@@ -108,7 +108,6 @@ Output is written to `reports/folio_agreement.json`. See `docs/SIV.md` §17.
 ## Documentation
 
 - `docs/SIV.md` — the single canonical specification.
-- `docs/archive/` — historical v1 documents (read-only).
 
 ## License
 

@@ -40,20 +40,8 @@ secrets.json
 /vampire
 /vampire_macos
 
-# ── Trained model checkpoints (large) ────────────────────────────────────────
-checkpoints/
-*.bin
-*.safetensors
-*.pt
-*.pth
-
-# ── Generated / downloaded data (reproduce from scripts) ─────────────────────
-# Uncomment these if you want to exclude large data files:
-# data/folio_problems.json
-# data/calibration_set.json
-
-# Keep the pre-computed caches (small, deterministic)
-# data/pmi_cache.json       ← tracked
+# ── Data (regenerable from scripts) ──────────────────────────────────────────
+data/
 
 # ── Results & exports ─────────────────────────────────────────────────────────
 results_*.csv
@@ -78,11 +66,9 @@ results_*.json
 *.log
 *.tmp
 
-CLAUDE_CODE_SPEC.md
-SIV_Evaluation_Framework (3).ipynb
-refactor/
-
-siv_stage3/
+# ── Archive directories (historical, recoverable from git history) ───────────
+docs/archive/
+reports/archive/
 
 # ── SIV extraction cache (cache entries are regenerable; .gitkeep is tracked) ─
 .siv_cache/*.jsonl

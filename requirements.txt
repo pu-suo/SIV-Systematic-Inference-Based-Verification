@@ -13,3 +13,8 @@ python-dotenv>=1.0
 
 # Testing
 pytest>=7.0
+
+# Evaluation study (Tier 2/3 metric comparison)
+sacrebleu>=2.0
+bert-score>=0.3.0
+statsmodels>=0.14.0

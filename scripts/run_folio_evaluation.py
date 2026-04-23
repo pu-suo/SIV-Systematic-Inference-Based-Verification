@@ -116,12 +116,21 @@ def _score_record(report) -> Dict[str, Any]:
     }
 
 
-def _score_folio_gold(suite: TestSuite, gold_fol_raw: str, timeout_s: int) -> Dict[str, Any]:
+def _score_folio_gold(
+    suite: TestSuite,
+    gold_fol_raw: str,
+    timeout_s: int,
+    mode: str = "strict",
+    canonical_fol: Optional[str] = None,
+) -> Dict[str, Any]:
     """Score the FOLIO gold FOL against the test suite.
 
-    FOLIO gold uses Unicode (∀ ∃ ∧ ∨ → ⊕ ¬). We run normalize_fol_string once;
-    no predicate renaming, no vocabulary alignment (§17 Amendment H forbidden
-    move). If the result does not parse, record an error and skip scoring.
+    FOLIO gold uses Unicode (∀ ∃ ∧ ∨ → ⊕ ¬). We run normalize_fol_string once.
+    In strict mode, no vocabulary alignment is applied.  In soft mode,
+    SIV symbols in the test suite are rewritten to the candidate's vocabulary
+    via embedding-based alignment before scoring.
+
+    If the result does not parse, record an error and skip scoring.
     """
     gold_normalized = normalize_fol_string(gold_fol_raw)
     if not is_valid_fol(gold_normalized):
@@ -130,13 +139,41 @@ def _score_folio_gold(suite: TestSuite, gold_fol_raw: str, timeout_s: int) -> Di
             "gold_fol_normalized": gold_normalized,
             "parse_error": True,
             "score": None,
+            "alignment": None,
         }
-    report = score(suite, gold_normalized, timeout_s=timeout_s)
+
+    alignment_data = None
+    scoring_suite = suite
+    witness_override = None
+
+    if mode == "soft":
+        from siv.aligner import (
+            extract_symbols_from_fol, align_symbols,
+            rewrite_test_suite, rewrite_fol_strings, alignment_to_dict,
+        )
+        from siv.contrastive_generator import derive_witness_axioms
+
+        siv_symbols = extract_symbols_from_fol(canonical_fol or "")
+        candidate_symbols = extract_symbols_from_fol(gold_normalized)
+        alignment = align_symbols(siv_symbols, candidate_symbols)
+        scoring_suite = rewrite_test_suite(suite, alignment)
+
+        # Rewrite witness axioms with the same substitution map
+        raw_witnesses = derive_witness_axioms(suite.extraction)
+        witness_override = rewrite_fol_strings(raw_witnesses, alignment)
+
+        alignment_data = alignment_to_dict(alignment)
+
+    report = score(
+        scoring_suite, gold_normalized, timeout_s=timeout_s,
+        witness_axioms_override=witness_override,
+    )
     return {
         "gold_fol_raw": gold_fol_raw,
         "gold_fol_normalized": gold_normalized,
         "parse_error": False,
         "score": _score_record(report),
+        "alignment": alignment_data,
     }
 
 
@@ -144,6 +181,7 @@ def run(
     pairs: List[Dict[str, Any]],
     client,
     timeout_s: int = 10,
+    mode: str = "strict",
 ) -> Dict[str, Any]:
     per_pair: List[Dict[str, Any]] = []
     failures: List[Dict[str, str]] = []
@@ -176,7 +214,10 @@ def run(
         try:
             suite = compile_sentence_test_suite(extraction, timeout_s=timeout_s)
             self_report = score(suite, canonical, timeout_s=timeout_s)
-            folio_res = _score_folio_gold(suite, gold_fol_raw, timeout_s)
+            folio_res = _score_folio_gold(
+                suite, gold_fol_raw, timeout_s,
+                mode=mode, canonical_fol=canonical,
+            )
         except Exception as e:  # noqa: BLE001
             failures.append({
                 "story_id": pair["story_id"], "nl": nl,
@@ -373,16 +414,43 @@ def self_consistency_gate(agg: Dict[str, Any]) -> Dict[str, Any]:
 # ── Main ────────────────────────────────────────────────────────────────────
 
 def main() -> int:
+    _DEFAULT_OUTPUT = "reports/folio_agreement.json"
+
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=None,
                     help="Evaluate only the first N premises (debugging).")
     ap.add_argument("--timeout-s", type=int, default=10)
-    ap.add_argument("--output", type=str, default="reports/folio_agreement.json")
+    ap.add_argument("--output", type=str, default=_DEFAULT_OUTPUT)
     ap.add_argument("--split", type=str, default="validation",
                     help="FOLIO split to evaluate.")
+    ap.add_argument("--mode", type=str, choices=["strict", "soft"],
+                    default="strict",
+                    help="Scoring mode: strict (no alignment) or soft "
+                         "(embedding-based cross-vocabulary alignment).")
     args = ap.parse_args()
 
-    sys.stderr.write(f"[phase5] loading tasksource/folio split={args.split}\n")
+    # Fail fast if soft-mode dependencies are missing
+    if args.mode == "soft":
+        try:
+            from siv.aligner import align_symbols  # noqa: F401
+            # Force the embedding model to load now, not inside the loop
+            from siv.aligner import _get_embedder
+            _get_embedder()
+        except ImportError as e:
+            sys.stderr.write(
+                f"[phase5] soft mode requires extra dependencies: {e}\n"
+                f"[phase5] install with: pip install sentence-transformers scipy\n"
+            )
+            return 2
+
+    # In soft mode, default output goes to a separate file
+    if args.mode == "soft" and args.output == _DEFAULT_OUTPUT:
+        suffix = f"_soft{'_' + args.split if args.split != 'validation' else ''}"
+        args.output = f"reports/folio_agreement{suffix}.json"
+
+    sys.stderr.write(
+        f"[phase5] loading tasksource/folio split={args.split} mode={args.mode}\n"
+    )
     pairs = load_folio_premise_pairs(args.split)
     total = len(pairs)
     sys.stderr.write(f"[phase5] {total} unique premise pairs\n")
@@ -392,9 +460,10 @@ def main() -> int:
         sys.stderr.write(f"[phase5] limit active: evaluating {len(pairs)} pairs\n")
 
     client = FrozenClient(OpenAI())
-    results = run(pairs, client, timeout_s=args.timeout_s)
+    results = run(pairs, client, timeout_s=args.timeout_s, mode=args.mode)
     agg = aggregate(results, total_premises=total)
     agg["self_consistency_gate"] = self_consistency_gate(agg)
+    agg["mode"] = args.mode
 
     out_path = _REPO_ROOT / args.output
     out_path.parent.mkdir(parents=True, exist_ok=True)

@@ -14,6 +14,10 @@ python-dotenv>=1.0
 # Testing
 pytest>=7.0
 
+# Soft-mode alignment (cross-vocabulary scoring)
+sentence-transformers>=2.2.0
+scipy>=1.10.0
+
 # Evaluation study (Tier 2/3 metric comparison)
 sacrebleu>=2.0
 bert-score>=0.3.0

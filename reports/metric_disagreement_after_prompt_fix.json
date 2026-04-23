@@ -3,24 +3,66 @@
     "total_scored_premises": 305,
     "siv_zero_bleu_above_0.25": 101,
     "siv_zero_bleu_above_0.50": 42,
-    "structural_catches_with_high_bleu": 7,
+    "structural_catches_with_high_bleu": 10,
     "siv_perfect_bleu_below_0.50": 13
   },
   "headline_cases": {
     "description": "Cases where SIV catches a structural error (restrictor collapse, entity flattening, or quantifier mismatch) but BLEU scores the FOLIO gold translation above 0.25. These are the 'SIV is right, BLEU is wrong' cases for the paper.",
     "cases": [
       {
-        "story_id": 452,
-        "nl": "All highly intelligent beings from Earth are humans.",
-        "folio_gold_fol": "\u2200x (HighlyIntelligentBeing(x) \u2227 From(x, earth) \u2192 Human(x))",
-        "siv_canonical_fol": "all x.((HighlyIntelligent(x) & Being(x) & From(x, earth)) -> Human(x))",
+        "story_id": 2,
+        "nl": "Any city in Butte is not in St Pierre.",
+        "folio_gold_fol": "\u2200x ((City(x) \u2227 City(butte) \u2227 In(x, butte)) \u2192 \u00ac(In(x, pierre)))",
+        "siv_canonical_fol": "all x.((City(x) & In(x, butte)) -> -In(x, stPierre))",
         "siv_recall": 0.0,
         "siv_precision": 1.0,
         "siv_f1": 0.0,
-        "bleu": 0.5425411500681427,
+        "bleu": 0.5972378844519001,
         "exact_match": 0.0,
         "category": "restrictor_collapse",
-        "subcategory": "SIV=3 vs GOLD=2 conjuncts",
+        "subcategory": "SIV=2 vs GOLD=3 conjuncts",
+        "disagreement_type": "bleu_high_siv_zero"
+      },
+      {
+        "story_id": 435,
+        "nl": "All of the students with part-time jobs offered by the university currently work in the library.",
+        "folio_gold_fol": "\u2200x (Student(x) \u2227 Have(x, partTimeJob) \u2227 OfferedBy(y, university) \u2192 WorkIn(x, library))",
+        "siv_canonical_fol": "all x.(exists y.((Student(x) & PartTimeJob(y) & OfferedBy(y, university))) -> WorkIn(x, library))",
+        "siv_recall": 0.0,
+        "siv_precision": 1.0,
+        "siv_f1": 0.0,
+        "bleu": 0.569929044427659,
+        "exact_match": 0.0,
+        "category": "restrictor_collapse",
+        "subcategory": "SIV=1 vs GOLD=3 conjuncts",
+        "disagreement_type": "bleu_high_siv_zero"
+      },
+      {
+        "story_id": 350,
+        "nl": "All of Zaha Hadid's design styles that Max adores have interesting geometries.",
+        "folio_gold_fol": "\u2200x (Adore(max, x) \u2227 ZahaHadid(x) \u2227 DesignStyle(x) \u2192 InterestingGeometry(x))",
+        "siv_canonical_fol": "all x.((DesignStyleOf(x, zahaHadid) & Adore(max, x)) -> InterestingGeometry(x))",
+        "siv_recall": 0.0,
+        "siv_precision": 1.0,
+        "siv_f1": 0.0,
+        "bleu": 0.5208202637221084,
+        "exact_match": 0.0,
+        "category": "restrictor_collapse",
+        "subcategory": "SIV=2 vs GOLD=3 conjuncts",
+        "disagreement_type": "bleu_high_siv_zero"
+      },
+      {
+        "story_id": 245,
+        "nl": "In superhero movies, the good guys always win.",
+        "folio_gold_fol": "\u2200x \u2200y (SuperheroMovie(x) \u2227 In(y, x) \u2227 GoodGuy(y) \u2192 Wins(y))",
+        "siv_canonical_fol": "all x.(SuperheroMovie(x) -> all y.((GoodGuy(y) & In(y, x)) -> Win(y)))",
+        "siv_recall": 0.0,
+        "siv_precision": 1.0,
+        "siv_f1": 0.0,
+        "bleu": 0.47638534016262996,
+        "exact_match": 0.0,
+        "category": "restrictor_collapse",
+        "subcategory": "SIV=1 vs GOLD=3 conjuncts",
         "disagreement_type": "bleu_high_siv_zero"
       },
       {
@@ -48,7 +90,7 @@
         "bleu": 0.4541511788498719,
         "exact_match": 0.0,
         "category": "entity_flattening",
-        "subcategory": "BingeWatch: SIV arity=1, GOLD arity=2; ShareWith: SIV arity=2, GOLD arity=3",
+        "subcategory": "ShareWith: SIV arity=2, GOLD arity=3; BingeWatch: SIV arity=1, GOLD arity=2",
         "disagreement_type": "bleu_high_siv_zero"
       },
       {
@@ -90,7 +132,7 @@
         "bleu": 0.30705395660154056,
         "exact_match": 0.0,
         "category": "restrictor_collapse",
-        "subcategory": "SIV=6 vs GOLD=4 conjuncts",
+        "subcategory": "SIV=1 vs GOLD=4 conjuncts",
         "disagreement_type": "bleu_high_siv_zero"
       },
       {
@@ -104,15 +146,15 @@
         "bleu": 0.2974309561779646,
         "exact_match": 0.0,
         "category": "entity_flattening",
-        "subcategory": "BingeWatch: SIV arity=1, GOLD arity=2; Download: SIV arity=1, GOLD arity=2",
+        "subcategory": "Download: SIV arity=1, GOLD arity=2; BingeWatch: SIV arity=1, GOLD arity=2",
         "disagreement_type": "bleu_high_siv_zero"
       }
     ]
   },
   "bleu_high_siv_zero_by_category": {
     "vocab_divergence_partial": {
-      "count": 62,
-      "mean_bleu": 0.4893473583694005,
+      "count": 58,
+      "mean_bleu": 0.49420708779892064,
       "examples": [
         {
           "story_id": 80,
@@ -159,8 +201,8 @@
       ]
     },
     "vocab_divergence_total": {
-      "count": 20,
-      "mean_bleu": 0.49141102669849845,
+      "count": 23,
+      "mean_bleu": 0.4752476389052236,
       "examples": [
         {
           "story_id": 96,
@@ -207,8 +249,8 @@
       ]
     },
     "constant_divergence": {
-      "count": 11,
-      "mean_bleu": 0.492295378029768,
+      "count": 10,
+      "mean_bleu": 0.48180112738755476,
       "examples": [
         {
           "story_id": 471,
@@ -255,56 +297,56 @@
       ]
     },
     "restrictor_collapse": {
-      "count": 4,
-      "mean_bleu": 0.40546969960049273,
+      "count": 7,
+      "mean_bleu": 0.4633871687283037,
       "examples": [
         {
-          "story_id": 452,
-          "nl": "All highly intelligent beings from Earth are humans.",
-          "folio_gold_fol": "\u2200x (HighlyIntelligentBeing(x) \u2227 From(x, earth) \u2192 Human(x))",
-          "siv_canonical_fol": "all x.((HighlyIntelligent(x) & Being(x) & From(x, earth)) -> Human(x))",
+          "story_id": 2,
+          "nl": "Any city in Butte is not in St Pierre.",
+          "folio_gold_fol": "\u2200x ((City(x) \u2227 City(butte) \u2227 In(x, butte)) \u2192 \u00ac(In(x, pierre)))",
+          "siv_canonical_fol": "all x.((City(x) & In(x, butte)) -> -In(x, stPierre))",
           "siv_recall": 0.0,
           "siv_precision": 1.0,
           "siv_f1": 0.0,
-          "bleu": 0.5425411500681427,
+          "bleu": 0.5972378844519001,
           "exact_match": 0.0,
           "category": "restrictor_collapse",
-          "subcategory": "SIV=3 vs GOLD=2 conjuncts",
+          "subcategory": "SIV=2 vs GOLD=3 conjuncts",
           "disagreement_type": "bleu_high_siv_zero"
         },
         {
-          "story_id": 483,
-          "nl": "Everyone who can register to vote in the United States can participate in the 2024 United States presidential election.",
-          "folio_gold_fol": "\u2200x (CanRegisterToVoteIn(x, unitedStates) \u2192 CanParticipateIn(x, 2024UnitedStatesElection))",
-          "siv_canonical_fol": "all x.((CanRegisterToVoteIn(x, unitedStates) & UnitedStates(unitedStates)) -> CanParticipateIn(x, presidentialElection2024))",
+          "story_id": 435,
+          "nl": "All of the students with part-time jobs offered by the university currently work in the library.",
+          "folio_gold_fol": "\u2200x (Student(x) \u2227 Have(x, partTimeJob) \u2227 OfferedBy(y, university) \u2192 WorkIn(x, library))",
+          "siv_canonical_fol": "all x.(exists y.((Student(x) & PartTimeJob(y) & OfferedBy(y, university))) -> WorkIn(x, library))",
           "siv_recall": 0.0,
           "siv_precision": 1.0,
           "siv_f1": 0.0,
-          "bleu": 0.4575239144175795,
+          "bleu": 0.569929044427659,
           "exact_match": 0.0,
           "category": "restrictor_collapse",
-          "subcategory": "SIV=2 vs GOLD=1 conjuncts",
+          "subcategory": "SIV=1 vs GOLD=3 conjuncts",
           "disagreement_type": "bleu_high_siv_zero"
         },
         {
-          "story_id": 340,
-          "nl": "If a person at the mixer is a celebrity, then they are well paid.",
-          "folio_gold_fol": "\u2200x (At(x, mixer) \u2227 Celebrity(x) \u2192 WellPaid(x))",
-          "siv_canonical_fol": "all x.((Person(x) & At(x, theMixer) & Mixer(theMixer)) -> (Celebrity(x) -> WellPaid(x)))",
+          "story_id": 350,
+          "nl": "All of Zaha Hadid's design styles that Max adores have interesting geometries.",
+          "folio_gold_fol": "\u2200x (Adore(max, x) \u2227 ZahaHadid(x) \u2227 DesignStyle(x) \u2192 InterestingGeometry(x))",
+          "siv_canonical_fol": "all x.((DesignStyleOf(x, zahaHadid) & Adore(max, x)) -> InterestingGeometry(x))",
           "siv_recall": 0.0,
           "siv_precision": 1.0,
           "siv_f1": 0.0,
-          "bleu": 0.3147597773147082,
+          "bleu": 0.5208202637221084,
           "exact_match": 0.0,
           "category": "restrictor_collapse",
-          "subcategory": "SIV=3 vs GOLD=2 conjuncts",
+          "subcategory": "SIV=2 vs GOLD=3 conjuncts",
           "disagreement_type": "bleu_high_siv_zero"
         }
       ]
     },
     "entity_flattening": {
       "count": 3,
-      "mean_bleu": 0.3723791192941163,
+      "mean_bleu": 0.3723791192941162,
       "examples": [
         {
           "story_id": 184,
@@ -317,7 +359,7 @@
           "bleu": 0.4541511788498719,
           "exact_match": 0.0,
           "category": "entity_flattening",
-          "subcategory": "BingeWatch: SIV arity=1, GOLD arity=2; ShareWith: SIV arity=2, GOLD arity=3",
+          "subcategory": "ShareWith: SIV arity=2, GOLD arity=3; BingeWatch: SIV arity=1, GOLD arity=2",
           "disagreement_type": "bleu_high_siv_zero"
         },
         {
@@ -345,27 +387,7 @@
           "bleu": 0.2974309561779646,
           "exact_match": 0.0,
           "category": "entity_flattening",
-          "subcategory": "BingeWatch: SIV arity=1, GOLD arity=2; Download: SIV arity=1, GOLD arity=2",
-          "disagreement_type": "bleu_high_siv_zero"
-        }
-      ]
-    },
-    "alternative_decomposition": {
-      "count": 1,
-      "mean_bleu": 0.45154353252898716,
-      "examples": [
-        {
-          "story_id": 101,
-          "nl": "Ailton Silva, born in 1995, is commonly known as Ailton.",
-          "folio_gold_fol": "BornIn(ailtonSilva, year1995) \u2227 CommonlyKnownAs(ailtonSilva, ailton)",
-          "siv_canonical_fol": "(BornIn(ailtonSilva, 1995) & KnownAs(ailtonSilva, ailton))",
-          "siv_recall": 0.0,
-          "siv_precision": null,
-          "siv_f1": null,
-          "bleu": 0.45154353252898716,
-          "exact_match": 0.0,
-          "category": "alternative_decomposition",
-          "subcategory": "structural_test_failure",
+          "subcategory": "Download: SIV arity=1, GOLD arity=2; BingeWatch: SIV arity=1, GOLD arity=2",
           "disagreement_type": "bleu_high_siv_zero"
         }
       ]

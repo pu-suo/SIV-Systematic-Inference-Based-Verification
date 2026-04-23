@@ -98,8 +98,8 @@ entities inside predicate names.
   predicate name.
   - "work from home" → WorkFrom(x, home) with `home` as a Constant.
     NOT WorkFromHome(x).
-  - "has lunch at the office" → HasLunchAt(x, office) with `office` as a
-    Constant. NOT HasLunchAtTheOffice(x).
+  - "has lunch at the office" → HaveLunch(x, y) + Office(y) with an
+    existential on y. NOT HasLunchAtTheOffice(x).
   - "attend the company building" → Attend(x, y) + CompanyBuilding(y) with
     an existential on y. NOT AttendCompanyBuilding(x).
   - "made by Japanese companies" → MadeBy(x, y) + JapaneseCompany(y).

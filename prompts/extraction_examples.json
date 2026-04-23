@@ -841,7 +841,7 @@
           ]
         },
         {
-          "name": "HasTypeC",
+          "name": "HasTypeCPort",
           "arity": 1,
           "arg_types": [
             "entity"
@@ -883,7 +883,7 @@
           },
           {
             "atomic": {
-              "pred": "HasTypeC",
+              "pred": "HasTypeCPort",
               "args": [
                 "monitor"
               ],
@@ -1232,7 +1232,7 @@
           ]
         },
         {
-          "name": "HaveLunch",
+          "name": "HaveLunchAt",
           "arity": 2,
           "arg_types": [
             "entity",
@@ -1274,7 +1274,7 @@
               ],
               "nucleus": {
                 "atomic": {
-                  "pred": "HaveLunch",
+                  "pred": "HaveLunchAt",
                   "args": [
                     "x",
                     "y"

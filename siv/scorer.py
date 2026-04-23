@@ -42,14 +42,22 @@ def score(
     test_suite: TestSuite,
     candidate_fol: str,
     timeout_s: int = 5,
+    witness_axioms_override: Optional[List[str]] = None,
 ) -> ScoreReport:
     """Compute recall/precision/F1 for ``candidate_fol`` against ``test_suite``.
 
     F1 = 2·recall·precision / (recall + precision). No coverage fraction.
+
+    If ``witness_axioms_override`` is provided, use those axioms instead of
+    deriving from the extraction.  Used by soft-mode scoring where witness
+    axioms need to be rewritten to match the candidate's vocabulary.
     """
     positives_total = len(test_suite.positives)
     contrastives_total = len(test_suite.contrastives)
-    witnesses = derive_witness_axioms(test_suite.extraction)
+    if witness_axioms_override is not None:
+        witnesses = witness_axioms_override
+    else:
+        witnesses = derive_witness_axioms(test_suite.extraction)
 
     positives_entailed = 0
     contrastives_rejected = 0

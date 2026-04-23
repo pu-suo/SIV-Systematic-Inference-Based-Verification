@@ -313,6 +313,7 @@ COLUMNS = [
     "overlap_ratio",
     "failed_tests",
     "notes",
+    "alignment_present",
 ]
 
 
@@ -326,6 +327,7 @@ def categorize_premise(p: Dict[str, Any]) -> Dict[str, Any]:
         "siv_canonical_fol": p["canonical_fol"],
         "top_formula_case": p["top_formula_case"],
         "structural_class": p["structural_class"],
+        "alignment_present": bool(ff.get("alignment")),
     }
 
     if ff.get("parse_error"):

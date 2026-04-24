@@ -30,62 +30,137 @@ independently refuted.**
 7. **Invariants** (`siv/invariants.py`) — CI-enforced entailment
    monotonicity (C9a) and contrastive soundness (C9b).
 
-`siv/vampire_interface.py`, `siv/fol_utils.py`, `siv/frozen_client.py`, and
-`siv/frozen_config.py` are supporting modules. Dependencies are in
-`docs/SIV.md` §9. Nothing else is part of SIV.
+Supporting modules: `siv/vampire_interface.py`, `siv/fol_utils.py`,
+`siv/frozen_client.py`, `siv/frozen_config.py`, `siv/aligner.py` (soft
+cross-vocabulary scoring), `siv/stratum_classifier.py` (gold FOL
+classification), `siv/nltk_perturbations.py` (AST-level FOL
+perturbations), `siv/test_suite_generator.py` (composing extraction +
+compilation + test generation into one callable).
 
 ## Quick start
 
 ```bash
-# 1. Create a virtualenv, install dependencies.
-pip install pydantic openai nltk spacy pytest python-dotenv
+# 1. Install dependencies.
+bash scripts/setup.sh
+# — or manually:
+pip install -r requirements.txt
 python -m spacy download en_core_web_sm
-
-# 2. Install Vampire for your platform (macOS/Linux binaries auto-downloaded).
 python -c "from siv.vampire_interface import setup_vampire; setup_vampire('.')"
 
-# 3. Put OPENAI_API_KEY in .env at the repo root.
+# 2. Put OPENAI_API_KEY in .env at the repo root.
 echo "OPENAI_API_KEY=sk-..." > .env
 
-# 4. Extract a sentence.
-python -m siv extract "All employees who schedule meetings attend the company building."
+# 3. Generate a test suite for a single sentence.
+python scripts/generate_siv_tests.py "All employees who schedule meetings attend the company building." --pretty
 ```
 
-## Minimal example (all four Formula cases)
+## Pipeline
+
+SIV's evaluation pipeline is split into four independent, cacheable scripts.
+Each produces a frozen artifact consumed by the next.
+
+### 1. Generate test suites (NL → SIV tests)
+
+For each natural language premise, extracts an atomic fact structure via a
+frozen LLM call, compiles it into a canonical FOL, and generates a test
+suite of positive entailments and contrastive mutants.
+
+```bash
+# Single sentence → JSON to stdout:
+python scripts/generate_siv_tests.py "All dogs are mammals." --pretty
+
+# Batch — all FOLIO train premises → frozen JSONL artifact:
+python scripts/generate_folio_test_suites.py --split train
+
+# Output: reports/human_study/test_suites.jsonl
+```
+
+The test suites are the most important artifact. They are generated once
+and frozen — downstream scoring loads them without re-running extraction.
+
+### 2. Generate candidates (NL → candidate FOLs)
+
+Produces candidate translations from multiple sources: FOLIO gold,
+GPT-4o, GPT-4o-mini, and four tiers of AST perturbations (subtle,
+meaning-altering, clearly wrong, nonsense). No SIV involvement — candidates
+are independent of the metric.
+
+```bash
+# Full run (requires OPENAI_API_KEY):
+python scripts/generate_candidates.py --split train
+
+# Dry run (skip LLM calls):
+python scripts/generate_candidates.py --split train --limit 10 --skip-models
+
+# Output: reports/human_study/candidates.jsonl
+```
+
+### 3. Score candidates (test suites × candidates → scores)
+
+Joins saved test suites with saved candidates and scores each pair using
+Vampire. Supports strict mode (SIV vocabulary) and soft mode
+(embedding-based cross-vocabulary alignment).
+
+```bash
+python scripts/score_candidates.py \
+  --test-suites reports/human_study/test_suites.jsonl \
+  --candidates reports/human_study/candidates.jsonl
+
+# Output: reports/human_study/scored_candidates.jsonl
+```
+
+### Data flow
+
+```
+FOLIO NL premises
+    │
+    ├─→ generate_folio_test_suites.py ─→ test_suites.jsonl
+    │       LLM extract → compile → Vampire contrastives
+    │
+    └─→ generate_candidates.py ─→ candidates.jsonl
+            gold + model translations + perturbations
+
+test_suites.jsonl + candidates.jsonl
+    │
+    └─→ score_candidates.py ─→ scored_candidates.jsonl
+            Vampire scoring (strict + soft mode)
+```
+
+## Programmatic usage
 
 ```python
 from openai import OpenAI
 from dotenv import load_dotenv
-from siv.compiler import compile_canonical_fol, compile_sentence_test_suite
-from siv.extractor import extract_sentence
 from siv.frozen_client import FrozenClient
+from siv.test_suite_generator import generate_test_suite
 from siv.scorer import score
+from siv.schema import TestSuite, UnitTest, SentenceExtraction
 
 load_dotenv()
 client = FrozenClient(OpenAI())
 
-sentences = [
-    "Miroslav Venhoda was a Czech choral conductor.",          # atomic
-    "All employees who schedule meetings attend the company building.",  # quantification
-    "It is not the case that Alice is tall and Bob is short.", # negation
-    "Alice is tall and Bob is short.",                         # connective
-]
+# Generate a complete test suite from NL
+suite_dict = generate_test_suite(
+    "All employees who schedule meetings attend the company building.",
+    client,
+)
 
-for nl in sentences:
-    extraction = extract_sentence(nl, client)
-    canonical = compile_canonical_fol(extraction)
-    suite = compile_sentence_test_suite(extraction)
-    report = score(suite, canonical)
-    print(f"{nl}\n  canonical: {canonical}")
-    print(f"  recall={report.recall} precision={report.precision} f1={report.f1}")
+print(f"Canonical: {suite_dict['canonical_fol']}")
+print(f"Positives: {len(suite_dict['positives'])}")
+print(f"Contrastives: {len(suite_dict['contrastives'])}")
+
+# Score a candidate against the test suite
+extraction = SentenceExtraction(**suite_dict["extraction_json"])
+test_suite = TestSuite(
+    extraction=extraction,
+    positives=[UnitTest(**t) for t in suite_dict["positives"]],
+    contrastives=[UnitTest(**t) for t in suite_dict["contrastives"]],
+)
+report = score(test_suite, suite_dict["canonical_fol"])
+print(f"recall={report.recall} precision={report.precision} f1={report.f1}")
 ```
 
-The canonical FOL is expected to score `recall = 1.0` on its own test
-suite for every example; `precision` and `f1` are `None` when the source is
-structurally weak (top-level disjunction, bare implication with atomic
-antecedent, or existential over a compound nucleus — see §6.5).
-
-## Running the test suite
+## Running tests
 
 ```bash
 pytest tests/                                 # all mocked + deterministic tests
@@ -93,21 +168,22 @@ pytest tests/test_soundness_invariants.py     # C9a / C9b on the 22-sentence cor
 OPENAI_API_KEY=sk-... pytest tests/test_extraction_roundtrip.py  # live round-trip
 ```
 
-## FOLIO evaluation
+## Analysis scripts
 
-`scripts/run_folio_evaluation.py` runs SIV against every unique premise in
-the FOLIO validation split in two modes:
-
-- **Self-consistency.** Score `compile_canonical_fol(extraction)` against
-  the derived test suite. Measures pipeline coherence.
-- **FOLIO-faithfulness.** Score FOLIO's gold FOL against the derived test
-  suite. Measures how faithful the benchmark's translations are.
-
-Output is written to `reports/folio_agreement.json`. See `docs/SIV.md` §17.
+| Script | Purpose |
+|--------|---------|
+| `scripts/run_folio_evaluation.py` | Legacy monolith — runs full SIV pipeline on FOLIO validation |
+| `scripts/categorize_folio_results.py` | Classify divergence patterns (vocab, restrictor, entity, quantifier) |
+| `scripts/compute_baseline_metrics.py` | BLEU / BERTScore / exact-match baselines |
+| `scripts/generate_annotation_set.py` | Stratified annotation sheet generation for human study |
+| `scripts/analyze_annotations.py` | Inter-annotator agreement and metric correlation |
+| `scripts/soft_alignment_diagnostics.py` | Diagnostic report for soft cross-vocabulary scoring |
 
 ## Documentation
 
 - `docs/SIV.md` — the single canonical specification.
+- `docs/perturbation_recipe.md` — frozen spec of all FOL perturbation operators.
+- `docs/translation_prompt.md` — frozen NL→FOL prompt for model translations.
 
 ## License
 

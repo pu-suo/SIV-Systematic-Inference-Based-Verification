@@ -3,44 +3,44 @@
   "n_evaluated": 350,
   "n_failures": 27,
   "extraction_failure_rate": 0.07161803713527852,
-  "runtime_seconds": 65.49479913711548,
+  "runtime_seconds": 64.6313579082489,
   "self_consistency": {
     "overall": {
       "count": 350,
       "scored_count": 350,
-      "mean_recall": 0.9635714285714285,
-      "mean_precision": 0.993006993006993,
-      "mean_f1_where_defined": 0.993006993006993,
-      "f1_defined_count": 286,
-      "recall_only_count": 64
+      "mean_recall": 0.995,
+      "mean_precision": 0.9931740614334471,
+      "mean_f1_where_defined": 0.9931740614334471,
+      "f1_defined_count": 293,
+      "recall_only_count": 57
     },
     "by_top_formula_case": {
       "quantification": {
         "count": 224,
         "scored_count": 224,
-        "mean_recall": 0.9698660714285714,
-        "mean_precision": 0.9945054945054945,
-        "mean_f1_where_defined": 0.9945054945054945,
-        "f1_defined_count": 182,
-        "recall_only_count": 42
+        "mean_recall": 0.9921875,
+        "mean_precision": 0.9946236559139785,
+        "mean_f1_where_defined": 0.9946236559139785,
+        "f1_defined_count": 186,
+        "recall_only_count": 38
       },
       "connective": {
         "count": 56,
         "scored_count": 56,
-        "mean_recall": 0.9107142857142857,
-        "mean_precision": 0.9714285714285714,
-        "mean_f1_where_defined": 0.9714285714285714,
-        "f1_defined_count": 35,
-        "recall_only_count": 21
+        "mean_recall": 1.0,
+        "mean_precision": 0.972972972972973,
+        "mean_f1_where_defined": 0.972972972972973,
+        "f1_defined_count": 37,
+        "recall_only_count": 19
       },
       "atomic": {
         "count": 65,
         "scored_count": 65,
-        "mean_recall": 0.9846153846153847,
+        "mean_recall": 1.0,
         "mean_precision": 1.0,
         "mean_f1_where_defined": 1.0,
-        "f1_defined_count": 64,
-        "recall_only_count": 1
+        "f1_defined_count": 65,
+        "recall_only_count": 0
       },
       "negation": {
         "count": 5,
@@ -56,29 +56,29 @@
       "compound_restrictor_universal": {
         "count": 70,
         "scored_count": 70,
-        "mean_recall": 0.9857142857142858,
-        "mean_precision": 0.9855072463768116,
-        "mean_f1_where_defined": 0.9855072463768116,
-        "f1_defined_count": 69,
-        "recall_only_count": 1
+        "mean_recall": 1.0,
+        "mean_precision": 0.9857142857142858,
+        "mean_f1_where_defined": 0.9857142857142858,
+        "f1_defined_count": 70,
+        "recall_only_count": 0
       },
       "simple_universal": {
         "count": 113,
         "scored_count": 113,
-        "mean_recall": 0.9734513274336283,
+        "mean_recall": 1.0,
         "mean_precision": 1.0,
         "mean_f1_where_defined": 1.0,
-        "f1_defined_count": 110,
-        "recall_only_count": 3
+        "f1_defined_count": 113,
+        "recall_only_count": 0
       },
       "ground_instance": {
         "count": 104,
         "scored_count": 104,
-        "mean_recall": 0.9615384615384616,
-        "mean_precision": 0.9896907216494846,
-        "mean_f1_where_defined": 0.9896907216494846,
-        "f1_defined_count": 97,
-        "recall_only_count": 7
+        "mean_recall": 1.0,
+        "mean_precision": 0.98989898989899,
+        "mean_f1_where_defined": 0.98989898989899,
+        "f1_defined_count": 99,
+        "recall_only_count": 5
       },
       "simple_existential": {
         "count": 24,
@@ -92,11 +92,11 @@
       "bare_implies_atomic_antecedent": {
         "count": 10,
         "scored_count": 10,
-        "mean_recall": 0.8,
-        "mean_precision": null,
-        "mean_f1_where_defined": null,
-        "f1_defined_count": 0,
-        "recall_only_count": 10
+        "mean_recall": 1.0,
+        "mean_precision": 1.0,
+        "mean_f1_where_defined": 1.0,
+        "f1_defined_count": 1,
+        "recall_only_count": 9
       },
       "top_level_disjunction": {
         "count": 8,
@@ -110,7 +110,7 @@
       "existential_compound_nucleus": {
         "count": 17,
         "scored_count": 17,
-        "mean_recall": 0.8382352941176471,
+        "mean_recall": 0.8970588235294118,
         "mean_precision": 1.0,
         "mean_f1_where_defined": 1.0,
         "f1_defined_count": 2,
@@ -137,7 +137,7 @@
       0,
       0,
       0,
-      284
+      291
     ],
     "low_f1_review_list": [
       {
@@ -166,39 +166,39 @@
     "overall": {
       "count": 350,
       "scored_count": 313,
-      "mean_recall": 0.5289137380191693,
-      "mean_precision": 0.9995404411764706,
-      "mean_f1_where_defined": 0.5481770833333334,
-      "f1_defined_count": 256,
-      "recall_only_count": 57
+      "mean_recall": 0.5566027689030884,
+      "mean_precision": 0.9995509654243376,
+      "mean_f1_where_defined": 0.5508905852417303,
+      "f1_defined_count": 262,
+      "recall_only_count": 51
     },
     "by_top_formula_case": {
       "quantification": {
         "count": 224,
         "scored_count": 199,
-        "mean_recall": 0.47294807370184255,
-        "mean_precision": 0.9992647058823529,
-        "mean_f1_where_defined": 0.46197916666666666,
-        "f1_defined_count": 160,
-        "recall_only_count": 39
+        "mean_recall": 0.47629815745393633,
+        "mean_precision": 0.9992782389029231,
+        "mean_f1_where_defined": 0.4534764826175869,
+        "f1_defined_count": 163,
+        "recall_only_count": 36
       },
       "connective": {
         "count": 56,
         "scored_count": 44,
-        "mean_recall": 0.5325757575757576,
+        "mean_recall": 0.6916666666666667,
         "mean_precision": 1.0,
-        "mean_f1_where_defined": 0.6820987654320988,
-        "f1_defined_count": 27,
-        "recall_only_count": 17
+        "mean_f1_where_defined": 0.7385057471264368,
+        "f1_defined_count": 29,
+        "recall_only_count": 15
       },
       "atomic": {
         "count": 65,
         "scored_count": 65,
-        "mean_recall": 0.7076923076923077,
+        "mean_recall": 0.7230769230769231,
         "mean_precision": 1.0,
-        "mean_f1_where_defined": 0.71875,
-        "f1_defined_count": 64,
-        "recall_only_count": 1
+        "mean_f1_where_defined": 0.7230769230769231,
+        "f1_defined_count": 65,
+        "recall_only_count": 0
       },
       "negation": {
         "count": 5,
@@ -215,28 +215,28 @@
         "count": 70,
         "scored_count": 58,
         "mean_recall": 0.33477011494252873,
-        "mean_precision": 0.9979360165118679,
-        "mean_f1_where_defined": 0.36023391812865496,
-        "f1_defined_count": 57,
-        "recall_only_count": 1
+        "mean_precision": 0.9979716024340771,
+        "mean_f1_where_defined": 0.35402298850574715,
+        "f1_defined_count": 58,
+        "recall_only_count": 0
       },
       "simple_universal": {
         "count": 113,
         "scored_count": 102,
         "mean_recall": 0.49019607843137253,
         "mean_precision": 1.0,
-        "mean_f1_where_defined": 0.513,
-        "f1_defined_count": 100,
-        "recall_only_count": 2
+        "mean_f1_where_defined": 0.5029411764705882,
+        "f1_defined_count": 102,
+        "recall_only_count": 0
       },
       "ground_instance": {
         "count": 104,
         "scored_count": 101,
-        "mean_recall": 0.6617161716171617,
+        "mean_recall": 0.7013201320132013,
         "mean_precision": 1.0,
-        "mean_f1_where_defined": 0.6985815602836879,
-        "f1_defined_count": 94,
-        "recall_only_count": 7
+        "mean_f1_where_defined": 0.7152777777777778,
+        "f1_defined_count": 96,
+        "recall_only_count": 5
       },
       "simple_existential": {
         "count": 24,
@@ -250,11 +250,11 @@
       "bare_implies_atomic_antecedent": {
         "count": 10,
         "scored_count": 9,
-        "mean_recall": 0.2222222222222222,
-        "mean_precision": null,
-        "mean_f1_where_defined": null,
-        "f1_defined_count": 0,
-        "recall_only_count": 9
+        "mean_recall": 0.6666666666666666,
+        "mean_precision": 1.0,
+        "mean_f1_where_defined": 1.0,
+        "f1_defined_count": 1,
+        "recall_only_count": 8
       },
       "top_level_disjunction": {
         "count": 8,
@@ -268,7 +268,7 @@
       "existential_compound_nucleus": {
         "count": 17,
         "scored_count": 15,
-        "mean_recall": 0.41333333333333333,
+        "mean_recall": 0.4577777777777778,
         "mean_precision": 1.0,
         "mean_f1_where_defined": 0.7083333333333333,
         "f1_defined_count": 2,
@@ -285,7 +285,7 @@
       }
     },
     "f1_histogram_bins_0_to_1_by_0p1": [
-      107,
+      109,
       0,
       0,
       0,
@@ -295,7 +295,7 @@
       2,
       2,
       0,
-      125
+      129
     ],
     "low_f1_review_list": [
       {
@@ -393,18 +393,6 @@
         "structural_class": "simple_universal",
         "gold_fol_raw": "\u2200x ((NetflixShow(x) \u2227 BingeWatch(karen, x)) \u2192 ShareWith(karen, x, lisa))",
         "gold_fol_normalized": "all x ((NetflixShow(x) & BingeWatch(karen, x)) -> ShareWith(karen, x, lisa))"
-      },
-      {
-        "story_id": 232,
-        "nl": "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
-        "f1": 0.0,
-        "recall": 0.0,
-        "precision": 1.0,
-        "canonical_fol": "(Hosted(beijing, summerOlympics2008) & Hosted(beijing, summerParalympics2008))",
-        "top_formula_case": "connective",
-        "structural_class": "ground_instance",
-        "gold_fol_raw": "Hosted(beijing, 2008SummerOlympics) \u2227 Hosted(beijing, 2008SummerParalympicGames)",
-        "gold_fol_normalized": "Hosted(beijing, 2008SummerOlympics) & Hosted(beijing, 2008SummerParalympicGames)"
       },
       {
         "story_id": 340,
@@ -527,6 +515,18 @@
         "gold_fol_normalized": "all x (RomanceLanguage(x) -> MemberOf(x, languageFamily))"
       },
       {
+        "story_id": 213,
+        "nl": "Basque is not related to any other language.",
+        "f1": 0.0,
+        "recall": 0.0,
+        "precision": 1.0,
+        "canonical_fol": "all y.(Language(y) -> -RelatedTo(x, y))",
+        "top_formula_case": "quantification",
+        "structural_class": "simple_universal",
+        "gold_fol_raw": "\u2200x (Language(x) \u2192 \u00acRelated(basque, x))",
+        "gold_fol_normalized": "all x (Language(x) -> -Related(basque, x))"
+      },
+      {
         "story_id": 79,
         "nl": "If a player leaves a team they no longer play for that team.",
         "f1": 0.0,
@@ -585,18 +585,6 @@
         "structural_class": "ground_instance",
         "gold_fol_raw": "Aligator(ted)",
         "gold_fol_normalized": "Aligator(ted)"
-      },
-      {
-        "story_id": 234,
-        "nl": "Yale university's endowment was valued at $42.3 billion.",
-        "f1": 0.0,
-        "recall": 0.0,
-        "precision": 1.0,
-        "canonical_fol": "ValuedAt(yaleUniversityEndowment, value423Billion)",
-        "top_formula_case": "atomic",
-        "structural_class": "ground_instance",
-        "gold_fol_raw": "ValuedAt(yaleUniversitysEndowment, 42point3billion)",
-        "gold_fol_normalized": "ValuedAt(yaleUniversitysEndowment, 42point3billion)"
       },
       {
         "story_id": 322,
@@ -789,6 +777,18 @@
         "structural_class": "compound_restrictor_universal",
         "gold_fol_raw": "\u2200x (ApplicantOf(x, gre) \u2227 Prove(x, economicHardship) \u2192 ProvideTo(ets, financialAid, x))",
         "gold_fol_normalized": "all x (ApplicantOf(x, gre) & Prove(x, economicHardship) -> ProvideTo(ets, financialAid, x))"
+      },
+      {
+        "story_id": 197,
+        "nl": "Those living in single-parent families or having few resources available to them can prove economic hardship.",
+        "f1": 0.0,
+        "recall": 0.0,
+        "precision": 1.0,
+        "canonical_fol": "all x.((exists y.((SingleParentFamily(y) & LiveIn(x, y)) & CanProveEconomicHardship(x)) | HaveFewResources(x)))",
+        "top_formula_case": "quantification",
+        "structural_class": "simple_universal",
+        "gold_fol_raw": "\u2200x (LivingIn(x, singleParentFamily) \u2228 AvailableTo(fewResources, x) \u2192 Prove(x, economicHardship))",
+        "gold_fol_normalized": "all x (LivingIn(x, singleParentFamily) | AvailableTo(fewResources, x) -> Prove(x, economicHardship))"
       },
       {
         "story_id": 197,
@@ -1029,6 +1029,30 @@
         "structural_class": "simple_universal",
         "gold_fol_raw": "Have(humans, teeth)",
         "gold_fol_normalized": "Have(humans, teeth)"
+      },
+      {
+        "story_id": 203,
+        "nl": "Plungers suck.",
+        "f1": 0.0,
+        "recall": 0.0,
+        "precision": 1.0,
+        "canonical_fol": "Suck(x)",
+        "top_formula_case": "atomic",
+        "structural_class": "ground_instance",
+        "gold_fol_raw": "\u2200x (Plunger(x) \u2192 Suck(x))",
+        "gold_fol_normalized": "all x (Plunger(x) -> Suck(x))"
+      },
+      {
+        "story_id": 131,
+        "nl": "Unsupervised learning algorithms do not require labeled data.",
+        "f1": 0.0,
+        "recall": 0.0,
+        "precision": 1.0,
+        "canonical_fol": "all x.(all y.(UnsupervisedLearningAlgorithm(x)) -> -Require(x, y))",
+        "top_formula_case": "quantification",
+        "structural_class": "compound_restrictor_universal",
+        "gold_fol_raw": "\u2200x (UnsupervisedLearningAlgorithm(x) \u2192 \u00acRequire(x, labeledData))",
+        "gold_fol_normalized": "all x (UnsupervisedLearningAlgorithm(x) -> -Require(x, labeledData))"
       },
       {
         "story_id": 131,
@@ -4389,23 +4413,28 @@
       "top_formula_case": "connective",
       "structural_class": "bare_implies_atomic_antecedent",
       "self_consistency": {
-        "recall": 0.0,
-        "precision": null,
-        "f1": null,
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
         "positives_total": 1,
-        "positives_entailed": 0,
-        "contrastives_total": 0,
-        "contrastives_rejected": 0,
+        "positives_entailed": 1,
+        "contrastives_total": 2,
+        "contrastives_rejected": 2,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "(Skittish(x) -> -Calm(x))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
-            "fol": "",
-            "verdict": "no_contrastives"
+            "fol": "(-Skittish(x) -> -Calm(x))",
+            "verdict": "not_entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "(Skittish(x) -> Calm(x))",
+            "verdict": "not_entailed"
           }
         ]
       },
@@ -4414,23 +4443,28 @@
         "gold_fol_normalized": "all x (Skittish(x) -> -Calm(x))",
         "parse_error": false,
         "score": {
-          "recall": 0.0,
-          "precision": null,
-          "f1": null,
+          "recall": 1.0,
+          "precision": 1.0,
+          "f1": 1.0,
           "positives_total": 1,
-          "positives_entailed": 0,
-          "contrastives_total": 0,
-          "contrastives_rejected": 0,
+          "positives_entailed": 1,
+          "contrastives_total": 2,
+          "contrastives_rejected": 2,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "(Skittish(x) -> -Calm(x))",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "contrastive",
-              "fol": "",
-              "verdict": "no_contrastives"
+              "fol": "(-Skittish(x) -> -Calm(x))",
+              "verdict": "not_entailed"
+            },
+            {
+              "kind": "contrastive",
+              "fol": "(Skittish(x) -> Calm(x))",
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -5426,38 +5460,38 @@
         "gold_fol_normalized": "Hosted(beijing, 2008SummerOlympics) & Hosted(beijing, 2008SummerParalympicGames)",
         "parse_error": false,
         "score": {
-          "recall": 0.0,
+          "recall": 1.0,
           "precision": 1.0,
-          "f1": 0.0,
+          "f1": 1.0,
           "positives_total": 3,
-          "positives_entailed": 0,
+          "positives_entailed": 3,
           "contrastives_total": 2,
           "contrastives_rejected": 2,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "(Hosted(beijing,2008SummerOlympics) & Hosted(beijing,2008SummerParalympicGames))",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "positive",
               "fol": "Hosted(beijing,2008SummerOlympics)",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "positive",
               "fol": "Hosted(beijing,2008SummerParalympicGames)",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "contrastive",
               "fol": "(-Hosted(beijing, 2008SummerOlympics) & Hosted(beijing, 2008SummerParalympicGames))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
               "fol": "(Hosted(beijing, 2008SummerOlympics) & -Hosted(beijing, 2008SummerParalympicGames))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -9123,18 +9157,18 @@
       "top_formula_case": "connective",
       "structural_class": "bare_implies_atomic_antecedent",
       "self_consistency": {
-        "recall": 0.0,
+        "recall": 1.0,
         "precision": null,
         "f1": null,
         "positives_total": 1,
-        "positives_entailed": 0,
+        "positives_entailed": 1,
         "contrastives_total": 0,
         "contrastives_rejected": 0,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "(StreamingService(1984) -> HardcoverBook(1984))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
@@ -9148,18 +9182,18 @@
         "gold_fol_normalized": "StreamingService(1984) -> HardcoverBook(1984)",
         "parse_error": false,
         "score": {
-          "recall": 0.0,
+          "recall": 1.0,
           "precision": null,
           "f1": null,
           "positives_total": 1,
-          "positives_entailed": 0,
+          "positives_entailed": 1,
           "contrastives_total": 0,
           "contrastives_rejected": 0,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "(StreamingService(1984) -> HardcoverBook(1984))",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "contrastive",
@@ -9529,23 +9563,33 @@
       "top_formula_case": "quantification",
       "structural_class": "simple_universal",
       "self_consistency": {
-        "recall": 0.0,
-        "precision": null,
-        "f1": null,
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
         "positives_total": 1,
-        "positives_entailed": 0,
-        "contrastives_total": 0,
-        "contrastives_rejected": 0,
+        "positives_entailed": 1,
+        "contrastives_total": 3,
+        "contrastives_rejected": 3,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "all v0.(Language(v0) -> -RelatedTo(x,v0))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
-            "fol": "",
-            "verdict": "no_contrastives"
+            "fol": "all y.(-Language(y) -> -RelatedTo(x, y))",
+            "verdict": "not_entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all y.(Language(y) -> RelatedTo(x, y))",
+            "verdict": "not_entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all y.(-RelatedTo(x, y))",
+            "verdict": "not_entailed"
           }
         ]
       },
@@ -9555,22 +9599,32 @@
         "parse_error": false,
         "score": {
           "recall": 0.0,
-          "precision": null,
-          "f1": null,
+          "precision": 1.0,
+          "f1": 0.0,
           "positives_total": 1,
           "positives_entailed": 0,
-          "contrastives_total": 0,
-          "contrastives_rejected": 0,
+          "contrastives_total": 3,
+          "contrastives_rejected": 3,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "all v0.(Language(v0) -> -Related(x,v0))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
-              "fol": "",
-              "verdict": "no_contrastives"
+              "fol": "all y.(-Language(y) -> -Related(x, y))",
+              "verdict": "not_entailed"
+            },
+            {
+              "kind": "contrastive",
+              "fol": "all y.(Language(y) -> Related(x, y))",
+              "verdict": "not_entailed"
+            },
+            {
+              "kind": "contrastive",
+              "fol": "all y.(-Related(x, y))",
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -10568,18 +10622,18 @@
         "gold_fol_normalized": "WantToWorkIn(x, unitedStates) -> Apply(mike, cpt)",
         "parse_error": false,
         "score": {
-          "recall": 0.0,
+          "recall": 1.0,
           "precision": null,
           "f1": null,
           "positives_total": 1,
-          "positives_entailed": 0,
+          "positives_entailed": 1,
           "contrastives_total": 0,
           "contrastives_rejected": 0,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "(WantToWorkIn(mike,unitedStates) -> Apply(mike,cpt))",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "contrastive",
@@ -11197,23 +11251,23 @@
         "gold_fol_normalized": "ValuedAt(yaleUniversitysEndowment, 42point3billion)",
         "parse_error": false,
         "score": {
-          "recall": 0.0,
+          "recall": 1.0,
           "precision": 1.0,
-          "f1": 0.0,
+          "f1": 1.0,
           "positives_total": 1,
-          "positives_entailed": 0,
+          "positives_entailed": 1,
           "contrastives_total": 1,
           "contrastives_rejected": 1,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "ValuedAt(yaleUniversitysEndowment,42point3billion)",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "contrastive",
               "fol": "-ValuedAt(yaleUniversitysEndowment, 42point3billion)",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -13287,12 +13341,12 @@
             {
               "kind": "positive",
               "fol": "all v0.((Restaurant(v0) & RatingGreaterThanFour(v0)) -> ListedIn(v0,yelpRecommendation))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
               "fol": "all x.((Restaurant(x) & RatingGreaterThanFour(x)) -> -ListedIn(x, yelpRecommendation))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -13353,12 +13407,12 @@
           {
             "kind": "positive",
             "fol": "exists v0.(-Provide(v0,v1))",
-            "verdict": "unknown"
+            "verdict": "not_entailed"
           },
           {
             "kind": "positive",
             "fol": "exists v0.(TakeOutService(v1))",
-            "verdict": "unknown"
+            "verdict": "not_entailed"
           },
           {
             "kind": "positive",
@@ -13398,12 +13452,12 @@
             {
               "kind": "positive",
               "fol": "exists v0.(-Provide(v0,v1))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "positive",
               "fol": "exists v0.(TakeOutService(v1))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "positive",
@@ -13489,12 +13543,12 @@
             {
               "kind": "positive",
               "fol": "all v0.(exists v1.((Restaurant(v0) & PopularAmong(v0,v1) & LocalResident(v1))) -> HasRatingGreaterThanFour(v0))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
               "fol": "all x.(exists y.((Restaurant(x) & PopularAmong(x, y) & LocalResident(y))) -> -HasRatingGreaterThanFour(x))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -16502,27 +16556,27 @@
             {
               "kind": "positive",
               "fol": "(Cost(greTest,dollar205) & Cheaper(dollar205,dollar300))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "positive",
               "fol": "Cost(greTest,dollar205)",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "positive",
               "fol": "Cheaper(dollar205,dollar300)",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
               "fol": "(-Cost(greTest, dollar205) & Cheaper(dollar205, dollar300))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
               "fol": "(Cost(greTest, dollar205) & -Cheaper(dollar205, dollar300))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -16641,23 +16695,23 @@
       "top_formula_case": "quantification",
       "structural_class": "simple_universal",
       "self_consistency": {
-        "recall": 0.0,
-        "precision": null,
-        "f1": null,
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
         "positives_total": 1,
-        "positives_entailed": 0,
-        "contrastives_total": 0,
-        "contrastives_rejected": 0,
+        "positives_entailed": 1,
+        "contrastives_total": 1,
+        "contrastives_rejected": 1,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "all v0.((exists v1.((SingleParentFamily(v1) & LiveIn(v0,v1)) & CanProveEconomicHardship(v0)) | HaveFewResources(v0)))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
-            "fol": "",
-            "verdict": "no_contrastives"
+            "fol": "all x.(-((exists y.((SingleParentFamily(y) & LiveIn(x, y)) & CanProveEconomicHardship(x)) | HaveFewResources(x))))",
+            "verdict": "not_entailed"
           }
         ]
       },
@@ -16667,22 +16721,22 @@
         "parse_error": false,
         "score": {
           "recall": 0.0,
-          "precision": null,
-          "f1": null,
+          "precision": 1.0,
+          "f1": 0.0,
           "positives_total": 1,
           "positives_entailed": 0,
-          "contrastives_total": 0,
-          "contrastives_rejected": 0,
+          "contrastives_total": 1,
+          "contrastives_rejected": 1,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "all v0.((exists v1.((SingleParentFamily(v1) & LivingIn(v0,v1)) & CanProveEconomicHardship(v0)) | HaveFewResources(v0)))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
-              "fol": "",
-              "verdict": "no_contrastives"
+              "fol": "all x.(-((exists y.((SingleParentFamily(y) & LivingIn(x, y)) & CanProveEconomicHardship(x)) | HaveFewResources(x))))",
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -18194,18 +18248,18 @@
       "top_formula_case": "connective",
       "structural_class": "ground_instance",
       "self_consistency": {
-        "recall": 0.0,
+        "recall": 1.0,
         "precision": null,
         "f1": null,
         "positives_total": 1,
-        "positives_entailed": 0,
+        "positives_entailed": 1,
         "contrastives_total": 0,
         "contrastives_rejected": 0,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "((TallerThan(x,y) & TallerThan(y,z)) -> TallerThan(x,z))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
@@ -18219,18 +18273,18 @@
         "gold_fol_normalized": "all x all y all z ((Taller(x, y) & Taller(y, z)) -> Taller(x, z))",
         "parse_error": false,
         "score": {
-          "recall": 0.0,
+          "recall": 1.0,
           "precision": null,
           "f1": null,
           "positives_total": 1,
-          "positives_entailed": 0,
+          "positives_entailed": 1,
           "contrastives_total": 0,
           "contrastives_rejected": 0,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "((Taller(x,y) & Taller(y,z)) -> Taller(x,z))",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "contrastive",
@@ -19026,18 +19080,18 @@
       "top_formula_case": "connective",
       "structural_class": "ground_instance",
       "self_consistency": {
-        "recall": 0.0,
+        "recall": 1.0,
         "precision": null,
         "f1": null,
         "positives_total": 1,
-        "positives_entailed": 0,
+        "positives_entailed": 1,
         "contrastives_total": 0,
         "contrastives_rejected": 0,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "((LocatedIn(a,b) & LocatedIn(b,c)) -> LocatedIn(a,c))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
@@ -19051,18 +19105,18 @@
         "gold_fol_normalized": "all x all y all z ((LocatedIn(x, y) & LocatedIn(y, z)) -> LocatedIn(x, z))",
         "parse_error": false,
         "score": {
-          "recall": 0.0,
+          "recall": 1.0,
           "precision": null,
           "f1": null,
           "positives_total": 1,
-          "positives_entailed": 0,
+          "positives_entailed": 1,
           "contrastives_total": 0,
           "contrastives_rejected": 0,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "((LocatedIn(a,b) & LocatedIn(b,c)) -> LocatedIn(a,c))",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "contrastive",
@@ -19560,18 +19614,18 @@
         "gold_fol_normalized": "-TeslaModel3(johnsCar) -> -(TeslaModel3(johnsCar) | (SingleSeat(x) & ElectricCar(johnsCar)))",
         "parse_error": false,
         "score": {
-          "recall": 0.0,
+          "recall": 1.0,
           "precision": null,
           "f1": null,
           "positives_total": 1,
-          "positives_entailed": 0,
+          "positives_entailed": 1,
           "contrastives_total": 0,
           "contrastives_rejected": 0,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "(-TeslaModel3(johnsCar) -> (-TeslaModel3(johnsCar) | -ElectricCar(johnsCar)))",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "contrastive",
@@ -20437,17 +20491,17 @@
           {
             "kind": "positive",
             "fol": "exists v0.(Have(v0,v1))",
-            "verdict": "unknown"
+            "verdict": "not_entailed"
           },
           {
             "kind": "positive",
             "fol": "exists v0.(Wedding(v1))",
-            "verdict": "unknown"
+            "verdict": "not_entailed"
           },
           {
             "kind": "positive",
             "fol": "exists v0.(WellAttended(v1))",
-            "verdict": "unknown"
+            "verdict": "not_entailed"
           },
           {
             "kind": "contrastive",
@@ -20482,17 +20536,17 @@
             {
               "kind": "positive",
               "fol": "exists v0.(Have(v0,v1))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "positive",
               "fol": "exists v0.(Wedding(v1))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "positive",
               "fol": "exists v0.(WellAttended(v1))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
@@ -20568,7 +20622,7 @@
             {
               "kind": "positive",
               "fol": "(Engaged(john) -> -((exists v0.(Ceremony(v0) & InviteTo(john,v0)) & MakeWeddingPlans(john))))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
@@ -20970,23 +21024,23 @@
       "top_formula_case": "atomic",
       "structural_class": "ground_instance",
       "self_consistency": {
-        "recall": 0.0,
-        "precision": null,
-        "f1": null,
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
         "positives_total": 1,
-        "positives_entailed": 0,
-        "contrastives_total": 0,
-        "contrastives_rejected": 0,
+        "positives_entailed": 1,
+        "contrastives_total": 1,
+        "contrastives_rejected": 1,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "Suck(x)",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
-            "fol": "",
-            "verdict": "no_contrastives"
+            "fol": "-Suck(x)",
+            "verdict": "not_entailed"
           }
         ]
       },
@@ -20996,22 +21050,22 @@
         "parse_error": false,
         "score": {
           "recall": 0.0,
-          "precision": null,
-          "f1": null,
+          "precision": 1.0,
+          "f1": 0.0,
           "positives_total": 1,
           "positives_entailed": 0,
-          "contrastives_total": 0,
-          "contrastives_rejected": 0,
+          "contrastives_total": 1,
+          "contrastives_rejected": 1,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "Suck(x)",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
-              "fol": "",
-              "verdict": "no_contrastives"
+              "fol": "-Suck(x)",
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -21363,23 +21417,33 @@
       "top_formula_case": "quantification",
       "structural_class": "compound_restrictor_universal",
       "self_consistency": {
-        "recall": 0.0,
-        "precision": null,
-        "f1": null,
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
         "positives_total": 1,
-        "positives_entailed": 0,
-        "contrastives_total": 0,
-        "contrastives_rejected": 0,
+        "positives_entailed": 1,
+        "contrastives_total": 3,
+        "contrastives_rejected": 3,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "all v0.(all v1.(UnsupervisedLearningAlgorithm(v0)) -> -Require(v0,v1))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
-            "fol": "",
-            "verdict": "no_contrastives"
+            "fol": "all x.(all y.(-UnsupervisedLearningAlgorithm(x)) -> -Require(x, y))",
+            "verdict": "not_entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all x.(all y.(UnsupervisedLearningAlgorithm(x)) -> Require(x, y))",
+            "verdict": "not_entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "all x.(-Require(x, y))",
+            "verdict": "not_entailed"
           }
         ]
       },
@@ -21389,22 +21453,32 @@
         "parse_error": false,
         "score": {
           "recall": 0.0,
-          "precision": null,
-          "f1": null,
+          "precision": 1.0,
+          "f1": 0.0,
           "positives_total": 1,
           "positives_entailed": 0,
-          "contrastives_total": 0,
-          "contrastives_rejected": 0,
+          "contrastives_total": 3,
+          "contrastives_rejected": 3,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "all v0.(all v1.(UnsupervisedLearningAlgorithm(v0)) -> -Require(v0,v1))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
-              "fol": "",
-              "verdict": "no_contrastives"
+              "fol": "all x.(all y.(-UnsupervisedLearningAlgorithm(x)) -> -Require(x, y))",
+              "verdict": "not_entailed"
+            },
+            {
+              "kind": "contrastive",
+              "fol": "all x.(all y.(UnsupervisedLearningAlgorithm(x)) -> Require(x, y))",
+              "verdict": "not_entailed"
+            },
+            {
+              "kind": "contrastive",
+              "fol": "all x.(-Require(x, y))",
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -21607,17 +21681,17 @@
           {
             "kind": "positive",
             "fol": "exists v0.(MachineLearningAlgorithmFor(v0,v1))",
-            "verdict": "unknown"
+            "verdict": "not_entailed"
           },
           {
             "kind": "positive",
             "fol": "exists v0.(Training(v1,v2))",
-            "verdict": "unknown"
+            "verdict": "not_entailed"
           },
           {
             "kind": "positive",
             "fol": "exists v0.(TextSummarizationModel(v2))",
-            "verdict": "unknown"
+            "verdict": "not_entailed"
           },
           {
             "kind": "contrastive",
@@ -21647,17 +21721,17 @@
             {
               "kind": "positive",
               "fol": "exists v0.(MachineLearningAlgorithmFor(v0,v1))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "positive",
               "fol": "exists v0.(TrainedWith(v1,v2))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "positive",
               "fol": "exists v0.(TextSummarizationModel(v2))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
@@ -22632,12 +22706,12 @@
             {
               "kind": "positive",
               "fol": "all v0.(CanRegisterToVoteIn(v0,unitedStates) -> CanParticipateIn(v0,election2024))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
               "fol": "all x.(CanRegisterToVoteIn(x, unitedStates) -> -CanParticipateIn(x, election2024))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -24358,12 +24432,12 @@
             {
               "kind": "positive",
               "fol": "all v0.(exists v1.((Student(v0) & PartTimeJob(v1) & OfferedBy(v1,university))) -> WorkIn(v0,library))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "contrastive",
               "fol": "all x.(exists y.((Student(x) & PartTimeJob(y) & OfferedBy(y, university))) -> -WorkIn(x, library))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -25350,28 +25424,28 @@
         "gold_fol_normalized": "exists x (Show(x) & AiringAtOn(x, 8PMMonday) & GivenOutOn(x, rose, tV))",
         "parse_error": false,
         "score": {
-          "recall": 0.0,
+          "recall": 0.6666666666666666,
           "precision": null,
           "f1": null,
           "positives_total": 3,
-          "positives_entailed": 0,
+          "positives_entailed": 2,
           "contrastives_total": 0,
           "contrastives_rejected": 0,
           "per_test_results": [
             {
               "kind": "positive",
               "fol": "exists v0.((Show(v0) & AiringAtOn(v0,timeSlot)) & GivesOutRosesOnTV(v0))",
-              "verdict": "unknown"
+              "verdict": "not_entailed"
             },
             {
               "kind": "positive",
               "fol": "exists v0.(Show(v0))",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "positive",
               "fol": "exists v0.(AiringAtOn(v0,timeSlot))",
-              "verdict": "unknown"
+              "verdict": "entailed"
             },
             {
               "kind": "contrastive",
@@ -27295,23 +27369,23 @@
       "top_formula_case": "quantification",
       "structural_class": "simple_universal",
       "self_consistency": {
-        "recall": 0.0,
-        "precision": null,
-        "f1": null,
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
         "positives_total": 1,
-        "positives_entailed": 0,
-        "contrastives_total": 0,
-        "contrastives_rejected": 0,
+        "positives_entailed": 1,
+        "contrastives_total": 1,
+        "contrastives_rejected": 1,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "all v0.(Airport(v0) -> -((DepartureAt(x,v0) & ArrivalAt(y,v0))))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
-            "fol": "",
-            "verdict": "no_contrastives"
+            "fol": "all z.(Airport(z) -> -(-((DepartureAt(x, z) & ArrivalAt(y, z)))))",
+            "verdict": "not_entailed"
           }
         ]
       },
@@ -29127,33 +29201,33 @@
       "top_formula_case": "quantification",
       "structural_class": "existential_compound_nucleus",
       "self_consistency": {
-        "recall": 0.0,
+        "recall": 1.0,
         "precision": null,
         "f1": null,
         "positives_total": 4,
-        "positives_entailed": 0,
+        "positives_entailed": 4,
         "contrastives_total": 0,
         "contrastives_rejected": 0,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "exists v0.((SixWayTie(v0) & OnLeaderboard(v0)) & exists v1.(PersonInTie(v1,v0) & From(v1,belgium)))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "positive",
             "fol": "exists v0.(SixWayTie(v0))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "positive",
             "fol": "exists v0.(OnLeaderboard(v0))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "positive",
             "fol": "exists v0.((SixWayTie(v0) & OnLeaderboard(v0)) & exists v1.(PersonInTie(v1,v0)))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
@@ -29955,33 +30029,38 @@
       "top_formula_case": "connective",
       "structural_class": "ground_instance",
       "self_consistency": {
-        "recall": 0.0,
-        "precision": null,
-        "f1": null,
+        "recall": 1.0,
+        "precision": 1.0,
+        "f1": 1.0,
         "positives_total": 3,
-        "positives_entailed": 0,
-        "contrastives_total": 0,
-        "contrastives_rejected": 0,
+        "positives_entailed": 3,
+        "contrastives_total": 2,
+        "contrastives_rejected": 2,
         "per_test_results": [
           {
             "kind": "positive",
             "fol": "(BornIn(ailtonSilva,1995) & KnownAs(ailtonSilva,ailton))",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "positive",
             "fol": "BornIn(ailtonSilva,1995)",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "positive",
             "fol": "KnownAs(ailtonSilva,ailton)",
-            "verdict": "unknown"
+            "verdict": "entailed"
           },
           {
             "kind": "contrastive",
-            "fol": "",
-            "verdict": "no_contrastives"
+            "fol": "(-BornIn(ailtonSilva, 1995) & KnownAs(ailtonSilva, ailton))",
+            "verdict": "not_entailed"
+          },
+          {
+            "kind": "contrastive",
+            "fol": "(BornIn(ailtonSilva, 1995) & -KnownAs(ailtonSilva, ailton))",
+            "verdict": "not_entailed"
           }
         ]
       },
@@ -29991,12 +30070,12 @@
         "parse_error": false,
         "score": {
           "recall": 1.0,
-          "precision": null,
-          "f1": null,
+          "precision": 1.0,
+          "f1": 1.0,
           "positives_total": 3,
           "positives_entailed": 3,
-          "contrastives_total": 0,
-          "contrastives_rejected": 0,
+          "contrastives_total": 2,
+          "contrastives_rejected": 2,
           "per_test_results": [
             {
               "kind": "positive",
@@ -30015,8 +30094,13 @@
             },
             {
               "kind": "contrastive",
-              "fol": "",
-              "verdict": "no_contrastives"
+              "fol": "(-BornIn(ailtonSilva, year1995) & CommonlyKnownAs(ailtonSilva, ailton))",
+              "verdict": "not_entailed"
+            },
+            {
+              "kind": "contrastive",
+              "fol": "(BornIn(ailtonSilva, year1995) & -CommonlyKnownAs(ailtonSilva, ailton))",
+              "verdict": "not_entailed"
             }
           ]
         },
@@ -30515,27 +30599,27 @@
     "checks": [
       {
         "label": "self_consistency.overall.mean_recall >= 0.98",
-        "value": 0.9635714285714285,
+        "value": 0.995,
         "threshold": 0.98,
-        "pass": false
+        "pass": true
       },
       {
         "label": "atomic.mean_recall >= 0.95",
-        "value": 0.9846153846153847,
+        "value": 1.0,
         "threshold": 0.95,
         "pass": true
       },
       {
         "label": "quantification.mean_recall >= 0.95",
-        "value": 0.9698660714285714,
+        "value": 0.9921875,
         "threshold": 0.95,
         "pass": true
       },
       {
         "label": "connective.mean_recall >= 0.95",
-        "value": 0.9107142857142857,
+        "value": 1.0,
         "threshold": 0.95,
-        "pass": false
+        "pass": true
       },
       {
         "label": "negation.mean_recall >= 0.95",
@@ -30550,7 +30634,7 @@
         "pass": true
       }
     ],
-    "all_pass": false
+    "all_pass": true
   },
   "mode": "soft"
 }

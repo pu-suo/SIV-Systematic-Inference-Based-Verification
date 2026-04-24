@@ -110,7 +110,9 @@ def test_tptp_all():
 def test_tptp_negation():
     expr = parse_fol("-Cat(x)")
     tptp = convert_to_tptp(expr)
-    assert tptp.startswith("~")
+    # Free variable x is universally closed: ![X] : (~(cat(X)))
+    assert "~" in tptp
+    assert "cat(X)" in tptp
 
 @pytest.mark.skipif(not NLTK_AVAILABLE, reason="NLTK not installed")
 def test_tptp_conjunction():

@@ -136,7 +136,7 @@ def _extract_predicates_from_expr(expr) -> Set[str]:
 
 # ── TPTP conversion ───────────────────────────────────────────────────────────
 
-def convert_to_tptp(expr) -> str:
+def convert_to_tptp(expr, _toplevel: bool = True) -> str:
     """
     Recursively convert an NLTK Expression to TPTP format for Vampire.
 
@@ -144,26 +144,47 @@ def convert_to_tptp(expr) -> str:
       - Variables are upper-case single letters (X, Y, …)
       - Predicates/constants are lower-case
       - Quantifiers: ?[X] : … (exists),  ![X] : … (all)
+
+    Free variables are closed with universal quantifiers at the top level,
+    following the standard convention that free variables in classical FOL
+    are implicitly universally quantified.
     """
     if not NLTK_AVAILABLE:
         raise RuntimeError("NLTK is required for TPTP conversion.")
 
+    # At the top level, close any free variables with universal quantifiers
+    if _toplevel:
+        free_vars = sorted(str(v) for v in expr.free())
+        core = _convert_to_tptp_inner(expr)
+        if free_vars:
+            var_list = ", ".join(_tptp_var(v) for v in free_vars)
+            return f"![{var_list}] : ({core})"
+        return core
+
+    return _convert_to_tptp_inner(expr)
+
+
+def _convert_to_tptp_inner(expr) -> str:
+    """Inner recursive TPTP conversion (does not close free variables)."""
+
+    r = _convert_to_tptp_inner  # short alias for recursive calls
+
     if isinstance(expr, ExistsExpression):
-        return f"?[{_tptp_var(str(expr.variable))}] : ({convert_to_tptp(expr.term)})"
+        return f"?[{_tptp_var(str(expr.variable))}] : ({r(expr.term)})"
     elif isinstance(expr, AllExpression):
-        return f"![{_tptp_var(str(expr.variable))}] : ({convert_to_tptp(expr.term)})"
+        return f"![{_tptp_var(str(expr.variable))}] : ({r(expr.term)})"
     elif isinstance(expr, NegatedExpression):
-        return f"~({convert_to_tptp(expr.term)})"
+        return f"~({r(expr.term)})"
     elif isinstance(expr, AndExpression):
-        return f"({convert_to_tptp(expr.first)} & {convert_to_tptp(expr.second)})"
+        return f"({r(expr.first)} & {r(expr.second)})"
     elif isinstance(expr, OrExpression):
-        return f"({convert_to_tptp(expr.first)} | {convert_to_tptp(expr.second)})"
+        return f"({r(expr.first)} | {r(expr.second)})"
     elif isinstance(expr, ImpExpression):
-        return f"({convert_to_tptp(expr.first)} => {convert_to_tptp(expr.second)})"
+        return f"({r(expr.first)} => {r(expr.second)})"
     elif isinstance(expr, IffExpression):
-        return f"({convert_to_tptp(expr.first)} <=> {convert_to_tptp(expr.second)})"
+        return f"({r(expr.first)} <=> {r(expr.second)})"
     elif isinstance(expr, EqualityExpression):
-        return f"({convert_to_tptp(expr.first)} = {convert_to_tptp(expr.second)})"
+        return f"({r(expr.first)} = {r(expr.second)})"
     elif isinstance(expr, ApplicationExpression):
         # Uncurry: f(a)(b)(c) → pred(a, b, c)
         func = expr.function
@@ -171,8 +192,8 @@ def convert_to_tptp(expr) -> str:
         while isinstance(func, ApplicationExpression):
             args.insert(0, func.argument)
             func = func.function
-        pred_name = str(func).lower()
-        args_str = ", ".join(convert_to_tptp(a) for a in args)
+        pred_name = _tptp_const(str(func).lower())
+        args_str = ", ".join(r(a) for a in args)
         return f"{pred_name}({args_str})"
     elif isinstance(expr, IndividualVariableExpression):
         # NLTK treats lowercase u-z identifiers as bound-variable expressions;
@@ -181,9 +202,23 @@ def convert_to_tptp(expr) -> str:
     elif isinstance(expr, Variable):
         return _tptp_var(str(expr))
     else:
-        return str(expr).lower()
+        return _tptp_const(str(expr).lower())
 
 
 def _tptp_var(name: str) -> str:
     """Render an NLTK variable name as a valid TPTP variable identifier."""
     return name[0].upper() + name[1:] if name else name
+
+
+def _tptp_const(name: str) -> str:
+    """Render a constant or predicate name as a valid TPTP identifier.
+
+    TPTP requires lowercase constants/functions/predicates to start with
+    [a-z].  Identifiers that start with a digit (e.g. ``2008SummerOlympics``)
+    are prefixed with ``c_`` to make them syntactically valid.
+    """
+    if not name:
+        return name
+    if name[0].isdigit():
+        return f"c_{name}"
+    return name

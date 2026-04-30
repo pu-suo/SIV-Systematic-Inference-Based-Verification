@@ -1,0 +1,1066 @@
+[
+  {
+    "premise_id": "P0021",
+    "story_id": 226,
+    "nl": "William Dickinson was a British politician who sat in the House of Commons",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 1 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0027",
+    "story_id": 247,
+    "nl": "If a universal language exists, then for every two people if they both know the same universal language they can communicate.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P0037",
+    "story_id": 193,
+    "nl": "If there are two La Liga soccer teams and neither has more points than the other, then the team which receives more points from the games between the two teams ranks higher.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0051",
+    "story_id": 171,
+    "nl": "If a stonefish stings someone and they are not treated, it can cause death to them.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0065",
+    "story_id": 180,
+    "nl": "If Sam does a project written in Python, he will not use a Mac.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0108",
+    "story_id": 425,
+    "nl": "No students drive to their destination.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'DriveTo': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0131",
+    "story_id": 244,
+    "nl": "Someone who does not own a car to drive somewhere must either borrow a car or rent a car.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 3"
+  },
+  {
+    "premise_id": "P0141",
+    "story_id": 378,
+    "nl": "If Carol is not both a pre-teen or young child and attends a wedding, then Carol is not getting married or knows the people who are getting married.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P0144",
+    "story_id": 395,
+    "nl": "No satin-finish lipsticks in the set do not have \"rosewood\" in its offical description.",
+    "error_kind": "schema_violation",
+    "error": "negation required but missing"
+  },
+  {
+    "premise_id": "P0149",
+    "story_id": 337,
+    "nl": "No athletes never exercise.",
+    "error_kind": "schema_violation",
+    "error": "negation required but missing"
+  },
+  {
+    "premise_id": "P0175",
+    "story_id": 56,
+    "nl": "Elizabeth is a leader of a country for life.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Country'"
+  },
+  {
+    "premise_id": "P0181",
+    "story_id": 367,
+    "nl": "Bunny went to Clay's school, and she either prefers to work at home over going to the office and makes her own matcha teas every morning with ceremonial-grade matcha powder, or does not prefer to work at home over going to the office every day and does not make her own matcha teas every morning with ceremonial-grade matcha powder.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'WentTo': argument 'x' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0183",
+    "story_id": 19,
+    "nl": "Thomas Barber played in the Football League for Aston Villa.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 2 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0189",
+    "story_id": 162,
+    "nl": "Oliver and Peter both play instruments in a concert.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 1 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0232",
+    "story_id": 448,
+    "nl": "Everyone that knows how to use a queue knows about the first-in-first-out data structure.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'KnowsAbout': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0256",
+    "story_id": 408,
+    "nl": "No trick-shot artist in Yale's varsity team struggles with half court shots.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0257",
+    "story_id": 408,
+    "nl": "Everyone on Yale's varsity team is someone who struggles with half court shots or who successfully shoots a high percentage of 3-pointers.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'StrugglesWith': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0277",
+    "story_id": 126,
+    "nl": "Garfield shares a home with Odie, another pet of Jon's.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Home'"
+  },
+  {
+    "premise_id": "P0308",
+    "story_id": 146,
+    "nl": "Catullus 4 is a story about the retirement of a well-traveled ship.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0328",
+    "story_id": 375,
+    "nl": "Peter, Michael's neighbor, grows his own fresh vegetables in his home garden, or regularly touts the benefits of homegrown and homecooked meals over fast food, or both.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'GrowIn': argument 'homeGarden' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0347",
+    "story_id": 482,
+    "nl": "Potter, who lives in Potterville, is a wizard and flies.",
+    "error_kind": "schema_violation",
+    "error": "restrictor required but missing"
+  },
+  {
+    "premise_id": "P0400",
+    "story_id": 38,
+    "nl": "The Metropolitan Museum of Art includes Byzantine and Islamic Art.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'Includes': argument 'x' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0401",
+    "story_id": 38,
+    "nl": "Whitney Museum of American Art includes American art.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0405",
+    "story_id": 403,
+    "nl": "Fabien is in Benji's family and  does not both study Spanish and also like eating cheese.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'Study': argument 'spanish' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0434",
+    "story_id": 119,
+    "nl": "Evangelos Eleftheriou worked for IBM in Zurich.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 2 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0439",
+    "story_id": 148,
+    "nl": "\"Hooray! Hooray! It's a Holi-Holiday!\" was not in German #1 singles.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'In': argument 'germanNumberOneSingles' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0443",
+    "story_id": 249,
+    "nl": "People who cook can make scrambled eggs and pasta.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0447",
+    "story_id": 196,
+    "nl": "ETS develops various standardized tests primarily in the United States for K-12 and higher education.",
+    "error_kind": "schema_violation",
+    "error": "Cannot wrap sub-test: enclosing quantifier has empty restrictor"
+  },
+  {
+    "premise_id": "P0448",
+    "story_id": 196,
+    "nl": "ETS administers international tests, including the TOEFL, TOEIC, GRE, and subject tests.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0468",
+    "story_id": 427,
+    "nl": "Everyone who works for a government department pays a tax on their salary.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'WorksFor': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0481",
+    "story_id": 67,
+    "nl": "If a band writes an album winning an award, then this band wins this award.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P0488",
+    "story_id": 238,
+    "nl": "Daniel studied bioengineering during his undergraduate at Rice University.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 2 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0489",
+    "story_id": 238,
+    "nl": "Daniel\u2019s older sister works at Meta as a technical sourcer.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'y': restrictor has 2 atom(s) but none mention 'y' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0491",
+    "story_id": 238,
+    "nl": "Daniel\u2019s dad is a doctor practicing internal medicine at a veteran\u2019s hospital in Minneapolis.",
+    "error_kind": "schema_violation",
+    "error": "Formula has zero cases populated"
+  },
+  {
+    "premise_id": "P0492",
+    "story_id": 108,
+    "nl": "The world's only major large passenger aircraft manufacturers are Boeing and Airbus.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Equals'"
+  },
+  {
+    "premise_id": "P0497",
+    "story_id": 84,
+    "nl": "People died in the December 1999 earthquake in Luzon.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'y': restrictor has 1 atom(s) but none mention 'y' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0499",
+    "story_id": 362,
+    "nl": "If people invest in the public stock market regularly, then they read the Wall Street Journal and other newspapers regularly to keep updated on financial metrics.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0500",
+    "story_id": 362,
+    "nl": "All people who enjoy enjoy gambling regularly spend a lot of money at casinos or other betting games.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0515",
+    "story_id": 229,
+    "nl": "All people who competed in the 1972 Summer Olympics represented their home country.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'Represented': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0524",
+    "story_id": 399,
+    "nl": "In Love City, everyone considers physical touch or words of affirmation to be their most important love language.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0526",
+    "story_id": 399,
+    "nl": "If someone in Love City is good with pets, then they are not scared of animals.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'ScaredOf': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0542",
+    "story_id": 7,
+    "nl": "If a real number equals another real number added by one, the first number is larger.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'Equals': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0571",
+    "story_id": 233,
+    "nl": "Deng Xiaoping was praised for his reaffirmation of the reform program, as well as the reversion of Hong Kong to Chinese control and the return of Macau.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0578",
+    "story_id": 391,
+    "nl": "Everthing that Dan knows comes from either science-fiction or realistic fiction.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0580",
+    "story_id": 391,
+    "nl": "Dan knows that Dune is science fiction or has proven to be false.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0581",
+    "story_id": 181,
+    "nl": "American superheroes come from either the DC Universe or Marvel Universe.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'ComeFrom': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0601",
+    "story_id": 165,
+    "nl": "The Eiffel Tower is one of the main tourist attractions located in Paris.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Equals'"
+  },
+  {
+    "premise_id": "P0616",
+    "story_id": 149,
+    "nl": "If Guan sent an athlete to the Calgary Winter Olympics, then the athelete participated in the Olympics in 1988.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Athlete'"
+  },
+  {
+    "premise_id": "P0617",
+    "story_id": 149,
+    "nl": "Judd Bankert is the only athlete from Guam who has ever competed in the Winter Olympics.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Equals'"
+  },
+  {
+    "premise_id": "P0619",
+    "story_id": 70,
+    "nl": "One of the word-setters of My Word! was Michael O'Donnell.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Equals'"
+  },
+  {
+    "premise_id": "P0630",
+    "story_id": 382,
+    "nl": "If people in this midwest town regularly ride horses for pleasure and sport, then they do not live in cramped residential buildings.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0668",
+    "story_id": 158,
+    "nl": "Mr. and Mrs. Smith make a travel plan: they want to go to a city in California or Florida where neither of them has ever been.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0670",
+    "story_id": 158,
+    "nl": "Cities in Florida that they are interested in are Orlando and Miami.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'InterestedIn': argument 'they' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0672",
+    "story_id": 158,
+    "nl": "Mrs. Smith has been to one city in Florida.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'In': argument 'florida' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0687",
+    "story_id": 465,
+    "nl": "Everyone who took the bar exam is knowledgeable about criminal procedures.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'KnowledgeableAbout': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0704",
+    "story_id": 364,
+    "nl": "If people in this neighborhood make a lot of their own food at home using recipes and online guides, then they order takeout at least once a day.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0723",
+    "story_id": 369,
+    "nl": "Everybody in Emma's family who enjoy reading about tech specs and keeping up to date on the latest technology upgrade to the newest iPhone model every year.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'UpgradeTo': argument 'w' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0725",
+    "story_id": 369,
+    "nl": "Everybody in Emma's family live with at least one roommate, does not own any pets.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0730",
+    "story_id": 451,
+    "nl": "If someone has a job at a school, then they are on the payroll.",
+    "error_kind": "schema_violation",
+    "error": "Cannot wrap sub-test: enclosing quantifier has empty restrictor"
+  },
+  {
+    "premise_id": "P0751",
+    "story_id": 381,
+    "nl": "If people are fascinated by the history of the Renaissance and other past eras, then they attend Renaissance fairs regularly.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'FascinatedBy': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0752",
+    "story_id": 381,
+    "nl": "People are fascinated by the history of the Renaissance and other past eras, or they are contemporary academics who enjoy learning.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'FascinatedBy': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0755",
+    "story_id": 381,
+    "nl": "If Clyde is not focused on futuristic and voctional subjects, then he is neither focused on futuristic and vocational subjects nor enjoys dressing up in old-fashioned and historical period clothing.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'FocusedOn': args length 2 != declared arity 1"
+  },
+  {
+    "premise_id": "P0762",
+    "story_id": 356,
+    "nl": "If people are criticized by their boss, then they do not receive positive feedback from teams at work.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'CriticizedBy': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0763",
+    "story_id": 356,
+    "nl": "Kat either is a person who works well in teams in the workplac and is always tired every morning, or she is neither.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'In': argument 'workplace' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0787",
+    "story_id": 424,
+    "nl": "There are no customers who do not choose any plan.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0824",
+    "story_id": 473,
+    "nl": "Ghosts do not exist.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Exist'"
+  },
+  {
+    "premise_id": "P0835",
+    "story_id": 66,
+    "nl": "If a city is in a state, and a Summer Olympics is in this city, then the Summer Olympics is in this state.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0841",
+    "story_id": 66,
+    "nl": "Boxing, modern pentathlon, and weightlifting will be removed from The 2028 Summer Olympics.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'RemovedFrom': argument 'x' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0842",
+    "story_id": 66,
+    "nl": "Atlanta in the United States held the 1996 Summer Olympics.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 1 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0847",
+    "story_id": 389,
+    "nl": "A diseases affect females or males.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'Affect': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0860",
+    "story_id": 412,
+    "nl": "No fruits shipped from Colombia are sold at the local farmers market in New Haven.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0874",
+    "story_id": 48,
+    "nl": "The Salmon of Doubt is about life experiences and technology.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0882",
+    "story_id": 323,
+    "nl": "If Reformation is not helping slow down global warming, then Reformation is an eco-friendly brand or a sustainable fashion brand.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'HelpingSlowDown': argument 'globalWarming' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0883",
+    "story_id": 93,
+    "nl": "Roy Richardson was a cricketer who played for Sint Maarten, a constituent country.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 1 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0895",
+    "story_id": 338,
+    "nl": "If an unannounced Huawei phone is either a phone with A15 Bionic chips or equipped with four core-GPU made by Apple, then unannounced Huawei phone is neither a phone with A15 Bionic chips nor a standalone desktop.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P0921",
+    "story_id": 81,
+    "nl": "Joe owns an item from Quiksilver.",
+    "error_kind": "schema_violation",
+    "error": "Cannot wrap sub-test: enclosing quantifier has empty restrictor"
+  },
+  {
+    "premise_id": "P0933",
+    "story_id": 52,
+    "nl": "The Astro is a van produced by Chevrolet.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 2 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P0939",
+    "story_id": 405,
+    "nl": "If George is either a person who works from home or has a home office setup, then George is a commuter and is not a person who works from home.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 3"
+  },
+  {
+    "premise_id": "P0952",
+    "story_id": 209,
+    "nl": "If someone lives in a place named Galicia, then they live in either Spain or Poland.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'LivesIn': argument 'spain' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P0982",
+    "story_id": 218,
+    "nl": "Volleyball players can injure their ankles, fingers, or shoulder.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'CanInjure': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1010",
+    "story_id": 353,
+    "nl": "Max listens to \"As it was\" by Harry Styles.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'AsItWas'"
+  },
+  {
+    "premise_id": "P1012",
+    "story_id": 39,
+    "nl": "\"Your Woman\" song peaked at No. 1 on the UK Singles Chart.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 2 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1014",
+    "story_id": 39,
+    "nl": "\"Your Woman\" peaked at No. 1 in Iceland, Israel, and Spain.",
+    "error_kind": "schema_violation",
+    "error": "negation required but missing"
+  },
+  {
+    "premise_id": "P1022",
+    "story_id": 188,
+    "nl": "If two soccer teams score the same number of goals in one UCL final during the regular time, they need to play for the extra time.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1023",
+    "story_id": 188,
+    "nl": "If two soccer teams score the same number of goals in one UCL final during both regular and extra time, they need to play the penalty shoot-out.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1037",
+    "story_id": 370,
+    "nl": "If Robin's friends enjoy healthcare fields and want to help people with medical issues, then they are studying to go to medical school to become a doctor.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1039",
+    "story_id": 370,
+    "nl": "If Robin's friends study hard, then they grew up with parents who worked as doctors.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'WorkedAs': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1044",
+    "story_id": 383,
+    "nl": "If people who work at Jess's company frivolously spend a lot of money when they go out, then they value quality manufacturing and luxury items.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'and' requires at least 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1045",
+    "story_id": 383,
+    "nl": "If people who work at Jess's company value quality manufacturing and luxury items, then they enjoy shopping for materialistic items in their free time.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1061",
+    "story_id": 5,
+    "nl": "Peter Parker wears a uniform when he is a superhero.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 1 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1073",
+    "story_id": 387,
+    "nl": "If some diseases require a medical diagnosis, then lab tests or imaging is required.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'RequireLabTests': argument 'x' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1079",
+    "story_id": 390,
+    "nl": "There are no elements with atomic number between 61-63 that are not scarce in China.",
+    "error_kind": "schema_violation",
+    "error": "negation required but missing"
+  },
+  {
+    "premise_id": "P1085",
+    "story_id": 332,
+    "nl": "If people don't often clean their homes, then they do not have tidy houses.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 1 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1088",
+    "story_id": 332,
+    "nl": "If people don't care about cleanliness, then they do not prioritize cleaning.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Person'"
+  },
+  {
+    "premise_id": "P1089",
+    "story_id": 332,
+    "nl": "Either Jack does hire a maid or cleaning service and does not often clean his home, or he does not hire a maid or cleaning service nor often clean his home.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1090",
+    "story_id": 278,
+    "nl": "The bottle not falling is either standing upright or toppled over.",
+    "error_kind": "schema_violation",
+    "error": "negation required but missing"
+  },
+  {
+    "premise_id": "P1116",
+    "story_id": 114,
+    "nl": "Cutmen handle swelling, nosebleeds and lacerations.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Cutman'"
+  },
+  {
+    "premise_id": "P1132",
+    "story_id": 301,
+    "nl": "The end of a relationship is depressing.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1144",
+    "story_id": 199,
+    "nl": "Camera accessories for a system are compatible with that system.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'CompatibleWith': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1151",
+    "story_id": 411,
+    "nl": "Some games that support Windows are developed by Nintendo.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'DevelopedBy': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1160",
+    "story_id": 206,
+    "nl": "There is a person from India.",
+    "error_kind": "schema_violation",
+    "error": "Formula has zero cases populated"
+  },
+  {
+    "premise_id": "P1162",
+    "story_id": 87,
+    "nl": "Daveed Diggs played two roles in the musical Hamilton on Broadway.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Role'"
+  },
+  {
+    "premise_id": "P1177",
+    "story_id": 111,
+    "nl": "Aberdeen won the cup in the 2013 final.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 2 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1178",
+    "story_id": 111,
+    "nl": "Rangers won the cup in the 2014 final.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 2 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1186",
+    "story_id": 397,
+    "nl": "All brain study designs are either block designs or event-related designs.",
+    "error_kind": "schema_violation",
+    "error": "negation required but missing"
+  },
+  {
+    "premise_id": "P1198",
+    "story_id": 349,
+    "nl": "The chopsticks used in Tom's house are either made from metals and plastics, or that they are neither made from metals nor plastics.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'or' requires at least 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1211",
+    "story_id": 65,
+    "nl": "If a person has a position in a club in a year, and the club is in NFL in the same year, the person plays in NFL.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'PlayInNFL': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1219",
+    "story_id": 462,
+    "nl": "All classrooms in William L. Harkness Hall are used for lectures or used for office hours.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1240",
+    "story_id": 69,
+    "nl": "Some football referees become referee observers.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1241",
+    "story_id": 69,
+    "nl": "The son of Brian Winter, Andy Winter, is a football player who plays for Hamilton Academical.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Equals'"
+  },
+  {
+    "premise_id": "P1247",
+    "story_id": 125,
+    "nl": "Soccer players have a right foot and a left foot.",
+    "error_kind": "schema_violation",
+    "error": "Cannot wrap sub-test: enclosing quantifier has empty restrictor"
+  },
+  {
+    "premise_id": "P1258",
+    "story_id": 177,
+    "nl": "The National Lobster Hatchery is not for profit.",
+    "error_kind": "schema_violation",
+    "error": "negation required but missing"
+  },
+  {
+    "premise_id": "P1272",
+    "story_id": 117,
+    "nl": "Roads are made of either concrete or asphalt.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1275",
+    "story_id": 117,
+    "nl": "Everyone prefers the smoother of two roads.",
+    "error_kind": "schema_violation",
+    "error": "Cannot wrap sub-test: enclosing quantifier has empty restrictor"
+  },
+  {
+    "premise_id": "P1281",
+    "story_id": 372,
+    "nl": "If Emily's friends publish journals, then they do not work in the entertainment industry.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'WorkIn': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1284",
+    "story_id": 372,
+    "nl": "If Emily's friends are highly acclaimed in their profession, then they often hold tenured and high-ranking positions at their workplace.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1308",
+    "story_id": 157,
+    "nl": "Benjamin only ate oranges and grapes at the party.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1315",
+    "story_id": 223,
+    "nl": "If you are born in Israel to at least one Israeli parent, you receive Israeli citizenship at birth.",
+    "error_kind": "schema_violation",
+    "error": "Cannot wrap sub-test: enclosing quantifier has empty restrictor"
+  },
+  {
+    "premise_id": "P1337",
+    "story_id": 167,
+    "nl": "If you go somewhere by car and meet a traffic jam, you will lose time.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1359",
+    "story_id": 296,
+    "nl": "Some fears lead to anxiety.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1372",
+    "story_id": 31,
+    "nl": "Naive cynicism was proposed by Justin Kruger and a colleague.",
+    "error_kind": "schema_violation",
+    "error": "Cannot wrap sub-test: enclosing quantifier has empty restrictor"
+  },
+  {
+    "premise_id": "P1376",
+    "story_id": 129,
+    "nl": "Donald Knuth made contributions to the analysis of algorithms.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1387",
+    "story_id": 105,
+    "nl": "Show Your Love is a song recorded by the South Korean boy band BtoB 4u.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 3 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1422",
+    "story_id": 160,
+    "nl": "Susan lives in an apartment where the rent covers all utilities.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1423",
+    "story_id": 160,
+    "nl": "The rent of the apartment where Ava lives does not cover any utility expenses.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'Cover': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1424",
+    "story_id": 160,
+    "nl": "Noah lives in an apartment where the rent does not cover heating.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'RentCovers': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1435",
+    "story_id": 57,
+    "nl": "Charlie has a naughty pet dog named Leo.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Named'"
+  },
+  {
+    "premise_id": "P1459",
+    "story_id": 432,
+    "nl": "Harkness is either a Yale building operated by Yale Housing staff, or it is located on York Street.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'or' requires at least 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1466",
+    "story_id": 109,
+    "nl": "Any national park in Vietnam is classified as a nature reserve.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1470",
+    "story_id": 137,
+    "nl": "Greyhound racing is a competitive sport where spectators bet on greyhounds.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1475",
+    "story_id": 137,
+    "nl": "If a competitive sport involves spectators betting on small games, then it is banned.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1476",
+    "story_id": 190,
+    "nl": "If a soccer player receives two yellow cards in one game, this player will be ejected from the rest of the game.",
+    "error_kind": "schema_violation",
+    "error": "Cannot wrap sub-test: enclosing quantifier has empty restrictor"
+  },
+  {
+    "premise_id": "P1503",
+    "story_id": 431,
+    "nl": "Jake32 is either a Boeing-737 plane or a plane acquired by Delta in this batch.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 1 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1504",
+    "story_id": 431,
+    "nl": "T10 is either both a Boeing-737 plane and acquired by Delta in this batch, or it is neither.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'iff' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1507",
+    "story_id": 195,
+    "nl": "The SAT was originally designed not to be aligned with high school curricula.",
+    "error_kind": "schema_violation",
+    "error": "negation required but missing"
+  },
+  {
+    "premise_id": "P1508",
+    "story_id": 195,
+    "nl": "Several adjustments were made to the version of the SAT introduced in 2016 to align with the high school curriculum.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'AlignWith': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1532",
+    "story_id": 333,
+    "nl": "If people have high ambitions and future career goals, then they can pack and move out of their rooms very easily.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Person'"
+  },
+  {
+    "premise_id": "P1538",
+    "story_id": 182,
+    "nl": "Ships that have been impressed into service were seized by whoever impressed them into service.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'y': restrictor has 1 atom(s) but none mention 'y' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1554",
+    "story_id": 102,
+    "nl": "Edwin Smith was a New Zealand rower from Auckland.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 2 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1556",
+    "story_id": 102,
+    "nl": "Edwin Smith went to Rose Road Primary School, located in Grey Lynn.",
+    "error_kind": "schema_violation",
+    "error": "TripartiteQuantification on 'x': restrictor has 2 atom(s) but none mention 'x' \u2014 the restrictor is not restricting the bound variable"
+  },
+  {
+    "premise_id": "P1561",
+    "story_id": 175,
+    "nl": "If someone has been scratched or bitten by some entity, they have been attacked by that entity.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1564",
+    "story_id": 139,
+    "nl": "Sadollah fought Akiyama at UFC Fight Night.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1578",
+    "story_id": 41,
+    "nl": "Spanish Nationalists killed anyone who they opposed and who was popular.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'Opposed': argument 'y' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1580",
+    "story_id": 366,
+    "nl": "People in Franny's family drink kombucha every day or drink Coca-Cola or a Pepsi product.",
+    "error_kind": "schema_violation",
+    "error": "Formula has more than one case populated"
+  },
+  {
+    "premise_id": "P1581",
+    "story_id": 366,
+    "nl": "If people in Franny's family drink Coca-Cola or a Pepsi product every day, then they grew up with extremely busy parents who did not have time to pack them lunch.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1582",
+    "story_id": 366,
+    "nl": "If people in Franny's family drink Coca-Cola or another Pepsi product every day, then they have to visit the dentist frequently.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1583",
+    "story_id": 366,
+    "nl": "If people in Franny's family grew up with extremely busy parents who did not have time to pack them lunch, then they have erratic and diverse eating habits.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'implies' requires exactly 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1586",
+    "story_id": 366,
+    "nl": "Damon either both grow up with extremely busy parents who did not have time to pack her lunch and have consistent everyday routines and like sticking to a solid schedule, or Damon did neither.",
+    "error_kind": "schema_violation",
+    "error": "Connective 'or' requires at least 2 operands, got 1"
+  },
+  {
+    "premise_id": "P1589",
+    "story_id": 22,
+    "nl": "Customers who prefer TV series will not watch TV series in cinemas.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'WatchIn': argument 'z' is not a declared entity/constant or bound variable"
+  },
+  {
+    "premise_id": "P1634",
+    "story_id": 14,
+    "nl": "The last heavy cruiser to enter service was the USS Salem.",
+    "error_kind": "schema_violation",
+    "error": "restrictor required but missing"
+  },
+  {
+    "premise_id": "P1647",
+    "story_id": 194,
+    "nl": "Jose has a Chilean wife, Carmen.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula references undeclared predicate 'Equals'"
+  },
+  {
+    "premise_id": "P1674",
+    "story_id": 136,
+    "nl": "Phoenix has no songs in French.",
+    "error_kind": "schema_violation",
+    "error": "AtomicFormula 'InLanguage': argument 'y' is not a declared entity/constant or bound variable"
+  }
+]

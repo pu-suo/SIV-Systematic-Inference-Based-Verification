@@ -29,6 +29,115 @@ except ImportError:
     pass  # Callers that need NLTK will check NLTK_AVAILABLE
 
 
+# ── XOR expansion ────────────────────────────────────────────────────────────
+
+def _find_operand_boundary(s: str, pos: int, direction: str) -> int:
+    """Find the boundary of a FOL operand adjacent to *pos*.
+
+    *direction* is ``"left"`` (scan backwards) or ``"right"`` (scan forwards).
+    Handles parenthesised sub-expressions and negated atoms.
+    Returns the index of the first (left) or past-the-end (right) character
+    of the operand.
+    """
+    if direction == "right":
+        i = pos
+        while i < len(s) and s[i] == ' ':
+            i += 1
+        if i >= len(s):
+            return i
+        # Handle leading negation(s)
+        while i < len(s) and s[i] == '-':
+            i += 1
+            while i < len(s) and s[i] == ' ':
+                i += 1
+        if i >= len(s):
+            return i
+        if s[i] == '(':
+            depth = 1
+            i += 1
+            while i < len(s) and depth > 0:
+                if s[i] == '(':
+                    depth += 1
+                elif s[i] == ')':
+                    depth -= 1
+                i += 1
+            return i
+        else:
+            # Atom: predicate(args) or bare identifier
+            while i < len(s) and (s[i].isalnum() or s[i] in '_'):
+                i += 1
+            if i < len(s) and s[i] == '(':
+                depth = 1
+                i += 1
+                while i < len(s) and depth > 0:
+                    if s[i] == '(':
+                        depth += 1
+                    elif s[i] == ')':
+                        depth -= 1
+                    i += 1
+            return i
+    else:  # left
+        i = pos - 1
+        while i >= 0 and s[i] == ' ':
+            i -= 1
+        if i < 0:
+            return 0
+        if s[i] == ')':
+            depth = 1
+            i -= 1
+            while i >= 0 and depth > 0:
+                if s[i] == ')':
+                    depth += 1
+                elif s[i] == '(':
+                    depth -= 1
+                i -= 1
+            # Walk back over predicate name before the '('
+            while i >= 0 and (s[i].isalnum() or s[i] in '_'):
+                i -= 1
+            # Walk back over any leading negation(s)
+            while i >= 0 and s[i] == '-':
+                i -= 1
+            while i >= 0 and s[i] == ' ':
+                i -= 1
+            return i + 1
+        else:
+            # Bare identifier (no parenthesized args)
+            while i >= 0 and (s[i].isalnum() or s[i] in '_'):
+                i -= 1
+            # Walk back over leading negation(s)
+            while i >= 0 and s[i] == '-':
+                i -= 1
+            while i >= 0 and s[i] == ' ':
+                i -= 1
+            return i + 1
+
+
+def _expand_xor(fol: str) -> str:
+    """Expand all ``__XOR__`` placeholders in *fol*.
+
+    ``A __XOR__ B`` becomes ``((A & -(B)) | (-(A) & B))``.
+    Processes from right to left so indices stay valid.
+    """
+    marker = "__XOR__"
+    while marker in fol:
+        idx = fol.rfind(marker)
+        left_start = _find_operand_boundary(fol, idx, "left")
+        right_end = _find_operand_boundary(fol, idx + len(marker), "right")
+
+        a = fol[left_start:idx].strip()
+        b = fol[idx + len(marker):right_end].strip()
+
+        if not a or not b:
+            # Can't determine operands; drop the marker to avoid infinite loop
+            fol = fol[:idx] + fol[idx + len(marker):]
+            continue
+
+        expansion = f"(({a} & -({b})) | (-({a}) & {b}))"
+        fol = fol[:left_start] + expansion + fol[right_end:]
+
+    return fol
+
+
 # ── Normalisation ─────────────────────────────────────────────────────────────
 
 def normalize_fol_string(fol: str) -> str:
@@ -48,10 +157,19 @@ def normalize_fol_string(fol: str) -> str:
         ("→", " -> "),  ("⇒", " -> "),  ("⟹", " -> "),
         # Biconditional
         ("↔", " <-> "), ("⟺", " <-> "), ("⇔", " <-> "),
+        # Exclusive-or — expand A ⊕ B to ((A & -B) | (-A & B))
+        # We first replace with a placeholder to avoid clashing with other
+        # substitutions, then expand below.
+        ("⊕", " __XOR__ "),
         # Negation
         ("¬", "-"),     ("~", "-"),
     ]:
         fol = fol.replace(symbol, replacement)
+
+    # Expand XOR: A __XOR__ B → ((A & -(B)) | (-(A) & B))
+    # We handle __XOR__ by locating each occurrence and extracting the
+    # left and right operands using bracket-aware splitting.
+    fol = _expand_xor(fol)
 
     # Step 2: Strip remaining non-ASCII (fancy quotes, curly arrows, etc.)
     fol = unicodedata.normalize("NFKD", fol).encode("ascii", "ignore").decode("ascii")

@@ -1,0 +1,190 @@
+{
+  "n_sampled": 30,
+  "n_scored": 30,
+  "gold_wins": 28,
+  "win_rate": 0.9333,
+  "pass_criterion": 0.8,
+  "passed": true,
+  "results": [
+    {
+      "premise_id": "P1298",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0086",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0013",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0597",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0557",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0343",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0110",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0085",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0083",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0815",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0057",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0011",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0910",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0965",
+      "gold_siv_soft_recall": 0.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": false
+    },
+    {
+      "premise_id": "P1321",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0583",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0657",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0826",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P1138",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.5,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0822",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0674",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0677",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0342",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0922",
+      "gold_siv_soft_recall": 0.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": false
+    },
+    {
+      "premise_id": "P1007",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0977",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0679",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0341",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0675",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    },
+    {
+      "premise_id": "P0823",
+      "gold_siv_soft_recall": 1.0,
+      "swap_siv_soft_recall": 0.0,
+      "gold_wins": true
+    }
+  ]
+}

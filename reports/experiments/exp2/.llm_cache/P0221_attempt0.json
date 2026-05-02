@@ -1,0 +1,1 @@
+{"premise_id": "P0221", "attempt": 0, "response": "CANDIDATE_PARTIAL: Animal(ron)\nCANDIDATE_OVERWEAK: Animal(ron) | Animal(henry)\nCANDIDATE_OVERSTRONG: Animal(ron) & Animal(henry) & Animal(henry)\nCANDIDATE_GIBBERISH: Animal(ron) <-> Animal(ron)"}

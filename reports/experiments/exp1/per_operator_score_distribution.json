@@ -1,0 +1,387 @@
+[
+  {
+    "operator": "B_arg_swap",
+    "metrics": {
+      "bleu": {
+        "n": 42,
+        "mean": 0.6093,
+        "median": 0.6205,
+        "p25": 0.5872,
+        "p75": 0.6675,
+        "high_score_rate": 0.0
+      },
+      "bertscore": {
+        "n": 42,
+        "mean": 0.931,
+        "median": 0.932,
+        "p25": 0.9195,
+        "p75": 0.94,
+        "high_score_rate": 1.0
+      },
+      "malls_le_raw": {
+        "n": 42,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "malls_le_aligned": {
+        "n": 42,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_raw": {
+        "n": 42,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_aligned": {
+        "n": 42,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "siv_soft_recall": {
+        "n": 42,
+        "mean": 0.0198,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": 0.0
+      },
+      "siv_soft_f1": {
+        "n": 41,
+        "mean": 0.0285,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": 0.0
+      },
+      "siv_soft_min_recall": {
+        "n": 42,
+        "mean": 0.0198,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": 0.0
+      }
+    }
+  },
+  {
+    "operator": "B_negation_drop",
+    "metrics": {
+      "bleu": {
+        "n": 23,
+        "mean": 0.7653,
+        "median": 0.754,
+        "p25": 0.7078,
+        "p75": 0.8296,
+        "high_score_rate": 0.3478
+      },
+      "bertscore": {
+        "n": 23,
+        "mean": 0.925,
+        "median": 0.9243,
+        "p25": 0.9204,
+        "p75": 0.931,
+        "high_score_rate": 1.0
+      },
+      "malls_le_raw": {
+        "n": 23,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "malls_le_aligned": {
+        "n": 23,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_raw": {
+        "n": 23,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_aligned": {
+        "n": 23,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "siv_soft_recall": {
+        "n": 23,
+        "mean": 0.3623,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 1.0,
+        "high_score_rate": 0.3478
+      },
+      "siv_soft_f1": {
+        "n": 22,
+        "mean": 0.3818,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 1.0,
+        "high_score_rate": 0.3636
+      },
+      "siv_soft_min_recall": {
+        "n": 23,
+        "mean": 0.3623,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 1.0,
+        "high_score_rate": 0.3478
+      }
+    }
+  },
+  {
+    "operator": "B_scope_flip",
+    "metrics": {
+      "bleu": {
+        "n": 1,
+        "mean": 0.7508,
+        "median": 0.7508,
+        "p25": 0.7508,
+        "p75": 0.7508,
+        "high_score_rate": 0.0
+      },
+      "bertscore": {
+        "n": 1,
+        "mean": 0.9178,
+        "median": 0.9178,
+        "p25": 0.9178,
+        "p75": 0.9178,
+        "high_score_rate": 1.0
+      },
+      "malls_le_raw": {
+        "n": 1,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "malls_le_aligned": {
+        "n": 1,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_raw": {
+        "n": 1,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_aligned": {
+        "n": 1,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "siv_soft_recall": {
+        "n": 1,
+        "mean": 1.0,
+        "median": 1.0,
+        "p25": 1.0,
+        "p75": 1.0,
+        "high_score_rate": 1.0
+      },
+      "siv_soft_f1": {
+        "n": 1,
+        "mean": 1.0,
+        "median": 1.0,
+        "p25": 1.0,
+        "p75": 1.0,
+        "high_score_rate": 1.0
+      },
+      "siv_soft_min_recall": {
+        "n": 1,
+        "mean": 1.0,
+        "median": 1.0,
+        "p25": 1.0,
+        "p75": 1.0,
+        "high_score_rate": 1.0
+      }
+    }
+  },
+  {
+    "operator": "B_restrictor_drop",
+    "metrics": {
+      "bleu": {
+        "n": 30,
+        "mean": 0.5735,
+        "median": 0.5884,
+        "p25": 0.5054,
+        "p75": 0.6239,
+        "high_score_rate": 0.0
+      },
+      "bertscore": {
+        "n": 30,
+        "mean": 0.9225,
+        "median": 0.9211,
+        "p25": 0.9165,
+        "p75": 0.9326,
+        "high_score_rate": 1.0
+      },
+      "malls_le_raw": {
+        "n": 30,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "malls_le_aligned": {
+        "n": 30,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_raw": {
+        "n": 30,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_aligned": {
+        "n": 30,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "siv_soft_recall": {
+        "n": 30,
+        "mean": 0.8333,
+        "median": 1.0,
+        "p25": 1.0,
+        "p75": 1.0,
+        "high_score_rate": 0.8333
+      },
+      "siv_soft_f1": {
+        "n": 30,
+        "mean": 0.8333,
+        "median": 1.0,
+        "p25": 1.0,
+        "p75": 1.0,
+        "high_score_rate": 0.8333
+      },
+      "siv_soft_min_recall": {
+        "n": 30,
+        "mean": 0.8333,
+        "median": 1.0,
+        "p25": 1.0,
+        "p75": 1.0,
+        "high_score_rate": 0.8333
+      }
+    }
+  },
+  {
+    "operator": "D_random",
+    "metrics": {
+      "bleu": {
+        "n": 46,
+        "mean": 0.5003,
+        "median": 0.5163,
+        "p25": 0.4139,
+        "p75": 0.5657,
+        "high_score_rate": 0.0
+      },
+      "bertscore": {
+        "n": 46,
+        "mean": 0.8741,
+        "median": 0.8776,
+        "p25": 0.8633,
+        "p75": 0.8836,
+        "high_score_rate": 1.0
+      },
+      "malls_le_raw": {
+        "n": 46,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "malls_le_aligned": {
+        "n": 46,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_raw": {
+        "n": 46,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "brunello_lt_aligned": {
+        "n": 46,
+        "mean": 0.0,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": null
+      },
+      "siv_soft_recall": {
+        "n": 46,
+        "mean": 0.0109,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": 0.0
+      },
+      "siv_soft_f1": {
+        "n": 45,
+        "mean": 0.0148,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": 0.0
+      },
+      "siv_soft_min_recall": {
+        "n": 46,
+        "mean": 0.0109,
+        "median": 0.0,
+        "p25": 0.0,
+        "p75": 0.0,
+        "high_score_rate": 0.0
+      }
+    }
+  }
+]

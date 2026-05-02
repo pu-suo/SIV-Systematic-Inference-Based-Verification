@@ -1,0 +1,6 @@
+candidate_type,siv_soft_recall_mean,siv_soft_recall_ci_lo,siv_soft_recall_ci_hi,malls_le_aligned_mean,malls_le_aligned_ci_lo,malls_le_aligned_ci_hi,brunello_lt_aligned_mean,brunello_lt_aligned_ci_lo,brunello_lt_aligned_ci_hi,bleu_mean,bleu_ci_lo,bleu_ci_hi,bertscore_mean,bertscore_ci_lo,bertscore_ci_hi
+gold,1.0,1.0,1.0,0.8958,0.8125,0.9792,0.7708,0.6458,0.8958,0.6643,0.6055,0.7204,0.9311,0.9238,0.9382
+overstrong,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.4777,0.4253,0.5256,0.9163,0.9082,0.9238
+partial,0.3605,0.3422,0.3808,0.0,0.0,0.0,0.0,0.0,0.0,0.2519,0.2093,0.2984,0.8924,0.8857,0.8993
+overweak,0.0721,0.027,0.1261,0.0,0.0,0.0,0.0,0.0,0.0,0.3188,0.2608,0.3816,0.9006,0.8871,0.914
+gibberish,0.0319,0.0,0.0662,0.0,0.0,0.0,0.0,0.0,0.0,0.1701,0.1324,0.212,0.892,0.8825,0.9014

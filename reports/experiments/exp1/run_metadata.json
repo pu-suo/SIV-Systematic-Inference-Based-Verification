@@ -1,0 +1,25 @@
+{
+  "seed": 42,
+  "jaccard_threshold": 0.5,
+  "aligned_subset_size": 368,
+  "premises_dropped_applicability": 322,
+  "premises_with_candidates": 368,
+  "total_candidate_rows": 2208,
+  "applicable_candidate_rows": 510,
+  "git_commit": "23594626959c231f488e25f9f76b2ff9b8535a20",
+  "timestamp": "2026-05-01T00:22:35",
+  "scoring_wall_time_s": 308.3,
+  "scored_rows": 510,
+  "deviations": [
+    "Jaccard threshold relaxed from 0.6 to 0.5 (spec section 1.1 acceptance clause)",
+    "Full predicate-alignment requirement added after smoke test investigation (yield 368, below spec 400-700 range)",
+    "Broken-gold criterion 6 uses per-premise evidence only (parse failure or free-variable gold), not story-level heuristic",
+    "B_scope_flip N=1 (only 1 premise in aligned subset has nested mixed quantifiers)"
+  ],
+  "analysis_notes": [
+    "Table 1.5a AUC analysis discarded as setup artifact: gold included in candidate set as reference, so all reference-based metrics trivially achieve AUC=1.0 against themselves.",
+    "Replaced with per-operator score-distribution analysis (per_operator_score_distribution.json) which shows how each metric scores perturbations directly.",
+    "Detection rates use symmetric thresholds: 0.8 for continuous metrics, 1.0 for binary equivalence metrics.",
+    "B_restrictor_drop: structural non-detection (SIV scores overweak at 1.0). Not a bug — overweak preserves all sub-entailments and contrastives test for overstrong. Documented limitation; Experiment 2 addresses via finer-grained probes on richer premises."
+  ]
+}

@@ -72,7 +72,7 @@ python scripts/generate_siv_tests.py "All dogs are mammals." --pretty
 # Batch — all FOLIO train premises → frozen JSONL artifact:
 python scripts/generate_folio_test_suites.py --split train
 
-# Output: reports/human_study/test_suites.jsonl
+# Output: reports/test_suites/test_suites_test.jsonl
 ```
 
 The test suites are the most important artifact. They are generated once
@@ -92,7 +92,7 @@ python scripts/generate_candidates.py --split train
 # Dry run (skip LLM calls):
 python scripts/generate_candidates.py --split train --limit 10 --skip-models
 
-# Output: reports/human_study/candidates.jsonl
+# Output: candidates.jsonl
 ```
 
 ### 3. Score candidates (test suites × candidates → scores)
@@ -103,10 +103,10 @@ Vampire. Supports strict mode (SIV vocabulary) and soft mode
 
 ```bash
 python scripts/score_candidates.py \
-  --test-suites reports/human_study/test_suites.jsonl \
-  --candidates reports/human_study/candidates.jsonl
+  --test-suites reports/test_suites/test_suites_test.jsonl \
+  --candidates candidates.jsonl
 
-# Output: reports/human_study/scored_candidates.jsonl
+# Output: reports/experiments/aligned_subset/scored_candidates.jsonl
 ```
 
 ### Data flow
@@ -172,17 +172,13 @@ OPENAI_API_KEY=sk-... pytest tests/test_extraction_roundtrip.py  # live round-tr
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/run_folio_evaluation.py` | Legacy monolith — runs full SIV pipeline on FOLIO validation |
-| `scripts/categorize_folio_results.py` | Classify divergence patterns (vocab, restrictor, entity, quantifier) |
-| `scripts/compute_baseline_metrics.py` | BLEU / BERTScore / exact-match baselines |
-| `scripts/generate_annotation_set.py` | Stratified annotation sheet generation for human study |
-| `scripts/analyze_annotations.py` | Inter-annotator agreement and metric correlation |
+| `scripts/run_folio_evaluation.py` | End-to-end SIV pipeline on FOLIO (debugging / Exp 1 reuse) |
+| `scripts/compute_baseline_metrics.py` | BLEU / BERTScore / MALLS-LE / Brunello-LT baselines |
 | `scripts/soft_alignment_diagnostics.py` | Diagnostic report for soft cross-vocabulary scoring |
 
 ## Documentation
 
 - `docs/SIV.md` — the single canonical specification.
-- `docs/perturbation_recipe.md` — frozen spec of all FOL perturbation operators.
 - `docs/translation_prompt.md` — frozen NL→FOL prompt for model translations.
 
 ## License

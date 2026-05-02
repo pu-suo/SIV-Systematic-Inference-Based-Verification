@@ -1,0 +1,6 @@
+operator,n,bleu,bertscore,malls_le_raw,malls_le_aligned,brunello_lt_raw,brunello_lt_aligned,siv_soft_recall,siv_soft_f1,siv_soft_min_recall
+B_arg_swap,42,1.0,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+B_negation_drop,23,0.6522,0.0,1.0,1.0,1.0,1.0,0.6522,0.6364,0.6522
+B_scope_flip,1,1.0,0.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0
+B_restrictor_drop,30,1.0,0.0,1.0,1.0,1.0,1.0,0.1667,0.1667,0.1667
+D_random,46,1.0,0.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0

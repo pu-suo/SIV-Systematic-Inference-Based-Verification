@@ -1,0 +1,1 @@
+{"premise_id": "P1637", "attempt": 0, "response": "CANDIDATE_PARTIAL: ServedIn(ussSalem, atlantic)\nCANDIDATE_OVERWEAK: Exists x (ServedIn(ussSalem, x))\nCANDIDATE_OVERSTRONG: (ServedIn(ussSalem, atlantic) & ServedIn(ussSalem, mediterranean) & ServedIn(ussSalem, pacific))\nCANDIDATE_GIBBERISH: ServedIn(atlantic, mediterranean)"}

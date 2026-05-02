@@ -1,0 +1,1 @@
+{"premise_id": "P0586", "attempt": 0, "response": "CANDIDATE_PARTIAL: Philosopher(robertZimmer)\nCANDIDATE_OVERWEAK: exists x (Philosopher(x) & BornIn(x, germany))\nCANDIDATE_OVERSTRONG: Philosopher(robertZimmer) & BornIn(robertZimmer, germany) & exists y (Philosopher(y))\nCANDIDATE_GIBBERISH: BornIn(germany, robertZimmer)"}

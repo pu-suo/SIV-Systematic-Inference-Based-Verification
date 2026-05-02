@@ -1,0 +1,1 @@
+{"premise_id": "P1648", "attempt": 0, "response": "CANDIDATE_PARTIAL: ParentOf(carmen, rosa)\nCANDIDATE_OVERWEAK: (ParentOf(carmen, rosa) | ParentOf(jose, rosa))\nCANDIDATE_OVERSTRONG: (ParentOf(carmen, rosa) & ParentOf(jose, rosa) & ParentOf(carmen, jose))\nCANDIDATE_GIBBERISH: (ParentOf(rosa, carmen) & ParentOf(rosa, jose))"}

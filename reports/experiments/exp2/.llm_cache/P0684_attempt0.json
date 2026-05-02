@@ -1,0 +1,1 @@
+{"premise_id": "P0684", "attempt": 0, "response": "CANDIDATE_PARTIAL: British(mayaSondhi)  \nCANDIDATE_OVERWEAK: (British(mayaSondhi) | British(jedMercurio))  \nCANDIDATE_OVERSTRONG: (British(mayaSondhi) & British(jedMercurio) & British(jedMercurio))  \nCANDIDATE_GIBBERISH: (British(mayaSondhi) <-> British(jedMercurio))  "}

@@ -9,14 +9,14 @@ vocabulary via embedding-based symbol matching).
 
 Usage:
     python scripts/score_candidates.py \
-      --test-suites reports/human_study/test_suites.jsonl \
-      --candidates reports/human_study/candidates.jsonl \
-      --output reports/human_study/scored_candidates.jsonl
+      --test-suites reports/test_suites/test_suites_test.jsonl \
+      --candidates candidates.jsonl \
+      --output reports/experiments/aligned_subset/scored_candidates.jsonl
 
     # Limit for dry run:
     python scripts/score_candidates.py \
-      --test-suites reports/human_study/test_suites.jsonl \
-      --candidates reports/human_study/candidates.jsonl \
+      --test-suites reports/test_suites/test_suites_test.jsonl \
+      --candidates candidates.jsonl \
       --limit 20
 """
 from __future__ import annotations

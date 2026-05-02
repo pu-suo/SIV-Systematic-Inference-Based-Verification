@@ -1,0 +1,1 @@
+{"premise_id": "P0718", "attempt": 0, "response": "CANDIDATE_PARTIAL: Painter(bernardaBrysonShahn)\nCANDIDATE_OVERWEAK: (exists x (Painter(x) & Lithographer(x)))\nCANDIDATE_OVERSTRONG: (Painter(bernardaBrysonShahn) & Lithographer(bernardaBrysonShahn) & exists x (Painter(x)))\nCANDIDATE_GIBBERISH: (Painter(bernardaBrysonShahn) | Lithographer(bernardaBrysonShahn))"}

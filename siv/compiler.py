@@ -43,7 +43,16 @@ def compile_canonical_fol(extraction: SentenceExtraction) -> str:
     Pure function of the extraction's structural content. Does not read `nl`.
     """
     validate_extraction(extraction)
-    return _a_formula(extraction.formula)
+    result = _a_formula(extraction.formula)
+    # Post-compilation free-variable check (Pre-work A)
+    from siv.fol_utils import free_individual_variables
+    declared_constants = {c.id for c in extraction.constants}
+    free_vars = free_individual_variables(result, frozenset(declared_constants))
+    if free_vars:
+        raise SchemaViolation(
+            f"free variable in canonical FOL: {', '.join(sorted(free_vars))}"
+        )
+    return result
 
 
 def _a_formula(f: Formula) -> str:
@@ -207,6 +216,10 @@ def _emit_rule_a(
     rename = _build_rename(enclosing, counter)
     op_fol = _b_formula(op, rename, counter)
     closure = _wrap_chain(op_fol, enclosing, rename)
+    # Defense-in-depth: skip probes with free variables (Pre-work B)
+    from siv.fol_utils import free_individual_variables
+    if free_individual_variables(closure):
+        return
     out.append(closure)
 
 
@@ -221,7 +234,15 @@ def _emit_rule_b(
     rename = _build_rename(enclosing + [inner_q], counter)
     atom_fol = _b_atom(atom, rename)
     inner_fol = "".join(["exists ", rename[inner_q.variable], ".(", atom_fol, ")"])
+    # Bind any inner_quantification variables that appear in the atom (Pre-work B fix)
+    for iq in inner_q.inner_quantifications:
+        if iq.variable in atom.args:
+            inner_fol = "".join(["exists ", rename[iq.variable], ".(", inner_fol, ")"])
     closure = _wrap_chain(inner_fol, enclosing, rename)
+    # Defense-in-depth: skip probes with free variables (Pre-work B)
+    from siv.fol_utils import free_individual_variables
+    if free_individual_variables(closure):
+        return
     out.append(closure)
 
 

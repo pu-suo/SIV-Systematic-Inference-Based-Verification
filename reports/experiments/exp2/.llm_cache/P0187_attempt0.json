@@ -1,0 +1,1 @@
+{"premise_id": "P0187", "attempt": 0, "response": "CANDIDATE_PARTIAL: (Play(peter, piano) & Play(peter, violin))\nCANDIDATE_OVERWEAK: (exists x (Play(peter, x)))\nCANDIDATE_OVERSTRONG: (Play(peter, piano) & Play(peter, violin) & Play(peter, saxophone) & Piano(piano))\nCANDIDATE_GIBBERISH: (Violin(peter) & Saxophone(piano))"}

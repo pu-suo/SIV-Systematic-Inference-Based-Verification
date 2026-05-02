@@ -1,0 +1,1 @@
+{"premise_id": "P0487", "attempt": 0, "response": "CANDIDATE_PARTIAL: SoftwareEngineer(daniel)\nCANDIDATE_OVERWEAK: Exists(x) (SoftwareEngineer(x) & WorksAt(x, palantirTechnologies))\nCANDIDATE_OVERSTRONG: SoftwareEngineer(daniel) & WorksAt(daniel, palantirTechnologies) & Exists(y) (WorksAt(y, palantirTechnologies))\nCANDIDATE_GIBBERISH: WorksAt(palantirTechnologies, daniel)"}

@@ -1,0 +1,377 @@
+[
+  {
+    "premise_id": "P0087",
+    "candidate_type": "gold",
+    "candidate_fol": "(At(susan, theEvent) & (HarvardStudent(susan) -> YoungAdult(susan)))",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.761827408333416,
+      "bertscore": 0.9591552019119263,
+      "malls_le_aligned": 1.0,
+      "brunello_lt_aligned": 1.0
+    }
+  },
+  {
+    "premise_id": "P0087",
+    "candidate_type": "overstrong",
+    "candidate_fol": "At(susan, theEvent) & HarvardStudent(susan) & YoungAdult(susan)",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.40630228280707753,
+      "bertscore": 0.8934400081634521,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0087",
+    "candidate_type": "partial",
+    "candidate_fol": "At(susan, theEvent)",
+    "scores": {
+      "siv_strict_recall": 0.3333333333333333,
+      "siv_soft_recall": 0.3333333333333333,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.5,
+      "bleu": 0.06155074458950312,
+      "bertscore": 0.8896728754043579,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0087",
+    "candidate_type": "overweak",
+    "candidate_fol": "At(susan, theEvent)",
+    "scores": {
+      "siv_strict_recall": 0.3333333333333333,
+      "siv_soft_recall": 0.3333333333333333,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.5,
+      "bleu": 0.06155074458950312,
+      "bertscore": 0.8896728754043579,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0087",
+    "candidate_type": "gibberish",
+    "candidate_fol": "HarvardStudent(theEvent) -> YoungAdult(susan)",
+    "scores": {
+      "siv_strict_recall": 0.0,
+      "siv_soft_recall": 0.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.0,
+      "bleu": 0.28748816342728506,
+      "bertscore": 0.9169555306434631,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0089",
+    "candidate_type": "gold",
+    "candidate_fol": "(Play(vicDicara, guitar) & Play(vicDicara, bass))",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.8507331335123531,
+      "bertscore": 0.9568017721176147,
+      "malls_le_aligned": 1.0,
+      "brunello_lt_aligned": 1.0
+    }
+  },
+  {
+    "premise_id": "P0089",
+    "candidate_type": "overstrong",
+    "candidate_fol": "(Play(vicDicara, guitar) & Play(vicDicara, bass) & Guitar(guitar))",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.6198021310128996,
+      "bertscore": 0.9364070296287537,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0089",
+    "candidate_type": "partial",
+    "candidate_fol": "Play(vicDicara, guitar)",
+    "scores": {
+      "siv_strict_recall": 0.3333333333333333,
+      "siv_soft_recall": 0.3333333333333333,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.5,
+      "bleu": 0.31140322391459785,
+      "bertscore": 0.8747258186340332,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0089",
+    "candidate_type": "overweak",
+    "candidate_fol": "exists x (Play(vicDicara, x))",
+    "scores": {
+      "siv_strict_recall": 0.0,
+      "siv_soft_recall": 0.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.0,
+      "bleu": 0.22382899458813596,
+      "bertscore": 0.8724595904350281,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0089",
+    "candidate_type": "gibberish",
+    "candidate_fol": "(Guitar(vicDicara) | Bass(guitar))",
+    "scores": {
+      "siv_strict_recall": 0.0,
+      "siv_soft_recall": 0.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.0,
+      "bleu": 0.0978090152232118,
+      "bertscore": 0.8762491345405579,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0187",
+    "candidate_type": "gold",
+    "candidate_fol": "(Play(peter, piano) & Play(peter, violin) & Play(peter, saxophone))",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.9021315316859227,
+      "bertscore": 0.9511955380439758,
+      "malls_le_aligned": 1.0,
+      "brunello_lt_aligned": 1.0
+    }
+  },
+  {
+    "premise_id": "P0187",
+    "candidate_type": "overstrong",
+    "candidate_fol": "(Play(peter, piano) & Play(peter, violin) & Play(peter, saxophone) & Piano(piano))",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.7248600507984249,
+      "bertscore": 0.9403553605079651,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0187",
+    "candidate_type": "partial",
+    "candidate_fol": "(Play(peter, piano) & Play(peter, violin))",
+    "scores": {
+      "siv_strict_recall": 0.5,
+      "siv_soft_recall": 0.5,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.6666666666666666,
+      "bleu": 0.6317794522772925,
+      "bertscore": 0.9326536655426025,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0187",
+    "candidate_type": "overweak",
+    "candidate_fol": "(exists x (Play(peter, x)))",
+    "scores": {
+      "siv_strict_recall": 0.0,
+      "siv_soft_recall": 0.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.0,
+      "bleu": 0.13331059757698452,
+      "bertscore": 0.842467188835144,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0187",
+    "candidate_type": "gibberish",
+    "candidate_fol": "(Violin(peter) & Saxophone(piano))",
+    "scores": {
+      "siv_strict_recall": 0.0,
+      "siv_soft_recall": 0.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.0,
+      "bleu": 0.0633950428993738,
+      "bertscore": 0.8718668818473816,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0397",
+    "candidate_type": "gold",
+    "candidate_fol": "(Museum(theMetropolitanMuseumOfArt) & In(theMetropolitanMuseumOfArt, nyc))",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.2471244254525359,
+      "bertscore": 0.9256854057312012,
+      "malls_le_aligned": 1.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0397",
+    "candidate_type": "overstrong",
+    "candidate_fol": "(Museum(theMetropolitanMuseumOfArt) & In(theMetropolitanMuseumOfArt, nyc) & Museum(nyc))",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.1718152967132724,
+      "bertscore": 0.9005864858627319,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0397",
+    "candidate_type": "partial",
+    "candidate_fol": "Museum(theMetropolitanMuseumOfArt)",
+    "scores": {
+      "siv_strict_recall": 0.3333333333333333,
+      "siv_soft_recall": 0.3333333333333333,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.5,
+      "bleu": 0.06143836690366869,
+      "bertscore": 0.8999857306480408,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0397",
+    "candidate_type": "overweak",
+    "candidate_fol": "exists x (Museum(x))",
+    "scores": {
+      "siv_strict_recall": 0.0,
+      "siv_soft_recall": 0.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.0,
+      "bleu": 0.09545138913210204,
+      "bertscore": 0.8709920644760132,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0397",
+    "candidate_type": "gibberish",
+    "candidate_fol": "In(nyc, theMetropolitanMuseumOfArt)",
+    "scores": {
+      "siv_strict_recall": 0.0,
+      "siv_soft_recall": 0.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.0,
+      "bleu": 0.08389861810900508,
+      "bertscore": 0.8640918731689453,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0398",
+    "candidate_type": "gold",
+    "candidate_fol": "(Museum(whitneyMuseumOfAmericanArt) & In(whitneyMuseumOfAmericanArt, nyc))",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.5008718428920986,
+      "bertscore": 0.9218757748603821,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0398",
+    "candidate_type": "overstrong",
+    "candidate_fol": "(Museum(whitneyMuseumOfAmericanArt) & In(whitneyMuseumOfAmericanArt, nyc) & Museum(nyc))",
+    "scores": {
+      "siv_strict_recall": 1.0,
+      "siv_soft_recall": 1.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 1.0,
+      "bleu": 0.34823528327578546,
+      "bertscore": 0.9026780128479004,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0398",
+    "candidate_type": "partial",
+    "candidate_fol": "Museum(whitneyMuseumOfAmericanArt)",
+    "scores": {
+      "siv_strict_recall": 0.3333333333333333,
+      "siv_soft_recall": 0.3333333333333333,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.5,
+      "bleu": 0.17377394345044522,
+      "bertscore": 0.9140279293060303,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0398",
+    "candidate_type": "overweak",
+    "candidate_fol": "exists x (Museum(x))",
+    "scores": {
+      "siv_strict_recall": 0.0,
+      "siv_soft_recall": 0.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.0,
+      "bleu": 0.09545138913210204,
+      "bertscore": 0.8549153804779053,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  },
+  {
+    "premise_id": "P0398",
+    "candidate_type": "gibberish",
+    "candidate_fol": "In(nyc, whitneyMuseumOfAmericanArt)",
+    "scores": {
+      "siv_strict_recall": 0.0,
+      "siv_soft_recall": 0.0,
+      "siv_soft_precision": 1.0,
+      "siv_soft_f1": 0.0,
+      "bleu": 0.10549692711446511,
+      "bertscore": 0.8706291913986206,
+      "malls_le_aligned": 0.0,
+      "brunello_lt_aligned": 0.0
+    }
+  }
+]

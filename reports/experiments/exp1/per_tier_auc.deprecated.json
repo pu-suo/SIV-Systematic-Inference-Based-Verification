@@ -1,0 +1,72 @@
+[
+  {
+    "metric": "BLEU",
+    "auc": 1.0,
+    "ci_lower": 0.1069,
+    "ci_upper": 0.1602,
+    "p_value": 0.0
+  },
+  {
+    "metric": "BERTScore",
+    "auc": 1.0,
+    "ci_lower": 0.1867,
+    "ci_upper": 0.254,
+    "p_value": 0.0
+  },
+  {
+    "metric": "MALLS-LE-raw",
+    "auc": 1.0,
+    "ci_lower": -0.0583,
+    "ci_upper": -0.0034,
+    "p_value": 0.0346
+  },
+  {
+    "metric": "MALLS-LE-aligned",
+    "auc": 1.0,
+    "ci_lower": -0.0583,
+    "ci_upper": -0.0034,
+    "p_value": 0.0346
+  },
+  {
+    "metric": "Brunello-LT-raw",
+    "auc": 1.0,
+    "ci_lower": -0.0583,
+    "ci_upper": -0.0034,
+    "p_value": 0.0346
+  },
+  {
+    "metric": "Brunello-LT-aligned",
+    "auc": 1.0,
+    "ci_lower": -0.0583,
+    "ci_upper": -0.0034,
+    "p_value": 0.0346
+  },
+  {
+    "metric": "SIV-strict (mean recall)",
+    "auc": 0.8323,
+    "ci_lower": -0.1392,
+    "ci_upper": -0.085,
+    "p_value": 0.0
+  },
+  {
+    "metric": "SIV-strict (min recall)",
+    "auc": 0.8323,
+    "ci_lower": -0.1392,
+    "ci_upper": -0.085,
+    "p_value": 0.0
+  },
+  {
+    "metric": "SIV-soft (mean recall)",
+    "auc": 0.854,
+    "ci_lower": 0.0,
+    "ci_upper": 0.0,
+    "p_value": 1.0
+  },
+  {
+    "metric": "SIV-soft (min recall)",
+    "auc": 0.854,
+    "ci_lower": null,
+    "ci_upper": null,
+    "p_value": "reference"
+  }
+]

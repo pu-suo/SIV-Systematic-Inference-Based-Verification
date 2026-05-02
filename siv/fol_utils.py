@@ -9,7 +9,7 @@ All FOL strings use NLTK format:
 """
 import re
 import unicodedata
-from typing import Optional, Set, List
+from typing import FrozenSet, Optional, Set, List
 
 # ── NLTK logic imports ────────────────────────────────────────────────────────
 
@@ -22,6 +22,7 @@ try:
         AndExpression, OrExpression,
         ImpExpression, IffExpression, EqualityExpression,
         IndividualVariableExpression,
+        is_indvar,
     )
     read_expr = Expression.fromstring
     NLTK_AVAILABLE = True
@@ -207,6 +208,28 @@ def parse_fol(fol_string: str) -> "Optional[Expression]":
 def is_valid_fol(fol_string: str) -> bool:
     """Return True if *fol_string* parses as valid NLTK FOL."""
     return parse_fol(fol_string) is not None
+
+
+def free_individual_variables(
+    fol_string: str,
+    declared_constants: FrozenSet[str] = frozenset(),
+) -> Set[str]:
+    """Return the set of free individual variable names in *fol_string*.
+
+    Variables whose names appear in *declared_constants* are excluded —
+    they are constants that happen to have variable-like names (e.g., 'j', 'c').
+
+    Returns an empty set if NLTK is unavailable or the string fails to parse.
+    """
+    if not NLTK_AVAILABLE:
+        return set()
+    expr = parse_fol(fol_string)
+    if expr is None:
+        return set()
+    return {
+        str(v) for v in expr.free()
+        if is_indvar(str(v)) and str(v) not in declared_constants
+    }
 
 
 # ── Predicate extraction ──────────────────────────────────────────────────────

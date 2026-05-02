@@ -1,0 +1,1 @@
+{"premise_id": "P0023", "attempt": 0, "response": "CANDIDATE_PARTIAL: University(universityOfEdinburgh)  \nCANDIDATE_OVERWEAK: Exists x (University(x))  \nCANDIDATE_OVERSTRONG: (University(universityOfEdinburgh) & LocatedIn(universityOfEdinburgh, unitedKingdom) & LocatedIn(universityOfEdinburgh, scotland))  \nCANDIDATE_GIBBERISH: LocatedIn(unitedKingdom, universityOfEdinburgh)"}

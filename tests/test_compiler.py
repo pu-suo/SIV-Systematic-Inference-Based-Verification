@@ -11,6 +11,7 @@ from __future__ import annotations
 import pytest
 
 from siv.compiler import compile_canonical_fol, compile_sentence_test_suite
+from siv.fol_utils import free_individual_variables
 from siv.schema import (
     AtomicFormula,
     Constant,
@@ -18,6 +19,7 @@ from siv.schema import (
     Formula,
     InnerQuantification,
     PredicateDecl,
+    SchemaViolation,
     SentenceExtraction,
     TripartiteQuantification,
 )
@@ -497,3 +499,107 @@ def test_case4_subtests_are_individual_conjuncts():
     assert "(Tall(alice) & Short(bob))" in fols
     assert "Tall(alice)" in fols
     assert "Short(bob)" in fols
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# Pre-work A — free-variable validator regression tests
+# ════════════════════════════════════════════════════════════════════════════
+
+def test_compile_canonical_rejects_free_variable():
+    """Pre-work A: an entity used at top level without an enclosing quantifier
+    should be caught by the post-compilation free-variable check.
+
+    validate_extraction passes (entity 'x' is in global_scope), but the
+    compiled FOL 'CopyrightViolation(x)' has 'x' free because it is an
+    individual variable with no binding quantifier and not a declared constant.
+    """
+    ext = SentenceExtraction(
+        nl="Something violates copyright",
+        predicates=_preds(("CopyrightViolation", 1, ["entity"])),
+        entities=[Entity(id="x", surface="something", type="entity")],
+        formula=_atomic_f("CopyrightViolation", "x"),
+    )
+    with pytest.raises(SchemaViolation, match="free variable in canonical FOL"):
+        compile_canonical_fol(ext)
+
+
+def test_free_individual_variables_utility():
+    """Pre-work A: direct unit tests for the free_individual_variables utility."""
+    # Bound variable — empty set
+    assert free_individual_variables("all x.(P(x))") == set()
+
+    # Free variable, no declared constants
+    assert free_individual_variables("P(x)") == {"x"}
+
+    # x is a declared constant — should NOT be flagged
+    assert free_individual_variables("P(x)", frozenset({"x"})) == set()
+
+    # z is free, y is bound
+    assert free_individual_variables("exists y.(P(y) & Q(z))") == {"z"}
+
+    # All bound in nested quantifiers
+    assert free_individual_variables("exists y.(exists z.(P(y,z)))") == set()
+
+    # Parse failure returns empty set
+    assert free_individual_variables("not valid fol )(((") == set()
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# Pre-work B — suite-generator scope bug regression test
+# ════════════════════════════════════════════════════════════════════════════
+
+def _nested_existential_case():
+    """exists y.(exists z.(PerformanceOf(y,z) & RenaissanceMusic(z))
+                 & SpecializedIn(miroslav, y))"""
+    q = TripartiteQuantification(
+        quantifier="existential",
+        variable="y",
+        var_type="entity",
+        restrictor=[
+            _atom("PerformanceOf", "y", "z"),
+            _atom("RenaissanceMusic", "z"),
+        ],
+        nucleus=_atomic_f("SpecializedIn", "miroslav", "y"),
+        inner_quantifications=[
+            InnerQuantification(quantifier="existential", variable="z", var_type="entity"),
+        ],
+    )
+    return SentenceExtraction(
+        nl="test nested existential",
+        predicates=_preds(
+            ("PerformanceOf", 2, ["entity", "entity"]),
+            ("RenaissanceMusic", 1, ["entity"]),
+            ("SpecializedIn", 2, ["entity", "entity"]),
+        ),
+        constants=[_const("miroslav")],
+        formula=Formula(quantification=q),
+    )
+
+
+def test_nested_existential_probes_are_closed():
+    """Pre-work B: probes from nested exists y.(exists z.(...)) must have
+    all variables bound. Before the fix, the inner-quantification variable
+    z (renamed to v1) was left free in restrictor-atom probes."""
+    suite = compile_sentence_test_suite(_nested_existential_case())
+    for p in suite.positives:
+        fv = free_individual_variables(p.fol)
+        assert not fv, f"Probe has free variables {fv}: {p.fol}"
+
+
+def test_nested_existential_probe_has_correct_bindings():
+    """Pre-work B: the PerformanceOf restrictor-atom probe must have both
+    v0 and v1 bound by existentials — not just 'no free vars' but the
+    right binding structure."""
+    suite = compile_sentence_test_suite(_nested_existential_case())
+    performance_probes = [p.fol for p in suite.positives if "PerformanceOf" in p.fol
+                          and "SpecializedIn" not in p.fol]
+    assert len(performance_probes) == 1, (
+        f"Expected exactly 1 PerformanceOf restrictor probe, got {len(performance_probes)}"
+    )
+    probe = performance_probes[0]
+    # Should be: exists v1.(exists v0.(PerformanceOf(v0,v1)))
+    # Both variables bound by existentials
+    assert probe.count("exists ") == 2, f"Expected 2 existential binders, got: {probe}"
+    assert "PerformanceOf(v0,v1)" in probe or "PerformanceOf(v0, v1)" in probe, (
+        f"Expected PerformanceOf(v0,v1) in probe: {probe}"
+    )

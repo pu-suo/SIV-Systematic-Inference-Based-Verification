@@ -1,0 +1,1 @@
+{"premise_id": "P1161", "attempt": 0, "response": "CANDIDATE_PARTIAL: Actor(daveedDiggs)\nCANDIDATE_OVERWEAK: (Actor(daveedDiggs) | FilmProducer(daveedDiggs))\nCANDIDATE_OVERSTRONG: (Actor(daveedDiggs) & FilmProducer(daveedDiggs) & Actor(daveedDiggs))\nCANDIDATE_GIBBERISH: (FilmProducer(daveedDiggs) -> Actor(daveedDiggs))"}

@@ -1,0 +1,1 @@
+{"premise_id": "P1407", "attempt": 0, "response": "CANDIDATE_PARTIAL: Vegetable(broccoli)\nCANDIDATE_OVERWEAK: (Vegetable(broccoli) | Vegetable(asparagus))\nCANDIDATE_OVERSTRONG: (Vegetable(broccoli) & Vegetable(asparagus) & Vegetable(broccoli))\nCANDIDATE_GIBBERISH: (Vegetable(broccoli) <-> Vegetable(asparagus))"}

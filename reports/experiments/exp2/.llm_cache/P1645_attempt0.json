@@ -1,0 +1,1 @@
+{"premise_id": "P1645", "attempt": 0, "response": "CANDIDATE_PARTIAL: CapitalOf(santiago, chile)\nCANDIDATE_OVERWEAK: (CapitalOf(santiago, chile) | LargestCityOf(santiago, chile))\nCANDIDATE_OVERSTRONG: (CapitalOf(santiago, chile) & LargestCityOf(santiago, chile) & CapitalOf(chile, santiago))\nCANDIDATE_GIBBERISH: (LargestCityOf(chile, santiago) & CapitalOf(chile, santiago))"}

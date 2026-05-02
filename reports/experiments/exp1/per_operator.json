@@ -1,0 +1,67 @@
+[
+  {
+    "operator": "B_arg_swap",
+    "bleu": 1.0,
+    "bertscore": 0.0,
+    "malls_le_raw": 1.0,
+    "malls_le_aligned": 1.0,
+    "brunello_lt_raw": 1.0,
+    "brunello_lt_aligned": 1.0,
+    "siv_soft_recall": 1.0,
+    "siv_soft_f1": 1.0,
+    "siv_soft_min_recall": 1.0,
+    "n": 42
+  },
+  {
+    "operator": "B_negation_drop",
+    "bleu": 0.6522,
+    "bertscore": 0.0,
+    "malls_le_raw": 1.0,
+    "malls_le_aligned": 1.0,
+    "brunello_lt_raw": 1.0,
+    "brunello_lt_aligned": 1.0,
+    "siv_soft_recall": 0.6522,
+    "siv_soft_f1": 0.6364,
+    "siv_soft_min_recall": 0.6522,
+    "n": 23
+  },
+  {
+    "operator": "B_scope_flip",
+    "bleu": 1.0,
+    "bertscore": 0.0,
+    "malls_le_raw": 1.0,
+    "malls_le_aligned": 1.0,
+    "brunello_lt_raw": 1.0,
+    "brunello_lt_aligned": 1.0,
+    "siv_soft_recall": 0.0,
+    "siv_soft_f1": 0.0,
+    "siv_soft_min_recall": 0.0,
+    "n": 1
+  },
+  {
+    "operator": "B_restrictor_drop",
+    "bleu": 1.0,
+    "bertscore": 0.0,
+    "malls_le_raw": 1.0,
+    "malls_le_aligned": 1.0,
+    "brunello_lt_raw": 1.0,
+    "brunello_lt_aligned": 1.0,
+    "siv_soft_recall": 0.1667,
+    "siv_soft_f1": 0.1667,
+    "siv_soft_min_recall": 0.1667,
+    "n": 30
+  },
+  {
+    "operator": "D_random",
+    "bleu": 1.0,
+    "bertscore": 0.0,
+    "malls_le_raw": 1.0,
+    "malls_le_aligned": 1.0,
+    "brunello_lt_raw": 1.0,
+    "brunello_lt_aligned": 1.0,
+    "siv_soft_recall": 1.0,
+    "siv_soft_f1": 1.0,
+    "siv_soft_min_recall": 1.0,
+    "n": 46
+  }
+]

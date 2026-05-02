@@ -1,0 +1,27 @@
+{
+  "siv_soft_recall": {
+    "overstrong_vs_partial": 1.0,
+    "partial_vs_overweak": 0.9059,
+    "overweak_vs_gibberish": 0.6016
+  },
+  "malls_le_aligned": {
+    "overstrong_vs_partial": 0.5,
+    "partial_vs_overweak": 0.5,
+    "overweak_vs_gibberish": 0.5
+  },
+  "brunello_lt_aligned": {
+    "overstrong_vs_partial": 0.5,
+    "partial_vs_overweak": 0.5,
+    "overweak_vs_gibberish": 0.5
+  },
+  "bleu": {
+    "overstrong_vs_partial": 0.8065,
+    "partial_vs_overweak": 0.4471,
+    "overweak_vs_gibberish": 0.6688
+  },
+  "bertscore": {
+    "overstrong_vs_partial": 0.7347,
+    "partial_vs_overweak": 0.4448,
+    "overweak_vs_gibberish": 0.5312
+  }
+}

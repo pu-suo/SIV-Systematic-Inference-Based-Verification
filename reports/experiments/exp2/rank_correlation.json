@@ -1,0 +1,37 @@
+{
+  "siv_soft_recall": {
+    "mean_rho": 0.8563,
+    "ci_lo": 0.8236,
+    "ci_hi": 0.8811,
+    "n_premises": 35,
+    "p_vs_siv": null
+  },
+  "malls_le_aligned": {
+    "mean_rho": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "n_premises": 35,
+    "p_vs_siv": 0.0
+  },
+  "brunello_lt_aligned": {
+    "mean_rho": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "n_premises": 35,
+    "p_vs_siv": 0.0
+  },
+  "bleu": {
+    "mean_rho": 0.4513,
+    "ci_lo": 0.2872,
+    "ci_hi": 0.6047,
+    "n_premises": 35,
+    "p_vs_siv": 0.0
+  },
+  "bertscore": {
+    "mean_rho": 0.0435,
+    "ci_lo": -0.1715,
+    "ci_hi": 0.2674,
+    "n_premises": 35,
+    "p_vs_siv": 0.0
+  }
+}

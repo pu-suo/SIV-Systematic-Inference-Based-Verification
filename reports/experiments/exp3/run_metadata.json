@@ -1,0 +1,31 @@
+{
+  "step1": {
+    "pool_size": 76,
+    "by_reason": {
+      "syntax_error": 54,
+      "free_variable": 22
+    },
+    "criteria_used": [
+      "syntax_error (parse_fol fails)",
+      "free_variable (free_individual_variables non-empty)"
+    ],
+    "criterion_c_note": "Criterion (c) 'unprovable_by_design' yielded 0 premises with per-premise evidence only. failure_analysis.json contains story-level buckets, not premise-level. Per spec, story-level heuristics not used."
+  },
+  "step2": {
+    "pool_size": 76,
+    "filter_drops": {
+      "lt2_positives": 45
+    },
+    "survivors_after_filters": 31,
+    "premises_selected": 30,
+    "by_reason": {
+      "syntax_error": 17,
+      "free_variable": 13
+    },
+    "stratification_ok": false,
+    "deviations": [
+      "Stratification: max bucket is 17/30 (57%) from 'syntax_error'. Exceeds 50% because criterion (c) yielded no per-premise cases, leaving only 2 buckets."
+    ],
+    "filter_4_note": "Filter 4 (predicate overlap) skipped \u2014 SIV-soft alignment handles vocabulary at scoring time."
+  }
+}

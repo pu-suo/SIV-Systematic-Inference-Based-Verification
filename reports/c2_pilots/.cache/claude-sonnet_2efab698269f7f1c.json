@@ -1,5 +1,0 @@
-{
-  "model_key": "claude-sonnet",
-  "prompt": "You are given a natural-language sentence and a first-order logic (FOL) translation that may contain errors. Your task is to produce the correct FOL translation.\n\nNatural language: All college students at the event are young adults.\n\nCandidate FOL (may be incorrect): all x.((At(event,x) & CollegeStudent(x)) -> YoungAdult(x))\n\nProduce ONLY the corrected FOL formula. Use the same predicate and constant naming conventions as the candidate. Do not explain your reasoning \u2014 output only the formula.",
-  "response": "all x.((At(event,x) & CollegeStudent(x)) -> YoungAdult(x))"
-}

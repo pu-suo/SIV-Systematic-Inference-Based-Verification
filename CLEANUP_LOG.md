@@ -141,4 +141,35 @@ Edited:
   reproduction commands for the locked headline / Exp C1 / nulls.
   The "Prior exploration" archive pointer is held until Phase E.
 
+## Phase D — Stage 2: retired pilots and superseded investigations
+
+Inventory predicted ~14 file deletions; actual was **169**, triggering the
+spec's >50-file sanity-check stop. Verification pass run before commit:
+
+- All 155 extras live in `reports/c2_pilots/.cache/` — a hidden cache
+  subdirectory under the c2_pilots tree the user already approved deleting
+  in full. (My Phase C `ls` skipped dotfiles, hence the under-count.)
+- Cache filenames are hash-keyed; none reference `path1`, `path1_hard`, or
+  `investigation_4` tokens.
+- No `.cache/` files outside `reports/c2_pilots/.cache/` were touched.
+- Locked-null artifacts confirmed untouched: `path1/`, `path1_hard/`, and
+  `investigation_4_*` files do not appear in the staged deletions.
+- `path1_hard/step5_main_results.json` raw arrays intact: 3 models × 5
+  conditions in `raw_results`.
+
+User confirmed Path 1 (commit all 169 deletions as a single Stage 2 commit).
+
+Deleted (169 files):
+- `reports/c2_pilots/` (entire tree, 162 files: 7 top-level + 155 in `.cache/`)
+- `reports/c2_investigations/investigation_1_load_bearing.{json,md}`
+- `reports/c2_investigations/investigation_2_metric_sensitivity.{json,md}`
+- `reports/c2_investigations/investigation_3_hand_perturbation.{json,md}`
+- `reports/c2_investigations/c2_investigations_results.md`
+
+KEPT (Hard Rule 3):
+- `reports/c2_investigations/investigation_4_effect_size.{json,md}`
+- `reports/c2_investigations/path1/` (10 files)
+- `reports/c2_investigations/path1_hard/` (10 files)
+
+
 

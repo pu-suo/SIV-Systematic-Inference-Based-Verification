@@ -1,5 +1,0 @@
-{
-  "model_key": "gpt-4o",
-  "prompt": "You are given a natural-language sentence and a first-order logic (FOL) translation that may contain errors. A diagnostic system identified specific issues with this translation.\n\nNatural language: In some families, Odell is spelled O'Dell in a mistaken Irish adaptation.\n\nCandidate FOL (may be incorrect): MistakenSpellingOf(nameO'Dell, nameODell) \u2227 (\u2203x\u2203y(Family(x) \u2227 Named(x, nameO'Dell) \u2227 (\u00ac(x=y)) \u2227 Family(y) \u2227 Named(y, nameO'Dell))\n\nDiagnostic summary:\n- Positive sub-entailment probes passed: 0/4\n- Contrastive probes incorrectly entailed: 0/2\nIssue: the translation fails to entail expected consequences (underspec).\n\nProduce ONLY the corrected FOL formula. Use the same predicate and constant naming conventions as the candidate. Do not explain your reasoning \u2014 output only the formula.",
-  "response": "\u2203x(Family(x) \u2227 Named(x, nameODell) \u2227 MistakenSpellingOf(nameO'Dell, nameODell))"
-}

@@ -1,5 +1,0 @@
-{
-  "model_key": "gpt-4o",
-  "prompt": "You are given a natural-language sentence and a first-order logic (FOL) translation that may contain errors. A diagnostic system identified specific issues with this translation.\n\nNatural language: Frederick Monhoff was an architect, artist, and illustrator.\n\nCandidate FOL (may be incorrect): (exists x (Architect(x) | Artist(x) | Illustrator(x)))\n\nDiagnostic summary:\n- Positive sub-entailment probes passed: 0/4\n- Contrastive probes incorrectly entailed: 0/3\nIssue: the translation fails to entail expected consequences (underspec).\n\nProduce ONLY the corrected FOL formula. Use the same predicate and constant naming conventions as the candidate. Do not explain your reasoning \u2014 output only the formula.",
-  "response": "(exists x (FrederickMonhoff(x) & Architect(x) & Artist(x) & Illustrator(x)))"
-}

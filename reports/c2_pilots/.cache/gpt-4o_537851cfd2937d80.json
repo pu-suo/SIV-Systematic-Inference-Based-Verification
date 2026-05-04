@@ -1,5 +1,0 @@
-{
-  "model_key": "gpt-4o",
-  "prompt": "You are given a natural-language sentence and a first-order logic (FOL) translation that may contain errors. A diagnostic system tested this translation against specific logical probes and identified failures.\n\nNatural language: Yangshuo is not a district in Guilin.\n\nCandidate FOL (may be incorrect): DistrictIn(yangshuo,guilin)\n\nFailed probes (the candidate SHOULD entail these but does NOT):\n  - -(DistrictIn(yangshuo,guilin))\n\nIncorrectly entailed (the candidate should NOT entail these but DOES):\n  - -(-DistrictIn(yangshuo, guilin))\n\nProduce ONLY the corrected FOL formula. Use the same predicate and constant naming conventions as the candidate. Do not explain your reasoning \u2014 output only the formula.",
-  "response": "- DistrictIn(yangshuo,guilin)"
-}

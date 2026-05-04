@@ -1,5 +1,0 @@
-{
-  "model_key": "claude-sonnet",
-  "prompt": "You are given a natural-language sentence and a first-order logic (FOL) translation that may contain errors. Your task is to produce the correct FOL translation.\n\nNatural language: In some families, Odell is spelled O'Dell in a mistaken Irish adaptation.\n\nCandidate FOL (may be incorrect): MistakenSpellingOf(nameO'Dell, nameODell) \u2227 (\u2203x\u2203y(Family(x) \u2227 Named(x, nameO'Dell) \u2227 (\u00ac(x=y)) \u2227 Family(y) \u2227 Named(y, nameO'Dell))\n\nProduce ONLY the corrected FOL formula. Use the same predicate and constant naming conventions as the candidate. Do not explain your reasoning \u2014 output only the formula.",
-  "response": "\u2203x(Family(x) \u2227 Named(x, nameO'Dell) \u2227 MistakenIrishAdaptation(nameO'Dell, nameODell))"
-}

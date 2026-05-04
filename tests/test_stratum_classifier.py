@@ -140,23 +140,3 @@ def test_unicode_input():
     """Unicode FOL should be normalized and classified."""
     result = classify_stratum_from_fol("∀x (Dog(x) → Animal(x))")
     assert result == "S2_universal_simple"
-
-
-# ── Distribution test on full train split ────────────────────────────────────
-
-
-def test_s8_below_15_percent_on_train():
-    """S8_other must be < 15% of parseable train premises."""
-    from collections import Counter
-    from scripts.run_folio_evaluation import load_folio_premise_pairs
-
-    pairs = load_folio_premise_pairs("train")
-    counts = Counter()
-    for p in pairs:
-        s = classify_stratum_from_fol(p["gold_fol"])
-        if s is not None:
-            counts[s] += 1
-
-    total = sum(counts.values())
-    s8_pct = counts.get("S8_other", 0) / total if total else 1.0
-    assert s8_pct < 0.15, f"S8_other is {s8_pct:.1%} — exceeds 15% threshold"

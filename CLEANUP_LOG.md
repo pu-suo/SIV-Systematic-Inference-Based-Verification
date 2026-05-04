@@ -240,6 +240,28 @@ collected to 393 reflects the 3 dispatcher tests; the 5 remaining
 skipped are pre-existing `vampire_required` skips in
 `test_contrastive_generator.py`.)
 
+## Phase D — Stage 4: stale scripts
+
+Pre-deletion dependency check: `grep -rn "<script>"` across `*.py`,
+`*.md`, `*.sh` (excluding cleanup-tracking files). Only self-references
+inside the scripts' own docstrings; no other active code imports or
+subprocess-invokes them.
+
+Deleted (6 files):
+- `scripts/c2_pilot_run.py`
+- `scripts/c2_pilots.py`
+- `scripts/c2_investigation_1.py`
+- `scripts/c2_investigation_2.py`
+- `scripts/c2_investigation_3.py`
+- `scripts/c2_path1_hard_step5_main.py` (v1; the v2 sibling is the live
+  Path 1-Hard runner)
+
+KEPT: `scripts/c2_investigation_4.py`, `scripts/c2_path1_step1.py`,
+`scripts/c2_path1_step3_pilot.py`, `scripts/c2_path1_hard_step{1,2}.py`,
+`scripts/c2_path1_hard_step4_pilot.py`,
+`scripts/c2_path1_hard_step5_main_v2.py`.
+
+
 
 
 

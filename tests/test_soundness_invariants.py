@@ -36,7 +36,7 @@ vampire_required = pytest.mark.skipif(
 
 _ROOT = Path(__file__).parent.parent
 _PHASE2_EXAMPLES = json.loads(
-    (_ROOT / "prompts" / "extraction_examples.json").read_text()
+    (Path(__file__).parent / "data" / "extraction_examples.json").read_text()
 )
 _INVARIANT_EXTRAS = json.loads(
     (_ROOT / "tests" / "data" / "invariant_corpus.json").read_text()

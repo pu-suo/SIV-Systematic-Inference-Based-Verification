@@ -26,7 +26,7 @@ vampire_required = pytest.mark.skipif(
 
 
 _EXAMPLES = json.loads(
-    (Path(__file__).parent.parent / "prompts" / "extraction_examples.json").read_text()
+    (Path(__file__).parent / "data" / "extraction_examples.json").read_text()
 )
 
 

@@ -1,0 +1,1 @@
+{"premise_id": "v2_P0621", "attempt": 0, "response": "CANDIDATE_PARTIAL: BornIn(michael, yorkshire)  \nCANDIDATE_OVERWEAK: exists x.(SonOf(michael, x))  \nCANDIDATE_OVERSTRONG: (BornIn(michael, yorkshire) & exists x.(SonOf(michael, x) & GeneralPractitioner(x) & BornIn(x, yorkshire)))  \nCANDIDATE_GIBBERISH: exists x.(GeneralPractitioner(michael) & SonOf(x, yorkshire))"}

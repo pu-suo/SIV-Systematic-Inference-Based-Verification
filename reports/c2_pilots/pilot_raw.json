@@ -1,0 +1,252 @@
+{
+  "pilot4": {
+    "gpt-4o": {
+      "rate": 0.4667,
+      "n": 15,
+      "equiv": 7
+    },
+    "gpt-4o-mini": {
+      "rate": 0.2667,
+      "n": 15,
+      "equiv": 4
+    },
+    "claude-sonnet": {
+      "rate": 0.6,
+      "n": 15,
+      "equiv": 9
+    }
+  },
+  "raw": {
+    "gpt-4o": [
+      {
+        "premise_id": "P0342",
+        "error_type": "B_arg_swap",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1664",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P1321",
+        "error_type": "B_arg_swap",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P1332",
+        "error_type": "broken_gold",
+        "verdict": "timeout"
+      },
+      {
+        "premise_id": "P0322",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0437",
+        "error_type": "broken_gold",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0343",
+        "error_type": "B_arg_swap",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P0865",
+        "error_type": "broken_gold",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1077",
+        "error_type": "partial",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1477",
+        "error_type": "broken_gold",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P0796",
+        "error_type": "overweak",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1078",
+        "error_type": "partial",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0922",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0341",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P1616",
+        "error_type": "overstrong",
+        "verdict": "not_equivalent"
+      }
+    ],
+    "gpt-4o-mini": [
+      {
+        "premise_id": "P0342",
+        "error_type": "B_arg_swap",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1664",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P1321",
+        "error_type": "B_arg_swap",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1332",
+        "error_type": "broken_gold",
+        "verdict": "timeout"
+      },
+      {
+        "premise_id": "P0322",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0437",
+        "error_type": "broken_gold",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P0343",
+        "error_type": "B_arg_swap",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P0865",
+        "error_type": "broken_gold",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1077",
+        "error_type": "partial",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1477",
+        "error_type": "broken_gold",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P0796",
+        "error_type": "overweak",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1078",
+        "error_type": "partial",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0922",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0341",
+        "error_type": "B_negation_drop",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1616",
+        "error_type": "overstrong",
+        "verdict": "not_equivalent"
+      }
+    ],
+    "claude-sonnet": [
+      {
+        "premise_id": "P0342",
+        "error_type": "B_arg_swap",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P1664",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P1321",
+        "error_type": "B_arg_swap",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P1332",
+        "error_type": "broken_gold",
+        "verdict": "timeout"
+      },
+      {
+        "premise_id": "P0322",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0437",
+        "error_type": "broken_gold",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0343",
+        "error_type": "B_arg_swap",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0865",
+        "error_type": "broken_gold",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1077",
+        "error_type": "partial",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1477",
+        "error_type": "broken_gold",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P0796",
+        "error_type": "overweak",
+        "verdict": "not_equivalent"
+      },
+      {
+        "premise_id": "P1078",
+        "error_type": "partial",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0922",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P0341",
+        "error_type": "B_negation_drop",
+        "verdict": "equivalent"
+      },
+      {
+        "premise_id": "P1616",
+        "error_type": "overstrong",
+        "verdict": "not_equivalent"
+      }
+    ]
+  }
+}

@@ -68,6 +68,9 @@ def _a_formula(f: Formula) -> str:
 
 
 def _a_atom(a: AtomicFormula) -> str:
+    if a.pred == "__eq__" and len(a.args) == 2:
+        body = f"({a.args[0]} = {a.args[1]})"
+        return f"-{body}" if a.negated else body
     body = f"{a.pred}({', '.join(a.args)})"
     return f"-{body}" if a.negated else body
 
@@ -266,17 +269,22 @@ def _wrap_chain(
 ) -> str:
     """Wrap `inner_fol` with enclosing quantifiers (innermost wraps first)."""
     for q in reversed(enclosing):
-        r_compiled = _compile_restrictor_for_wrap(q, rename)
-        if q.quantifier == "universal":
-            inner_fol = "".join([
-                "all ", rename[q.variable], ".(",
-                r_compiled, " -> ", inner_fol, ")",
-            ])
+        if not q.restrictor:
+            # Empty restrictor (Category 7): wrap with bare quantifier
+            outer = "all" if q.quantifier == "universal" else "exists"
+            inner_fol = "".join([outer, " ", rename[q.variable], ".(", inner_fol, ")"])
         else:
-            inner_fol = "".join([
-                "exists ", rename[q.variable], ".(",
-                r_compiled, " & ", inner_fol, ")",
-            ])
+            r_compiled = _compile_restrictor_for_wrap(q, rename)
+            if q.quantifier == "universal":
+                inner_fol = "".join([
+                    "all ", rename[q.variable], ".(",
+                    r_compiled, " -> ", inner_fol, ")",
+                ])
+            else:
+                inner_fol = "".join([
+                    "exists ", rename[q.variable], ".(",
+                    r_compiled, " & ", inner_fol, ")",
+                ])
     return inner_fol
 
 
@@ -316,6 +324,9 @@ def _b_formula(f: Formula, rename: dict, counter: list) -> str:
 
 def _b_atom(a: AtomicFormula, rename: dict) -> str:
     args = [rename.get(x, x) for x in a.args]
+    if a.pred == "__eq__" and len(args) == 2:
+        body = "".join(["(", args[0], " = ", args[1], ")"])
+        return "".join(["-", body]) if a.negated else body
     body = "".join([a.pred, "(", ",".join(args), ")"])
     return "".join(["-", body]) if a.negated else body
 

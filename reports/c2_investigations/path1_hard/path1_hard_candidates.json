@@ -1,0 +1,950 @@
+[
+  {
+    "candidate_id": "H001",
+    "nl": "Everybody in Emma's family who owns at least one pet lives with at least one roommate.",
+    "gold_fol": "\u2200x (InEmmasFamily(x) \u2227 (\u2203y (Own(x, y) \u2227 Pet(y))) \u2192 (\u2203y (LiveWith(x, y) \u2227 Roommate(y))))",
+    "perturbed_fol": "\u2200x (InEmmasFamily(x) \u2227 (\u2203y (Own(y, x) \u2227 Pet(y))) \u2192 (\u2203y (LiveWith(y, x) \u2227 -Roommate(y))))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H002",
+    "nl": "If two soccer teams score the same number of goals in one UCL final during the regular time, they need to play for the extra time.",
+    "gold_fol": "\u2200w \u2200x \u2200y \u2200z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 NumberOfGoalScored(x, z) \u2227 NumberOfGoalScored(y, w) \u2227 y=w \u2227 During(regularTime) \u2192 PlayExtra(x, y))",
+    "perturbed_fol": "\u2200w \u2200x \u2200y \u2200z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 -NumberOfGoalScored(x, z) \u2227 NumberOfGoalScored(w, y) \u2227 y=w \u2227 During(regularTime) \u2192 PlayExtra(y, x))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H003",
+    "nl": "Some employees in James's town who work in business analysis are good at math.",
+    "gold_fol": "\u2203x \u2203y (EmployeeIn(x, jamesSTown) \u2227 WorkIn(x, businessAnalysis) \u2227 GoodAt(x, math) \u2227 (\u00ac(x=y)) \u2227 EmployeeIn(y, jamesSTown) \u2227 WorkIn(y, businessAnalysis) \u2227 GoodAt(y, math))",
+    "perturbed_fol": "\u2203x \u2203y (EmployeeIn(jamesSTown, x) \u2227 WorkIn(x, businessAnalysis) \u2227 GoodAt(x, math) \u2227 (\u00ac(x=y)) \u2227 EmployeeIn(y, jamesSTown) \u2227 WorkIn(y, businessAnalysis) \u2227 GoodAt(y, math))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H004",
+    "nl": "Animals with wings aren't reptiles.",
+    "gold_fol": "\u2200x (Animal(x) \u2227 (\u2203y \u2203z (\u00ac(y=z) \u2227 Wing(y) \u2227 Wing(z) \u2227 Have(x, y) \u2227 Have(x, z))) \u2192 \u00acReptile(x))",
+    "perturbed_fol": "\u2200x (-Animal(x) \u2227 (\u2203y \u2203z (\u00ac(y=z) \u2227 -Wing(y) \u2227 Wing(z) \u2227 Have(y, x) \u2227 Have(x, z))) \u2192 \u00acReptile(x))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H005",
+    "nl": "All things that some people enjoy attract attention.",
+    "gold_fol": "\u2200x (\u2203y \u2203z (Person(y) \u2227 EnjoyWatching(y, x) \u2227 Person(z) \u2227 EnjoyWatching(z, x)) \u2192 Attract(x, attention))",
+    "perturbed_fol": "\u2200x (\u2203y \u2203z (Person(y) \u2227 EnjoyWatching(x, y) \u2227 Person(z) \u2227 EnjoyWatching(z, x)) \u2192 -Attract(attention, x))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H006",
+    "nl": "All books written by Neil Gaiman have sold more than one thousand copies.",
+    "gold_fol": "\u2200x ((Book(x) \u2227 WrittenBy(x, neilGaiman)) \u2192 \u2203y (MoreThan(y, num1000) \u2227 SoldCopies(x, y)))",
+    "perturbed_fol": "\u2200x ((Book(x) \u2227 WrittenBy(neilGaiman, x)) \u2192 \u2203y (MoreThan(num1000, y) \u2227 -SoldCopies(x, y)))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H007",
+    "nl": "Elephantopus is widespread over much of Africa, southern Asia, Australia, and the Americas.",
+    "gold_fol": "\u2203x \u2203y \u2203z(Elephantopus(x) \u2227 In(x,africa) \u2227 (\u00ac(x=y)) \u2227 Elephantopus(y) \u2227 In(y, southernasia) \u2227 (\u00ac(x=z)) \u2227 (\u00ac(y=z)) \u2227 Elephantopus(z) \u2227 In(z, australia))",
+    "perturbed_fol": "\u2203x \u2203y \u2203z(Elephantopus(x) \u2227 In(africa, x) \u2227 (\u00ac(x=y)) \u2227 Elephantopus(y) \u2227 In(y, southernasia) \u2227 (\u00ac(x=z)) \u2227 (\u00ac(y=z)) \u2227 -Elephantopus(z) \u2227 In(australia, z))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H008",
+    "nl": "All lead singers are singers.",
+    "gold_fol": "\u2200x \u2200y (LeadSinger(x, y) \u2192 Singer(y))",
+    "perturbed_fol": "\u2200x \u2200y (-LeadSinger(x, y) \u2192 Singer(y))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H009",
+    "nl": "Greyhound racing is a competitive sport where spectators bet on greyhounds.",
+    "gold_fol": "\u2200x (GreyhoundRacing(x) \u2192 \u2203y (CompetitiveSport(x) \u2227 Greyhound(y) \u2227 BetOn(spectators, y, x)))",
+    "perturbed_fol": "\u2200x (GreyhoundRacing(x) \u2192 \u2203y (CompetitiveSport(x) \u2227 -Greyhound(y) \u2227 -BetOn(spectators, y, x)))",
+    "expected_categories": [
+      "polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H010",
+    "nl": "If a student gets an A+ in English class, then his score is greater than 95.",
+    "gold_fol": "\u2200x \u2200y (Student(x) \u2227 GetGradeIn(x, aPlus, englishClass) \u2192 EnglishClassScore(x, y) \u2227 GreaterThan95(y))",
+    "perturbed_fol": "\u2200x \u2200y (Student(x) \u2227 GetGradeIn(x, aPlus, englishClass) \u2192 EnglishClassScore(x, y) \u2227 -GreaterThan95(y))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H011",
+    "nl": "Some phones are iPhones.",
+    "gold_fol": "\u2203x \u2203y (Phone(x) \u2227 Phone(y) \u2227 IPhone(x) \u2227 IPhone(y) \u2227 \u00ac(x=y))",
+    "perturbed_fol": "\u2203x \u2203y (Phone(x) \u2227 Phone(y) \u2227 -IPhone(x) \u2227 -IPhone(y) \u2227 \u00ac(x=y))",
+    "expected_categories": [
+      "polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H012",
+    "nl": "If place A precedes place B and place B precedes place C, then place A precedes place C.",
+    "gold_fol": "\u2200x \u2200y \u2200z ((Precede(x, y) \u2227 Precede(y, z)) \u2192 Precede(x, z))",
+    "perturbed_fol": "\u2200x \u2200y \u2200z ((-Precede(y, x) \u2227 Precede(y, z)) \u2192 -Precede(x, z))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H013",
+    "nl": "Cancer researchers have frequently ranked the importance of substitutions to cancer growth by the P value.",
+    "gold_fol": "\u2203x \u2203y (CancerResearcher(x) \u2227 Ranked(x, importanceOfSubstitutionsToCancerGrowth) \u2227 PValue(y) \u2227 RankedBy(importanceOfSubstitutionsToCancerGrowth, y))",
+    "perturbed_fol": "\u2203x \u2203y (CancerResearcher(x) \u2227 Ranked(importanceOfSubstitutionsToCancerGrowth, x) \u2227 PValue(y) \u2227 -RankedBy(y, importanceOfSubstitutionsToCancerGrowth))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H014",
+    "nl": "Some musicians love music.",
+    "gold_fol": "\u2203x \u2203y ((Musician(x) \u2192 Love(x, music)) \u2227 (\u00ac(x=y) \u2227 Musician(y) \u2192 Love(y, music)))",
+    "perturbed_fol": "\u2203x \u2203y ((-Musician(x) \u2192 Love(x, music)) \u2227 (\u00ac(x=y) \u2227 -Musician(y) \u2192 Love(music, y)))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H015",
+    "nl": "Roundels are the oldest artillery fortifications.",
+    "gold_fol": "\u2200x \u2200y ((Roundel(x) \u2227 ArtilleryFortification(y)) \u2192 Older(x, y))",
+    "perturbed_fol": "\u2200x \u2200y ((-Roundel(x) \u2227 ArtilleryFortification(y)) \u2192 Older(x, y))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H016",
+    "nl": "Science fiction novels are not about mythological creatures",
+    "gold_fol": "\u2200x \u2200y (ScienceFiction(x) \u2227 Mythological(y) \u2227 Creature(y) \u2192 \u00acAbout(x, y))",
+    "perturbed_fol": "\u2200x \u2200y (-ScienceFiction(x) \u2227 -Mythological(y) \u2227 Creature(y) \u2192 \u00acAbout(y, x))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H017",
+    "nl": "People who spend a lot of money at casinos and other betting games would enjoy visiting the Las Vegas Strip.",
+    "gold_fol": "\u2200x (SpendAt(x, alotOfMoney, casino) \u2228 (\u2203y (\u00ac(y=casino) \u2227 BettingGame(y) \u2227 SpendAt(x, aLotOfMoney, y))) \u2192 EnjoyVisiting(x, theLasVegasStrip))",
+    "perturbed_fol": "\u2200x (SpendAt(x, alotOfMoney, casino) \u2228 (\u2203y (\u00ac(y=casino) \u2227 -BettingGame(y) \u2227 SpendAt(x, aLotOfMoney, y))) \u2192 -EnjoyVisiting(theLasVegasStrip, x))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H018",
+    "nl": "If a city is in a state in the US, the city is a US city.",
+    "gold_fol": "\u2200x \u2200y ((In(x, y) \u2227 In(y, unitedStates)) \u2192 In(x, unitedStates))",
+    "perturbed_fol": "\u2200x \u2200y ((In(x, y) \u2227 -In(y, unitedStates)) \u2192 -In(unitedStates, x))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H019",
+    "nl": "Pets who are naughty are not liked as much.",
+    "gold_fol": "\u2200x \u2200y ((Pet(x) \u2227 Naughty(x) \u2227 OwnedBy(x,y)) \u2192 \u00acLiked(x, y))",
+    "perturbed_fol": "\u2200x \u2200y ((Pet(x) \u2227 -Naughty(x) \u2227 OwnedBy(x,y)) \u2192 \u00acLiked(x, y))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H020",
+    "nl": "People either have a lot of free time or they invest in a career in which they are willing to spend the rest of their lives.",
+    "gold_fol": "\u2200x (Have(x, lotsOfFreetime) \u2295 (\u2203y (InvestIn(x, y) \u2227 Career(y) \u2227 WillingToSpendIn(restOfLife, y))))",
+    "perturbed_fol": "\u2200x (Have(lotsOfFreetime, x) \u2295 (\u2203y (InvestIn(y, x) \u2227 -Career(y) \u2227 WillingToSpendIn(restOfLife, y))))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H021",
+    "nl": "Some of the customers in James' family go to the cinema every week.",
+    "gold_fol": "\u2203x \u2203y (Customer(x) \u2227 In(x, jameSFamily) \u2227 GoToEveryWeek(x, cinema) \u2227 (\u00ac(x=y)) \u2227 Customer(y) \u2227 In(y, jameSFamily) \u2227 GoToEveryWeek(y, cinema))",
+    "perturbed_fol": "\u2203x \u2203y (-Customer(x) \u2227 In(x, jameSFamily) \u2227 GoToEveryWeek(cinema, x) \u2227 (\u00ac(x=y)) \u2227 Customer(y) \u2227 -In(y, jameSFamily) \u2227 GoToEveryWeek(y, cinema))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H022",
+    "nl": "If a person is somewhere located on the East coast and is traveling to somewhere located on the west coast, they will be on a long flight.",
+    "gold_fol": "\u2200x \u2200y \u2200z ((TravelingFrom(x, y) \u2227 LocatedOn(y, eastcoast) \u2227 TravelingTo(x, z) \u2227 LocatedOn(z, westcoast)) \u2192 OnLongFlight(x))",
+    "perturbed_fol": "\u2200x \u2200y \u2200z ((TravelingFrom(x, y) \u2227 LocatedOn(eastcoast, y) \u2227 -TravelingTo(z, x) \u2227 LocatedOn(z, westcoast)) \u2192 OnLongFlight(x))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H023",
+    "nl": "Some monitors equipped in the library are produced by AOC.",
+    "gold_fol": "\u2203x \u2203y(Monitor(x) \u2227 ProducedBy(x, aOC) \u2227 In(x, library) \u2227 (\u00ac(x=y)) \u2227 Monitor(y) \u2227 ProducedBy(y, aOC) \u2227 In(y, library))",
+    "perturbed_fol": "\u2203x \u2203y(Monitor(x) \u2227 ProducedBy(aOC, x) \u2227 In(x, library) \u2227 (\u00ac(x=y)) \u2227 Monitor(y) \u2227 ProducedBy(aOC, y) \u2227 -In(y, library))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H024",
+    "nl": "Some living things are trees.",
+    "gold_fol": "\u2203x \u2203y (Living(x) \u2227 Living(y) \u2227 Tree(x) \u2227 Tree(y) \u2227 \u00ac(x=y))",
+    "perturbed_fol": "\u2203x \u2203y (-Living(x) \u2227 -Living(y) \u2227 Tree(x) \u2227 Tree(y) \u2227 \u00ac(x=y))",
+    "expected_categories": [
+      "polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H025",
+    "nl": "Damon either both grow up with extremely busy parents who did not have time to pack her lunch and have consistent everyday routines and like sticking to a solid schedule, or Damon did neither.",
+    "gold_fol": "\u00ac((\u2203y \u2203z(\u00ac(y=z) \u2227 BusyParent(y) \u2227 BusyParent(z) \u2227 \u00acPack(y, lunch) \u2227 \u00acPack(z, lunch) \u2227 GrowUpWith(damon, y) \u2227 GrowUpWith(damon, z))) \u2295 (ConsistentEverydayRoutine(damon) \u2227 StickTo(damon, solidSchedule)))",
+    "perturbed_fol": "\u00ac((\u2203y \u2203z(\u00ac(y=z) \u2227 BusyParent(y) \u2227 BusyParent(z) \u2227 \u00acPack(y, lunch) \u2227 \u00ac-Pack(lunch, z) \u2227 GrowUpWith(damon, y) \u2227 GrowUpWith(damon, z))) \u2295 (-ConsistentEverydayRoutine(damon) \u2227 StickTo(damon, solidSchedule)))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H026",
+    "nl": "If a movie is popular, some people enjoy watching it.",
+    "gold_fol": "\u2200x (Movie(x) \u2227 Popular(x) \u2192 \u2203y \u2203z (Person(y) \u2227 EnjoyWatching(y, x) \u2227 Person(z) \u2227 EnjoyWatching(z, x) \u2227 \u00ac(y=z)))",
+    "perturbed_fol": "\u2200x (-Movie(x) \u2227 Popular(x) \u2192 \u2203y \u2203z (Person(y) \u2227 EnjoyWatching(x, y) \u2227 Person(z) \u2227 -EnjoyWatching(z, x) \u2227 \u00ac(y=z)))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H027",
+    "nl": "If place A is northwest of place B, then place B is southeast of place A.",
+    "gold_fol": "\u2200x \u2200y (NorthwestOf(x, y) \u2192 SoutheastOf(y, x))",
+    "perturbed_fol": "\u2200x \u2200y (-NorthwestOf(y, x) \u2192 SoutheastOf(x, y))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H028",
+    "nl": "A La Liga soccer team ranks higher than another La Liga soccer team if it receives more points.",
+    "gold_fol": "\u2200x \u2200y (LaLigaSoccerTeam(x) \u2227 LaLigaSoccerTeam(y) \u2227 MorePoints(x, y) \u2192 RankHigherThan(x, y))",
+    "perturbed_fol": "\u2200x \u2200y (-LaLigaSoccerTeam(x) \u2227 -LaLigaSoccerTeam(y) \u2227 MorePoints(y, x) \u2192 RankHigherThan(x, y))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H029",
+    "nl": "If a European plays football, they play what Americans call soccer.",
+    "gold_fol": "\u2200x (FootballPlayer(x) \u2227 European(x) \u2192 \u2203y (Call(american, y, soccer) \u2227 Play(x, y)))",
+    "perturbed_fol": "\u2200x (FootballPlayer(x) \u2227 European(x) \u2192 \u2203y (Call(american, y, soccer) \u2227 Play(y, x)))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H030",
+    "nl": "People in this tech company who do not like shopping for clothes wear the same flannel shirts every day.",
+    "gold_fol": "\u2200x (InThisTechCompany(x) \u2227 \u00acLikeShoppingFor(x, clothes) \u2192 \u2203y (flannelShirt(y) \u2227 WearEveryday(x, y)))",
+    "perturbed_fol": "\u2200x (InThisTechCompany(x) \u2227 \u00acLikeShoppingFor(clothes, x) \u2192 \u2203y (-flannelShirt(y) \u2227 -WearEveryday(x, y)))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H031",
+    "nl": "Some fruits sold in New Haven are shipped from Mexico.",
+    "gold_fol": "\u2203x \u2203y (Fruit(x) \u2227 SoldIn(x, newHaven) \u2227 ShippedFrom(x, mexico) \u2227 (\u00ac(x=y)) \u2227 Fruit(y) \u2227 SoldIn(y, newHaven) \u2227 ShippedFrom(y, mexico))",
+    "perturbed_fol": "\u2203x \u2203y (-Fruit(x) \u2227 SoldIn(x, newHaven) \u2227 ShippedFrom(x, mexico) \u2227 (\u00ac(x=y)) \u2227 Fruit(y) \u2227 SoldIn(y, newHaven) \u2227 ShippedFrom(y, mexico))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H032",
+    "nl": "If a person is from a city in a country, the person is from the country.",
+    "gold_fol": "\u2200x \u2200y \u2200z ((From(x, y) \u2227 In(y, z)) \u2192 From(x, z))",
+    "perturbed_fol": "\u2200x \u2200y \u2200z ((From(x, y) \u2227 -In(z, y)) \u2192 From(z, x))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H033",
+    "nl": "For two teams, either one team wins, or the other team wins.",
+    "gold_fol": "\u2200x \u2200y (\u00ac(x=y) \u2192 WonAgainst(x, y) \u2295 WonAgainst(y, x))",
+    "perturbed_fol": "\u2200x \u2200y (\u00ac(x=y) \u2192 -WonAgainst(y, x) \u2295 WonAgainst(x, y))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "argument-order",
+      "connective-polarity",
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H034",
+    "nl": "People in this tech company who wear the same flannel shirts every day are consistent and enjoy sticking to their regular routines.",
+    "gold_fol": "\u2200x (InThisTechCompany(x) \u2227 \u2203y (flannelShirt(y) \u2227 WearEveryday(x, y)) \u2192 Consistent(x) \u2227 StickTo(x, theirRegularRoutine))",
+    "perturbed_fol": "\u2200x (InThisTechCompany(x) \u2227 \u2203y (flannelShirt(y) \u2227 -WearEveryday(x, y)) \u2192 Consistent(x) \u2227 StickTo(x, theirRegularRoutine))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H035",
+    "nl": "Some movies are filmed in New York.",
+    "gold_fol": "\u2203x\u2203y(FilmedIn(x, newYork) \u2227 (\u00ac(x=y)) \u2227 FilmedIn(y, newYork))",
+    "perturbed_fol": "\u2203x\u2203y(FilmedIn(newYork, x) \u2227 (\u00ac(x=y)) \u2227 FilmedIn(y, newYork))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H036",
+    "nl": "If someone goes to the Berlin Zoo, they will see some of the animals in Germany.",
+    "gold_fol": "\u2200x \u2203y (GoTo(x, berlinzoo) \u2227 LiveIn(x, germany) \u2227 Animal(y) \u2192 WillSee(y, x, berlinzoo))",
+    "perturbed_fol": "\u2200x \u2203y (-GoTo(x, berlinzoo) \u2227 LiveIn(germany, x) \u2227 -Animal(y) \u2192 WillSee(y, x, berlinzoo))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H037",
+    "nl": "Holding companies hold several companies.",
+    "gold_fol": "\u2200x (HoldingCompany(x) \u2192 \u2203y(Company(y) \u2227 Holds(x, y)))",
+    "perturbed_fol": "\u2200x (HoldingCompany(x) \u2192 \u2203y(Company(y) \u2227 Holds(y, x)))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H038",
+    "nl": "The handbrake of a car is either up or down.",
+    "gold_fol": "\u2200x \u2200y (HandbrakeOf(x, y) \u2227 Car(y) \u2192 Up(x) \u2295 Down(x))",
+    "perturbed_fol": "\u2200x \u2200y (HandbrakeOf(y, x) \u2227 -Car(y) \u2192 Up(x) \u2295 -Down(x))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "connective-polarity",
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H039",
+    "nl": "If people work well in teams in the workplace, then they get along with all their colleagues at their work.",
+    "gold_fol": "\u2200x (WorkWellInTeamsIn(x, workPlace) \u2192 \u2200y (Colleague(y) \u2227 GetAlongWithAtWork(x, y)))",
+    "perturbed_fol": "\u2200x (WorkWellInTeamsIn(workPlace, x) \u2192 \u2200y (-Colleague(y) \u2227 GetAlongWithAtWork(y, x)))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H040",
+    "nl": "If Robin's friends study hard, then they grew up with parents who worked as doctors.",
+    "gold_fol": "\u2200x (RobinsFriends(x) \u2227 StudyHard(x) \u2192 \u2203y \u2203z (\u00ac(y=z) \u2227 GrowUpWith(x, y) \u2227 GrowUpWith(x, z) \u2227 ParentOf(y, x) \u2227 ParentOf(z, x) \u2227 Doctor(y) \u2227 Doctor(z)))",
+    "perturbed_fol": "\u2200x (RobinsFriends(x) \u2227 StudyHard(x) \u2192 \u2203y \u2203z (\u00ac(y=z) \u2227 GrowUpWith(x, y) \u2227 -GrowUpWith(x, z) \u2227 ParentOf(y, x) \u2227 ParentOf(z, x) \u2227 Doctor(y) \u2227 Doctor(z)))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H041",
+    "nl": "Roads made of asphalt are smoother than roads made of concrete.",
+    "gold_fol": "\u2200x \u2200y (Road(x) \u2227 MadeOf(x, asphalt) \u2227 Road(y) \u2227 MadeOf(y, concrete) \u2192 Smoother(x, y))",
+    "perturbed_fol": "\u2200x \u2200y (Road(x) \u2227 -MadeOf(asphalt, x) \u2227 Road(y) \u2227 MadeOf(y, concrete) \u2192 Smoother(y, x))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H042",
+    "nl": "If a class has prerequisites, the student must take the prerequisites to take the class.",
+    "gold_fol": "\u2200x \u2200y \u2200z (Class(x) \u2227 Student(y) \u2227 Prereq(z,x) \u2227 \u00acTake(y, z) \u2192 \u00acCanTake(y, x))",
+    "perturbed_fol": "\u2200x \u2200y \u2200z (-Class(x) \u2227 Student(y) \u2227 Prereq(z, x) \u2227 \u00acTake(y, z) \u2192 \u00acCanTake(y, x))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "quantifier-scope"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H043",
+    "nl": "If a person plays an instrument in a concert, they are good at playing this kind of instrument.",
+    "gold_fol": "\u2200x \u2200y (PlayIn(y, x, concert) \u2192 GoodAtPlaying(y, x))",
+    "perturbed_fol": "\u2200x \u2200y (-PlayIn(y, x, concert) \u2192 -GoodAtPlaying(x, y))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H044",
+    "nl": "Anyone who hosts a show on a public radio station is a radio personality.",
+    "gold_fol": "\u2200x \u2200y((HostShowOn(x, y) \u2227 PublicRadioStation(x)) \u2192 RadioPersonality(x))",
+    "perturbed_fol": "\u2200x \u2200y((HostShowOn(x, y) \u2227 -PublicRadioStation(x)) \u2192 RadioPersonality(x))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H045",
+    "nl": "If a student's English class score is lower than 90, then it is not greater than 95 or 90, and lower than 95.",
+    "gold_fol": "\u2200x \u2200y (Student(x) \u2227 EnglishScore(x, y) \u2227 LowerThan90(y) \u2192 \u00acGreaterThan95(y) \u2227 \u00acGreaterThan90(y) \u2227 LowerThan95(y))",
+    "perturbed_fol": "\u2200x \u2200y (Student(x) \u2227 EnglishScore(x, y) \u2227 LowerThan90(y) \u2192 \u00ac-GreaterThan95(y) \u2227 \u00acGreaterThan90(y) \u2227 LowerThan95(y))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H046",
+    "nl": "All language models with good performance are used by some researchers.",
+    "gold_fol": "\u2200x \u2203y \u2203z (LanguageModel(x) \u2227 GoodPerformance(x) \u2192 \u00ac(x=y) \u2227 Researcher(y) \u2227 UsedBy(x, y) \u2227 Researcher(z) \u2227 UsedBy(x, z))",
+    "perturbed_fol": "\u2200x \u2203y \u2203z (LanguageModel(x) \u2227 -GoodPerformance(x) \u2192 \u00ac(x=y) \u2227 Researcher(y) \u2227 UsedBy(x, y) \u2227 Researcher(z) \u2227 UsedBy(x, z))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H047",
+    "nl": "If Mark Zuckerberg is neither an entrepreneur nor a person who hates working for others, then Mark Zuckerberg is not a risk-averse working person.",
+    "gold_fol": "\u00acEntrepreneur(markZuckerberg) \u2227 \u00ac(\u2203y \u2203z (\u00ac(y=markZuckerberg) \u2227 \u00ac(z=markZuckerberg) \u2227 \u00ac(y=z) \u2227 HateWorkingFor(markZuckerberg, y) \u2227 HateWorkingFor(markZuckerberg, z))) \u2192 \u00acRiskAverse(markZuckerberg)",
+    "perturbed_fol": "\u00acEntrepreneur(markZuckerberg) \u2227 \u00ac(\u2203y \u2203z (\u00ac(y=markZuckerberg) \u2227 \u00ac(z=markZuckerberg) \u2227 \u00ac(y=z) \u2227 HateWorkingFor(y, markZuckerberg) \u2227 -HateWorkingFor(markZuckerberg, z))) \u2192 \u00ac-RiskAverse(markZuckerberg)",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H048",
+    "nl": "Some books that contain innovative ideas are about technology.",
+    "gold_fol": "\u2203x \u2203y (Contain(x, innovativeIdea) \u2227 About(x, technology) \u2227 (\u00ac(x=y)) \u2227 (Contain(y, innovativeIdea) \u2227 About(y, technology)))",
+    "perturbed_fol": "\u2203x \u2203y (Contain(x, innovativeIdea) \u2227 -About(x, technology) \u2227 (\u00ac(x=y)) \u2227 (-Contain(innovativeIdea, y) \u2227 About(y, technology)))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H049",
+    "nl": "People who run unopposed for the Philadelphia City Council are elected to the positions they run for in the same year.",
+    "gold_fol": "\u2200x \u2200y (RunUnopposedFor(x, philadelphiaCityCouncil, y) \u2192 ElectedTo(x, philadelphiaCityCouncil, y))",
+    "perturbed_fol": "\u2200x \u2200y (-RunUnopposedFor(x, philadelphiaCityCouncil, y) \u2192 -ElectedTo(x, philadelphiaCityCouncil, y))",
+    "expected_categories": [
+      "polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H050",
+    "nl": "If a film is directed by a person, the person is a filmmaker.",
+    "gold_fol": "\u2200x \u2200y (DirectedBy(x, y) \u2192 Filmmaker(y))",
+    "perturbed_fol": "\u2200x \u2200y (DirectedBy(x, y) \u2192 -Filmmaker(y))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H051",
+    "nl": "One of the actors from Hamilton won the best actor award.",
+    "gold_fol": "\u2203x \u2203y(Actor(x) \u2227 PlaysIn(x, y, hamilton) \u2227 Wins(x, bestActorAward))",
+    "perturbed_fol": "\u2203x \u2203y(Actor(x) \u2227 -PlaysIn(x, y, hamilton) \u2227 -Wins(bestActorAward, x))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H052",
+    "nl": "If a person has a pet, they care for that pet.",
+    "gold_fol": "\u2200x \u2200y ((Pet(y) \u2227 OwnedBy(x,y)) \u2192 Cares(x, y))",
+    "perturbed_fol": "\u2200x \u2200y ((Pet(y) \u2227 OwnedBy(x,y)) \u2192 Cares(y, x))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H053",
+    "nl": "If a band writes an album winning an award, then this band wins this award.",
+    "gold_fol": "\u2200x \u2200y \u2200z (AlbumByBand(x, y) \u2227 AlbumAward(x, z) \u2192 RockBandAward(y, z))",
+    "perturbed_fol": "\u2200x \u2200y \u2200z (AlbumByBand(x, y) \u2227 -AlbumAward(x, z) \u2192 -RockBandAward(z, y))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H054",
+    "nl": "Everybody in Emma's family live with at least one roommate, does not own any pets.",
+    "gold_fol": "\u2200x (InEmmasFamily(x) \u2227 (\u2203y (LiveWith(x, y) \u2227 Roommate(y))) \u2192 \u00ac(\u2203y (Own(x, y) \u2227 Pet(y))))",
+    "perturbed_fol": "\u2200x (InEmmasFamily(x) \u2227 (\u2203y (LiveWith(y, x) \u2227 Roommate(y))) \u2192 \u00ac(\u2203y (Own(y, x) \u2227 -Pet(y))))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "restrictor-content"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H055",
+    "nl": "If Robin's friends grew up with parents who worked as doctors, then they enjoy healthcare fields and want to help people with medical issues.",
+    "gold_fol": "\u2200x (RobinsFriends(x) \u2227 (\u2203y \u2203z (\u00ac(y=z) \u2227 GrowUpWith(x, y) \u2227 GrowUpWith(x, z) \u2227 ParentOf(y, x) \u2227 ParentOf(z, x) \u2227 Doctor(y) \u2227 Doctor(z))) \u2192 EnjoyHealthcareFields(x) \u2227 WantToHelp(x, peopleWithMedicalIssue))",
+    "perturbed_fol": "\u2200x (RobinsFriends(x) \u2227 (\u2203y \u2203z (\u00ac(y=z) \u2227 GrowUpWith(y, x) \u2227 -GrowUpWith(x, z) \u2227 ParentOf(y, x) \u2227 -ParentOf(z, x) \u2227 Doctor(y) \u2227 Doctor(z))) \u2192 EnjoyHealthcareFields(x) \u2227 WantToHelp(x, peopleWithMedicalIssue))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H056",
+    "nl": "If a country placed third in gold medals, then it had fewer gold medals than the team that won the most gold medals.",
+    "gold_fol": "\u2200x \u2200y (Placed(x, thirdInGoldMedals) \u2227 Won(y, mostGoldMedals) \u2192 FewerGoldMedalsThan(x, y))",
+    "perturbed_fol": "\u2200x \u2200y (Placed(x, thirdInGoldMedals) \u2227 Won(mostGoldMedals, y) \u2192 FewerGoldMedalsThan(x, y))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": true
+  },
+  {
+    "candidate_id": "H057",
+    "nl": "A roundel is not higher than adjacent walls.",
+    "gold_fol": "\u2200x \u2200y ((Roundel(x) \u2227 AdjacentWalls(x,y)) \u2192 \u00acHigher(x, y))",
+    "perturbed_fol": "\u2200x \u2200y ((-Roundel(x) \u2227 AdjacentWalls(y, x)) \u2192 \u00ac-Higher(x, y))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H058",
+    "nl": "None of the Yale buildings open to students were built before 1701.",
+    "gold_fol": "\u2200x ((YaleBuildings(x) \u2227 OpenToStudents(x)) \u2192 (\u00ac\u2203y(Before(y, yr1701) \u2227 Established(x, y))))",
+    "perturbed_fol": "\u2200x ((YaleBuildings(x) \u2227 OpenToStudents(x)) \u2192 (\u00ac\u2203y(Before(yr1701, y) \u2227 -Established(y, x))))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H059",
+    "nl": "If there are two La Liga soccer teams and neither has more points than the other, then the team which receives more points from the games between the two teams ranks higher.",
+    "gold_fol": "\u2200x \u2200y (LaLigaSoccerTeam(x) \u2227 LaLigaSoccerTeam(y) \u2227 \u00acMorePoints(x, y) \u2227 \u00acMorePoints(y, x) \u2227 MorePointsInGameBetween(x, y) \u2192  RankHigherThan(x, y))",
+    "perturbed_fol": "\u2200x \u2200y (LaLigaSoccerTeam(x) \u2227 LaLigaSoccerTeam(y) \u2227 \u00ac-MorePoints(y, x) \u2227 \u00acMorePoints(x, y) \u2227 MorePointsInGameBetween(x, y) \u2192  RankHigherThan(x, y))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  },
+  {
+    "candidate_id": "H060",
+    "nl": "If people invest in a career in which they are willing to spend the rest of their lives, then they are hardworking individuals with high ambitions and goals for the future.",
+    "gold_fol": "\u2200x (\u2203y (InvestIn(x, y) \u2227 Career(y) \u2227 WillingToSpendIn(restOfLife, y)) \u2192 Hardworking(x))",
+    "perturbed_fol": "\u2200x (\u2203y (-InvestIn(y, x) \u2227 Career(y) \u2227 WillingToSpendIn(restOfLife, y)) \u2192 -Hardworking(x))",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correct": false
+  }
+]

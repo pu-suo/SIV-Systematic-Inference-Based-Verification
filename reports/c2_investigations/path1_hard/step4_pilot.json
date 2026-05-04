@@ -1,0 +1,760 @@
+{
+  "n_pilot": 20,
+  "condition_rates": {
+    "no_feedback": {
+      "parse": 1.0,
+      "equiv": 0.3,
+      "siv": 0.35,
+      "n": 20
+    },
+    "score_only": {
+      "parse": 1.0,
+      "equiv": 0.25,
+      "siv": 0.3,
+      "n": 20
+    },
+    "structured_category": {
+      "parse": 1.0,
+      "equiv": 0.25,
+      "siv": 0.3,
+      "n": 20
+    },
+    "shuffled_category": {
+      "parse": 1.0,
+      "equiv": 0.15,
+      "siv": 0.2,
+      "n": 20
+    },
+    "count_only": {
+      "parse": 1.0,
+      "equiv": 0.2,
+      "siv": 0.3,
+      "n": 20
+    }
+  },
+  "primary_comparison": {
+    "structured_rate": 0.3,
+    "shuffled_rate": 0.2,
+    "delta": 0.1
+  },
+  "sanity_checks": {
+    "no_feedback_below_40": true,
+    "score_only_geq_no_feedback": true,
+    "all_parseable": true,
+    "overall": true
+  },
+  "decision": "MODERATE_SIGNAL",
+  "decision_text": "Pilot \u0394=+0.100 in [0.05, 0.15). Moderate. Proceed to main run at full n=60.",
+  "per_condition": {
+    "no_feedback": [
+      {
+        "candidate_id": "H041",
+        "correction": "\u2200x \u2200y ((Road(x) \u2227 MadeOf(x, asphalt)) \u2227 (Road(y) \u2227 MadeOf(y, concrete)) \u2192 Smoother(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H008",
+        "correction": "\u2200x (LeadSinger(x) \u2192 Singer(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H002",
+        "correction": "\u2200x \u2200y \u2200z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 UCLFinal(z) \u2227 During(z, regularTime) \u2227 NumberOfGoalScored(x, z, n) \u2227 NumberOfGoalScored(y, z, n) \u2192 PlayExtra(x, y, z))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H048",
+        "correction": "\u2203x (Book(x) \u2227 Contain(x, innovativeIdea) \u2227 About(x, technology))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H018",
+        "correction": "\u2200x \u2200y ((In(x, y) \u2227 In(y, unitedStates)) \u2192 USCity(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H016",
+        "correction": "\u2200x (ScienceFiction(x) \u2192 \u00ac\u2203y (Mythological(y) \u2227 Creature(y) \u2227 About(x, y)))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H015",
+        "correction": "\u2200x (Roundel(x) \u2192 \u2200y (ArtilleryFortification(y) \u2192 Older(x, y)))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H009",
+        "correction": "\u2200x (GreyhoundRacing(x) \u2192 (CompetitiveSport(x) \u2227 \u2203y (Greyhound(y) \u2227 BetOn(spectators, y, x))))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H057",
+        "correction": "\u2200x \u2200y ((Roundel(x) \u2227 AdjacentWalls(y, x)) \u2192 \u00acHigher(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H007",
+        "correction": "\u2200x(Elephantopus(x) \u2192 (In(x, africa) \u2228 In(x, southernasia) \u2228 In(x, australia) \u2228 In(x, americas)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H044",
+        "correction": "\u2200x \u2200y((HostShowOn(x, y) \u2227 PublicRadioStation(y)) \u2192 RadioPersonality(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H052",
+        "correction": "\u2200x \u2200y ((Person(x) \u2227 Pet(y) \u2227 Has(x, y)) \u2192 Cares(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H035",
+        "correction": "\u2203x(Movie(x) \u2227 FilmedIn(x, newYork))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H006",
+        "correction": "\u2200x ((Book(x) \u2227 WrittenBy(x, neilGaiman)) \u2192 \u2203y (SoldCopies(x, y) \u2227 MoreThan(y, num1000)))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H038",
+        "correction": "\u2200x (Car(x) \u2192 \u2203y (HandbrakeOf(y, x) \u2227 (Up(y) \u2228 Down(y)) \u2227 \u00ac(Up(y) \u2227 Down(y))))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H028",
+        "correction": "\u2200x \u2200y (LaLigaSoccerTeam(x) \u2227 LaLigaSoccerTeam(y) \u2227 MorePoints(x, y) \u2192 RankHigherThan(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H003",
+        "correction": "\u2203x (EmployeeIn(jamesSTown, x) \u2227 WorkIn(x, businessAnalysis) \u2227 GoodAt(x, math))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H058",
+        "correction": "\u2200x ((YaleBuildings(x) \u2227 OpenToStudents(x)) \u2192 \u00ac\u2203y (Built(y, x) \u2227 Before(y, yr1701)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H047",
+        "correction": "(\u00acEntrepreneur(markZuckerberg) \u2227 \u00acHateWorkingFor(markZuckerberg, Others)) \u2192 \u00ac(RiskAverse(markZuckerberg) \u2227 WorkingPerson(markZuckerberg))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H014",
+        "correction": "\u2203x (Musician(x) \u2227 Love(x, music))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": true
+      }
+    ],
+    "score_only": [
+      {
+        "candidate_id": "H041",
+        "correction": "\u2200x \u2200y ((Road(x) \u2227 MadeOf(x, asphalt) \u2227 Road(y) \u2227 MadeOf(y, concrete)) \u2192 Smoother(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H008",
+        "correction": "\u2200x (LeadSinger(x) \u2192 Singer(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H002",
+        "correction": "\u2200x \u2200y \u2200z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 UCLFinal(z) \u2227 ScoreSameGoals(x, y, z) \u2227 During(regularTime, z) \u2192 PlayExtraTime(x, y, z))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H048",
+        "correction": "\u2203x (Book(x) \u2227 Contain(x, innovativeIdea) \u2227 About(x, technology))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H018",
+        "correction": "\u2200x \u2200y ((In(x, y) \u2227 In(y, unitedStates)) \u2192 USCity(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H016",
+        "correction": "\u2200x (ScienceFiction(x) \u2192 \u00ac\u2203y (Mythological(y) \u2227 Creature(y) \u2227 About(x, y)))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H015",
+        "correction": "\u2200x (Roundel(x) \u2192 \u2200y (ArtilleryFortification(y) \u2192 Older(x, y)))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H009",
+        "correction": "\u2200x (GreyhoundRacing(x) \u2192 (CompetitiveSport(x) \u2227 \u2203y (Greyhound(y) \u2227 BetOn(spectators, y, x))))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H057",
+        "correction": "\u2200x \u2200y ((Roundel(x) \u2227 AdjacentWalls(y, x)) \u2192 \u00acHigher(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H007",
+        "correction": "\u2203x(Elephantopus(x) \u2227 In(x, africa) \u2227 In(x, southernasia) \u2227 In(x, australia) \u2227 In(x, americas))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H044",
+        "correction": "\u2200x \u2200y((HostShowOn(x, y) \u2227 PublicRadioStation(y)) \u2192 RadioPersonality(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H052",
+        "correction": "\u2200x \u2200y ((Person(x) \u2227 Pet(y) \u2227 Has(x, y)) \u2192 Cares(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H035",
+        "correction": "\u2203x(Movie(x) \u2227 FilmedIn(x, newYork))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H006",
+        "correction": "\u2200x ((Book(x) \u2227 WrittenBy(neilGaiman, x)) \u2192 \u2203y (SoldCopies(x, y) \u2227 MoreThan(y, num1000)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H038",
+        "correction": "\u2200x (Car(x) \u2192 \u2203y (HandbrakeOf(y, x) \u2227 (Up(y) \u2228 Down(y)) \u2227 \u00ac(Up(y) \u2227 Down(y))))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H028",
+        "correction": "\u2200x \u2200y ((LaLigaSoccerTeam(x) \u2227 LaLigaSoccerTeam(y) \u2227 MorePoints(x, y)) \u2192 RankHigherThan(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H003",
+        "correction": "\u2203x (EmployeeIn(jamesSTown, x) \u2227 WorkIn(x, businessAnalysis) \u2227 GoodAt(x, math))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H058",
+        "correction": "\u2200x ((YaleBuildings(x) \u2227 OpenToStudents(x)) \u2192 \u00ac\u2203y (Built(y, x) \u2227 Before(y, yr1701)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H047",
+        "correction": "(\u00acEntrepreneur(markZuckerberg) \u2227 \u00acHateWorkingForOthers(markZuckerberg)) \u2192 \u00ac(RiskAverse(markZuckerberg) \u2227 WorkingPerson(markZuckerberg))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H014",
+        "correction": "\u2203x (Musician(x) \u2227 Love(x, music))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": true
+      }
+    ],
+    "structured_category": [
+      {
+        "candidate_id": "H041",
+        "correction": "\u2200x \u2200y ((Road(x) \u2227 MadeOf(x, asphalt)) \u2227 (Road(y) \u2227 MadeOf(y, concrete)) \u2192 Smoother(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H008",
+        "correction": "\u2200x (LeadSinger(x) \u2192 Singer(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H002",
+        "correction": "\u2200x \u2200y \u2200z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 UCLFinal(z) \u2227 During(z, regularTime) \u2227 NumberOfGoalScored(x, z) = NumberOfGoalScored(y, z) \u2192 PlayExtra(x, y, z))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H048",
+        "correction": "\u2203x (Book(x) \u2227 Contain(x, innovativeIdea) \u2227 About(x, technology))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H018",
+        "correction": "\u2200x \u2200y ((In(x, y) \u2227 In(y, unitedStates)) \u2192 In(x, usCity))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H016",
+        "correction": "\u2200x (ScienceFiction(x) \u2192 \u00ac\u2203y (Mythological(y) \u2227 Creature(y) \u2227 About(x, y)))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H015",
+        "correction": "\u2200x (Roundel(x) \u2192 \u2200y (ArtilleryFortification(y) \u2192 Older(x, y)))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H009",
+        "correction": "\u2200x (GreyhoundRacing(x) \u2192 (CompetitiveSport(x) \u2227 \u2203y (Greyhound(y) \u2227 BetOn(spectators, y, x))))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H057",
+        "correction": "\u2200x \u2200y ((Roundel(x) \u2227 AdjacentWalls(y, x)) \u2192 \u00acHigher(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H007",
+        "correction": "\u2203x(Elephantopus(x) \u2227 In(x, africa) \u2227 In(x, southernasia) \u2227 In(x, australia) \u2227 In(x, americas))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H044",
+        "correction": "\u2200x \u2200y((HostShowOn(x, y) \u2227 PublicRadioStation(y)) \u2192 RadioPersonality(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H052",
+        "correction": "\u2200x \u2200y ((Person(x) \u2227 Pet(y) \u2227 OwnedBy(x, y)) \u2192 Cares(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H035",
+        "correction": "\u2203x(Movie(x) \u2227 FilmedIn(x, newYork))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H006",
+        "correction": "\u2200x ((Book(x) \u2227 WrittenBy(neilGaiman, x)) \u2192 \u2203y (MoreThan(y, num1000) \u2227 SoldCopies(x, y)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H038",
+        "correction": "\u2200x \u2200y (HandbrakeOf(x, y) \u2227 Car(y) \u2192 (Up(x) \u2228 Down(x)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H028",
+        "correction": "\u2200x \u2200y (LaLigaSoccerTeam(x) \u2227 LaLigaSoccerTeam(y) \u2227 MorePoints(x, y) \u2192 RankHigherThan(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H003",
+        "correction": "\u2203x (EmployeeIn(jamesSTown, x) \u2227 WorkIn(x, businessAnalysis) \u2227 GoodAt(x, math))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H058",
+        "correction": "\u00ac\u2203x ((YaleBuildings(x) \u2227 OpenToStudents(x)) \u2227 BuiltBefore(x, yr1701))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H047",
+        "correction": "(\u00acEntrepreneur(markZuckerberg) \u2227 \u00acHateWorkingFor(markZuckerberg, Others)) \u2192 \u00ac(RiskAverse(markZuckerberg) \u2227 WorkingPerson(markZuckerberg))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H014",
+        "correction": "\u2203x (Musician(x) \u2227 Love(x, music))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": true
+      }
+    ],
+    "shuffled_category": [
+      {
+        "candidate_id": "H041",
+        "correction": "\u2200x \u2200y ((Road(x) \u2227 MadeOf(x, asphalt)) \u2227 (Road(y) \u2227 MadeOf(y, concrete)) \u2192 Smoother(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H008",
+        "correction": "\u2200x (LeadSinger(x) \u2192 Singer(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H002",
+        "correction": "\u2203x \u2203y \u2203z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 UCLFinal(z) \u2227 ScoreSameNumberOfGoals(x, y, z) \u2227 During(regularTime, z) \u2192 PlayExtraTime(x, y, z))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H048",
+        "correction": "\u2203x (Book(x) \u2227 Contain(x, innovativeIdea) \u2227 About(x, technology))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H018",
+        "correction": "\u2200x \u2200y ((In(x, y) \u2227 In(y, unitedStates)) \u2192 In(x, usCity))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H016",
+        "correction": "\u2200x (ScienceFiction(x) \u2192 \u00ac\u2203y (Mythological(y) \u2227 Creature(y) \u2227 About(y, x)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H015",
+        "correction": "\u2200x (Roundel(x) \u2192 \u2200y (ArtilleryFortification(y) \u2192 Older(y, x)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H009",
+        "correction": "\u2200x (GreyhoundRacing(x) \u2192 (CompetitiveSport(x) \u2227 \u2200y (Greyhound(y) \u2192 \u2203z (Spectator(z) \u2227 BetOn(z, y, x)))))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H057",
+        "correction": "\u2200x \u2200y (Roundel(x) \u2227 AdjacentWalls(y, x) \u2192 \u00acHigher(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H007",
+        "correction": "\u2203x(Elephantopus(x) \u2227 In(x, africa) \u2227 In(x, southernasia) \u2227 In(x, australia) \u2227 In(x, americas))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H044",
+        "correction": "\u2200x \u2200y((HostShowOn(x, y) \u2227 PublicRadioStation(y)) \u2192 RadioPersonality(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H052",
+        "correction": "\u2200x \u2200y ((Person(x) \u2227 Pet(y) \u2227 OwnedBy(x, y)) \u2192 Cares(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H035",
+        "correction": "\u2203x(Movie(x) \u2227 FilmedIn(x, newYork))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H006",
+        "correction": "\u2200x ((Book(x) \u2227 WrittenBy(x, neilGaiman)) \u2192 \u2203y (MoreThan(y, num1000) \u2227 SoldCopies(x, y)))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H038",
+        "correction": "\u2200y (Car(y) \u2192 \u2203x (HandbrakeOf(x, y) \u2227 (Up(x) \u2228 Down(x))))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H028",
+        "correction": "\u2200x \u2200y ((LaLigaSoccerTeam(x) \u2227 LaLigaSoccerTeam(y) \u2227 MorePoints(x, y)) \u2192 RankHigherThan(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H003",
+        "correction": "\u2203x (EmployeeIn(jamesSTown, x) \u2227 WorkIn(x, businessAnalysis) \u2227 GoodAt(x, math))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H058",
+        "correction": "\u00ac\u2203x ((YaleBuildings(x) \u2227 OpenToStudents(x)) \u2227 BuiltBefore(x, yr1701))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H047",
+        "correction": "(\u00acEntrepreneur(markZuckerberg) \u2227 \u00acHateWorkingFor(markZuckerberg, others)) \u2192 \u00ac(RiskAverse(markZuckerberg) \u2227 WorkingPerson(markZuckerberg))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H014",
+        "correction": "\u2203x (Musician(x) \u2227 Love(x, music))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": true
+      }
+    ],
+    "count_only": [
+      {
+        "candidate_id": "H041",
+        "correction": "\u2200x \u2200y ((Road(x) \u2227 MadeOf(x, asphalt)) \u2227 (Road(y) \u2227 MadeOf(y, concrete)) \u2192 Smoother(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H008",
+        "correction": "\u2200x (LeadSinger(x) \u2192 Singer(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H002",
+        "correction": "\u2200x \u2200y \u2200z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 UCLFinal(z) \u2227 ScoreSameGoals(x, y, z) \u2227 During(regularTime, z) \u2192 PlayExtraTime(x, y, z))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H048",
+        "correction": "\u2203x (Book(x) \u2227 Contain(x, innovativeIdea) \u2227 About(x, technology))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H018",
+        "correction": "\u2200x \u2200y ((In(x, y) \u2227 In(y, unitedStates)) \u2192 USCity(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H016",
+        "correction": "\u2200x (ScienceFiction(x) \u2192 \u00ac\u2203y (Mythological(y) \u2227 Creature(y) \u2227 About(x, y)))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H015",
+        "correction": "\u2200x (Roundel(x) \u2192 (ArtilleryFortification(x) \u2227 \u2200y (ArtilleryFortification(y) \u2192 Older(x, y))))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H009",
+        "correction": "\u2200x (GreyhoundRacing(x) \u2192 (CompetitiveSport(x) \u2227 \u2203y (Greyhound(y) \u2227 BetOn(spectators, y, x))))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H057",
+        "correction": "\u2200x \u2200y ((Roundel(x) \u2227 AdjacentWalls(y, x)) \u2192 \u00acHigher(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H007",
+        "correction": "\u2203x(Elephantopus(x) \u2227 In(x, africa) \u2227 In(x, southernasia) \u2227 In(x, australia) \u2227 In(x, americas))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H044",
+        "correction": "\u2200x \u2200y((HostShowOn(x, y) \u2227 PublicRadioStation(y)) \u2192 RadioPersonality(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H052",
+        "correction": "\u2200x \u2200y ((Person(x) \u2227 Pet(y) \u2227 Has(x, y)) \u2192 Cares(x, y))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H035",
+        "correction": "\u2203x(Movie(x) \u2227 FilmedIn(x, newYork))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H006",
+        "correction": "\u2200x ((Book(x) \u2227 WrittenBy(neilGaiman, x)) \u2192 \u2203y (SoldCopies(x, y) \u2227 MoreThan(y, num1000)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H038",
+        "correction": "\u2200x (Car(x) \u2192 \u2203y (HandbrakeOf(y, x) \u2227 (Up(y) \u2228 Down(y)) \u2227 \u00ac(Up(y) \u2227 Down(y))))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H028",
+        "correction": "\u2200x \u2200y (LaLigaSoccerTeam(x) \u2227 LaLigaSoccerTeam(y) \u2227 MorePoints(x, y) \u2192 RankHigherThan(x, y))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "H003",
+        "correction": "\u2203x (EmployeeIn(jamesSTown, x) \u2227 WorkIn(x, businessAnalysis) \u2227 GoodAt(x, math))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H058",
+        "correction": "\u2200x ((YaleBuildings(x) \u2227 OpenToStudents(x)) \u2192 \u00ac\u2203y (Built(y, x) \u2227 Before(y, yr1701)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H047",
+        "correction": "\u00acEntrepreneur(markZuckerberg) \u2227 \u00acHateWorkingFor(markZuckerberg, Others) \u2192 \u00ac(RiskAverse(markZuckerberg) \u2227 WorkingPerson(markZuckerberg))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "H014",
+        "correction": "\u2203x (Musician(x) \u2227 Love(x, music))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": true
+      }
+    ]
+  }
+}

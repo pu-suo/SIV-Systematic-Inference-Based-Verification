@@ -1,0 +1,113 @@
+{
+  "v1_rho": 0.8563,
+  "v2_rho": 0.7797,
+  "v2_ci_lo": 0.6579,
+  "v2_ci_hi": 0.8674,
+  "n_premises": 35,
+  "gate": "STOP",
+  "mean_by_type_v2": {
+    "partial": {
+      "mean": 0.36347517730496454,
+      "n": 47
+    },
+    "overweak": {
+      "mean": 0.06531531531531531,
+      "n": 37
+    },
+    "overstrong": {
+      "mean": 0.9583333333333333,
+      "n": 32
+    },
+    "gibberish": {
+      "mean": 0.06127450980392156,
+      "n": 34
+    },
+    "gold": {
+      "mean": 1.0,
+      "n": 48
+    }
+  },
+  "delta_by_type": {
+    "partial": {
+      "mean_delta": 0.0029381965552178345,
+      "n": 47
+    },
+    "overweak": {
+      "mean_delta": -0.006756756756756757,
+      "n": 37
+    },
+    "overstrong": {
+      "mean_delta": -0.04166666666666667,
+      "n": 32
+    },
+    "gibberish": {
+      "mean_delta": 0.029411764705882353,
+      "n": 34
+    },
+    "gold": {
+      "mean_delta": 0.0,
+      "n": 48
+    }
+  },
+  "per_premise_rho": {
+    "P1293": 0.888888888888889,
+    "P1204": 0.8660254037844387,
+    "P1375": 0.888888888888889,
+    "P0187": 0.888888888888889,
+    "P0870": 0.888888888888889,
+    "P0599": 0.8660254037844387,
+    "P1077": -0.8660254037844387,
+    "P1616": 0.8333333333333335,
+    "P1645": 0.888888888888889,
+    "P0023": 0.8660254037844387,
+    "P0087": 0.8333333333333335,
+    "P0089": 0.888888888888889,
+    "P0397": 0.888888888888889,
+    "P0398": 0.9428090415820635,
+    "P0399": 0.8660254037844387,
+    "P0495": 0.888888888888889,
+    "P0586": 0.8660254037844387,
+    "P0680": 0.8333333333333335,
+    "P0817": 0.888888888888889,
+    "P0975": 0.888888888888889,
+    "P0978": 0.8333333333333335,
+    "P1028": 0.888888888888889,
+    "P1119": 0.8660254037844387,
+    "P1172": 0.888888888888889,
+    "P1191": 0.888888888888889,
+    "P1618": 0.8660254037844387,
+    "P1637": 0.8660254037844387,
+    "P1648": 0.888888888888889,
+    "P0566": 0.8660254037844387,
+    "P1078": 0.5000000000000001,
+    "P1120": 0.8660254037844387,
+    "P1207": 0.8660254037844387,
+    "P1669": 0.8660254037844387,
+    "P0621": 0.0,
+    "P1138": 0.5443310539518174
+  },
+  "v2_suite_stats": {
+    "avg_positives": 3.0833333333333335,
+    "avg_contrastives": 2.1458333333333335
+  },
+  "score_errors": 0,
+  "v2_gen_failures": [],
+  "root_cause_analysis": {
+    "summary": "rho drop driven by 2 premises where v1 LLM reinterpreted gold annotations",
+    "excluding_P1077": 0.8282,
+    "excluding_P1077_P0621": 0.8532,
+    "P1077": {
+      "issue": "v1 LLM invented TypeOfLeukemia predicate and changed consequent structure",
+      "gold_fol": "all x.((Disease(x) & Leukemia(x)) -> BloodCancer(x))",
+      "v1_canonical": "all x.(TypeOfLeukemia(x) -> (Disease(x) & BloodCancer(x)))",
+      "gibberish_candidate": "all x.(Disease(x) -> BloodCancer(x))",
+      "explanation": "Candidate is logically STRONGER than v2 gold (drops restrictor conjunct), so v2 correctly scores it as recall=1.0. Label gibberish is wrong from gold perspective."
+    },
+    "P0621": {
+      "issue": "Gold uses constant michael, v1 LLM used michaelODonnell. Alignment fails at threshold=0.6.",
+      "gold_constant": "michael",
+      "v1_constant": "michaelODonnell",
+      "explanation": "Symbol alignment cannot bridge the name difference, so all candidates score uniformly low."
+    }
+  }
+}

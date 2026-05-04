@@ -1,0 +1,325 @@
+{
+  "total_premises": 1675,
+  "converted": 1578,
+  "rejected": 97,
+  "round_trip_pass": 1577,
+  "round_trip_fail": 1,
+  "round_trip_fail_rate": 0.0006337135614702154,
+  "rejection_breakdown": {
+    "nltk_parse_failure": 68,
+    "free_indvar": 27,
+    "validation_failure": 1,
+    "predicate_arity_inconsistency": 1
+  },
+  "vampire_available": true,
+  "rejected_samples": [
+    {
+      "nl": "The Emmet Building is a five-story building in Portland, Oregon.",
+      "fol": "Building(emmetBuilding) \u2227 Five-Story(emmetBuilding) \u2227 LocatedIn(emmetBuilding, portland) \u2227 LocatedIn(portland, oregon))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: Building(emmetBuilding) & Five-Story(emmetBuilding) & LocatedIn(emmetBuilding, portland) & LocatedIn"
+    },
+    {
+      "nl": "Lily is in James' family; she watches TV series in cinemas.",
+      "fol": "Customer(lily) \u2227 In(lily, jameSFamily \u2227 WatchIn(lily, tV, cinema)",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: Customer(lily) & In(lily, jameSFamily & WatchIn(lily, tV, cinema)"
+    },
+    {
+      "nl": "Some monitors made by LG have a type-c port.",
+      "fol": "\u2203x (Monitor(x) \u2227 ProducedBy(x, lG) \u2227 Have(x, typeCPort) \u2227 (\u00ac(x=y)) \u2227 Monitor(y) \u2227 ProducedBy(y, lG) \u2227 Have(y, typeCPort))",
+      "category": "free_indvar",
+      "message": "free individual variables: ['y'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "The L-2021 monitor is either used in the library or has a type-c port.",
+      "fol": "Monitor(l-2021) \u2227 (In(l-2021, library) \u2295 Have(l-2021, typeCPort))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: Monitor(l-2021) & (((In(l-2021, library) & -(Have(l-2021, typeCPort))) | (-(In(l-2021, library)) & H"
+    },
+    {
+      "nl": "The L-2021 monitor is either both produced before 2010 and made by LG, or neither is true.",
+      "fol": "\u00ac(ProducedBefore(l-2021, yr2010) \u2295 ProducedBy(l-2021, lG))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: -(((ProducedBefore(l-2021, yr2010) & -(ProducedBy(l-2021, lG))) | (-(ProducedBefore(l-2021, yr2010))"
+    },
+    {
+      "nl": "If PSO J318.5\u221222 is not both a rogue planet and a planet gravitationally bound by the Sun, then it i",
+      "fol": "\u00ac(Planet(pSOJ318.5-22) \u2227 Rogue(pSOJ318.5-22) \u2227 BoundBy(pSOJ318.5-22, sun, gravitationally)) \u2192 (Planet(pSOJ318.5-22) \u2227 Rogue(pSOJ318.5-22))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: -(Planet(pSOJ318.5-22) & Rogue(pSOJ318.5-22) & BoundBy(pSOJ318.5-22, sun, gravitationally)) -> (Plan"
+    },
+    {
+      "nl": "The only style of music Vic DiCara plays is punk music.",
+      "fol": "\u2200x (Music(vicDicara, x) \u2192 \u00ac(x=punk)))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (Music(vicDicara, x) -> -(x=punk)))"
+    },
+    {
+      "nl": "Leetcode problems that are starred by more than one thousand users are hard.",
+      "fol": "\u2200x (Starred(x)) \u2192 Hard(x))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (Starred(x)) -> Hard(x))"
+    },
+    {
+      "nl": "All people who attend weddings are getting married or know the people who are getting married.",
+      "fol": "\u2200x (Attend(x, wedding) \u2192 GettingMarried(x) \u2228 (\u2203y (Know(x, y) \u2227 GettingMarried(y)))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (Attend(x, wedding) -> GettingMarried(x) | (exists y (Know(x, y) & GettingMarried(y)))"
+    },
+    {
+      "nl": "Lipsticks in the Rouge Dior set, Lunar New Year Limited Edition have either a velvet-finish or a sat",
+      "fol": "\u2200x ((Lipstick(x) \u2227 In(x, rougeDiorSet) \u2227 In(x, lunarNewYearLimitedEdition)) \u2192 (VelvetFinish(x) \u2295 SatinFinish(x))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x ((Lipstick(x) & In(x, rougeDiorSet) & In(x, lunarNewYearLimitedEdition)) -> (((VelvetFinish(x)"
+    },
+    {
+      "nl": "No athletes never exercise.",
+      "fol": "\u2200x (Athlete(x) \u2192 \u00acNeverExercises(x)) Never: does not exist a time",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (Athlete(x) -> -NeverExercises(x)) Never: does not exists a time"
+    },
+    {
+      "nl": "All people who went to Clay's school that do not have regular 9-5 jobs, work in the entertainment in",
+      "fol": "\u2200x (GoTo(x, claysSchool) \u2227 \u00ac(Have(x, y) \u2227 Regular(y) \u2227 NineToFiveJob(y)) \u2192 WorkInAs(x, entertainmentIndustry, highProfileCelebrity))",
+      "category": "free_indvar",
+      "message": "free individual variables: ['y'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "All people who went to Clay's school and prefer working at home over going to the office daily do no",
+      "fol": "\u2200x (GoTo(x, claysSchool) \u2227 Prefer(x, workingAtHome, goingToTheOffice) \u2192 \u00ac(Have(x, y) \u2227 Regular(y) \u2227 NineToFiveJob(y)))",
+      "category": "free_indvar",
+      "message": "free individual variables: ['y'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "Oliver plays a different musical instrument from Peter in the concert.",
+      "fol": "\u2200x (PlayIn(oliver, x, concert) \u2192 \u00acPlayIn(peter, y, concert))",
+      "category": "free_indvar",
+      "message": "free individual variables: ['y'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "Every human who can stand on the ground by themselves has functional leg muscles.",
+      "fol": "\u2200x (Human(x) \u2227 CanStandOnTheGround(x, themselves) \u2192 FunctionalLegMuscle(x)))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (Human(x) & CanStandOnTheGround(x, themselves) -> FunctionalLegMuscle(x)))"
+    },
+    {
+      "nl": "Archie can walk if and only if he has functional brainstems.",
+      "fol": "\u00ac(CanWalk(archie) \u2295 FunctionalBrainStem(x))",
+      "category": "free_indvar",
+      "message": "free individual variables: ['x'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "Tower A is managed by Yale Housing.",
+      "fol": "YaleHousing(tower-a)",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: YaleHousing(tower-a)"
+    },
+    {
+      "nl": "Tower B is with the Bloomberg logo.",
+      "fol": "BloombergLogo(tower-b)",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: BloombergLogo(tower-b)"
+    },
+    {
+      "nl": "Two major types of reasoning rules are inductive reasoning and deductive reasoning.",
+      "fol": "\u2200x (MajorArgumentForm(x) \u2192 (InductiveReasoning(x) \u2295 DeductiveReasoning(x))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (MajorArgumentForm(x) -> (((InductiveReasoning(x) & -(DeductiveReasoning(x))) | (-(InductiveRe"
+    },
+    {
+      "nl": "Hulu is a multicellular creature that is autotrophic or digests food internally.",
+      "fol": "(MulticellularCreature(hulu) \u2227 (Autotrophic(hulu) \u2228 DigestFoodInternally (hulu))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: (MulticellularCreature(hulu) & (Autotrophic(hulu) | DigestFoodInternally (hulu))"
+    },
+    {
+      "nl": "G-910 is a product of this brand, and it is either displayed on the homepage and is cheaper, or it i",
+      "fol": "Product(g910) \u2227 ThisBrand(g910) \u2227 (\u00ac(DisplayedIn(g910, homepage) \u2295 Cheaper(g910)))",
+      "category": "free_indvar",
+      "message": "free individual variables: ['g910'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "If viewers send funny videos to the French broadcast channel TF1, then Video Gag airs them weekly.",
+      "fol": "\u2200x (Funny(x) \u2227 Video(x) \u2227 SendIn(viewers, x, frenchBroadcastChannelTF1)  \u2192 AirWeekly(x) ) \u2227 AirOn(videoGag, x))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (Funny(x) & Video(x) & SendIn(viewers, x, frenchBroadcastChannelTF1) -> AirWeekly(x) ) & AirOn"
+    },
+    {
+      "nl": "If a company has employees working for them somewhere, then they have an office there.",
+      "fol": "\u2200x \u2200x \u2200z (Company(x) \u2227 WorkForIn(y, x, z) \u2192 HaveOfficeIn(x, z))",
+      "category": "free_indvar",
+      "message": "free individual variables: ['y'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "Boney M. had several German #1 singles.",
+      "fol": "\u2203x (Song(x) \u2227 By(x, boneym,) \u2227 Number1GermanSingle(x))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: exists x (Song(x) & By(x, boneym,) & Number1GermanSingle(x))"
+    },
+    {
+      "nl": "Luke can make cookies, scrambled eggs, and muffins, but not pasta.",
+      "fol": "CanMake(luke, cookies) \u2227 (CanMake(luke, scrambledEggs) \u2227 CanMake(luke, muffins) \u2227 \u00acCanMake(luke, pasta)",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: CanMake(luke, cookies) & (CanMake(luke, scrambledEggs) & CanMake(luke, muffins) & -CanMake(luke, pas"
+    },
+    {
+      "nl": "Hodophiles enjoy eating gelato ice cream or love to travel and vacation often, or both.",
+      "fol": "\u2200x (Hodophiles(x) \u2192 (EnjoyEating(x, gelato) \u2228 LoveToTravelOften(x))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (Hodophiles(x) -> (EnjoyEating(x, gelato) | LoveToTravelOften(x))"
+    },
+    {
+      "nl": "If Tom does not study in the United States as a foreigner, he is enrolled in an academic program.",
+      "fol": "\u00acStudyIn(x, unitedStates) \u2192 EnrolledIn(x, academicProgram)",
+      "category": "free_indvar",
+      "message": "free individual variables: ['x'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "Everyone who has been to prison has a criminal record.",
+      "fol": "\u2200x (Imprisoned((x) \u2192 Has(x, criminalRecord))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (Imprisoned((x) -> Has(x, criminalRecord))"
+    },
+    {
+      "nl": "The world's only major large passenger aircraft manufacturers are Boeing and Airbus.",
+      "fol": "\u2200x (WorldMajorLargePassengerAircraftManufacturer(x) \u2192 x=boeing \u2295 x=airbus)",
+      "category": "validation_failure",
+      "message": "validation failure: AtomicFormula '__eq__': argument '(x = ((boeing & -x) | (-boeing & x)))' is not a declared entity/constant or bound variable"
+    },
+    {
+      "nl": "All people who enjoy enjoy gambling regularly spend a lot of money at casinos or other betting games",
+      "fol": "\u2200x (EnjoyRegularly(x, gambling) \u2192 SpendAt(x, alotOfMoney, casino) \u2228 (\u2203y (\u00ac(y=casino) \u2227 BettingGame(y) \u2227 SpendAt(x, aLotOfMoney, y)))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (EnjoyRegularly(x, gambling) -> SpendAt(x, alotOfMoney, casino) | (exists y (-(y=casino) & Bet"
+    },
+    {
+      "nl": "People who spend a lot of money at casinos and other betting games are at risk of gambling addiction",
+      "fol": "\u2200x (SpendAt(x, alotOfMoney, casino) \u2228 (\u2203y (\u00ac(y=casino) \u2227 BettingGame(y) \u2227 SpendAt(x, aLotOfMoney, y)) \u2192 AtRiskOf(x, gamblingAddiction))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (SpendAt(x, alotOfMoney, casino) | (exists y (-(y=casino) & BettingGame(y) & SpendAt(x, aLotOf"
+    },
+    {
+      "nl": "All students who can strike the right note can get the rhythms right.",
+      "fol": "\u2200x (Student(x) \u2227  Can(x, strike, rightNote) \u2192 Can(x, getTheRhythmRight))",
+      "category": "predicate_arity_inconsistency",
+      "message": "validation failure: AtomicFormula 'Can': args length 2 != declared arity 3"
+    },
+    {
+      "nl": "Only relay swimmers who participated in the final event at the 1972 Summer Olympics received medals.",
+      "fol": "\u2200x ((ParticipatedIn(x, 1972SummerOlympics) \u2227 RelaySwimmer(x) \u2227 \u00acParticipatedIn(x, finalHeatFreestyleRelay)) \u2194 \u00acRecieved(x, medal)))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x ((ParticipatedIn(x, 1972SummerOlympics) & RelaySwimmer(x) & -ParticipatedIn(x, finalHeatFreest"
+    },
+    {
+      "nl": "A game is played with three stages: red stage, yellow stage, and green stage.",
+      "fol": "\u2203x \u2203y \u2203y \u2203w (Game(x) \u2227 StageNumber(x,3) \u2227 Stage(y) \u2227 Stage(z) \u2227 Stage(w) \u2227 \u00ac(y=z) \u2227 \u00ac(z=w) \u2227 \u00ac(y=w) \u2227 Red(y) \u2227 Yellow(z) \u2227 Green(w))",
+      "category": "free_indvar",
+      "message": "free individual variables: ['z'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "In Love City, everyone considers physical touch or words of affirmation to be their most important l",
+      "fol": "\u2200x (In(x, loveCity) \u2192 (ConsidersMostImportantLoveLanguage(x, physicalTouch)  \u2228 ConsidersMostImportantLoveLanguage(x, wordOfAffirmation))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (In(x, loveCity) -> (ConsidersMostImportantLoveLanguage(x, physicalTouch) | ConsidersMostImpor"
+    },
+    {
+      "nl": "If someone in Love City considers physical touch as their most important love language, then they ar",
+      "fol": "\u2200x ((ConsidersMostImportantLoveLanguage(x, physicalTouch)  \u2227 In(x, loveCity) \u2192 GoodWith(x, pet))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x ((ConsidersMostImportantLoveLanguage(x, physicalTouch) & In(x, loveCity) -> GoodWith(x, pet))"
+    },
+    {
+      "nl": "Everyone in the Franco-China diplomatic conference is either a PRC national or a French national, bu",
+      "fol": "\u2200x (In(x, franco-ChinaDiplomaticConference) \u2192 PRCNational(x) \u2295 FrenchNational(x))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (In(x, franco-ChinaDiplomaticConference) ->((PRCNational(x) & -(FrenchNational(x))) | (-(PRCNa"
+    },
+    {
+      "nl": "Mei is at the Franco-China diplomatic conference.",
+      "fol": "In(mei, franco-ChinaDiplomaticConference)",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: In(mei, franco-ChinaDiplomaticConference)"
+    },
+    {
+      "nl": "Dan knows that Dune is science fiction or has proven to be false.",
+      "fol": "(Knows(dan, dune) \u2227 ScienceFiction(dune)) \u2228 ProvedToBe(dune, false))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: (Knows(dan, dune) & ScienceFiction(dune)) | ProvedToBe(dune, false))"
+    },
+    {
+      "nl": "If Mike is not a person who wears the same flannel shirts every day, has very high energy, and is im",
+      "fol": "\u00ac(\u2203y (flannelShirt(y) \u2227 WearEveryday(x, y)) \u2227 Have(mike, highEnergy) \u2227 Impulsive(mike)) \u2192 (Consistent(mike) \u2227 StickTo(mike, theirRegularRoutine)) \u2295 \u00acL",
+      "category": "free_indvar",
+      "message": "free individual variables: ['x'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "Mr. and Mrs. Smith make a travel plan: they want to go to a city in California or Florida where neit",
+      "fol": "\u2200x (WantToGoTo(mr.AndMrs.Smith, x) \u2227 City(x) \u2192 (California(x) \u2228 Florida(x)) \u2227 NeverGo(x))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (WantToGoTo(mr.AndMrs.Smith, x) & City(x) -> (California(x) | Florida(x)) & NeverGo(x))"
+    },
+    {
+      "nl": "The cities in California that they are interested in are San Francisco, Los Angeles, and San Diego.",
+      "fol": "City(sanFrancisco) \u2227 California(sanFrancisco) \u2227 WantToGoTo(mr.AndMrs.Smith, sanFrancisco) \u2227 City(losAngeles) \u2227 California(losAngeles) \u2227 WantToGoTo(mr.",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: City(sanFrancisco) & California(sanFrancisco) & WantToGoTo(mr.AndMrs.Smith, sanFrancisco) & City(los"
+    },
+    {
+      "nl": "Cities in Florida that they are interested in are Orlando and Miami.",
+      "fol": "City(orlando) \u2227 Florida(orlando) \u2227 WantToGo(mr.AndMrs.Smith, orlando) \u2227 City(miami) \u2227 Florida(miami) \u2227 WantToGo(mr.AndMrs.Smith, miami)",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: City(orlando) & Florida(orlando) & WantToGo(mr.AndMrs.Smith, orlando) & City(miami) & Florida(miami)"
+    },
+    {
+      "nl": "Mr. Smith has been to two cities in California.",
+      "fol": "\u2203x \u2203y \u2200z (\u00ac(x=z) \u2227 \u00ac(y=z) \u2227 \u00ac(x=y) \u2227 City(x) \u2227 City(y) \u2227 City(z) \u2227 California(x) \u2227 California(y) \u2227 California(z) \u2192 Visit(mr.smith, x) \u2227 Visit(mr.smith",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: exists x exists y all z (-(x=z) & -(y=z) & -(x=y) & City(x) & City(y) & City(z) & California(x) & Ca"
+    },
+    {
+      "nl": "Mrs. Smith has been to one city in Florida.",
+      "fol": "\u2203x \u2200y (\u00ac(x=y) \u2227 City(x) \u2227 City(y) \u2227 Florida(x) \u2227 Florida(y) \u2192 Visit(mrs.smith, x) \u2227 \u00acVisit(mrs.smith, y))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: exists x all y (-(x=y) & City(x) & City(y) & Florida(x) & Florida(y) -> Visit(mrs.smith, x) & -Visit"
+    },
+    {
+      "nl": "People in this neighborhood visit a coffee shop regularly or order takeout at least once a day.",
+      "fol": "\u2200x (In(x, thisNeighborhood) \u2192 (VisitRegularly(x, coffeeShop) \u2228 (\u2203y (TakeOut(y) \u2227 Order(x, y, aDay))))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x (In(x, thisNeighborhood) -> (VisitRegularly(x, coffeeShop) | (exists y (TakeOut(y) & Order(x, "
+    },
+    {
+      "nl": "If a class has no prerequisites, then the student can take the class",
+      "fol": "\u2200x \u2200y ((Class(x) \u2227 Student(y) \u2227 \u00ac\u2203z Prereq(z,x)) \u2192 CanTake(y, x))",
+      "category": "nltk_parse_failure",
+      "message": "NLTK parse failure: all x all y ((Class(x) & Student(y) & -exists z Prereq(z,x)) -> CanTake(y, x))"
+    },
+    {
+      "nl": "There are five grades in English class: A+, A, B+, B, and C.",
+      "fol": "GradeIn(aPlus, englishClass) \u2228 GradeIn(a, englishClass) \u2228 GradeIn(bPlus, englishClass) \u2228 GradeIn(b, englishClass) \u2228 GradeIn(c, englishClass) \u2227 (GradeI",
+      "category": "free_indvar",
+      "message": "free individual variables: ['a', 'b', 'c'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "If a student gets an A in English class, then his score is greater than 90 but lower than 95.",
+      "fol": "\u2200x \u2200y (Student(x) \u2227 GetGradeIn(x, a, englishClass) \u2192 EnglishClassScore(x, y) \u2227 GreaterThan90(y) \u2227 LowerThan95(y))",
+      "category": "free_indvar",
+      "message": "free individual variables: ['a'] \u2014 overlaps with known broken gold"
+    },
+    {
+      "nl": "Zhang got an A in English class.",
+      "fol": "Student(zhang) \u2227 GetGradeIn(zhang, a, englishClass)",
+      "category": "free_indvar",
+      "message": "free individual variables: ['a'] \u2014 overlaps with known broken gold"
+    }
+  ],
+  "round_trip_failures": [
+    {
+      "nl": "Avocados are a kind of fruit sold at the local farmers market in New Haven or at Nica's market.",
+      "compiled": "(Fruit(avocado) & (SoldAt(avocado, localFarmersMarket) | SoldAt(avocado, nica'sMarket)))",
+      "fwd": null,
+      "bwd": null
+    }
+  ]
+}

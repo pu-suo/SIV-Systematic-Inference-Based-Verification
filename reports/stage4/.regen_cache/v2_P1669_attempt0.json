@@ -1,0 +1,1 @@
+{"premise_id": "v2_P1669", "attempt": 0, "response": "CANDIDATE_PARTIAL: ConvictedCriminal(garry)\nCANDIDATE_OVERWEAK: ConvictedCriminal(garry) & -(FoundGuilty(garry))\nCANDIDATE_OVERSTRONG: ConvictedCriminal(garry) & -((FoundGuilty(garry) | SentencedToPunishment(garry))) & SentencedToPunishment(garry)\nCANDIDATE_GIBBERISH: FoundGuilty(garry) & SentencedToPunishment(garry)"}

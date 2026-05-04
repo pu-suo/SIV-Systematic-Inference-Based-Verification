@@ -1,0 +1,5 @@
+{
+  "model_key": "gpt-4o",
+  "prompt": "You are given a natural-language sentence and a first-order logic (FOL) translation that may contain errors. A diagnostic system tested this translation against specific logical probes and identified failures.\n\nNatural language: If a soccer player receives one red card in one game, this player will be ejected from the rest of the game.\n\nCandidate FOL (may be incorrect): \u2200x (SoccerPlayer(x) \u2227 Receive(x, oneRedCard)) \u2192 EjectFromRestOfGame(x))\n\nFailed probes (the candidate SHOULD entail these but does NOT):\n  - all v0.((SoccerPlayer(v0) & Receive(v0,oneRedCard)) -> EjectedFromRestOfGame(v0))\n\nIncorrectly entailed (the candidate should NOT entail these but DOES):\n  (none)\n\nProduce ONLY the corrected FOL formula. Use the same predicate and constant naming conventions as the candidate. Do not explain your reasoning \u2014 output only the formula.",
+  "response": "\u2200x (SoccerPlayer(x) \u2227 Receive(x, oneRedCard) \u2192 EjectedFromRestOfGame(x))"
+}

@@ -1,0 +1,1 @@
+{"premise_id": "v2_P1191", "attempt": 0, "response": "CANDIDATE_PARTIAL: USNavyShip(theUSSLyon)\nCANDIDATE_OVERWEAK: exists x (USNavyShip(x) & InvolvedIn(x, wWII))\nCANDIDATE_OVERSTRONG: USNavyShip(theUSSLyon) & InvolvedIn(theUSSLyon, wWII) & InvolvedIn(theUSSLyon, someOtherEvent)\nCANDIDATE_GIBBERISH: InvolvedIn(wWII, theUSSLyon)"}

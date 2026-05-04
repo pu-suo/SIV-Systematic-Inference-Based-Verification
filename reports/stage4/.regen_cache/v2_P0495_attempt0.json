@@ -1,0 +1,1 @@
+{"premise_id": "v2_P0495", "attempt": 0, "response": "CANDIDATE_PARTIAL: Island(luzon)\nCANDIDATE_OVERWEAK: exists x (Island(x) & In(x, philippines))\nCANDIDATE_OVERSTRONG: (Island(luzon) & In(luzon, philippines) & In(philippines, luzon))\nCANDIDATE_GIBBERISH: In(philippines, luzon)"}

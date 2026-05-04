@@ -22,11 +22,15 @@ class PredicateDecl(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     name: str
-    arity: Literal[1, 2]
+    arity: int
     arg_types: List[str]
 
     @model_validator(mode="after")
     def _arg_types_matches_arity(self) -> "PredicateDecl":
+        if self.arity < 1:
+            raise SchemaViolation(
+                f"PredicateDecl {self.name!r}: arity must be >= 1, got {self.arity}"
+            )
         if len(self.arg_types) != self.arity:
             raise SchemaViolation(
                 f"PredicateDecl {self.name!r}: arg_types length "

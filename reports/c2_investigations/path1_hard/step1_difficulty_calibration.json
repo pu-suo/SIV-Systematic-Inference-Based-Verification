@@ -1,0 +1,225 @@
+{
+  "difficulty_a": {
+    "rate": 0.2,
+    "n": 10,
+    "results": [
+      {
+        "nl": "No payment cards issued by Russian banks can be used with Ap",
+        "correct": false
+      },
+      {
+        "nl": "A game is played with three stages: red stage, yellow stage,",
+        "correct": false
+      },
+      {
+        "nl": "All states are in their country.",
+        "correct": false
+      },
+      {
+        "nl": "No preteens or young children are getting married or know th",
+        "correct": false
+      },
+      {
+        "nl": "Different teams cannot win the cup in the same year's final.",
+        "correct": false
+      },
+      {
+        "nl": "If Robin's friends grew up with parents who worked as doctor",
+        "correct": false
+      },
+      {
+        "nl": "If a child is exposed to a controlled substance, they are in",
+        "correct": true
+      },
+      {
+        "nl": "If a person plays an instrument in a concert, they are good ",
+        "correct": false
+      },
+      {
+        "nl": "Some fish stings people.",
+        "correct": false
+      },
+      {
+        "nl": "Roads made of concrete last longer than roads made with asph",
+        "correct": true
+      }
+    ]
+  },
+  "difficulty_b": {
+    "rate": 0.7,
+    "n": 10,
+    "results": [
+      {
+        "nl": "Every professor who advises a student that studies logic tea",
+        "correct": true,
+        "cats": [
+          "argument-order",
+          "connective-polarity"
+        ]
+      },
+      {
+        "nl": "Every company that employs a manager who supervises at least",
+        "correct": true,
+        "cats": [
+          "restrictor-content",
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "Every student who is either a senior or has completed all pr",
+        "correct": true,
+        "cats": [
+          "restrictor-content",
+          "quantifier-scope"
+        ]
+      },
+      {
+        "nl": "There exists a library such that every book in it has been r",
+        "correct": true,
+        "cats": [
+          "polarity",
+          "quantifier-scope"
+        ]
+      },
+      {
+        "nl": "Every hospital that treats a patient who has been diagnosed ",
+        "correct": false,
+        "cats": [
+          "restrictor-content",
+          "quantifier-scope"
+        ]
+      },
+      {
+        "nl": "No country that imports all its energy from a single supplie",
+        "correct": false,
+        "cats": [
+          "quantifier-scope",
+          "restrictor-content"
+        ]
+      },
+      {
+        "nl": "Every researcher who publishes in a top journal and mentors ",
+        "correct": true,
+        "cats": [
+          "polarity",
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "Every city that has a university offering a program accredit",
+        "correct": true,
+        "cats": [
+          "connective-polarity",
+          "polarity"
+        ]
+      },
+      {
+        "nl": "If every member of a committee approves a proposal, and the ",
+        "correct": true,
+        "cats": [
+          "quantifier-scope",
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "There exists a network such that every server connected to i",
+        "correct": false,
+        "cats": [
+          "restrictor-content",
+          "argument-order"
+        ]
+      }
+    ]
+  },
+  "difficulty_c": {
+    "rate": 0.3,
+    "n": 10,
+    "results": [
+      {
+        "nl": "Every hospital that treats a patient who has been diagnosed ",
+        "correct": false,
+        "cats": [
+          "quantifier-scope",
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "Some of the customers in James' family go to the cinema ever",
+        "correct": false,
+        "cats": [
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "All states are in their country.",
+        "correct": false,
+        "cats": [
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "No payment cards issued by Russian banks can be used with Ap",
+        "correct": true,
+        "cats": [
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "If Robin's friends grew up with parents who worked as doctor",
+        "correct": false,
+        "cats": [
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "Every company that employs a manager who supervises at least",
+        "correct": true,
+        "cats": [
+          "quantifier-scope",
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "Every student who is either a senior or has completed all pr",
+        "correct": true,
+        "cats": [
+          "quantifier-scope",
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "Different teams cannot win the cup in the same year's final.",
+        "correct": false,
+        "cats": [
+          "argument-order"
+        ]
+      },
+      {
+        "nl": "Every airline that operates a route between two cities where",
+        "correct": false,
+        "cats": [
+          "quantifier-scope"
+        ]
+      },
+      {
+        "nl": "No preteens or young children are getting married or know th",
+        "correct": false,
+        "cats": [
+          "argument-order"
+        ]
+      }
+    ]
+  },
+  "decision": "IN_BAND",
+  "decision_text": "Difficulty A lands in 10-30% band (20.0%). Use as candidate source for main experiment.",
+  "levels_in_band": [
+    [
+      "A",
+      0.2
+    ],
+    [
+      "C",
+      0.3
+    ]
+  ]
+}

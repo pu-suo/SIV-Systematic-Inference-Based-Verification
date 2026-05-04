@@ -1,0 +1,83 @@
+{
+  "pilot1": {
+    "description": "No-feedback baseline correction rate",
+    "decision_rule": "20-50% band is target",
+    "results": {
+      "gpt-4o": {
+        "overall_rate": 0.4,
+        "n": 30,
+        "decision": "IN BAND"
+      },
+      "gpt-4o-mini": {
+        "overall_rate": 0.4,
+        "n": 30,
+        "decision": "IN BAND"
+      }
+    },
+    "conclusion": "Both models at 40% \u2014 squarely in 20-50% target. Candidate pool is appropriately difficult."
+  },
+  "pilot2": {
+    "description": "Leakage probe \u2014 diagnostic granularity selection",
+    "model": "gpt-4o",
+    "n": 20,
+    "results": {
+      "no_feedback": {
+        "rate": 0.25,
+        "gain": 0.0
+      },
+      "score_only": {
+        "rate": 0.45,
+        "gain": 0.2
+      },
+      "category": {
+        "rate": 0.35,
+        "gain": 0.1
+      },
+      "probes": {
+        "rate": 0.7,
+        "gain": 0.45
+      }
+    },
+    "chosen_granularity": "category",
+    "conclusion": "All three feedback levels produce gain >= 5pp over no-feedback. Category-level (coarsest with gain) chosen per protocol. Probe-level gain (+45pp) is very high \u2014 likely leaks answer information. Score-only also strong (+20pp). Category (+10pp) is the sweet spot: meaningful gain without excessive leakage risk.",
+    "leakage_warning": "Probe-level feedback (70% success) vs category (35%) suggests probe formulas nearly hand the LLM the answer. Main run should use category-level, with probe-level as an ablation to quantify leakage."
+  },
+  "pilot3": {
+    "description": "Over-correction check on partial candidates",
+    "model": "gpt-4o",
+    "n": 6,
+    "results": {
+      "score_only": {
+        "improved": 3,
+        "unchanged": 3,
+        "regressed": 0
+      },
+      "category": {
+        "improved": 2,
+        "unchanged": 4,
+        "regressed": 0
+      }
+    },
+    "conclusion": "Zero regressions under either condition. Diagnostic feedback does not cause over-correction on partial candidates. Small sample (n=6) but directionally clear."
+  },
+  "pilot4": {
+    "description": "Model scaling sanity check",
+    "n": 10,
+    "results": {
+      "gpt-4o": {
+        "rate": 0.3
+      },
+      "gpt-4o-mini": {
+        "rate": 0.3
+      }
+    },
+    "conclusion": "Both models perform identically (30%) on the smaller subset. No saturation at frontier, no floor at mid-tier. Both should be included in main run."
+  },
+  "overall_decisions": {
+    "candidate_pool": "KEEP \u2014 40% baseline is ideal difficulty",
+    "diagnostic_granularity": "CATEGORY \u2014 coarsest with meaningful gain, low leakage",
+    "regression_risk": "LOW \u2014 0/6 regressions on partial candidates",
+    "model_lineup": "gpt-4o (frontier) + gpt-4o-mini (mid-tier)",
+    "proceed_to_main_run": true
+  }
+}

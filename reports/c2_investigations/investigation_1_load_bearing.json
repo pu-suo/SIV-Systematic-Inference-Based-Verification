@@ -1,0 +1,2644 @@
+{
+  "n_stories_sampled": 50,
+  "total_sentences_tested": 264,
+  "total_load_bearing": 128,
+  "frac_with_load_bearing": 0.7,
+  "mean_load_bearing_per_premise": 2.56,
+  "total_vacuous_replacement_flips": 128,
+  "per_label": {
+    "entailment": {
+      "n": 18,
+      "n_with_load_bearing": 18,
+      "frac_with_load_bearing": 1.0,
+      "mean_load_bearing_per_premise": 3.1667
+    },
+    "contradiction": {
+      "n": 17,
+      "n_with_load_bearing": 17,
+      "frac_with_load_bearing": 1.0,
+      "mean_load_bearing_per_premise": 4.1765
+    },
+    "neutral": {
+      "n": 15,
+      "n_with_load_bearing": 0,
+      "frac_with_load_bearing": 0.0,
+      "mean_load_bearing_per_premise": 0.0
+    }
+  },
+  "decision": "FEASIBLE_AT_SCALE",
+  "decision_text": "Bridge 2 is feasible at scale via natural FOLIO sampling. \u226560% threshold met (70.0%), mean \u22651.0 met (2.56).",
+  "per_story_results": [
+    {
+      "story_id": 207,
+      "gold_label": "contradiction",
+      "n_sentences": 5,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "TOra is a GUI.",
+          "fol": "GUI(tora)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "GUIs are software.",
+          "fol": "\u2200x (GUI(x) \u2192 Software(x))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Software can be free or paid.",
+          "fol": "\u2200x (Software(x) \u2192 Free(x) \u2295 Paid(x))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Paid Software is not under the GNU General Public License.",
+          "fol": "\u2200x (Paid(x) \u2227 Software(x) \u2192 \u00acUnderGNULicense(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "TOra is under the GNU General Public License.",
+          "fol": "UnderGNULicense(tora)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 31,
+      "gold_label": "neutral",
+      "n_sentences": 3,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Naive cynicism was proposed by Justin Kruger and a colleague.",
+          "fol": "Proposed(justinKruger, naiveCynicism) \u2227 \u2203y (colleagueOfJustinKruger(y) \u2227 Proposed(y, naiveCynicism))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Thomas Gilovich is a colleague of Justin Kruger.",
+          "fol": "Colleagues(thomasGilovich, justinKruger)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Naive cynicism is a philosophy of mind.",
+          "fol": "PhilosophyOfMind(naiveCynicism)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 342,
+      "gold_label": "contradiction",
+      "n_sentences": 5,
+      "n_load_bearing": 5,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 5,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All sports cars are loud.",
+          "fol": "\u2200x (SportsCar(x) \u2192 LoudCar(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "No loud cars are electric.",
+          "fol": "\u2200x (LoudCar(x) \u2192 \u00acElectricCar(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "If a car is a Ferrari, then it is a sports car.",
+          "fol": "\u2200x (Ferrari(x) \u2192 SportsCar(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All cars made in Maranello are Ferraris.",
+          "fol": "\u2200x ((Car(x) \u2227 MadeIn(x, maranello)) \u2192 Ferrari(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "The Toyota Prius is made in Maranello or is a loud car, or both.",
+          "fol": "(Car(toyotaPrius) \u2227 MadeIn(toyotaPrius, maranello)) \u2228 LoudCar(toyotaPrius)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 316,
+      "gold_label": "entailment",
+      "n_sentences": 5,
+      "n_load_bearing": 5,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 5,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "There are no mansion houses in an urban area.",
+          "fol": "\u2200x (InUrbanArea(x) \u2192 \u00acMansionHouse(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All skyscrapers are in urban areas.",
+          "fol": "\u2200x (Skyscraper(x) \u2192 InUrbanArea(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Every creepy haunted house is a mansion house.",
+          "fol": "\u2200x (CreepyHauntedHouse(x) \u2192 MansionHouse(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Every terrifying building on Halloween is a creepy haunted house.",
+          "fol": "\u2200x (TerrifyingBuilding(x) \u2227 OnHalloween(x) \u2192 CreepyHauntedHouse(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "The LaLaurie House is a creepy haunted house or a terrifying building on Halloween.",
+          "fol": "CreepyHauntedHouse(laLaurieHouse) \u2228 TerrifyingBuilding(laLaurieHouse) \u2227 OnHalloween(laLaurieHouse)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 75,
+      "gold_label": "neutral",
+      "n_sentences": 4,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Robert Zimmer was a philosopher born in Germany.",
+          "fol": "BornIn(robertZimmer, germany) \u2227 Philosopher(robertZimmer)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Robert Zimmer is an essayist.",
+          "fol": "Essayist(robertZimmer)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Robert Zimmer was born in 1953.",
+          "fol": "BornIn(robertZimmer, yr1953)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Every essayist is a writer.",
+          "fol": "\u2200x (Essayist(x) \u2192 Writer(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 486,
+      "gold_label": "contradiction",
+      "n_sentences": 8,
+      "n_load_bearing": 8,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 8,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Everything in Size Town is big or small.",
+          "fol": "\u2200x (In(x, sizeTown) \u2192 (Big(x) \u2228 Small(x)))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All big things in Size Town are heavy.",
+          "fol": "\u2200x (Big(x) \u2227 In(x, sizeTown) \u2192 Heavy(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All small things in Size Town are light.",
+          "fol": "\u2200x (Small(x) \u2227 In(x, sizeTown) \u2192 Light(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All heavy things in Size Town are still.",
+          "fol": "\u2200x (Heavy(x) \u2227 In(x, sizeTown) \u2192 Still(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "All light things in Size Town are unstable.",
+          "fol": "\u2200x (Light(x) \u2227 In(x, sizeTown) \u2192 Unstable(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "All unstable things in Size Town are changing.",
+          "fol": "\u2200x (Unstable(x) \u2227 In(x, sizeTown) \u2192 Changing(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "All unstable things in Size Town are unpredictable.",
+          "fol": "\u2200x (Unstable(x) \u2227 In(x, sizeTown) \u2192 Unpredictable(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 7,
+          "nl": "The bird is in Size Town and it is not both heavy and still.",
+          "fol": "In(bird, sizeTown) \u2227 \u00ac(Heavy(bird) \u2227 Still(bird))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 416,
+      "gold_label": "entailment",
+      "n_sentences": 5,
+      "n_load_bearing": 4,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 4,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Some students in the class who are good at math are also good at chemistry.",
+          "fol": "\u2203x \u2203y (StudentInTheClass(x) \u2227 GoodAt(x, math) \u2227 GoodAt(x, chemistry) \u2227 (\u00ac(x=y)) \u2227 StudentInTheClass(y) \u2227 GoodAt(y, math) \u2227 GoodAt(y, chemistry))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All students in the class who are good at chemistry enjoy conducting experiments.",
+          "fol": "\u2200x ((StudentInTheClass(x) \u2227 GoodAt(x, chemistry)) \u2192 Enjoy(x, conductingExperiment))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All students in the class that enjoy conducting experiments are good at planning.",
+          "fol": "\u2200x ((StudentInTheClass(x) \u2227 Enjoy(x, conductingExperiment)) \u2192 GoodAt(x, planning))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "None of the students who are good at planning failed the class.",
+          "fol": "\u2200x ((StudentInTheClass(x) \u2227 GoodAt(x, planning)) \u2192 \u00acFailed(x, theClass))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "James is a student in the class; he is either good at chemistry and failed the class, or bad at chemistry and passed the class.",
+          "fol": "StudentInTheClass(james) \u2227 (\u00ac(GoodAt(james, chemistry) \u2295 Failed(james, theClass)))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 359,
+      "gold_label": "neutral",
+      "n_sentences": 6,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Everyone who chooses what they want to do with their time has flexible schedules.",
+          "fol": "\u2200x (ChooseWhatToDoWith(x, time) \u2192 FlexibleSchedule(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Everyone with a lot of free time chooses what they want to do with their time.",
+          "fol": "\u2200x (Have(x, lotsOfFreetime) \u2192 ChooseWhatToDoWith(x, time))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "People either have a lot of free time or they invest in a career in which they are willing to spend the rest of their lives.",
+          "fol": "\u2200x (Have(x, lotsOfFreetime) \u2295 (\u2203y (InvestIn(x, y) \u2227 Career(y) \u2227 WillingToSpendIn(restOfLife, y))))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "If people invest in a career in which they are willing to spend the rest of their lives, then they are hardworking individuals with high ambitions and goals for the future.",
+          "fol": "\u2200x (\u2203y (InvestIn(x, y) \u2227 Career(y) \u2227 WillingToSpendIn(restOfLife, y)) \u2192 Hardworking(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "If people are hardworking individuals with high ambitions and goals for the future, then they are not short sighted.",
+          "fol": "\u2200x (Hardworking(x) \u2227 HaveFor(x, highAmbition, future) \u2227 HaveFor(x, goal, future) \u2192 \u00acShortSighted(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "John is not either a hardworking individual with high ambitions and goals for the future or has a flexible schedule.",
+          "fol": "\u00ac((Hardworking(john) \u2227 HaveFor(john, highAmbition, future) \u2227 HaveFor(john, goal, future)) \u2295 FlexibleSchedule(john))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 463,
+      "gold_label": "neutral",
+      "n_sentences": 7,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All eels are fish.",
+          "fol": "\u2200x (Eel(x) \u2192 Fish(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "No fish are plants.",
+          "fol": "\u2200x (Fish(x) \u2192 \u00acPlant(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Everything displayed in the collection is either a plant or an animal.",
+          "fol": "\u2200x (DisplayedIn(x, collection) \u2192 Plant(x) \u2295 Animal(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All multicellular animals are not bacteria.",
+          "fol": "\u2200x (Multicellular(x) \u2192 \u00acBacteria(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "All animals displayed in the collection are multicellular.",
+          "fol": "\u2200x (DisplayedIn(x, collection) \u2227 Animal(x) \u2192 Multicellular(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "A sea eel is displayed in the collection.",
+          "fol": "DisplayedIn(seaEel, collection)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "The sea eel is an eel or an animal or not a plant.",
+          "fol": "Eel(seaEel) \u2228 Animal(seaEel) \u2228 \u00acPlant(seaEel)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 446,
+      "gold_label": "entailment",
+      "n_sentences": 5,
+      "n_load_bearing": 5,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 5,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "If something is a plant, then it is not a cute animal. Simeng: All plants are not cute animals.",
+          "fol": "\u2200x (Plant(x) \u2192 \u00acCuteAnimal(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All flowers are plants.",
+          "fol": "\u2200x (Flower(x) \u2192 Plant(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Every kitten is a cute animal.",
+          "fol": "\u2200x (Kitten(x) \u2192 CuteAnimal(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "If something is grown in a garden, then it is a flower.",
+          "fol": "\u2200x (GrownIn(x, garden) \u2192 Flower(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Piper is a kitten or a cute animal.",
+          "fol": "Kitten(piper) \u2228 CuteAnimal(piper)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 71,
+      "gold_label": "entailment",
+      "n_sentences": 6,
+      "n_load_bearing": 1,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 1,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Herodicus was a Greek physician, dietician, sophist, and gymnast.",
+          "fol": "Greek(herodicus) \u2227 Physician(herodicus) \u2227 Dietician(herodicus) \u2227 Sophist(herodicus) \u2227 Gymnast(herodicus)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Herodicus was born in the city of Selymbria.",
+          "fol": "Born(herodicus, selymbia) \u2227 City(selymbia)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Selymbria is a colony of the city-state Megara.",
+          "fol": "Colony(selymbia, megara) \u2227 CityState(megara)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "One of the tutors of Hippocrates was Herodicus.",
+          "fol": "Tutor(herodicus, hippocrates)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Massages were recommended by Herodicus.",
+          "fol": "Recommend(herodicus, massages)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "Some of the theories of Herodicus are considered to be the foundation of sports medicine.",
+          "fol": "\u2203x \u2203y (Theory(x) \u2227 From(x, herodicus) \u2227 FoundationOf(x, sportsMedicine) \u2227 (\u00ac(x=y)) \u2227 Theory(y) \u2227 From(y, herodicus) \u2227 FoundationOf(y, sportsMedicine))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        }
+      ]
+    },
+    {
+      "story_id": 105,
+      "gold_label": "neutral",
+      "n_sentences": 5,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Show Your Love is a song recorded by the South Korean boy band BtoB 4u.",
+          "fol": "Song(showYourLove) \u2227 RecordedBy(showYourLove, bToB4u) \u2227 SouthKorean(bToB4u) \u2227 BoyBand(bToB4u)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "The lead single of the extended play Inside is Show Your Love.",
+          "fol": "ExtendedPlay(inside) \u2227 LeadSingleOf(showYourLove, inside)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Show Your Love contains a hopeful message.",
+          "fol": "Contains(showYourLove, hopefulMessage)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "BtoB 4u member Hyunsik wrote Show Your Love.",
+          "fol": "Member(hyunsik, btob4u) \u2227 Wrote(hyunsik, showYourLove)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "There is a music video for Show Your Love.",
+          "fol": "Have(showYourLove, musicVideo)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 486,
+      "gold_label": "contradiction",
+      "n_sentences": 8,
+      "n_load_bearing": 8,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 8,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Everything in Size Town is big or small.",
+          "fol": "\u2200x (In(x, sizeTown) \u2192 (Big(x) \u2228 Small(x)))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All big things in Size Town are heavy.",
+          "fol": "\u2200x (Big(x) \u2227 In(x, sizeTown) \u2192 Heavy(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All small things in Size Town are light.",
+          "fol": "\u2200x (Small(x) \u2227 In(x, sizeTown) \u2192 Light(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All heavy things in Size Town are still.",
+          "fol": "\u2200x (Heavy(x) \u2227 In(x, sizeTown) \u2192 Still(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "All light things in Size Town are unstable.",
+          "fol": "\u2200x (Light(x) \u2227 In(x, sizeTown) \u2192 Unstable(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "All unstable things in Size Town are changing.",
+          "fol": "\u2200x (Unstable(x) \u2227 In(x, sizeTown) \u2192 Changing(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "All unstable things in Size Town are unpredictable.",
+          "fol": "\u2200x (Unstable(x) \u2227 In(x, sizeTown) \u2192 Unpredictable(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 7,
+          "nl": "The bird is in Size Town and it is not both heavy and still.",
+          "fol": "In(bird, sizeTown) \u2227 \u00ac(Heavy(bird) \u2227 Still(bird))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 476,
+      "gold_label": "neutral",
+      "n_sentences": 7,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All phones are things.",
+          "fol": "\u2200x (Phone(x) \u2192 Thing(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All cell phones are phones.",
+          "fol": "\u2200x (Cellphone(x) \u2192 Phone(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All iPhones are cell phones.",
+          "fol": "\u2200x (Iphone(x) \u2192 Cellphone(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All employees are wage earners.",
+          "fol": "\u2200x (Employee(x) \u2192 WageEarner(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "All wage earners are human.",
+          "fol": "\u2200x (WageEarner(x) \u2192 Human(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "Jack is either an employee or a wage earner.",
+          "fol": "Employee(jack) \u2295 WageEarner(jack)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "Jack is either a human or a phone.",
+          "fol": "Human(jack) \u2295 Phone(jack)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 70,
+      "gold_label": "contradiction",
+      "n_sentences": 4,
+      "n_load_bearing": 1,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 1,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Michael O'Donnell is a British physician, journalist, author, and broadcaster.",
+          "fol": "British(michael) \u2227 Physician(michael) \u2227 Journalist(michael) \u2227 Author(michael) \u2227 Broadcaster(michael)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "One of the word-setters of My Word! was Michael O'Donnell.",
+          "fol": "WordSetter(michael)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "The magazine World Medicine was edited by Michael O'Donnell.",
+          "fol": "Magazine(worldMedicine) \u2227 EditedBy(worldMedicine, michael)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Michael O'Donnell was born in Yorkshire as the son of a general practitioner.",
+          "fol": "BornIn(michael, yorkshire) \u2227 \u2203x(SonOf(michael, x) \u2227 GeneralPractitioner(x))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        }
+      ]
+    },
+    {
+      "story_id": 111,
+      "gold_label": "neutral",
+      "n_sentences": 4,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Aberdeen won the cup in the 2013 final.",
+          "fol": "WonCup(aberdeen, year2013Final)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Rangers won the cup in the 2014 final.",
+          "fol": "WonCup(rangers, year2014Final)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Aberdeen and Rangers are different teams.",
+          "fol": "\u00ac(aberdeen=rangers)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Different teams cannot win the cup in the same year's final.",
+          "fol": "\u2200x \u2200y \u2200z \u2200w (\u00ac(x=y) \u2227 WonCup(x, z) \u2227 WonCup(y, w) \u2192 \u00ac(z=w))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 113,
+      "gold_label": "contradiction",
+      "n_sentences": 6,
+      "n_load_bearing": 3,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 3,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Roversi is an Italian surname.",
+          "fol": "ItalianName(roversi) \u2227 Surname(roversi)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Alba Roversi uses Roversi as a surname.",
+          "fol": "UseAsSurname(albaRoversi, roversi)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Paolo Roversi uses Roversi as a surname.",
+          "fol": "UseAsSurname(paoloRoversi, roversi)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Roberto Roversi uses Roversi as a surname.",
+          "fol": "UseAsSurname(robertoRoversi, roversi)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Paolo Roversi is a photographer.",
+          "fol": "Photographer(paoloRoversi)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "A photographer is a professional or an amateur.",
+          "fol": "\u2200x (Photographer(x) \u2192 Professional(x) \u2295 Amateur(x))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        }
+      ]
+    },
+    {
+      "story_id": 90,
+      "gold_label": "entailment",
+      "n_sentences": 4,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Koei Tecmo is a Japanese video game and anime holding company.",
+          "fol": "Japanese(koeitecmo) \u2227 VideoGameHoldingCompany(koeitecmo) \u2227 AnimeHoldingCompany(koeitecmo) \u2227 HoldingCompany(x)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Holding companies hold several companies.",
+          "fol": "\u2200x (HoldingCompany(x) \u2192 \u2203y(Company(y) \u2227 Holds(x, y)))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Tecmo was disbanded in Japan, while Koei survived but was renamed.",
+          "fol": "DisbandsIn(tecmo, japan) \u2227 Survives(koei) \u2227 Renames(koei)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Video game holding companies are holding companies.",
+          "fol": "\u2200x (VideoGameHoldingCompany(x) \u2192 HoldingCompany(x))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        }
+      ]
+    },
+    {
+      "story_id": 347,
+      "gold_label": "neutral",
+      "n_sentences": 6,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All mammals are living beings.",
+          "fol": "\u2200x (Mammal(x) \u2192 LivingBeing(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All elephants are mammals.",
+          "fol": "\u2200x (Elephant(x) \u2192 Mammal(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All baby elephants are elephants.",
+          "fol": "\u2200x (BabyElephant(x) \u2192 Elephant(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Some baby elephants are sleepy.",
+          "fol": "\u2203x (BabyElephant(x) \u2227 Sleepy(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "If Jumbo is a living being, then Jumbo is not both an elephant and a mammal.",
+          "fol": "LivingBeing(jumbo) \u2192 \u00ac(Elephant(jumbo) \u2227 Mammal(jumbo))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "If Jumbo is sleepy, then Jumbo is either a baby elephant or a mammal.",
+          "fol": "Sleepy(jumbo) \u2192 BabyElephant(jumbo) \u2295 Mammal(jumbo)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 70,
+      "gold_label": "neutral",
+      "n_sentences": 4,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Michael O'Donnell is a British physician, journalist, author, and broadcaster.",
+          "fol": "British(michael) \u2227 Physician(michael) \u2227 Journalist(michael) \u2227 Author(michael) \u2227 Broadcaster(michael)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "One of the word-setters of My Word! was Michael O'Donnell.",
+          "fol": "WordSetter(michael)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "The magazine World Medicine was edited by Michael O'Donnell.",
+          "fol": "Magazine(worldMedicine) \u2227 EditedBy(worldMedicine, michael)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Michael O'Donnell was born in Yorkshire as the son of a general practitioner.",
+          "fol": "BornIn(michael, yorkshire) \u2227 \u2203x(SonOf(michael, x) \u2227 GeneralPractitioner(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 476,
+      "gold_label": "entailment",
+      "n_sentences": 7,
+      "n_load_bearing": 6,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 6,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All phones are things.",
+          "fol": "\u2200x (Phone(x) \u2192 Thing(x))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All cell phones are phones.",
+          "fol": "\u2200x (Cellphone(x) \u2192 Phone(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All iPhones are cell phones.",
+          "fol": "\u2200x (Iphone(x) \u2192 Cellphone(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All employees are wage earners.",
+          "fol": "\u2200x (Employee(x) \u2192 WageEarner(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "All wage earners are human.",
+          "fol": "\u2200x (WageEarner(x) \u2192 Human(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "Jack is either an employee or a wage earner.",
+          "fol": "Employee(jack) \u2295 WageEarner(jack)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "Jack is either a human or a phone.",
+          "fol": "Human(jack) \u2295 Phone(jack)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 423,
+      "gold_label": "neutral",
+      "n_sentences": 6,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Everyone at the business conference is either an investor or an entrepreneur.",
+          "fol": "\u2200x (At(x, businessConference) \u2192 (Investor(x) \u2295 Entrepreneur(x)))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "None of those at the business conference who enjoy the opportunity of starting a business prefer a planned economy.",
+          "fol": "\u2200x ((At(x, businessConference) \u2227 Enjoy(x, opportunityOfStartingOwnBusiness)) \u2192 \u00acPrefer(x, plannedEconomy))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All entrepreneurs at the business conference enjoy the opportunity of starting a business.",
+          "fol": "\u2200x ((At(x, businessConference) \u2227 Entrepreneur(x)) \u2192 Enjoy(x, opportunityOfStartingOwnBusiness))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Everyone at the business conference who enjoys state ownership of means of production prefers a planned economy.",
+          "fol": "\u2200x ((At(x, businessConference) \u2227 Enjoy(x, stateOwnershipOfMeansOfProduction)) \u2192 Prefer(x, plannedEconomy))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Everyone at the business conference who is an ardent communist prefers state ownership of the means of production.",
+          "fol": "\u2200x ((At(x, businessConference) \u2227 ArdentCommunist(x)) \u2192 Prefer(x, stateOwnershipOfMeansOfProduction))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "Ho is at the business conference and prefers state ownership of the means of production.",
+          "fol": "At(ho, businessConference) \u2227 Prefer(ho, stateOwnershipOfMeansOfProduction)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 226,
+      "gold_label": "entailment",
+      "n_sentences": 5,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "William Dickinson was a British politician who sat in the House of Commons",
+          "fol": "British(williamDickinson) \u2227 Politician(williamDickinson) \u2227 SatIn(williamDickinson, houseOfCommons)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "William Dickinson attended Westminster school for high school and then the University of Edinburgh.",
+          "fol": "Attended(williamDickinson, westminsterSchool) \u2227 Highschool(westminsterSchool) \u2227 Attended(williamDickinson, universityOfEdinburgh)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "The University of Edinburgh is a university located in the United Kingdom.",
+          "fol": "University(universityOfEdinburgh) \u2227 LocatedIn(universityOfEdinburgh, unitedKingdom)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "William Dickinson supported the Portland Whigs.",
+          "fol": "Supported(williamDickinson, portlandWhigs)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "People who supported the Portland Whigs did not get a seat in the Parliament.",
+          "fol": "\u2200x (Supported(x, portlandWhigs) \u2192 \u00acSatIn(x, parliament))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        }
+      ]
+    },
+    {
+      "story_id": 257,
+      "gold_label": "entailment",
+      "n_sentences": 2,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Some cats are not pets.",
+          "fol": "\u2203x (Cat(x) \u2227 \u00acPet(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All cats are mammals.",
+          "fol": "\u2200x (Cat(x) \u2192 Mammal(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 396,
+      "gold_label": "entailment",
+      "n_sentences": 6,
+      "n_load_bearing": 6,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 6,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "A neuroimaging technique is either an invasive neuroimaging technique or a noninvasive neuroimaging technique.",
+          "fol": "\u2200x (NeuroimagingTechnique(x) \u2192 (Invasive(x) \u2295 Noninvasive(x)))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All noninvasive neuroimaging techniques provide a spatial resolution of brains.",
+          "fol": "\u2200x (Noninvasive(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "If a technique provides a spatial resolution of brains, then it is a measurement of brain activity.",
+          "fol": "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All measurements of brain activity are used by neuroscience researchers.",
+          "fol": "\u2200x (Measure(x, brainActivity) \u2192 UsedBy(x, neuroscienceResearchers))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "FMRI is either a measurement of brain activity or a noninvasive neuroimaging technique.",
+          "fol": "Measure(fMRI, brainActivity) \u2295 Noninvasive(fMRI)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "FMRI is a neuroimaging technique.",
+          "fol": "NeuroimagingTechnique(fMRI)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 327,
+      "gold_label": "contradiction",
+      "n_sentences": 5,
+      "n_load_bearing": 5,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 5,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "No professional basketball players are soccer players.",
+          "fol": "\u2200x (ProfessionalBasketballPlayer(x) \u2192 \u00acProfessionalSoccerPlayer(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All NBA players are professional basketball players.",
+          "fol": "\u2200x (NBAPlayer(x) \u2192 ProfessionalBasketballPlayer(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All soccer defenders are soccer players.",
+          "fol": "\u2200x (ProfessionalSoccerDefender(x) \u2192 ProfessionalSoccerPlayer(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All centerbacks are soccer defenders.",
+          "fol": "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Roger Federer is either both an NBA player and a soccer defender, or neither.",
+          "fol": "\u00ac(NBAPlayer(rogerfederer) \u2295 ProfessionalSoccerDefender(rogerfederer))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 10,
+      "gold_label": "contradiction",
+      "n_sentences": 7,
+      "n_load_bearing": 1,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 1,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Thick as Thieves is a young adult fantasy novel written by Megan Whalen Turner.",
+          "fol": "YoungAdultFantasy(thickAsTheives) \u2227 Novel(thickAsTheives) \u2227 WrittenBy(thickAsTheives, meganWhalenTurner)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Thick as Thieves was published by Greenwillow Books.",
+          "fol": "PublishedBy(thickAsTheives, greenWillowBooks)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "If a book was published by a company, then the author of that book worked with the company that published the book.",
+          "fol": "\u2200x \u2200y \u2200z ((WrittenBy(x, y) \u2227 PublishedBy(x, z)) \u2192 WorkedWith(y, z))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "The fictional Mede Empire is where Thick as Thieves is set.",
+          "fol": "Fictional(medeEmpire) \u2227 SetIn(thickAsTheives, medeEmpire)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "The Mede Empire plots to swallow up some nearby countries.",
+          "fol": "\u2203x \u2203y ((Country(x) \u2227 Near(x, medeEmpire) \u2227 PlotsToSwallowUp(medeEmpire, x)) \u2227 (\u00ac(x=y) \u2227 Near(y, medeEmpire) \u2227 PlotsToSwallowUp(medeEmpire, y)))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "Attolia and Sounis are countries near the Mede Empire.",
+          "fol": "Country(attolia) \u2227 Near(attolia, medeEmpire) \u2227 Country(sounis) \u2227 Near(sounis, medeEmpire)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "Thick as Thieves was sold both as a hardcover and an e-book.",
+          "fol": "SoldAs(thickAsTheives, hardCover) \u2227 SoldAs(thickAsTheives, softCover)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        }
+      ]
+    },
+    {
+      "story_id": 54,
+      "gold_label": "entailment",
+      "n_sentences": 5,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "A roundel is a rounded artillery fortification.",
+          "fol": "\u2200x (Roundel(x) \u2192 (Rounded(x) \u2227 ArtilleryFortification(x)))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "A roundel is not higher than adjacent walls.",
+          "fol": "\u2200x \u2200y ((Roundel(x) \u2227 AdjacentWalls(x,y)) \u2192 \u00acHigher(x, y))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Cannons can be deployed on artillery fortifications.",
+          "fol": "\u2200x (ArtilleryFortification(x) \u2192 DeployCannons(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Roundels are the oldest artillery fortifications.",
+          "fol": "\u2200x \u2200y ((Roundel(x) \u2227 ArtilleryFortification(y)) \u2192 Older(x, y))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Battery towers are artillery fortifications.",
+          "fol": "\u2200x (BatteryTower(x) \u2192 ArtilleryFortification(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 436,
+      "gold_label": "contradiction",
+      "n_sentences": 8,
+      "n_load_bearing": 8,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 8,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All of this brand's products are either produced in China or in the US.",
+          "fol": "\u2200x (ThisBrand(x) \u2227 Product(x) \u2192 (ProducedIn(x, china) \u2295 ProducedIn(x, uS)))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All of this brand's products produced in China are labeled.",
+          "fol": "\u2200x ((ThisBrand(x) \u2227 Product(x) \u2227 ProducedIn(x, china)) \u2192 Labeled(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All of this brand's products produced in the US are sold in the US.",
+          "fol": "\u2200x ((ThisBrand(x) \u2227 Product(x) \u2227 ProducedIn(x, us)) \u2192 SoldIn(x, us))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "The products of this brand that are labeled are cheaper.",
+          "fol": "\u2200x ((ThisBrand(x) \u2227 Product(x) \u2227 Labeled(x)) \u2192 Cheaper(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "All of this brand's products sold in the US are sold at Walmart.",
+          "fol": "\u2200x ((ThisBrand(x) \u2227 Product(x) \u2227 SoldIn(x, us)) \u2192 SoldIn(x, walmart))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "All products of this brand displayed on the homepage are sold at Walmart.",
+          "fol": "\u2200x (ThisBrand(x) \u2227 Product(x) \u2227 DisplayedIn(x, homepage) \u2192 SoldIn(x, walmart))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "None of this brand's products that are returned by customers are sold at Walmart.",
+          "fol": "\u2200x (ThisBrand(x) \u2227 Product(x) \u2227 ReturnedBy(x, customer) \u2192 \u00acSoldIn(x, walmart))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 7,
+          "nl": "G-910 is a product of this brand, and it is either displayed on the homepage and is cheaper, or it is neither displayed on the homepage nor is it cheaper.",
+          "fol": "Product(g910) \u2227 ThisBrand(g910) \u2227 (\u00ac(DisplayedIn(g910, homepage) \u2295 Cheaper(g910)))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 129,
+      "gold_label": "contradiction",
+      "n_sentences": 5,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "The Turing Award has been awarded to Donald Knuth, Marvin Minsky, Richard Hamming, and John McCarthy.",
+          "fol": "AwardedTo(turingAward, donaldKnuth) \u2227 AwardedTo(turingAward, marvinMinsky) \u2227 AwardedTo(turingAward, richardHamming) \u2227 AwardedTo(turingAward, johnMccarthy)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Donald Knuth made contributions to the analysis of algorithms.",
+          "fol": "ContributedTo(donaldKnuth, analysisOfAlgorithms)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Marvin Minsky is recognized for his contributions to the field of artificial intelligence.",
+          "fol": "ContributedTo(marvinMinsky, artificialIntelligence)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Richard Hamming researched numerical methods.",
+          "fol": "ContributedTo(richardHamming, numericalMethods)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "John McCarthy made contributions to the field of artificial intelligence.",
+          "fol": "ContributedTo(johnMccarthy, artificialIntelligence)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        }
+      ]
+    },
+    {
+      "story_id": 320,
+      "gold_label": "contradiction",
+      "n_sentences": 5,
+      "n_load_bearing": 5,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 5,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All cancers have mutations.",
+          "fol": "\u2200x (Cancer(x) \u2192 Have(x, mutation))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "No mutations can be treated at home.",
+          "fol": "\u2200x (Have(x, mutation) \u2192 \u00acCanBeTreatedAtHome(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All colorectal cancers are cancers.",
+          "fol": "\u2200x (ColorectalCancer(x) \u2192 Cancer(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "A cold can be treated at home.",
+          "fol": "\u2200x (Cold(x) \u2192 CanBeTreatedAtHome(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Arthritis either is a cold and has mutations or neither is a cold nor has mutations.",
+          "fol": "\u00ac(Cold(arthritis) \u2295 Have(arthritis, mutation))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 392,
+      "gold_label": "neutral",
+      "n_sentences": 5,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All prime numbers are natural numbers.",
+          "fol": "\u2200x (PrimeNumber(x) \u2192 NaturalNumber(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All integers are real numbers.",
+          "fol": "\u2200x (Integer(x) \u2192 RealNumber(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All real numbers are complex numbers.",
+          "fol": "\u2200x (RealNumber(x) \u2192 ComplexNumber(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "One is a prime number or a natural number or both.",
+          "fol": "PrimeNumber(one) \u2228 NaturalNumber(one)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "If one is not a complex number, then one is a prime number and an integer.",
+          "fol": "\u00acComplexNumber(one) \u2192 (PrimeNumber(one) \u2227 Integer(one))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 320,
+      "gold_label": "contradiction",
+      "n_sentences": 5,
+      "n_load_bearing": 4,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 4,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All cancers have mutations.",
+          "fol": "\u2200x (Cancer(x) \u2192 Have(x, mutation))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "No mutations can be treated at home.",
+          "fol": "\u2200x (Have(x, mutation) \u2192 \u00acCanBeTreatedAtHome(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All colorectal cancers are cancers.",
+          "fol": "\u2200x (ColorectalCancer(x) \u2192 Cancer(x))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "A cold can be treated at home.",
+          "fol": "\u2200x (Cold(x) \u2192 CanBeTreatedAtHome(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Arthritis either is a cold and has mutations or neither is a cold nor has mutations.",
+          "fol": "\u00ac(Cold(arthritis) \u2295 Have(arthritis, mutation))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 476,
+      "gold_label": "contradiction",
+      "n_sentences": 7,
+      "n_load_bearing": 6,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 6,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All phones are things.",
+          "fol": "\u2200x (Phone(x) \u2192 Thing(x))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All cell phones are phones.",
+          "fol": "\u2200x (Cellphone(x) \u2192 Phone(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All iPhones are cell phones.",
+          "fol": "\u2200x (Iphone(x) \u2192 Cellphone(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All employees are wage earners.",
+          "fol": "\u2200x (Employee(x) \u2192 WageEarner(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "All wage earners are human.",
+          "fol": "\u2200x (WageEarner(x) \u2192 Human(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "Jack is either an employee or a wage earner.",
+          "fol": "Employee(jack) \u2295 WageEarner(jack)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "Jack is either a human or a phone.",
+          "fol": "Human(jack) \u2295 Phone(jack)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 341,
+      "gold_label": "contradiction",
+      "n_sentences": 5,
+      "n_load_bearing": 4,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 4,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "No battery-powered watch is automatic.",
+          "fol": "\u2200x (BatteryPoweredWatch(x) \u2192 \u00acAutomaticWatch(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All digital watches are battery-powered.",
+          "fol": "\u2200x (DigitalWatch(x) \u2192 BatteryPoweredWatch(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Some mechanical watches are automatic.",
+          "fol": "\u2203x (MechanicalWatch(x) \u2227 AutomaticWatch(x))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All smart watches are digital.",
+          "fol": "\u2200x (SmartWatch(x) \u2192 DigitalWatch(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Moonwatch is either a digital watch and an automatic, or it is neither.",
+          "fol": "\u00ac(DigitalWatch(moonwatch) \u2295 AutomaticWatch(moonwatch))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 251,
+      "gold_label": "neutral",
+      "n_sentences": 4,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "To get a job at Google, you need to have a lot of work experience or a good education.",
+          "fol": "\u2200x (GetAJobAt(x, google) \u2192 Have(x, aLotOfWorkExperience) \u2228 Have(x, goodEducation))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "One needs to submit their resume to Google to get a job there.",
+          "fol": "\u2200x (GetAJobAt(x, google) \u2192 Submitted(x, resume, google))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "John has a lot of work experience.",
+          "fol": "Have(john, aLotOfWorkExperience)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "John submitted his resume to Google and got a job there.",
+          "fol": "Submitted(john, resume, google) \u2227 GetAJobAt(john, google)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 396,
+      "gold_label": "contradiction",
+      "n_sentences": 6,
+      "n_load_bearing": 6,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 6,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "A neuroimaging technique is either an invasive neuroimaging technique or a noninvasive neuroimaging technique.",
+          "fol": "\u2200x (NeuroimagingTechnique(x) \u2192 (Invasive(x) \u2295 Noninvasive(x)))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All noninvasive neuroimaging techniques provide a spatial resolution of brains.",
+          "fol": "\u2200x (Noninvasive(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "If a technique provides a spatial resolution of brains, then it is a measurement of brain activity.",
+          "fol": "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All measurements of brain activity are used by neuroscience researchers.",
+          "fol": "\u2200x (Measure(x, brainActivity) \u2192 UsedBy(x, neuroscienceResearchers))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "FMRI is either a measurement of brain activity or a noninvasive neuroimaging technique.",
+          "fol": "Measure(fMRI, brainActivity) \u2295 Noninvasive(fMRI)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "FMRI is a neuroimaging technique.",
+          "fol": "NeuroimagingTechnique(fMRI)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 196,
+      "gold_label": "contradiction",
+      "n_sentences": 4,
+      "n_load_bearing": 1,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 1,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "ETS develops various standardized tests primarily in the United States for K-12 and higher education.",
+          "fol": "\u2203x \u2203y (Develop(eTS, x) \u2227 Develop(eTS, y) \u2227 StandardizedTest(x) \u2227 StandardizedTest(y) \u2227 In(x, unitedState) \u2227 In(y, unitedState) \u2227 For(x, k12AndHigherEducation) \u2227 For(y, k12AndHigherEducation))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "ETS administers international tests, including the TOEFL, TOEIC, GRE, and subject tests.",
+          "fol": "\u2203x (Administer(eTS, x) \u2227 InternationalTest(x) \u2227 (TOEFL(x) \u2228 TOEIC(x) \u2228 GRE(x) \u2228 SubjectTest(x)))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Many of the assessments ETS develops are associated with entry to the US tertiary and quaternary education institutions.",
+          "fol": "\u2203x (Develop(eTS, x) \u2227 AssociatedWith(x, entryToUSEducationInstitution))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "ETS also develops K-12 statewide assessments used for accountability testing in many states.",
+          "fol": "\u2203x (Develop(eTS, x) \u2227 StateWideAssesment(x) \u2227 UsedFor(x, accountabilityTesting))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        }
+      ]
+    },
+    {
+      "story_id": 21,
+      "gold_label": "entailment",
+      "n_sentences": 6,
+      "n_load_bearing": 3,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 3,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "The Golden State Warriors are a team from San Francisco.",
+          "fol": "Team(goldenStateWarriors) \u2227 From(goldenStateWarriors, sanFrancisco)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "The Golden State Warriors won the NBA finals.",
+          "fol": "Won(goldenStateWarriors, nbaFinals)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "All teams attending the NBA finals have won many games.",
+          "fol": "\u2200x ((Team(x) \u2227 Attending(x, nbaFinals)) \u2192 WonManyGames(x))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Boston Celtics are a team that lost the NBA finals.",
+          "fol": "Team(bostonCeltics) \u2227 Lost(bostonCeltics, nbaFinals)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "If a team wins the NBA finals, then they will have more income.",
+          "fol": "\u2200x ((Team(x) \u2227 Won(x, nbaFinals)) \u2192 MoreIncome(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "If a team wins or loses at the NBA finals, then they are attending the finals.",
+          "fol": "\u2200x ((Won(x, nbaFinals) \u2228 Lost(x, nbaFinals)) \u2192 Attending(x, nbaFinals))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        }
+      ]
+    },
+    {
+      "story_id": 67,
+      "gold_label": "neutral",
+      "n_sentences": 7,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "If an album is written by a rock band, then the genre of the album is rock.",
+          "fol": "\u2200x \u2200y \u2200z (AlbumByBand(x, y) \u2227 RockBand(y, z) \u2192 Genre(x, rock))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "If a band writes an album winning an award, then this band wins this award.",
+          "fol": "\u2200x \u2200y \u2200z (AlbumByBand(x, y) \u2227 AlbumAward(x, z) \u2192 RockBandAward(y, z))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Trouble at the Henhouse is an album by The Tragically Hip.",
+          "fol": "AlbumByBand(trouble_at_the_Henhouse, the_Tragically_Hip)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "The Tragically Hip is a Canadian rock band.",
+          "fol": "RockBand(the_Tragically_Hip, canada)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "The song \"Butts Wigglin'\" is in Trouble at the Henhouse.",
+          "fol": "SongInAlbum(butts_Wigglin, trouble_at_the_Henhouse)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "Trouble at the Henhouse won the Album of the Year award.",
+          "fol": "AlbumAward(trouble_at_the_Henhouse, the_Album_of_the_Year)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "A song in Trouble at the Henhouse appeared in a film.",
+          "fol": "\u2203x (SongInFilm(x) \u2227 SongInAlbum(x, trouble_at_the_Henhouse))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 29,
+      "gold_label": "contradiction",
+      "n_sentences": 4,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Gasteren is a village located in the province of Drenthe.",
+          "fol": "Village(gasteren) \u2227 Province(drenthe) \u2227 In(gasteren, drenthe)",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Drenthe is a Dutch province.",
+          "fol": "Province(drenthe) \u2227 In(drenthe, netherlands)",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "No cities are villages.",
+          "fol": "\u2200x (City(x) \u2192 \u00acVillage(x))",
+          "is_load_bearing": true,
+          "full_label": "contradiction",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "The population of a village in Drenthe was 155 people.",
+          "fol": "\u2203x (Population(x, num155) \u2227 Village(x) \u2227 In(x, drenthe))",
+          "is_load_bearing": false,
+          "full_label": "contradiction",
+          "reduced_label": "contradiction"
+        }
+      ]
+    },
+    {
+      "story_id": 71,
+      "gold_label": "neutral",
+      "n_sentences": 6,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Herodicus was a Greek physician, dietician, sophist, and gymnast.",
+          "fol": "Greek(herodicus) \u2227 Physician(herodicus) \u2227 Dietician(herodicus) \u2227 Sophist(herodicus) \u2227 Gymnast(herodicus)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Herodicus was born in the city of Selymbria.",
+          "fol": "Born(herodicus, selymbia) \u2227 City(selymbia)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Selymbria is a colony of the city-state Megara.",
+          "fol": "Colony(selymbia, megara) \u2227 CityState(megara)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "One of the tutors of Hippocrates was Herodicus.",
+          "fol": "Tutor(herodicus, hippocrates)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Massages were recommended by Herodicus.",
+          "fol": "Recommend(herodicus, massages)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "Some of the theories of Herodicus are considered to be the foundation of sports medicine.",
+          "fol": "\u2203x \u2203y (Theory(x) \u2227 From(x, herodicus) \u2227 FoundationOf(x, sportsMedicine) \u2227 (\u00ac(x=y)) \u2227 Theory(y) \u2227 From(y, herodicus) \u2227 FoundationOf(y, sportsMedicine))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 32,
+      "gold_label": "entailment",
+      "n_sentences": 4,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Hugh Vanstone is one of the world's leading lighting designers.",
+          "fol": "WorldLeadingLightingDesigner(hughVanstone)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Hugh Vanstone is from the UK.",
+          "fol": "From(hughVanstone, unitedKingdom)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Hugh Vanstone has lit more than 160 productions.",
+          "fol": "\u2203x(GreaterThan(x, num160) \u2227 LitProductions(hughVanstone,x))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Hugh Vanstone attended a school where he is from.",
+          "fol": "\u2203x(Hometown(hughVanstone,x) \u2227 AttendedSchoolIn(hughVanstone,x))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        }
+      ]
+    },
+    {
+      "story_id": 41,
+      "gold_label": "entailment",
+      "n_sentences": 5,
+      "n_load_bearing": 4,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 4,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Federico Garcia Lorca was a talented Spanish poet, and he supported the Popular Front.",
+          "fol": "TalentedPoet(lorca) \u2227 Support(lorca, populists)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "The Spanish Nationalists opposed anyone who supported the Popular Front",
+          "fol": "\u2200x (Support(x, populists) \u2192 Opposed(nationalists, x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Talented poets are popular.",
+          "fol": "\u2200x (TalentedPoet(x) \u2192 Popular(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Spanish Nationalists killed anyone who they opposed and who was popular.",
+          "fol": "\u2200x ((Opposed(nationalists, x) \u2227 Popular(x)) \u2192 Killed(nationalists, x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Daniel supported the Popular Front but was not popular.",
+          "fol": "Support(daniel, populists) \u2227 (\u00acPopular(daniel))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        }
+      ]
+    },
+    {
+      "story_id": 341,
+      "gold_label": "entailment",
+      "n_sentences": 5,
+      "n_load_bearing": 4,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 4,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "No battery-powered watch is automatic.",
+          "fol": "\u2200x (BatteryPoweredWatch(x) \u2192 \u00acAutomaticWatch(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "All digital watches are battery-powered.",
+          "fol": "\u2200x (DigitalWatch(x) \u2192 BatteryPoweredWatch(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Some mechanical watches are automatic.",
+          "fol": "\u2203x (MechanicalWatch(x) \u2227 AutomaticWatch(x))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "All smart watches are digital.",
+          "fol": "\u2200x (SmartWatch(x) \u2192 DigitalWatch(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "Moonwatch is either a digital watch and an automatic, or it is neither.",
+          "fol": "\u00ac(DigitalWatch(moonwatch) \u2295 AutomaticWatch(moonwatch))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 123,
+      "gold_label": "entailment",
+      "n_sentences": 4,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Businesses are either sanctioned or unsanctioned.",
+          "fol": "\u2200x (Buisness(x) \u2192 Sanctioned(x) \u2295 \u00acSanctioned(x))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Sanctioned businesses are limited.",
+          "fol": "\u2200x (Buisness(x) \u2227 Sanctioned(x) \u2192 Limited(x))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Unsanctioned businesses are free.",
+          "fol": "\u2200x (Buisness(x) \u2227 \u00acSanctioned(x) \u2192 Free(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "The Crude Oil Data Exchange is a business that isn't free.",
+          "fol": "Buisness(crudeOilDataExchange) \u2227 \u00acFree(crudeOilDataExchange)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 267,
+      "gold_label": "entailment",
+      "n_sentences": 2,
+      "n_load_bearing": 2,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 2,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "All juvenile delinquents have committed a crime.",
+          "fol": "\u2200x (JuvenileDelinquent(x) \u2192 Commited(x, crime))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "Some juvenile delinquents are products of broken homes.",
+          "fol": "\u2203x \u2203y (JuvenileDelinquent(x) \u2227 JuvenileDelinquent(y) \u2227 ProductOf(x, brokenHome) \u2227 ProductOf(y, brokenHome) \u2227 \u00ac(x=y))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 226,
+      "gold_label": "entailment",
+      "n_sentences": 5,
+      "n_load_bearing": 1,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 1,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "William Dickinson was a British politician who sat in the House of Commons",
+          "fol": "British(williamDickinson) \u2227 Politician(williamDickinson) \u2227 SatIn(williamDickinson, houseOfCommons)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "William Dickinson attended Westminster school for high school and then the University of Edinburgh.",
+          "fol": "Attended(williamDickinson, westminsterSchool) \u2227 Highschool(westminsterSchool) \u2227 Attended(williamDickinson, universityOfEdinburgh)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "The University of Edinburgh is a university located in the United Kingdom.",
+          "fol": "University(universityOfEdinburgh) \u2227 LocatedIn(universityOfEdinburgh, unitedKingdom)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "William Dickinson supported the Portland Whigs.",
+          "fol": "Supported(williamDickinson, portlandWhigs)",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "People who supported the Portland Whigs did not get a seat in the Parliament.",
+          "fol": "\u2200x (Supported(x, portlandWhigs) \u2192 \u00acSatIn(x, parliament))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        }
+      ]
+    },
+    {
+      "story_id": 482,
+      "gold_label": "neutral",
+      "n_sentences": 7,
+      "n_load_bearing": 0,
+      "has_load_bearing": false,
+      "vacuous_replacement_flips": 0,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "If someone in Potterville yells, then they are not cool.",
+          "fol": "\u2200x (In(x, potterville) \u2227 Yell(x) \u2192 \u00acCool(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "If someone in Potterville is angry, then they yell.",
+          "fol": "\u2200x (In(x, potterville) \u2227 Angry(x) \u2192 Yell(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "If someone in Potterville flies, then they are cool.",
+          "fol": "\u2200x (In(x, potterville) \u2227 Fly(x) \u2192 Cool(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Every person in Potterville that knows magic flies.",
+          "fol": "\u2200x (In(x, potterville) \u2227 Know(x, magic) \u2192 Fly(x))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "All wizards in Potterville know magic.",
+          "fol": "\u2200x (In(x, potterville) \u2227 Wizard(x) \u2192 Know(x, magic))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 5,
+          "nl": "Harry, who lives in Potterville either yells or flies.",
+          "fol": "In(harry, potterville) \u2227 (Yell(harry) \u2295 Fly(harry))",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 6,
+          "nl": "Potter, who lives in Potterville, is a wizard and flies.",
+          "fol": "Wizard(potter) \u2227 Fly(potter)",
+          "is_load_bearing": false,
+          "full_label": "neutral",
+          "reduced_label": "neutral"
+        }
+      ]
+    },
+    {
+      "story_id": 420,
+      "gold_label": "entailment",
+      "n_sentences": 5,
+      "n_load_bearing": 4,
+      "has_load_bearing": true,
+      "vacuous_replacement_flips": 4,
+      "sentences": [
+        {
+          "sentence_idx": 0,
+          "nl": "Some people are both late-night and early-morning people.",
+          "fol": "\u2203x (LateNightPerson(x) \u2227 EarlyMorningPerson(x))",
+          "is_load_bearing": false,
+          "full_label": "entailment",
+          "reduced_label": "entailment"
+        },
+        {
+          "sentence_idx": 1,
+          "nl": "If a person is an earl- morning person, they have early-morning habits.",
+          "fol": "\u2200x (EarlyMorningPerson(x) \u2192 Have(x, earlyMorningHabit))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 2,
+          "nl": "Everyone who has early-morning habits gets up early.",
+          "fol": "\u2200x (Have(x, earlyMorningHabit) \u2192 GetUpEarly(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 3,
+          "nl": "Everyone who gets up early catches the sunrise.",
+          "fol": "\u2200x (GetUpEarly(x) \u2192 CatchTheSunrise(x))",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        },
+        {
+          "sentence_idx": 4,
+          "nl": "James doesn't catch the sunrise.",
+          "fol": "\u00acCatchTheSunrise(james)",
+          "is_load_bearing": true,
+          "full_label": "entailment",
+          "reduced_label": "neutral"
+        }
+      ]
+    }
+  ]
+}

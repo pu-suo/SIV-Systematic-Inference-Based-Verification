@@ -1,0 +1,291 @@
+{
+  "sample_size": 200,
+  "total_tests": 378,
+  "total_correct": 321,
+  "overall_detection_rate": 0.8492063492063492,
+  "gate_pass": true,
+  "per_operator": {
+    "B_arg_swap": {
+      "applicable": 122,
+      "correct_ordering": 120,
+      "same_score": 2,
+      "higher_score": 0,
+      "detection_rate": 0.9836065573770492,
+      "avg_perturbed_recall": 0.12955373406193083
+    },
+    "B_restrictor_drop": {
+      "applicable": 38,
+      "correct_ordering": 0,
+      "same_score": 38,
+      "higher_score": 0,
+      "detection_rate": 0.0,
+      "avg_perturbed_recall": 1.0
+    },
+    "B_restrictor_add": {
+      "applicable": 95,
+      "correct_ordering": 95,
+      "same_score": 0,
+      "higher_score": 0,
+      "detection_rate": 1.0,
+      "avg_perturbed_recall": 0.004210526315789474
+    },
+    "B_scope_flip": {
+      "applicable": 3,
+      "correct_ordering": 0,
+      "same_score": 3,
+      "higher_score": 0,
+      "detection_rate": 0.0,
+      "avg_perturbed_recall": 1.0
+    },
+    "B_quantifier_swap": {
+      "applicable": 120,
+      "correct_ordering": 106,
+      "same_score": 14,
+      "higher_score": 0,
+      "detection_rate": 0.8833333333333333,
+      "avg_perturbed_recall": 0.12000000000000001
+    }
+  },
+  "failures": [
+    {
+      "nl": "All of Emily's friends who are award-winning novelists publish journals.",
+      "gold_fol": "\u2200x (EmilysFriend(x) \u2227 AwardWinningNovelist(x) \u2192 Publish(x, journal))",
+      "perturbed_fol": "all x.(EmilysFriend(x) -> Publish(x,journal))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "Some pets are rabbits.",
+      "gold_fol": "\u2203x (Pet(x) \u2227 Rabbit(x))",
+      "perturbed_fol": "all x.(Pet(x) & Rabbit(x))",
+      "operator": "B_quantifier_swap",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "All students learning piano can strike the right notes.",
+      "gold_fol": "\u2200x (Student(x) \u2227 LearningPiano(x) \u2192 Can(x, strike, rightNote))",
+      "perturbed_fol": "all x.(Student(x) -> Can(x,strike,rightNote))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "None of the classrooms in William L. Harkness Hall are private study spots.",
+      "gold_fol": "\u2200x (ClassroomIn(x, williamLHarknessHall) \u2227 \u00acPrivateStudySpot(x))",
+      "perturbed_fol": "all x.(ClassroomIn(williamLHarknessHall,x) & -PrivateStudySpot(x))",
+      "operator": "B_arg_swap",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "All animals displayed in the collection are multicellular.",
+      "gold_fol": "\u2200x (DisplayedIn(x, collection) \u2227 Animal(x) \u2192 Multicellular(x))",
+      "perturbed_fol": "all x.(DisplayedIn(x,collection) -> Multicellular(x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "Every person in Potterville that knows magic flies.",
+      "gold_fol": "\u2200x (In(x, potterville) \u2227 Know(x, magic) \u2192 Fly(x))",
+      "perturbed_fol": "all x.(In(x,potterville) -> Fly(x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "Joe owns an item from Quiksilver.",
+      "gold_fol": "\u2203x (Sells(quiksilver, x) \u2227 Owns(joe, x))",
+      "perturbed_fol": "all x.(Sells(quiksilver,x) & Owns(joe,x))",
+      "operator": "B_quantifier_swap",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "All touring musicians who perform at the New Haven Symphony Orchestra have tempo",
+      "gold_fol": "\u2200x ((PerformAt(x, newHavenSymphonyOrchestra) \u2227 TouringMusicians(x)) \u2192 HaveTemporaryRoleAt(x, theOrchestra))",
+      "perturbed_fol": "all x.(PerformAt(x,newHavenSymphonyOrchestra) -> HaveTemporaryRoleAt(x,theOrchestra))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "Speedways that are still being used have races held at them.",
+      "gold_fol": "\u2200x (Speedway(x) \u2227 StillUsed(x) \u2192 Have(races, heldAt, x))",
+      "perturbed_fol": "all x.(Speedway(x) -> Have(races,heldAt,x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "If something is a big animal, then it will eat a lot.",
+      "gold_fol": "\u2200x (Big(x) \u2227 Animal(x) \u2192 EatALot(x))",
+      "perturbed_fol": "all x.(Big(x) -> EatALot(x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "Paid Software is not under the GNU General Public License.",
+      "gold_fol": "\u2200x (Paid(x) \u2227 Software(x) \u2192 \u00acUnderGNULicense(x))",
+      "perturbed_fol": "all x.(Paid(x) -> -UnderGNULicense(x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "All science fiction that Dan knows comes from an imaginative process.",
+      "gold_fol": "\u2200x ((Knows(dan, x) \u2227 ScienceFiction(x)) \u2192 ImaginativeProcess(x))",
+      "perturbed_fol": "all x.(Knows(dan,x) -> ImaginativeProcess(x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "Some customers go to cinemas every week.",
+      "gold_fol": "\u2203x (CinemaEveryWeek(x))",
+      "perturbed_fol": "all x.CinemaEveryWeek(x)",
+      "operator": "B_quantifier_swap",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "The actor playing Thomas Jefferson won the best actor award.",
+      "gold_fol": "\u2203x (Actor(x) \u2227 PlaysIn(x, thomasJefferson, hamilton) \u2227 Wins(x, bestActorAward))",
+      "perturbed_fol": "all x.(Actor(x) & PlaysIn(x,thomasJefferson,hamilton) & Wins(x,bestActorAward))",
+      "operator": "B_quantifier_swap",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "If a musician is not famous, that musician will not make a lot of money.",
+      "gold_fol": "\u2200x (Musician(x) \u2227 \u00acFamous(x) \u2192 \u00acMakeALotOfMoney(x))",
+      "perturbed_fol": "all x.(Musician(x) -> -MakeALotOfMoney(x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "None of the customers who are rewarded with a $30 gift card are older than 80.",
+      "gold_fol": "\u2200x ((Customer(x) \u2227 RewardWith(x, giftCard)) \u2192 (\u00acOlderThan(x, num80)))",
+      "perturbed_fol": "all x.(Customer(x) -> -OlderThan(x,num80))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "All apples that grow in Ben's yard are red fruits.",
+      "gold_fol": "\u2200x (GrownIn(x, benSYard) \u2227 Is(x, apple) \u2192 RedFruit(x))",
+      "perturbed_fol": "all x.(GrownIn(x,benSYard) -> RedFruit(x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "If people in this midwest town compete in horse dressage shows, then they have i",
+      "gold_fol": "\u2200x (InThisMidwestTown(x) \u2227 CompeteIn(x, horseDressageShow) \u2192 InvestedIn(x, equestrianGearAndEquipment))",
+      "perturbed_fol": "all x.(InThisMidwestTown(x) -> InvestedIn(x,equestrianGearAndEquipment))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "All devices with the company logo belong to the company.",
+      "gold_fol": "\u2200x ((Devices(x) \u2227 With(x, companyLogo)) \u2192 BelongTo(x, company))",
+      "perturbed_fol": "all x.(Devices(x) -> BelongTo(x,company))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "The products of this brand that are labeled are cheaper.",
+      "gold_fol": "\u2200x ((ThisBrand(x) \u2227 Product(x) \u2227 Labeled(x)) \u2192 Cheaper(x))",
+      "perturbed_fol": "all x.((ThisBrand(x) & Product(x)) -> Cheaper(x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "Elephantopus is widespread over much of Africa, southern Asia, Australia, and th",
+      "gold_fol": "\u2203x \u2203y \u2203z(Elephantopus(x) \u2227 In(x,africa) \u2227 (\u00ac(x=y)) \u2227 Elephantopus(y) \u2227 In(y, southernasia) \u2227 (\u00ac(x=z)) \u2227 (\u00ac(y=z)) \u2227 Eleph",
+      "perturbed_fol": "all x.exists y z.(Elephantopus(x) & In(x,africa) & -(x = y) & Elephantopus(y) & In(y,southernasia) & -(x = z) & -(y = z)",
+      "operator": "B_quantifier_swap",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "An Olympian is a person who trains for an Olympic sport and goes to the Olympics",
+      "gold_fol": "\u2200x ((DoesOlympicSport(x) \u2227 GoesToOlympicGames(x)) \u2192 Olympian(x))",
+      "perturbed_fol": "all x.(DoesOlympicSport(x) -> Olympian(x))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "Some living things are trees.",
+      "gold_fol": "\u2203x \u2203y (Living(x) \u2227 Living(y) \u2227 Tree(x) \u2227 Tree(y) \u2227 \u00ac(x=y))",
+      "perturbed_fol": "all x.exists y.(Living(x) & Living(y) & Tree(x) & Tree(y) & -(x = y))",
+      "operator": "B_quantifier_swap",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "All of this brand's products sold in the US are sold at Walmart.",
+      "gold_fol": "\u2200x ((ThisBrand(x) \u2227 Product(x) \u2227 SoldIn(x, us)) \u2192 SoldIn(x, walmart))",
+      "perturbed_fol": "all x.((ThisBrand(x) & Product(x)) -> SoldIn(x,walmart))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "All of the pets in my house are either dead or alive.",
+      "gold_fol": "\u2200x (Pet(x) \u2227 In(x, myHouse) \u2192 Dead(x) \u2295 Alive(x))",
+      "perturbed_fol": "all x.(Pet(x) -> ((Dead(x) & -Alive(x)) | (-Dead(x) & Alive(x))))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "If a movie is popular, some people enjoy watching it.",
+      "gold_fol": "\u2200x (Movie(x) \u2227 Popular(x) \u2192 \u2203y \u2203z (Person(y) \u2227 EnjoyWatching(y, x) \u2227 Person(z) \u2227 EnjoyWatching(z, x) \u2227 \u00ac(y=z)))",
+      "perturbed_fol": "all x.(Movie(x) -> exists y z.(Person(y) & EnjoyWatching(y,x) & Person(z) & EnjoyWatching(z,x) & -(y = z)))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "If a movie is popular, some people enjoy watching it.",
+      "gold_fol": "\u2200x (Movie(x) \u2227 Popular(x) \u2192 \u2203y \u2203z (Person(y) \u2227 EnjoyWatching(y, x) \u2227 Person(z) \u2227 EnjoyWatching(z, x) \u2227 \u00ac(y=z)))",
+      "perturbed_fol": "exists y.all x.((Movie(x) & Popular(x)) -> exists z.(Person(y) & EnjoyWatching(y,x) & Person(z) & EnjoyWatching(z,x) & -",
+      "operator": "B_scope_flip",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "All students in the class that enjoy conducting experiments are good at planning",
+      "gold_fol": "\u2200x ((StudentInTheClass(x) \u2227 Enjoy(x, conductingExperiment)) \u2192 GoodAt(x, planning))",
+      "perturbed_fol": "all x.(StudentInTheClass(x) -> GoodAt(x,planning))",
+      "operator": "B_restrictor_drop",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "In December 1999, an earthquake struck Luzon.",
+      "gold_fol": "\u2203x (Earthquake(x) \u2227 StrikeInYr(x, year1999) \u2227 StrikeInMo(x, december) \u2227 StrikeInCity(x, luzon))",
+      "perturbed_fol": "all x.(Earthquake(x) & StrikeInYr(x,year1999) & StrikeInMo(x,december) & StrikeInCity(x,luzon))",
+      "operator": "B_quantifier_swap",
+      "recall": 1.0,
+      "issue": "same_score"
+    },
+    {
+      "nl": "Some superheroes speak both English and Spanish.",
+      "gold_fol": "\u2203x (Superhero(x) \u2192 (Speak(x, english) \u2227 Speak(x, spanish)))",
+      "perturbed_fol": "all x.(Superhero(x) -> (Speak(x,english) & Speak(x,spanish)))",
+      "operator": "B_quantifier_swap",
+      "recall": 1.0,
+      "issue": "same_score"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "scored_total": 1577,
+  "perfect_recall": 1577,
+  "imperfect_recall": 0,
+  "score_errors": 0,
+  "perfect_rate": 1.0,
+  "gate_pass": true,
+  "imperfect_details": []
+}

@@ -1,0 +1,2359 @@
+[
+  {
+    "candidate_id": "C001",
+    "story_id": 374,
+    "example_id": 997,
+    "sentence_idx": 0,
+    "nl": "All functions that represent straight lines on the coordinate plane are linear functions.",
+    "gold_fol": "\u2200x (Function(x) \u2227 RepresentOn(x, straightLine, coordinatePlane) \u2192 LinearFunction(x))",
+    "perturbed_fol": "\u2203x (Function(x) \u2228 \u00acRepresentOn(x, straightLine, coordinatePlane) \u2192 LinearFunction(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Function(x) \u2227 RepresentOn(x, straightLine, coordinatePlane) \u2192 LinearFunction(x))",
+      "\u2200x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+      "\u2200x (Function(x) \u2192 NonConvexFunction(x) \u2295 ConvexFunction(x))",
+      "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+      "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+      "Function(maximumOfQuasiConvexFunction)",
+      "(Function(maximumOfQuasiConvexFunction) \u2227 RepresentOn(maximumOfQuasiConvexFunction, straightLine, coordinatePlane)) \u2228 ConvexFunction(maximumOfQuasiConvexFunction) \u2228 \u00acNonConvexFunction(maximumOfQuasiConvexFunction)"
+    ],
+    "conclusion_fol": "\u00acRealValuedFunction(maximumOfQuasiConvexFunction)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C002",
+    "story_id": 374,
+    "example_id": 997,
+    "sentence_idx": 1,
+    "nl": "No linear functions are non-convex functions.",
+    "gold_fol": "\u2200x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+    "perturbed_fol": "\u2203x (\u00acLinearFunction(x) \u2194 \u00acNonConvexFunction(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Function(x) \u2227 RepresentOn(x, straightLine, coordinatePlane) \u2192 LinearFunction(x))",
+      "\u2200x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+      "\u2200x (Function(x) \u2192 NonConvexFunction(x) \u2295 ConvexFunction(x))",
+      "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+      "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+      "Function(maximumOfQuasiConvexFunction)",
+      "(Function(maximumOfQuasiConvexFunction) \u2227 RepresentOn(maximumOfQuasiConvexFunction, straightLine, coordinatePlane)) \u2228 ConvexFunction(maximumOfQuasiConvexFunction) \u2228 \u00acNonConvexFunction(maximumOfQuasiConvexFunction)"
+    ],
+    "conclusion_fol": "\u00acRealValuedFunction(maximumOfQuasiConvexFunction)",
+    "expected_categories": [
+      "quantifier-scope",
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "restrictor-content"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C003",
+    "story_id": 374,
+    "example_id": 997,
+    "sentence_idx": 2,
+    "nl": "A function is either a non-convex fuction or a convex function.",
+    "gold_fol": "\u2200x (Function(x) \u2192 NonConvexFunction(x) \u2295 ConvexFunction(x))",
+    "perturbed_fol": "\u2203x (Function(x) \u2194 NonConvexFunction(x) \u2295 \u00acConvexFunction(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Function(x) \u2227 RepresentOn(x, straightLine, coordinatePlane) \u2192 LinearFunction(x))",
+      "\u2200x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+      "\u2200x (Function(x) \u2192 NonConvexFunction(x) \u2295 ConvexFunction(x))",
+      "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+      "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+      "Function(maximumOfQuasiConvexFunction)",
+      "(Function(maximumOfQuasiConvexFunction) \u2227 RepresentOn(maximumOfQuasiConvexFunction, straightLine, coordinatePlane)) \u2228 ConvexFunction(maximumOfQuasiConvexFunction) \u2228 \u00acNonConvexFunction(maximumOfQuasiConvexFunction)"
+    ],
+    "conclusion_fol": "\u00acRealValuedFunction(maximumOfQuasiConvexFunction)",
+    "expected_categories": [
+      "polarity",
+      "quantifier-scope",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "connective-polarity",
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C004",
+    "story_id": 374,
+    "example_id": 997,
+    "sentence_idx": 3,
+    "nl": "All quasi-convex functions are real-valued functions.",
+    "gold_fol": "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+    "perturbed_fol": "\u2203x (\u00acQuasiConvexFunction(x) \u2194 RealValuedFunction(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Function(x) \u2227 RepresentOn(x, straightLine, coordinatePlane) \u2192 LinearFunction(x))",
+      "\u2200x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+      "\u2200x (Function(x) \u2192 NonConvexFunction(x) \u2295 ConvexFunction(x))",
+      "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+      "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+      "Function(maximumOfQuasiConvexFunction)",
+      "(Function(maximumOfQuasiConvexFunction) \u2227 RepresentOn(maximumOfQuasiConvexFunction, straightLine, coordinatePlane)) \u2228 ConvexFunction(maximumOfQuasiConvexFunction) \u2228 \u00acNonConvexFunction(maximumOfQuasiConvexFunction)"
+    ],
+    "conclusion_fol": "\u00acRealValuedFunction(maximumOfQuasiConvexFunction)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C005",
+    "story_id": 374,
+    "example_id": 997,
+    "sentence_idx": 4,
+    "nl": "All convex functions are quasi-convex functions.",
+    "gold_fol": "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+    "perturbed_fol": "\u2203x (\u00acConvexFunction(x) \u2194 QuasiConvexFunction(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Function(x) \u2227 RepresentOn(x, straightLine, coordinatePlane) \u2192 LinearFunction(x))",
+      "\u2200x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+      "\u2200x (Function(x) \u2192 NonConvexFunction(x) \u2295 ConvexFunction(x))",
+      "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+      "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+      "Function(maximumOfQuasiConvexFunction)",
+      "(Function(maximumOfQuasiConvexFunction) \u2227 RepresentOn(maximumOfQuasiConvexFunction, straightLine, coordinatePlane)) \u2228 ConvexFunction(maximumOfQuasiConvexFunction) \u2228 \u00acNonConvexFunction(maximumOfQuasiConvexFunction)"
+    ],
+    "conclusion_fol": "\u00acRealValuedFunction(maximumOfQuasiConvexFunction)",
+    "expected_categories": [
+      "quantifier-scope",
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C006",
+    "story_id": 374,
+    "example_id": 997,
+    "sentence_idx": 5,
+    "nl": "The maximum of quasiconvex functions is a function.",
+    "gold_fol": "Function(maximumOfQuasiConvexFunction)",
+    "perturbed_fol": "\u00acFunction(maximumOfQuasiConvexFunction)",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Function(x) \u2227 RepresentOn(x, straightLine, coordinatePlane) \u2192 LinearFunction(x))",
+      "\u2200x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+      "\u2200x (Function(x) \u2192 NonConvexFunction(x) \u2295 ConvexFunction(x))",
+      "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+      "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+      "Function(maximumOfQuasiConvexFunction)",
+      "(Function(maximumOfQuasiConvexFunction) \u2227 RepresentOn(maximumOfQuasiConvexFunction, straightLine, coordinatePlane)) \u2228 ConvexFunction(maximumOfQuasiConvexFunction) \u2228 \u00acNonConvexFunction(maximumOfQuasiConvexFunction)"
+    ],
+    "conclusion_fol": "\u00acRealValuedFunction(maximumOfQuasiConvexFunction)",
+    "expected_categories": [
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C007",
+    "story_id": 374,
+    "example_id": 997,
+    "sentence_idx": 6,
+    "nl": "The maximum of quasiconvex functions is a function that represents straight lines on the coordinate plane or it is a convex function or it is not a non-convex function.",
+    "gold_fol": "(Function(maximumOfQuasiConvexFunction) \u2227 RepresentOn(maximumOfQuasiConvexFunction, straightLine, coordinatePlane)) \u2228 ConvexFunction(maximumOfQuasiConvexFunction) \u2228 \u00acNonConvexFunction(maximumOfQuasiConvexFunction)",
+    "perturbed_fol": "(Function(coordinatePlane) \u2228 RepresentOn(coordinatePlane, straightLine, maximumOfQuasiConvexFunction)) \u2228 \u00acConvexFunction(coordinatePlane) \u2228 \u00acNonConvexFunction(coordinatePlane)",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Function(x) \u2227 RepresentOn(x, straightLine, coordinatePlane) \u2192 LinearFunction(x))",
+      "\u2200x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+      "\u2200x (Function(x) \u2192 NonConvexFunction(x) \u2295 ConvexFunction(x))",
+      "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+      "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+      "Function(maximumOfQuasiConvexFunction)",
+      "(Function(maximumOfQuasiConvexFunction) \u2227 RepresentOn(maximumOfQuasiConvexFunction, straightLine, coordinatePlane)) \u2228 ConvexFunction(maximumOfQuasiConvexFunction) \u2228 \u00acNonConvexFunction(maximumOfQuasiConvexFunction)"
+    ],
+    "conclusion_fol": "\u00acRealValuedFunction(maximumOfQuasiConvexFunction)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C008",
+    "story_id": 317,
+    "example_id": 800,
+    "sentence_idx": 0,
+    "nl": "All clothes are products.",
+    "gold_fol": "\u2200x (Clothes(x) \u2192 Product(x))",
+    "perturbed_fol": "\u2203x (Clothes(x) \u2194 \u00acProduct(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Clothes(x) \u2192 Product(x))",
+      "\u2200x (Product(x) \u2192 \u00acPerfect(x))",
+      "\u2200x (Dress(x) \u2192 Clothes(x))",
+      "\u2200x (Skirt(x) \u2192 Dress(x))",
+      "Clothes(fabricBundle) \u2192 Perfect(fabricBundle) \u2227 Dress(fabricBundle)"
+    ],
+    "conclusion_fol": "Skirt(fabricbundle)",
+    "expected_categories": [
+      "quantifier-scope",
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C009",
+    "story_id": 317,
+    "example_id": 800,
+    "sentence_idx": 1,
+    "nl": "No products are perfect.",
+    "gold_fol": "\u2200x (Product(x) \u2192 \u00acPerfect(x))",
+    "perturbed_fol": "\u2203x (\u00acProduct(x) \u2194 \u00acPerfect(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Clothes(x) \u2192 Product(x))",
+      "\u2200x (Product(x) \u2192 \u00acPerfect(x))",
+      "\u2200x (Dress(x) \u2192 Clothes(x))",
+      "\u2200x (Skirt(x) \u2192 Dress(x))",
+      "Clothes(fabricBundle) \u2192 Perfect(fabricBundle) \u2227 Dress(fabricBundle)"
+    ],
+    "conclusion_fol": "Skirt(fabricbundle)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "restrictor-content"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C010",
+    "story_id": 317,
+    "example_id": 800,
+    "sentence_idx": 2,
+    "nl": "All dresses are clothes.",
+    "gold_fol": "\u2200x (Dress(x) \u2192 Clothes(x))",
+    "perturbed_fol": "\u2203x (\u00acDress(x) \u2194 Clothes(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Clothes(x) \u2192 Product(x))",
+      "\u2200x (Product(x) \u2192 \u00acPerfect(x))",
+      "\u2200x (Dress(x) \u2192 Clothes(x))",
+      "\u2200x (Skirt(x) \u2192 Dress(x))",
+      "Clothes(fabricBundle) \u2192 Perfect(fabricBundle) \u2227 Dress(fabricBundle)"
+    ],
+    "conclusion_fol": "Skirt(fabricbundle)",
+    "expected_categories": [
+      "quantifier-scope",
+      "connective-polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C011",
+    "story_id": 317,
+    "example_id": 800,
+    "sentence_idx": 3,
+    "nl": "All skirts are dresses.",
+    "gold_fol": "\u2200x (Skirt(x) \u2192 Dress(x))",
+    "perturbed_fol": "\u2203x (Skirt(x) \u2194 \u00acDress(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Clothes(x) \u2192 Product(x))",
+      "\u2200x (Product(x) \u2192 \u00acPerfect(x))",
+      "\u2200x (Dress(x) \u2192 Clothes(x))",
+      "\u2200x (Skirt(x) \u2192 Dress(x))",
+      "Clothes(fabricBundle) \u2192 Perfect(fabricBundle) \u2227 Dress(fabricBundle)"
+    ],
+    "conclusion_fol": "Skirt(fabricbundle)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C012",
+    "story_id": 438,
+    "example_id": 1259,
+    "sentence_idx": 0,
+    "nl": "None of the kids in our family love the opera.",
+    "gold_fol": "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+    "perturbed_fol": "\u2203x ((\u00acKid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(opera, x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+      "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+      "\u2200x ((Scientist(x) \u2227 In(x, ourFamily)) \u2192 Adult(x))",
+      "\u2203x (Student(x) \u2227 In(x, ourFamily) \u2227 Kid(x))",
+      "Kid(billy) \u2227 In(billy, ourFamily)"
+    ],
+    "conclusion_fol": "Student(billy)  \u2227 Scientist(billy)",
+    "expected_categories": [
+      "quantifier-scope",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C013",
+    "story_id": 438,
+    "example_id": 1259,
+    "sentence_idx": 1,
+    "nl": "All of the adults in our family love the opera.",
+    "gold_fol": "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+    "perturbed_fol": "\u2203x ((Adult(x) \u2227 In(x, opera)) \u2192 \u00acLove(x, ourFamily))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+      "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+      "\u2200x ((Scientist(x) \u2227 In(x, ourFamily)) \u2192 Adult(x))",
+      "\u2203x (Student(x) \u2227 In(x, ourFamily) \u2227 Kid(x))",
+      "Kid(billy) \u2227 In(billy, ourFamily)"
+    ],
+    "conclusion_fol": "Student(billy)  \u2227 Scientist(billy)",
+    "expected_categories": [
+      "quantifier-scope",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C014",
+    "story_id": 438,
+    "example_id": 1259,
+    "sentence_idx": 2,
+    "nl": "If someone in our family is a scientist, then they are an adult.",
+    "gold_fol": "\u2200x ((Scientist(x) \u2227 In(x, ourFamily)) \u2192 Adult(x))",
+    "perturbed_fol": "\u2200x ((\u00acScientist(x) \u2228 In(ourFamily, x)) \u2192 Adult(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+      "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+      "\u2200x ((Scientist(x) \u2227 In(x, ourFamily)) \u2192 Adult(x))",
+      "\u2203x (Student(x) \u2227 In(x, ourFamily) \u2227 Kid(x))",
+      "Kid(billy) \u2227 In(billy, ourFamily)"
+    ],
+    "conclusion_fol": "Student(billy)  \u2227 Scientist(billy)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C015",
+    "story_id": 438,
+    "example_id": 1259,
+    "sentence_idx": 4,
+    "nl": "Billy is a kid in our family.",
+    "gold_fol": "Kid(billy) \u2227 In(billy, ourFamily)",
+    "perturbed_fol": "Kid(billy) \u2228 \u00acIn(ourFamily, billy)",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+      "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+      "\u2200x ((Scientist(x) \u2227 In(x, ourFamily)) \u2192 Adult(x))",
+      "\u2203x (Student(x) \u2227 In(x, ourFamily) \u2227 Kid(x))",
+      "Kid(billy) \u2227 In(billy, ourFamily)"
+    ],
+    "conclusion_fol": "Student(billy)  \u2227 Scientist(billy)",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C016",
+    "story_id": 125,
+    "example_id": 373,
+    "sentence_idx": 2,
+    "nl": "If a soccer player can score many goals using the left foot, they can use that foot very efficiently.",
+    "gold_fol": "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, leftFoot) \u2192 UseEfficiently(x, leftFoot))",
+    "perturbed_fol": "\u2203x (SoccerPlayer(x) \u2228 \u00acScoreUsing(x, manyGoals, leftFoot) \u2192 UseEfficiently(x, leftFoot))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (SoccerPlayer(x) \u2192 Have(x, leftFoot) \u2227 Have(x, rightFoot))",
+      "\u2200x (SoccerPlayer(x) \u2227 UseEfficiently(x, leftFoot) \u2227 UseEfficiently(x, rightFoot) \u2192 TopSoccerPlayer(x))",
+      "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, leftFoot) \u2192 UseEfficiently(x, leftFoot))",
+      "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, rightFoot) \u2192 UseEfficiently(x, rightFoot))",
+      "SoccerPlayer(ronaldo)",
+      "UseEfficiently(ronaldo, rightFoot)",
+      "ScoreUsing(ronaldo, manyGoals, leftFoot)"
+    ],
+    "conclusion_fol": "TopSoccerPlayer(ronaldo)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C017",
+    "story_id": 125,
+    "example_id": 373,
+    "sentence_idx": 4,
+    "nl": "Cristiano Ronaldo is a soccer player.",
+    "gold_fol": "SoccerPlayer(ronaldo)",
+    "perturbed_fol": "\u00acSoccerPlayer(ronaldo)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (SoccerPlayer(x) \u2192 Have(x, leftFoot) \u2227 Have(x, rightFoot))",
+      "\u2200x (SoccerPlayer(x) \u2227 UseEfficiently(x, leftFoot) \u2227 UseEfficiently(x, rightFoot) \u2192 TopSoccerPlayer(x))",
+      "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, leftFoot) \u2192 UseEfficiently(x, leftFoot))",
+      "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, rightFoot) \u2192 UseEfficiently(x, rightFoot))",
+      "SoccerPlayer(ronaldo)",
+      "UseEfficiently(ronaldo, rightFoot)",
+      "ScoreUsing(ronaldo, manyGoals, leftFoot)"
+    ],
+    "conclusion_fol": "TopSoccerPlayer(ronaldo)",
+    "expected_categories": [
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C018",
+    "story_id": 125,
+    "example_id": 373,
+    "sentence_idx": 5,
+    "nl": "Cristiano Ronaldo can use his right foot very efficiently.",
+    "gold_fol": "UseEfficiently(ronaldo, rightFoot)",
+    "perturbed_fol": "\u00acUseEfficiently(ronaldo, rightFoot)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (SoccerPlayer(x) \u2192 Have(x, leftFoot) \u2227 Have(x, rightFoot))",
+      "\u2200x (SoccerPlayer(x) \u2227 UseEfficiently(x, leftFoot) \u2227 UseEfficiently(x, rightFoot) \u2192 TopSoccerPlayer(x))",
+      "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, leftFoot) \u2192 UseEfficiently(x, leftFoot))",
+      "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, rightFoot) \u2192 UseEfficiently(x, rightFoot))",
+      "SoccerPlayer(ronaldo)",
+      "UseEfficiently(ronaldo, rightFoot)",
+      "ScoreUsing(ronaldo, manyGoals, leftFoot)"
+    ],
+    "conclusion_fol": "TopSoccerPlayer(ronaldo)",
+    "expected_categories": [
+      "argument-order",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C019",
+    "story_id": 125,
+    "example_id": 373,
+    "sentence_idx": 6,
+    "nl": "Cristiano Ronaldo has scored many goals using his left foot.",
+    "gold_fol": "ScoreUsing(ronaldo, manyGoals, leftFoot)",
+    "perturbed_fol": "\u00acScoreUsing(ronaldo, leftFoot, manyGoals)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (SoccerPlayer(x) \u2192 Have(x, leftFoot) \u2227 Have(x, rightFoot))",
+      "\u2200x (SoccerPlayer(x) \u2227 UseEfficiently(x, leftFoot) \u2227 UseEfficiently(x, rightFoot) \u2192 TopSoccerPlayer(x))",
+      "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, leftFoot) \u2192 UseEfficiently(x, leftFoot))",
+      "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, rightFoot) \u2192 UseEfficiently(x, rightFoot))",
+      "SoccerPlayer(ronaldo)",
+      "UseEfficiently(ronaldo, rightFoot)",
+      "ScoreUsing(ronaldo, manyGoals, leftFoot)"
+    ],
+    "conclusion_fol": "TopSoccerPlayer(ronaldo)",
+    "expected_categories": [
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C020",
+    "story_id": 22,
+    "example_id": 65,
+    "sentence_idx": 2,
+    "nl": "Customers who prefer TV series will not watch TV series in cinemas.",
+    "gold_fol": "\u2200x (Prefer(x, tVSeries) \u2192 \u00acWatchTVIn(x, cinemas))",
+    "perturbed_fol": "\u2203x (\u00acPrefer(x, tVSeries) \u2194 \u00acWatchTVIn(x, cinemas))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (SubscribedTo(x, aMCAList) \u2192 EligibleForThreeFreeMovies(x))",
+      "\u2203x (CinemaEveryWeek(x))",
+      "\u2200x (Prefer(x, tVSeries) \u2192 \u00acWatchTVIn(x, cinemas))",
+      "WatchTVIn(james, cinemas)",
+      "SubscribedTo(james, aMCAList)",
+      "Prefer(peter, tVSeries)"
+    ],
+    "conclusion_fol": "\u00acWatchTVIn(peter, cinemas)",
+    "expected_categories": [
+      "connective-polarity",
+      "quantifier-scope",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C021",
+    "story_id": 22,
+    "example_id": 65,
+    "sentence_idx": 5,
+    "nl": "Peter prefers TV series.",
+    "gold_fol": "Prefer(peter, tVSeries)",
+    "perturbed_fol": "\u00acPrefer(peter, tVSeries)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (SubscribedTo(x, aMCAList) \u2192 EligibleForThreeFreeMovies(x))",
+      "\u2203x (CinemaEveryWeek(x))",
+      "\u2200x (Prefer(x, tVSeries) \u2192 \u00acWatchTVIn(x, cinemas))",
+      "WatchTVIn(james, cinemas)",
+      "SubscribedTo(james, aMCAList)",
+      "Prefer(peter, tVSeries)"
+    ],
+    "conclusion_fol": "\u00acWatchTVIn(peter, cinemas)",
+    "expected_categories": [
+      "argument-order",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C022",
+    "story_id": 134,
+    "example_id": 397,
+    "sentence_idx": 0,
+    "nl": "Islip Speedway is the smallest race track.",
+    "gold_fol": "Speedway(islip) \u2227 SmallestRaceTrack(islip)",
+    "perturbed_fol": "\u00acSpeedway(islip) \u2228 SmallestRaceTrack(islip)",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "Speedway(islip) \u2227 SmallestRaceTrack(islip)",
+      "\u2203x \u2203y (DemolitionDerby(x) \u2227 SmallestRaceTrack(y) \u2227 On(x, y))",
+      "Demolished(islip) \u2295 StillUsed(islip)",
+      "\u2200x (Speedway(x) \u2227 StillUsed(x) \u2192 Have(races, heldAt, x))",
+      "\u00acHave(races, heldAt, islip)"
+    ],
+    "conclusion_fol": "StillUsed(islip)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C023",
+    "story_id": 134,
+    "example_id": 397,
+    "sentence_idx": 3,
+    "nl": "Speedways that are still being used have races held at them.",
+    "gold_fol": "\u2200x (Speedway(x) \u2227 StillUsed(x) \u2192 Have(races, heldAt, x))",
+    "perturbed_fol": "\u2203x (\u00acSpeedway(x) \u2227 StillUsed(x) \u2192 Have(heldAt, races, x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "Speedway(islip) \u2227 SmallestRaceTrack(islip)",
+      "\u2203x \u2203y (DemolitionDerby(x) \u2227 SmallestRaceTrack(y) \u2227 On(x, y))",
+      "Demolished(islip) \u2295 StillUsed(islip)",
+      "\u2200x (Speedway(x) \u2227 StillUsed(x) \u2192 Have(races, heldAt, x))",
+      "\u00acHave(races, heldAt, islip)"
+    ],
+    "conclusion_fol": "StillUsed(islip)",
+    "expected_categories": [
+      "quantifier-scope",
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C024",
+    "story_id": 134,
+    "example_id": 397,
+    "sentence_idx": 4,
+    "nl": "Islip doesn't have races held at it.",
+    "gold_fol": "\u00acHave(races, heldAt, islip)",
+    "perturbed_fol": "Have(races, islip, heldAt)",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "Speedway(islip) \u2227 SmallestRaceTrack(islip)",
+      "\u2203x \u2203y (DemolitionDerby(x) \u2227 SmallestRaceTrack(y) \u2227 On(x, y))",
+      "Demolished(islip) \u2295 StillUsed(islip)",
+      "\u2200x (Speedway(x) \u2227 StillUsed(x) \u2192 Have(races, heldAt, x))",
+      "\u00acHave(races, heldAt, islip)"
+    ],
+    "conclusion_fol": "StillUsed(islip)",
+    "expected_categories": [
+      "argument-order",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C025",
+    "story_id": 328,
+    "example_id": 841,
+    "sentence_idx": 0,
+    "nl": "No soccer players are professional basketball players.",
+    "gold_fol": "\u2200x (ProfessionalSoccerPlayer(x) \u2192 \u00acProfessionalBasketballPlayer(x))",
+    "perturbed_fol": "\u2203x (ProfessionalSoccerPlayer(x) \u2194 ProfessionalBasketballPlayer(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (ProfessionalSoccerPlayer(x) \u2192 \u00acProfessionalBasketballPlayer(x))",
+      "\u2200x (NBAPlayer(x) \u2192 ProfessionalBasketballPlayer(x))",
+      "\u2200x (ProfessionalSoccerDefender(x) \u2192 ProfessionalSoccerPlayer(x))",
+      "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+      "(NBAPlayer(stephencurry) \u2295 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)"
+    ],
+    "conclusion_fol": "ProfessionalCenterback(stephenCurry)",
+    "expected_categories": [
+      "polarity",
+      "quantifier-scope",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "restrictor-content"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C026",
+    "story_id": 328,
+    "example_id": 841,
+    "sentence_idx": 1,
+    "nl": "All NBA players are professional basketball players.",
+    "gold_fol": "\u2200x (NBAPlayer(x) \u2192 ProfessionalBasketballPlayer(x))",
+    "perturbed_fol": "\u2203x (NBAPlayer(x) \u2194 \u00acProfessionalBasketballPlayer(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (ProfessionalSoccerPlayer(x) \u2192 \u00acProfessionalBasketballPlayer(x))",
+      "\u2200x (NBAPlayer(x) \u2192 ProfessionalBasketballPlayer(x))",
+      "\u2200x (ProfessionalSoccerDefender(x) \u2192 ProfessionalSoccerPlayer(x))",
+      "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+      "(NBAPlayer(stephencurry) \u2295 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)"
+    ],
+    "conclusion_fol": "ProfessionalCenterback(stephenCurry)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C027",
+    "story_id": 328,
+    "example_id": 841,
+    "sentence_idx": 2,
+    "nl": "All soccer defenders are soccer players.",
+    "gold_fol": "\u2200x (ProfessionalSoccerDefender(x) \u2192 ProfessionalSoccerPlayer(x))",
+    "perturbed_fol": "\u2203x (\u00acProfessionalSoccerDefender(x) \u2194 ProfessionalSoccerPlayer(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (ProfessionalSoccerPlayer(x) \u2192 \u00acProfessionalBasketballPlayer(x))",
+      "\u2200x (NBAPlayer(x) \u2192 ProfessionalBasketballPlayer(x))",
+      "\u2200x (ProfessionalSoccerDefender(x) \u2192 ProfessionalSoccerPlayer(x))",
+      "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+      "(NBAPlayer(stephencurry) \u2295 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)"
+    ],
+    "conclusion_fol": "ProfessionalCenterback(stephenCurry)",
+    "expected_categories": [
+      "polarity",
+      "quantifier-scope",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C028",
+    "story_id": 328,
+    "example_id": 841,
+    "sentence_idx": 3,
+    "nl": "All centerback players are soccer defenders.",
+    "gold_fol": "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+    "perturbed_fol": "\u2203x (\u00acProfessionalCenterback(x) \u2194 ProfessionalSoccerDefender(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (ProfessionalSoccerPlayer(x) \u2192 \u00acProfessionalBasketballPlayer(x))",
+      "\u2200x (NBAPlayer(x) \u2192 ProfessionalBasketballPlayer(x))",
+      "\u2200x (ProfessionalSoccerDefender(x) \u2192 ProfessionalSoccerPlayer(x))",
+      "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+      "(NBAPlayer(stephencurry) \u2295 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)"
+    ],
+    "conclusion_fol": "ProfessionalCenterback(stephenCurry)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C029",
+    "story_id": 328,
+    "example_id": 841,
+    "sentence_idx": 4,
+    "nl": "If Stephen Curry is an NBA player or a soccer player, then he is a professional basketball player.",
+    "gold_fol": "(NBAPlayer(stephencurry) \u2295 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)",
+    "perturbed_fol": "(NBAPlayer(stephencurry) \u2295 ProfessionalSoccerPlayer(stephencurry)) \u2194 \u00acProfessionalBasketballPlayer(stephencurry)",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (ProfessionalSoccerPlayer(x) \u2192 \u00acProfessionalBasketballPlayer(x))",
+      "\u2200x (NBAPlayer(x) \u2192 ProfessionalBasketballPlayer(x))",
+      "\u2200x (ProfessionalSoccerDefender(x) \u2192 ProfessionalSoccerPlayer(x))",
+      "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+      "(NBAPlayer(stephencurry) \u2295 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)"
+    ],
+    "conclusion_fol": "ProfessionalCenterback(stephenCurry)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C030",
+    "story_id": 309,
+    "example_id": 767,
+    "sentence_idx": 0,
+    "nl": "Tipped employees are not entitled to be paid the federal minimum wage by their employees.",
+    "gold_fol": "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+    "perturbed_fol": "\u2203x (\u00acTippedEmployee(x) \u2192 \u00acEntitledTo(federalMinimumWage, x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+      "\u2200x (WhiteCollarWorker(x) \u2192 EntitledTo(x, federalMinimumWage))",
+      "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+      "\u2200x (Advocate(x) \u2192 Lawyer(x))",
+      "\u00ac(Lawyer(mary) \u2295 TippedEmployee(mary))"
+    ],
+    "conclusion_fol": "Advocate(mary) \u2295 TippedEmployee(mary)",
+    "expected_categories": [
+      "polarity",
+      "quantifier-scope",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C031",
+    "story_id": 309,
+    "example_id": 767,
+    "sentence_idx": 1,
+    "nl": "If a person is a white-collar worker, they are entitled to be paid the federal minimum wage by their employees.",
+    "gold_fol": "\u2200x (WhiteCollarWorker(x) \u2192 EntitledTo(x, federalMinimumWage))",
+    "perturbed_fol": "\u2200x (\u00acWhiteCollarWorker(x) \u2194 EntitledTo(federalMinimumWage, x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+      "\u2200x (WhiteCollarWorker(x) \u2192 EntitledTo(x, federalMinimumWage))",
+      "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+      "\u2200x (Advocate(x) \u2192 Lawyer(x))",
+      "\u00ac(Lawyer(mary) \u2295 TippedEmployee(mary))"
+    ],
+    "conclusion_fol": "Advocate(mary) \u2295 TippedEmployee(mary)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C032",
+    "story_id": 309,
+    "example_id": 767,
+    "sentence_idx": 2,
+    "nl": "All lawyers are white-collar workers.",
+    "gold_fol": "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+    "perturbed_fol": "\u2203x (\u00acLawyer(x) \u2194 WhiteCollarWorker(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+      "\u2200x (WhiteCollarWorker(x) \u2192 EntitledTo(x, federalMinimumWage))",
+      "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+      "\u2200x (Advocate(x) \u2192 Lawyer(x))",
+      "\u00ac(Lawyer(mary) \u2295 TippedEmployee(mary))"
+    ],
+    "conclusion_fol": "Advocate(mary) \u2295 TippedEmployee(mary)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C033",
+    "story_id": 309,
+    "example_id": 767,
+    "sentence_idx": 3,
+    "nl": "Every advocate is a lawyer.",
+    "gold_fol": "\u2200x (Advocate(x) \u2192 Lawyer(x))",
+    "perturbed_fol": "\u2203x (Advocate(x) \u2194 \u00acLawyer(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+      "\u2200x (WhiteCollarWorker(x) \u2192 EntitledTo(x, federalMinimumWage))",
+      "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+      "\u2200x (Advocate(x) \u2192 Lawyer(x))",
+      "\u00ac(Lawyer(mary) \u2295 TippedEmployee(mary))"
+    ],
+    "conclusion_fol": "Advocate(mary) \u2295 TippedEmployee(mary)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C034",
+    "story_id": 309,
+    "example_id": 767,
+    "sentence_idx": 4,
+    "nl": "Mary is not a lawyer or a tipped employee.",
+    "gold_fol": "\u00ac(Lawyer(mary) \u2295 TippedEmployee(mary))",
+    "perturbed_fol": "\u00ac(\u00acLawyer(mary) \u2295 TippedEmployee(mary))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+      "\u2200x (WhiteCollarWorker(x) \u2192 EntitledTo(x, federalMinimumWage))",
+      "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+      "\u2200x (Advocate(x) \u2192 Lawyer(x))",
+      "\u00ac(Lawyer(mary) \u2295 TippedEmployee(mary))"
+    ],
+    "conclusion_fol": "Advocate(mary) \u2295 TippedEmployee(mary)",
+    "expected_categories": [
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C035",
+    "story_id": 27,
+    "example_id": 78,
+    "sentence_idx": 0,
+    "nl": "Xiufeng, Xiangshan, Diecai, Qixing are districts in the city of Guilin.",
+    "gold_fol": "DistrictIn(xiufeng, guilin) \u2227 DistrictIn(xiangshan, guilin) \u2227 DistrictIn(diecai, guilin) \u2227 DistrictIn(qixing, guilin) \u2227 City(guilin)",
+    "perturbed_fol": "DistrictIn(xiufeng, xiangshan) \u2228 \u00acDistrictIn(guilin, xiangshan) \u2227 DistrictIn(diecai, xiangshan) \u2227 DistrictIn(qixing, xiangshan) \u2227 City(xiangshan)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "DistrictIn(xiufeng, guilin) \u2227 DistrictIn(xiangshan, guilin) \u2227 DistrictIn(diecai, guilin) \u2227 DistrictIn(qixing, guilin) \u2227 City(guilin)",
+      "\u00acDistrictIn(yangshuo, guilin)"
+    ],
+    "conclusion_fol": "DistrictIn(xiufeng, guilin)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C036",
+    "story_id": 314,
+    "example_id": 783,
+    "sentence_idx": 0,
+    "nl": "No animals are plants.",
+    "gold_fol": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+    "perturbed_fol": "\u2203x (\u00acAnimal(x) \u2194 \u00acPlant(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+      "\u2200x (Human(x) \u2192 Animal(x))",
+      "\u2200x (Pupil(x) \u2192 Human(x))",
+      "\u2200x (Flower(x) \u2192 Plant(x))",
+      "\u00ac(Human(bailey) \u2295 Flower(bailey))"
+    ],
+    "conclusion_fol": "\u00acPupil(bailey)",
+    "expected_categories": [
+      "polarity",
+      "quantifier-scope",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "restrictor-content"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C037",
+    "story_id": 314,
+    "example_id": 783,
+    "sentence_idx": 1,
+    "nl": "All humans are animals.",
+    "gold_fol": "\u2200x (Human(x) \u2192 Animal(x))",
+    "perturbed_fol": "\u2203x (Human(x) \u2194 \u00acAnimal(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+      "\u2200x (Human(x) \u2192 Animal(x))",
+      "\u2200x (Pupil(x) \u2192 Human(x))",
+      "\u2200x (Flower(x) \u2192 Plant(x))",
+      "\u00ac(Human(bailey) \u2295 Flower(bailey))"
+    ],
+    "conclusion_fol": "\u00acPupil(bailey)",
+    "expected_categories": [
+      "quantifier-scope",
+      "connective-polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C038",
+    "story_id": 314,
+    "example_id": 783,
+    "sentence_idx": 2,
+    "nl": "All pupils are humans.",
+    "gold_fol": "\u2200x (Pupil(x) \u2192 Human(x))",
+    "perturbed_fol": "\u2203x (\u00acPupil(x) \u2194 Human(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+      "\u2200x (Human(x) \u2192 Animal(x))",
+      "\u2200x (Pupil(x) \u2192 Human(x))",
+      "\u2200x (Flower(x) \u2192 Plant(x))",
+      "\u00ac(Human(bailey) \u2295 Flower(bailey))"
+    ],
+    "conclusion_fol": "\u00acPupil(bailey)",
+    "expected_categories": [
+      "quantifier-scope",
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C039",
+    "story_id": 314,
+    "example_id": 783,
+    "sentence_idx": 3,
+    "nl": "All flowers are plants.",
+    "gold_fol": "\u2200x (Flower(x) \u2192 Plant(x))",
+    "perturbed_fol": "\u2203x (Flower(x) \u2194 \u00acPlant(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+      "\u2200x (Human(x) \u2192 Animal(x))",
+      "\u2200x (Pupil(x) \u2192 Human(x))",
+      "\u2200x (Flower(x) \u2192 Plant(x))",
+      "\u00ac(Human(bailey) \u2295 Flower(bailey))"
+    ],
+    "conclusion_fol": "\u00acPupil(bailey)",
+    "expected_categories": [
+      "quantifier-scope",
+      "connective-polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C040",
+    "story_id": 314,
+    "example_id": 783,
+    "sentence_idx": 4,
+    "nl": "Bailey is either both a human and a flower or neither a human nor a flower.",
+    "gold_fol": "\u00ac(Human(bailey) \u2295 Flower(bailey))",
+    "perturbed_fol": "\u00ac(\u00acHuman(bailey) \u2295 Flower(bailey))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+      "\u2200x (Human(x) \u2192 Animal(x))",
+      "\u2200x (Pupil(x) \u2192 Human(x))",
+      "\u2200x (Flower(x) \u2192 Plant(x))",
+      "\u00ac(Human(bailey) \u2295 Flower(bailey))"
+    ],
+    "conclusion_fol": "\u00acPupil(bailey)",
+    "expected_categories": [
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C041",
+    "story_id": 465,
+    "example_id": 1344,
+    "sentence_idx": 0,
+    "nl": "Everyone who took the bar exam can read.",
+    "gold_fol": "\u2200x (Take(x, barExam) \u2192 CanRead(x))",
+    "perturbed_fol": "\u2203x (Take(barExam, x) \u2194 CanRead(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Take(x, barExam) \u2192 CanRead(x))",
+      "\u2200x (Lawyer(x) \u2192 Take(x, barExam))",
+      "\u2200x (Take(x, barExam) \u2192 KnowledgeableAbout(x, criminalProceeder))",
+      "\u2200x (GetOn(x, scoreOf180, lSAT) \u2192 CanRead(x))",
+      "\u2200x (Elephant(x) \u2192 \u00acCanRead(x))",
+      "\u00ac(CanRead(mike) \u2227 Elephant(mike)) \u2192 Take(mike, barExam) \u2295 CanRead(mike)"
+    ],
+    "conclusion_fol": "Take(mike, barExam)",
+    "expected_categories": [
+      "connective-polarity",
+      "argument-order",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C042",
+    "story_id": 465,
+    "example_id": 1344,
+    "sentence_idx": 4,
+    "nl": "No elephants can read.",
+    "gold_fol": "\u2200x (Elephant(x) \u2192 \u00acCanRead(x))",
+    "perturbed_fol": "\u2203x (\u00acElephant(x) \u2194 \u00acCanRead(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Take(x, barExam) \u2192 CanRead(x))",
+      "\u2200x (Lawyer(x) \u2192 Take(x, barExam))",
+      "\u2200x (Take(x, barExam) \u2192 KnowledgeableAbout(x, criminalProceeder))",
+      "\u2200x (GetOn(x, scoreOf180, lSAT) \u2192 CanRead(x))",
+      "\u2200x (Elephant(x) \u2192 \u00acCanRead(x))",
+      "\u00ac(CanRead(mike) \u2227 Elephant(mike)) \u2192 Take(mike, barExam) \u2295 CanRead(mike)"
+    ],
+    "conclusion_fol": "Take(mike, barExam)",
+    "expected_categories": [
+      "connective-polarity",
+      "quantifier-scope",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "restrictor-content"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C043",
+    "story_id": 465,
+    "example_id": 1344,
+    "sentence_idx": 5,
+    "nl": "If Mike can not read or is not an elephant, then Mike either took the bar exam or can read.",
+    "gold_fol": "\u00ac(CanRead(mike) \u2227 Elephant(mike)) \u2192 Take(mike, barExam) \u2295 CanRead(mike)",
+    "perturbed_fol": "\u00ac(CanRead(barExam) \u2227 Elephant(barExam)) \u2192 \u00acTake(mike, barExam) \u2295 CanRead(barExam)",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Take(x, barExam) \u2192 CanRead(x))",
+      "\u2200x (Lawyer(x) \u2192 Take(x, barExam))",
+      "\u2200x (Take(x, barExam) \u2192 KnowledgeableAbout(x, criminalProceeder))",
+      "\u2200x (GetOn(x, scoreOf180, lSAT) \u2192 CanRead(x))",
+      "\u2200x (Elephant(x) \u2192 \u00acCanRead(x))",
+      "\u00ac(CanRead(mike) \u2227 Elephant(mike)) \u2192 Take(mike, barExam) \u2295 CanRead(mike)"
+    ],
+    "conclusion_fol": "Take(mike, barExam)",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C044",
+    "story_id": 479,
+    "example_id": 1395,
+    "sentence_idx": 0,
+    "nl": "Grass is not food",
+    "gold_fol": "\u2200x (Grass(x) \u2192 \u00acFood(x))",
+    "perturbed_fol": "\u2203x (\u00acGrass(x) \u2194 \u00acFood(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Grass(x) \u2192 \u00acFood(x))",
+      "\u2200x (Meadow(x) \u2192 Grass(x))",
+      "\u2200x (Edible(x) \u2192 Food(x))",
+      "\u2200x (Fruit(x) \u2192 Edible(x))",
+      "\u2200x (Lemon(x) \u2192 Fruit(x))",
+      "\u00ac(Edible(grape) \u2227 Lemon(grape))",
+      "Grass(banana) \u2228 Fruit(banana)"
+    ],
+    "conclusion_fol": "Lemon(banana) \u2227 Meadow(banana)",
+    "expected_categories": [
+      "quantifier-scope",
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "restrictor-content"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C045",
+    "story_id": 479,
+    "example_id": 1395,
+    "sentence_idx": 1,
+    "nl": "All meadows are grass.",
+    "gold_fol": "\u2200x (Meadow(x) \u2192 Grass(x))",
+    "perturbed_fol": "\u2203x (Meadow(x) \u2194 \u00acGrass(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Grass(x) \u2192 \u00acFood(x))",
+      "\u2200x (Meadow(x) \u2192 Grass(x))",
+      "\u2200x (Edible(x) \u2192 Food(x))",
+      "\u2200x (Fruit(x) \u2192 Edible(x))",
+      "\u2200x (Lemon(x) \u2192 Fruit(x))",
+      "\u00ac(Edible(grape) \u2227 Lemon(grape))",
+      "Grass(banana) \u2228 Fruit(banana)"
+    ],
+    "conclusion_fol": "Lemon(banana) \u2227 Meadow(banana)",
+    "expected_categories": [
+      "quantifier-scope",
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C046",
+    "story_id": 479,
+    "example_id": 1395,
+    "sentence_idx": 2,
+    "nl": "All edible things are food.",
+    "gold_fol": "\u2200x (Edible(x) \u2192 Food(x))",
+    "perturbed_fol": "\u2203x (Edible(x) \u2194 \u00acFood(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Grass(x) \u2192 \u00acFood(x))",
+      "\u2200x (Meadow(x) \u2192 Grass(x))",
+      "\u2200x (Edible(x) \u2192 Food(x))",
+      "\u2200x (Fruit(x) \u2192 Edible(x))",
+      "\u2200x (Lemon(x) \u2192 Fruit(x))",
+      "\u00ac(Edible(grape) \u2227 Lemon(grape))",
+      "Grass(banana) \u2228 Fruit(banana)"
+    ],
+    "conclusion_fol": "Lemon(banana) \u2227 Meadow(banana)",
+    "expected_categories": [
+      "quantifier-scope",
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C047",
+    "story_id": 479,
+    "example_id": 1395,
+    "sentence_idx": 3,
+    "nl": "All fruits are edible.",
+    "gold_fol": "\u2200x (Fruit(x) \u2192 Edible(x))",
+    "perturbed_fol": "\u2203x (Fruit(x) \u2194 \u00acEdible(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Grass(x) \u2192 \u00acFood(x))",
+      "\u2200x (Meadow(x) \u2192 Grass(x))",
+      "\u2200x (Edible(x) \u2192 Food(x))",
+      "\u2200x (Fruit(x) \u2192 Edible(x))",
+      "\u2200x (Lemon(x) \u2192 Fruit(x))",
+      "\u00ac(Edible(grape) \u2227 Lemon(grape))",
+      "Grass(banana) \u2228 Fruit(banana)"
+    ],
+    "conclusion_fol": "Lemon(banana) \u2227 Meadow(banana)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C048",
+    "story_id": 479,
+    "example_id": 1395,
+    "sentence_idx": 4,
+    "nl": "All lemons are fruit.",
+    "gold_fol": "\u2200x (Lemon(x) \u2192 Fruit(x))",
+    "perturbed_fol": "\u2203x (Lemon(x) \u2194 \u00acFruit(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Grass(x) \u2192 \u00acFood(x))",
+      "\u2200x (Meadow(x) \u2192 Grass(x))",
+      "\u2200x (Edible(x) \u2192 Food(x))",
+      "\u2200x (Fruit(x) \u2192 Edible(x))",
+      "\u2200x (Lemon(x) \u2192 Fruit(x))",
+      "\u00ac(Edible(grape) \u2227 Lemon(grape))",
+      "Grass(banana) \u2228 Fruit(banana)"
+    ],
+    "conclusion_fol": "Lemon(banana) \u2227 Meadow(banana)",
+    "expected_categories": [
+      "polarity",
+      "quantifier-scope",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C049",
+    "story_id": 212,
+    "example_id": 605,
+    "sentence_idx": 0,
+    "nl": "If you have room for dessert, you have room for broccoli.",
+    "gold_fol": "\u2200x (RoomFor(x, dessert) \u2192 RoomFor(x, broccoli))",
+    "perturbed_fol": "\u2203x (RoomFor(dessert, x) \u2192 \u00acRoomFor(x, broccoli))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (RoomFor(x, dessert) \u2192 RoomFor(x, broccoli))",
+      "\u2200x (AtLuisParty(x) \u2192 RoomFor(x, dessert))",
+      "\u00acRoomFor(mauricia, broccoli)",
+      "AtLuisParty(allison) \u2227 FirstDinnerPartyFor(luisparty, allison)",
+      "RoomFor(gustave, broccoli) \u2227 RoomFor(gustave, asparagus)",
+      "Vegetable(broccoli) \u2227 Vegetable(asparagus)"
+    ],
+    "conclusion_fol": "RoomFor(allison, broccoli)",
+    "expected_categories": [
+      "quantifier-scope",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C050",
+    "story_id": 212,
+    "example_id": 605,
+    "sentence_idx": 1,
+    "nl": "Everyone at Luis's dinner party has room for dessert, including Luis.",
+    "gold_fol": "\u2200x (AtLuisParty(x) \u2192 RoomFor(x, dessert))",
+    "perturbed_fol": "\u2200x (\u00acAtLuisParty(x) \u2194 RoomFor(dessert, x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (RoomFor(x, dessert) \u2192 RoomFor(x, broccoli))",
+      "\u2200x (AtLuisParty(x) \u2192 RoomFor(x, dessert))",
+      "\u00acRoomFor(mauricia, broccoli)",
+      "AtLuisParty(allison) \u2227 FirstDinnerPartyFor(luisparty, allison)",
+      "RoomFor(gustave, broccoli) \u2227 RoomFor(gustave, asparagus)",
+      "Vegetable(broccoli) \u2227 Vegetable(asparagus)"
+    ],
+    "conclusion_fol": "RoomFor(allison, broccoli)",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C051",
+    "story_id": 212,
+    "example_id": 605,
+    "sentence_idx": 3,
+    "nl": "Luis's dinner party is the first ever dinner party that Allison has attended.",
+    "gold_fol": "AtLuisParty(allison) \u2227 FirstDinnerPartyFor(luisparty, allison)",
+    "perturbed_fol": "AtLuisParty(luisparty) \u2228 FirstDinnerPartyFor(luisparty, allison)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (RoomFor(x, dessert) \u2192 RoomFor(x, broccoli))",
+      "\u2200x (AtLuisParty(x) \u2192 RoomFor(x, dessert))",
+      "\u00acRoomFor(mauricia, broccoli)",
+      "AtLuisParty(allison) \u2227 FirstDinnerPartyFor(luisparty, allison)",
+      "RoomFor(gustave, broccoli) \u2227 RoomFor(gustave, asparagus)",
+      "Vegetable(broccoli) \u2227 Vegetable(asparagus)"
+    ],
+    "conclusion_fol": "RoomFor(allison, broccoli)",
+    "expected_categories": [
+      "connective-polarity",
+      "argument-order",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C052",
+    "story_id": 181,
+    "example_id": 522,
+    "sentence_idx": 0,
+    "nl": "American superheroes come from either the DC Universe or Marvel Universe.",
+    "gold_fol": "\u2200x (Superhero(x) \u2227 American(x) \u2192 ComeFrom(x, dCUniverse) \u2295 ComeFrom(x, marvelUniverse))",
+    "perturbed_fol": "\u2200x (Superhero(x) \u2228 American(x) \u2192 ComeFrom(x, dCUniverse) \u2295 \u00acComeFrom(marvelUniverse, x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Superhero(x) \u2227 American(x) \u2192 ComeFrom(x, dCUniverse) \u2295 ComeFrom(x, marvelUniverse))",
+      "American(captainAmerica) \u2227 TopTenFavorite(captainAmerica) \u2227 Superhero(captainAmerica)",
+      "\u00acComeFrom(captainAmerica, dCUniverse)",
+      "\u2200x (American(x) \u2227 TopTenFavorite(x) \u2227 Superhero(x)  \u2192 Speak(x, english))",
+      "\u2203x (Superhero(x) \u2192 (Speak(x, english) \u2227 Speak(x, spanish)))"
+    ],
+    "conclusion_fol": "ComeFrom(captainAmerica, marvelUniverse)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "connective-polarity",
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C053",
+    "story_id": 181,
+    "example_id": 522,
+    "sentence_idx": 1,
+    "nl": "Captain America is one of America's top-ten favorite superheroes",
+    "gold_fol": "American(captainAmerica) \u2227 TopTenFavorite(captainAmerica) \u2227 Superhero(captainAmerica)",
+    "perturbed_fol": "American(captainAmerica) \u2228 \u00acTopTenFavorite(captainAmerica) \u2227 Superhero(captainAmerica)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Superhero(x) \u2227 American(x) \u2192 ComeFrom(x, dCUniverse) \u2295 ComeFrom(x, marvelUniverse))",
+      "American(captainAmerica) \u2227 TopTenFavorite(captainAmerica) \u2227 Superhero(captainAmerica)",
+      "\u00acComeFrom(captainAmerica, dCUniverse)",
+      "\u2200x (American(x) \u2227 TopTenFavorite(x) \u2227 Superhero(x)  \u2192 Speak(x, english))",
+      "\u2203x (Superhero(x) \u2192 (Speak(x, english) \u2227 Speak(x, spanish)))"
+    ],
+    "conclusion_fol": "ComeFrom(captainAmerica, marvelUniverse)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C054",
+    "story_id": 181,
+    "example_id": 522,
+    "sentence_idx": 2,
+    "nl": "Captain America does not come from the DC Universe.",
+    "gold_fol": "\u00acComeFrom(captainAmerica, dCUniverse)",
+    "perturbed_fol": "ComeFrom(captainAmerica, dCUniverse)",
+    "gold_label": "entailment",
+    "perturbed_label": "contradiction",
+    "all_fols": [
+      "\u2200x (Superhero(x) \u2227 American(x) \u2192 ComeFrom(x, dCUniverse) \u2295 ComeFrom(x, marvelUniverse))",
+      "American(captainAmerica) \u2227 TopTenFavorite(captainAmerica) \u2227 Superhero(captainAmerica)",
+      "\u00acComeFrom(captainAmerica, dCUniverse)",
+      "\u2200x (American(x) \u2227 TopTenFavorite(x) \u2227 Superhero(x)  \u2192 Speak(x, english))",
+      "\u2203x (Superhero(x) \u2192 (Speak(x, english) \u2227 Speak(x, spanish)))"
+    ],
+    "conclusion_fol": "ComeFrom(captainAmerica, marvelUniverse)",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C055",
+    "story_id": 128,
+    "example_id": 379,
+    "sentence_idx": 0,
+    "nl": "Donald Ervin Knuth is an American computer scientist, mathematician, and Professor Emeritus at Stanford University.",
+    "gold_fol": "American(donaldErvinKnuth) \u2227 ComputerScientist(donaldErvinKnuth) \u2227 Mathematician(donaldErvinKnuth) \u2227 ProfessorEmeritusAt(donaldErvinKnuth, stanford)",
+    "perturbed_fol": "\u00acAmerican(stanford) \u2227 ComputerScientist(stanford) \u2227 Mathematician(stanford) \u2227 ProfessorEmeritusAt(donaldErvinKnuth, stanford)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "American(donaldErvinKnuth) \u2227 ComputerScientist(donaldErvinKnuth) \u2227 Mathematician(donaldErvinKnuth) \u2227 ProfessorEmeritusAt(donaldErvinKnuth, stanford)",
+      "Called(donaldErvinKnuth, fatherOfTheAnalysisOfAlgorithms)"
+    ],
+    "conclusion_fol": "\u2203x (American(x) \u2227 ComputerScientist(x) \u2227 Called(x, fatherOfTheAnalysisOfAlgorithms))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C056",
+    "story_id": 128,
+    "example_id": 379,
+    "sentence_idx": 1,
+    "nl": "Knuth has been called the \"father of the analysis of algorithms.\"",
+    "gold_fol": "Called(donaldErvinKnuth, fatherOfTheAnalysisOfAlgorithms)",
+    "perturbed_fol": "\u00acCalled(donaldErvinKnuth, fatherOfTheAnalysisOfAlgorithms)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "American(donaldErvinKnuth) \u2227 ComputerScientist(donaldErvinKnuth) \u2227 Mathematician(donaldErvinKnuth) \u2227 ProfessorEmeritusAt(donaldErvinKnuth, stanford)",
+      "Called(donaldErvinKnuth, fatherOfTheAnalysisOfAlgorithms)"
+    ],
+    "conclusion_fol": "\u2203x (American(x) \u2227 ComputerScientist(x) \u2227 Called(x, fatherOfTheAnalysisOfAlgorithms))",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C057",
+    "story_id": 484,
+    "example_id": 1417,
+    "sentence_idx": 0,
+    "nl": "No songs are visuals.",
+    "gold_fol": "\u2200x (Song(x) \u2192 \u00acVisual(x))",
+    "perturbed_fol": "\u2203x (\u00acSong(x) \u2194 \u00acVisual(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Song(x) \u2192 \u00acVisual(x))",
+      "\u2200x (FolkSong(x) \u2192 Song(x))",
+      "\u2200x (Video(x) \u2192 Visual(x))",
+      "\u2200x (Movie(x) \u2192 Video(x))",
+      "\u2200x (ScifiMovie(x) \u2192 Movie(x))",
+      "ScifiMovie(inception)",
+      "\u00acFolkSong(mac) \u2227 \u00acScifiMovie(mac)"
+    ],
+    "conclusion_fol": "Video(inception) \u2295 FolkSong(inception)",
+    "expected_categories": [
+      "polarity",
+      "quantifier-scope",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "restrictor-content"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C058",
+    "story_id": 484,
+    "example_id": 1417,
+    "sentence_idx": 1,
+    "nl": "All folk songs are songs.",
+    "gold_fol": "\u2200x (FolkSong(x) \u2192 Song(x))",
+    "perturbed_fol": "\u2203x (FolkSong(x) \u2194 \u00acSong(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Song(x) \u2192 \u00acVisual(x))",
+      "\u2200x (FolkSong(x) \u2192 Song(x))",
+      "\u2200x (Video(x) \u2192 Visual(x))",
+      "\u2200x (Movie(x) \u2192 Video(x))",
+      "\u2200x (ScifiMovie(x) \u2192 Movie(x))",
+      "ScifiMovie(inception)",
+      "\u00acFolkSong(mac) \u2227 \u00acScifiMovie(mac)"
+    ],
+    "conclusion_fol": "Video(inception) \u2295 FolkSong(inception)",
+    "expected_categories": [
+      "connective-polarity",
+      "quantifier-scope",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C059",
+    "story_id": 484,
+    "example_id": 1417,
+    "sentence_idx": 2,
+    "nl": "All videos are visuals.",
+    "gold_fol": "\u2200x (Video(x) \u2192 Visual(x))",
+    "perturbed_fol": "\u2203x (Video(x) \u2194 \u00acVisual(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Song(x) \u2192 \u00acVisual(x))",
+      "\u2200x (FolkSong(x) \u2192 Song(x))",
+      "\u2200x (Video(x) \u2192 Visual(x))",
+      "\u2200x (Movie(x) \u2192 Video(x))",
+      "\u2200x (ScifiMovie(x) \u2192 Movie(x))",
+      "ScifiMovie(inception)",
+      "\u00acFolkSong(mac) \u2227 \u00acScifiMovie(mac)"
+    ],
+    "conclusion_fol": "Video(inception) \u2295 FolkSong(inception)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C060",
+    "story_id": 484,
+    "example_id": 1417,
+    "sentence_idx": 3,
+    "nl": "All movies are videos.",
+    "gold_fol": "\u2200x (Movie(x) \u2192 Video(x))",
+    "perturbed_fol": "\u2203x (Movie(x) \u2194 \u00acVideo(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Song(x) \u2192 \u00acVisual(x))",
+      "\u2200x (FolkSong(x) \u2192 Song(x))",
+      "\u2200x (Video(x) \u2192 Visual(x))",
+      "\u2200x (Movie(x) \u2192 Video(x))",
+      "\u2200x (ScifiMovie(x) \u2192 Movie(x))",
+      "ScifiMovie(inception)",
+      "\u00acFolkSong(mac) \u2227 \u00acScifiMovie(mac)"
+    ],
+    "conclusion_fol": "Video(inception) \u2295 FolkSong(inception)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C061",
+    "story_id": 484,
+    "example_id": 1417,
+    "sentence_idx": 4,
+    "nl": "All sci-fi movies are movies.",
+    "gold_fol": "\u2200x (ScifiMovie(x) \u2192 Movie(x))",
+    "perturbed_fol": "\u2203x (\u00acScifiMovie(x) \u2194 Movie(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Song(x) \u2192 \u00acVisual(x))",
+      "\u2200x (FolkSong(x) \u2192 Song(x))",
+      "\u2200x (Video(x) \u2192 Visual(x))",
+      "\u2200x (Movie(x) \u2192 Video(x))",
+      "\u2200x (ScifiMovie(x) \u2192 Movie(x))",
+      "ScifiMovie(inception)",
+      "\u00acFolkSong(mac) \u2227 \u00acScifiMovie(mac)"
+    ],
+    "conclusion_fol": "Video(inception) \u2295 FolkSong(inception)",
+    "expected_categories": [
+      "connective-polarity",
+      "quantifier-scope",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C062",
+    "story_id": 484,
+    "example_id": 1417,
+    "sentence_idx": 5,
+    "nl": "Inception is a sci-fi movie.",
+    "gold_fol": "ScifiMovie(inception)",
+    "perturbed_fol": "\u00acScifiMovie(inception)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Song(x) \u2192 \u00acVisual(x))",
+      "\u2200x (FolkSong(x) \u2192 Song(x))",
+      "\u2200x (Video(x) \u2192 Visual(x))",
+      "\u2200x (Movie(x) \u2192 Video(x))",
+      "\u2200x (ScifiMovie(x) \u2192 Movie(x))",
+      "ScifiMovie(inception)",
+      "\u00acFolkSong(mac) \u2227 \u00acScifiMovie(mac)"
+    ],
+    "conclusion_fol": "Video(inception) \u2295 FolkSong(inception)",
+    "expected_categories": [
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C063",
+    "story_id": 381,
+    "example_id": 1019,
+    "sentence_idx": 0,
+    "nl": "All people who attend Renaissance fairs regularly enjoy dressing up in old-fashioned and historical period clothing.",
+    "gold_fol": "\u2200x (AttendRegularly(x, renaissanceFair) \u2192 Enjoy(x, dressingUp, oldFashionedClothing) \u2227 Enjoy(x, dressingUp, historicalPeriodClothing))",
+    "perturbed_fol": "\u2203x (AttendRegularly(x, renaissanceFair) \u2192 \u00acEnjoy(x, dressingUp, oldFashionedClothing) \u2228 Enjoy(x, dressingUp, historicalPeriodClothing))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (AttendRegularly(x, renaissanceFair) \u2192 Enjoy(x, dressingUp, oldFashionedClothing) \u2227 Enjoy(x, dressingUp, historicalPeriodClothing))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2192 AttendRegularly(x, renaissanceFair))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2295 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u2200x (FocusedOn(x, futuristicSubject) \u2227 FocusedOn(x, vocationalSubject) \u2192 ContemporaryAcademic(x) \u2227 Enjoy(x, learning))",
+      "\u2200x (Professor(x) \u2227 Take(x, historicalApproach) \u2192 \u00ac(ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject))\u2192 \u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject) \u2228 (Enjoy(clyde, dressingUp, oldFashionedClothing) \u2227 Enjoy(clyde, dressingUp, historicalPeriodClothing)))"
+    ],
+    "conclusion_fol": "(Professor(clyde) \u2227 Take(clyde, historicalApproach)) \u2228 (ContemporaryAcademic(clyde) \u2227 Enjoy(clyde, learning))",
+    "expected_categories": [
+      "polarity",
+      "quantifier-scope",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C064",
+    "story_id": 381,
+    "example_id": 1019,
+    "sentence_idx": 1,
+    "nl": "If people are fascinated by the history of the Renaissance and other past eras, then they attend Renaissance fairs regularly.",
+    "gold_fol": "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2192 AttendRegularly(x, renaissanceFair))",
+    "perturbed_fol": "\u2203x (FascinatedBy(x, renaissanceFair) \u2194 AttendRegularly(x, historyOfRenaissance))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (AttendRegularly(x, renaissanceFair) \u2192 Enjoy(x, dressingUp, oldFashionedClothing) \u2227 Enjoy(x, dressingUp, historicalPeriodClothing))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2192 AttendRegularly(x, renaissanceFair))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2295 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u2200x (FocusedOn(x, futuristicSubject) \u2227 FocusedOn(x, vocationalSubject) \u2192 ContemporaryAcademic(x) \u2227 Enjoy(x, learning))",
+      "\u2200x (Professor(x) \u2227 Take(x, historicalApproach) \u2192 \u00ac(ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject))\u2192 \u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject) \u2228 (Enjoy(clyde, dressingUp, oldFashionedClothing) \u2227 Enjoy(clyde, dressingUp, historicalPeriodClothing)))"
+    ],
+    "conclusion_fol": "(Professor(clyde) \u2227 Take(clyde, historicalApproach)) \u2228 (ContemporaryAcademic(clyde) \u2227 Enjoy(clyde, learning))",
+    "expected_categories": [
+      "argument-order",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C065",
+    "story_id": 381,
+    "example_id": 1019,
+    "sentence_idx": 2,
+    "nl": "People are fascinated by the history of the Renaissance and other past eras, or they are contemporary academics who enjoy learning.",
+    "gold_fol": "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2295 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+    "perturbed_fol": "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2295 (\u00acContemporaryAcademic(x) \u2228 Enjoy(learning, x)))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (AttendRegularly(x, renaissanceFair) \u2192 Enjoy(x, dressingUp, oldFashionedClothing) \u2227 Enjoy(x, dressingUp, historicalPeriodClothing))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2192 AttendRegularly(x, renaissanceFair))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2295 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u2200x (FocusedOn(x, futuristicSubject) \u2227 FocusedOn(x, vocationalSubject) \u2192 ContemporaryAcademic(x) \u2227 Enjoy(x, learning))",
+      "\u2200x (Professor(x) \u2227 Take(x, historicalApproach) \u2192 \u00ac(ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject))\u2192 \u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject) \u2228 (Enjoy(clyde, dressingUp, oldFashionedClothing) \u2227 Enjoy(clyde, dressingUp, historicalPeriodClothing)))"
+    ],
+    "conclusion_fol": "(Professor(clyde) \u2227 Take(clyde, historicalApproach)) \u2228 (ContemporaryAcademic(clyde) \u2227 Enjoy(clyde, learning))",
+    "expected_categories": [
+      "argument-order",
+      "connective-polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C066",
+    "story_id": 381,
+    "example_id": 1019,
+    "sentence_idx": 3,
+    "nl": "People who are focused on futuristic and vocational subjects are contemporary academics who enjoy learning.",
+    "gold_fol": "\u2200x (FocusedOn(x, futuristicSubject) \u2227 FocusedOn(x, vocationalSubject) \u2192 ContemporaryAcademic(x) \u2227 Enjoy(x, learning))",
+    "perturbed_fol": "\u2203x (FocusedOn(x, futuristicSubject) \u2228 FocusedOn(x, vocationalSubject) \u2192 ContemporaryAcademic(x) \u2227 \u00acEnjoy(x, learning))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (AttendRegularly(x, renaissanceFair) \u2192 Enjoy(x, dressingUp, oldFashionedClothing) \u2227 Enjoy(x, dressingUp, historicalPeriodClothing))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2192 AttendRegularly(x, renaissanceFair))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2295 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u2200x (FocusedOn(x, futuristicSubject) \u2227 FocusedOn(x, vocationalSubject) \u2192 ContemporaryAcademic(x) \u2227 Enjoy(x, learning))",
+      "\u2200x (Professor(x) \u2227 Take(x, historicalApproach) \u2192 \u00ac(ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject))\u2192 \u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject) \u2228 (Enjoy(clyde, dressingUp, oldFashionedClothing) \u2227 Enjoy(clyde, dressingUp, historicalPeriodClothing)))"
+    ],
+    "conclusion_fol": "(Professor(clyde) \u2227 Take(clyde, historicalApproach)) \u2228 (ContemporaryAcademic(clyde) \u2227 Enjoy(clyde, learning))",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C067",
+    "story_id": 381,
+    "example_id": 1019,
+    "sentence_idx": 5,
+    "nl": "If Clyde is not focused on futuristic and voctional subjects, then he is neither focused on futuristic and vocational subjects nor enjoys dressing up in old-fashioned and historical period clothing.",
+    "gold_fol": "\u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject))\u2192 \u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject) \u2228 (Enjoy(clyde, dressingUp, oldFashionedClothing) \u2227 Enjoy(clyde, dressingUp, historicalPeriodClothing)))",
+    "perturbed_fol": "\u00ac(FocusedOn(clyde, oldFashionedClothing) \u2228 FocusedOn(clyde, vocationalSubject))\u2192 \u00ac(FocusedOn(oldFashionedClothing, clyde) \u2227 FocusedOn(clyde, vocationalSubject) \u2228 (Enjoy(clyde, dressingUp, futuristicSubject) \u2227 Enjoy(clyde, dressingUp, historicalPeriodClothing)))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (AttendRegularly(x, renaissanceFair) \u2192 Enjoy(x, dressingUp, oldFashionedClothing) \u2227 Enjoy(x, dressingUp, historicalPeriodClothing))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2192 AttendRegularly(x, renaissanceFair))",
+      "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2295 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u2200x (FocusedOn(x, futuristicSubject) \u2227 FocusedOn(x, vocationalSubject) \u2192 ContemporaryAcademic(x) \u2227 Enjoy(x, learning))",
+      "\u2200x (Professor(x) \u2227 Take(x, historicalApproach) \u2192 \u00ac(ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+      "\u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject))\u2192 \u00ac(FocusedOn(clyde, futuristicSubject) \u2227 FocusedOn(clyde, vocationalSubject) \u2228 (Enjoy(clyde, dressingUp, oldFashionedClothing) \u2227 Enjoy(clyde, dressingUp, historicalPeriodClothing)))"
+    ],
+    "conclusion_fol": "(Professor(clyde) \u2227 Take(clyde, historicalApproach)) \u2228 (ContemporaryAcademic(clyde) \u2227 Enjoy(clyde, learning))",
+    "expected_categories": [
+      "argument-order",
+      "connective-polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C068",
+    "story_id": 396,
+    "example_id": 1078,
+    "sentence_idx": 0,
+    "nl": "A neuroimaging technique is either an invasive neuroimaging technique or a noninvasive neuroimaging technique.",
+    "gold_fol": "\u2200x (NeuroimagingTechnique(x) \u2192 (Invasive(x) \u2295 Noninvasive(x)))",
+    "perturbed_fol": "\u2203x (NeuroimagingTechnique(x) \u2194 (\u00acInvasive(x) \u2295 Noninvasive(x)))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (NeuroimagingTechnique(x) \u2192 (Invasive(x) \u2295 Noninvasive(x)))",
+      "\u2200x (Noninvasive(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+      "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+      "\u2200x (Measure(x, brainActivity) \u2192 UsedBy(x, neuroscienceResearchers))",
+      "Measure(fMRI, brainActivity) \u2295 Noninvasive(fMRI)",
+      "NeuroimagingTechnique(fMRI)"
+    ],
+    "conclusion_fol": "Invasive(fMRI) \u2295 UsedBy(fMRI, neuroscienceResearchers)",
+    "expected_categories": [
+      "quantifier-scope",
+      "connective-polarity",
+      "polarity"
+    ],
+    "actual_categories": [
+      "connective-polarity",
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C069",
+    "story_id": 396,
+    "example_id": 1078,
+    "sentence_idx": 1,
+    "nl": "All noninvasive neuroimaging techniques provide a spatial resolution of brains.",
+    "gold_fol": "\u2200x (Noninvasive(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+    "perturbed_fol": "\u2203x (\u00acNoninvasive(x) \u2192 Provides(spatialResolutionOfBrains, x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (NeuroimagingTechnique(x) \u2192 (Invasive(x) \u2295 Noninvasive(x)))",
+      "\u2200x (Noninvasive(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+      "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+      "\u2200x (Measure(x, brainActivity) \u2192 UsedBy(x, neuroscienceResearchers))",
+      "Measure(fMRI, brainActivity) \u2295 Noninvasive(fMRI)",
+      "NeuroimagingTechnique(fMRI)"
+    ],
+    "conclusion_fol": "Invasive(fMRI) \u2295 UsedBy(fMRI, neuroscienceResearchers)",
+    "expected_categories": [
+      "argument-order",
+      "quantifier-scope",
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C070",
+    "story_id": 396,
+    "example_id": 1078,
+    "sentence_idx": 2,
+    "nl": "If a technique provides a spatial resolution of brains, then it is a measurement of brain activity.",
+    "gold_fol": "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+    "perturbed_fol": "\u2203x (Provides(x, spatialResolutionOfBrains) \u2194 \u00acMeasure(x, brainActivity))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (NeuroimagingTechnique(x) \u2192 (Invasive(x) \u2295 Noninvasive(x)))",
+      "\u2200x (Noninvasive(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+      "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+      "\u2200x (Measure(x, brainActivity) \u2192 UsedBy(x, neuroscienceResearchers))",
+      "Measure(fMRI, brainActivity) \u2295 Noninvasive(fMRI)",
+      "NeuroimagingTechnique(fMRI)"
+    ],
+    "conclusion_fol": "Invasive(fMRI) \u2295 UsedBy(fMRI, neuroscienceResearchers)",
+    "expected_categories": [
+      "polarity",
+      "quantifier-scope",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C071",
+    "story_id": 396,
+    "example_id": 1078,
+    "sentence_idx": 3,
+    "nl": "All measurements of brain activity are used by neuroscience researchers.",
+    "gold_fol": "\u2200x (Measure(x, brainActivity) \u2192 UsedBy(x, neuroscienceResearchers))",
+    "perturbed_fol": "\u2203x (Measure(brainActivity, x) \u2192 \u00acUsedBy(x, neuroscienceResearchers))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (NeuroimagingTechnique(x) \u2192 (Invasive(x) \u2295 Noninvasive(x)))",
+      "\u2200x (Noninvasive(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+      "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+      "\u2200x (Measure(x, brainActivity) \u2192 UsedBy(x, neuroscienceResearchers))",
+      "Measure(fMRI, brainActivity) \u2295 Noninvasive(fMRI)",
+      "NeuroimagingTechnique(fMRI)"
+    ],
+    "conclusion_fol": "Invasive(fMRI) \u2295 UsedBy(fMRI, neuroscienceResearchers)",
+    "expected_categories": [
+      "polarity",
+      "argument-order",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C072",
+    "story_id": 396,
+    "example_id": 1078,
+    "sentence_idx": 4,
+    "nl": "FMRI is either a measurement of brain activity or a noninvasive neuroimaging technique.",
+    "gold_fol": "Measure(fMRI, brainActivity) \u2295 Noninvasive(fMRI)",
+    "perturbed_fol": "Measure(fMRI, brainActivity) \u2295 \u00acNoninvasive(brainActivity)",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (NeuroimagingTechnique(x) \u2192 (Invasive(x) \u2295 Noninvasive(x)))",
+      "\u2200x (Noninvasive(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+      "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+      "\u2200x (Measure(x, brainActivity) \u2192 UsedBy(x, neuroscienceResearchers))",
+      "Measure(fMRI, brainActivity) \u2295 Noninvasive(fMRI)",
+      "NeuroimagingTechnique(fMRI)"
+    ],
+    "conclusion_fol": "Invasive(fMRI) \u2295 UsedBy(fMRI, neuroscienceResearchers)",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C073",
+    "story_id": 396,
+    "example_id": 1078,
+    "sentence_idx": 5,
+    "nl": "FMRI is a neuroimaging technique.",
+    "gold_fol": "NeuroimagingTechnique(fMRI)",
+    "perturbed_fol": "\u00acNeuroimagingTechnique(fMRI)",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (NeuroimagingTechnique(x) \u2192 (Invasive(x) \u2295 Noninvasive(x)))",
+      "\u2200x (Noninvasive(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+      "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+      "\u2200x (Measure(x, brainActivity) \u2192 UsedBy(x, neuroscienceResearchers))",
+      "Measure(fMRI, brainActivity) \u2295 Noninvasive(fMRI)",
+      "NeuroimagingTechnique(fMRI)"
+    ],
+    "conclusion_fol": "Invasive(fMRI) \u2295 UsedBy(fMRI, neuroscienceResearchers)",
+    "expected_categories": [
+      "polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C074",
+    "story_id": 188,
+    "example_id": 540,
+    "sentence_idx": 1,
+    "nl": "If two soccer teams score the same number of goals in one UCL final during both regular and extra time, they need to play the penalty shoot-out.",
+    "gold_fol": "\u2200x \u2200y (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 SameScore(x, y) \u2227 During(regularTime) \u2227 During(extraTime) \u2192 PlayPenalty(x, y))",
+    "perturbed_fol": "\u2203x \u2200y (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 \u00acSameScore(x, y) \u2227 During(regularTime) \u2227 During(extraTime) \u2192 PlayPenalty(y, x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200w \u2200x \u2200y \u2200z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 NumberOfGoalScored(x, z) \u2227 NumberOfGoalScored(y, w) \u2227 y=w \u2227 During(regularTime) \u2192 PlayExtra(x, y))",
+      "\u2200x \u2200y (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 SameScore(x, y) \u2227 During(regularTime) \u2227 During(extraTime) \u2192 PlayPenalty(x, y))",
+      "SoccerTeam(realMadrid) \u2227 SoccerTeam(atleticoMadrid) \u2227 SameScore(realMadrid, atleticoMadrid) \u2227 During(regularTime)",
+      "SoccerTeam(realMadrid) \u2227 SoccerTeam(atleticoMadrid) \u2227 SameScore(realMadrid, atleticoMadrid) \u2227 During(extraTime)"
+    ],
+    "conclusion_fol": "PlayPenalty(realMadrid, atleticoMadrid)",
+    "expected_categories": [
+      "argument-order",
+      "polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C075",
+    "story_id": 188,
+    "example_id": 540,
+    "sentence_idx": 2,
+    "nl": "Real Madrid and Atl\u00e9tico Madrid both scored one goal in the 2016 UCL final during the regular time.",
+    "gold_fol": "SoccerTeam(realMadrid) \u2227 SoccerTeam(atleticoMadrid) \u2227 SameScore(realMadrid, atleticoMadrid) \u2227 During(regularTime)",
+    "perturbed_fol": "SoccerTeam(regularTime) \u2228 SoccerTeam(atleticoMadrid) \u2227 SameScore(atleticoMadrid, regularTime) \u2227 During(realMadrid)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200w \u2200x \u2200y \u2200z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 NumberOfGoalScored(x, z) \u2227 NumberOfGoalScored(y, w) \u2227 y=w \u2227 During(regularTime) \u2192 PlayExtra(x, y))",
+      "\u2200x \u2200y (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 SameScore(x, y) \u2227 During(regularTime) \u2227 During(extraTime) \u2192 PlayPenalty(x, y))",
+      "SoccerTeam(realMadrid) \u2227 SoccerTeam(atleticoMadrid) \u2227 SameScore(realMadrid, atleticoMadrid) \u2227 During(regularTime)",
+      "SoccerTeam(realMadrid) \u2227 SoccerTeam(atleticoMadrid) \u2227 SameScore(realMadrid, atleticoMadrid) \u2227 During(extraTime)"
+    ],
+    "conclusion_fol": "PlayPenalty(realMadrid, atleticoMadrid)",
+    "expected_categories": [
+      "argument-order",
+      "connective-polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C076",
+    "story_id": 188,
+    "example_id": 540,
+    "sentence_idx": 3,
+    "nl": "Real Madrid and Atl\u00e9tico Madrid both scored zero goals in the 2016 UCL final during the extra time.",
+    "gold_fol": "SoccerTeam(realMadrid) \u2227 SoccerTeam(atleticoMadrid) \u2227 SameScore(realMadrid, atleticoMadrid) \u2227 During(extraTime)",
+    "perturbed_fol": "SoccerTeam(atleticoMadrid) \u2228 SoccerTeam(realMadrid) \u2227 SameScore(atleticoMadrid, realMadrid) \u2227 \u00acDuring(extraTime)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200w \u2200x \u2200y \u2200z (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 NumberOfGoalScored(x, z) \u2227 NumberOfGoalScored(y, w) \u2227 y=w \u2227 During(regularTime) \u2192 PlayExtra(x, y))",
+      "\u2200x \u2200y (SoccerTeam(x) \u2227 SoccerTeam(y) \u2227 SameScore(x, y) \u2227 During(regularTime) \u2227 During(extraTime) \u2192 PlayPenalty(x, y))",
+      "SoccerTeam(realMadrid) \u2227 SoccerTeam(atleticoMadrid) \u2227 SameScore(realMadrid, atleticoMadrid) \u2227 During(regularTime)",
+      "SoccerTeam(realMadrid) \u2227 SoccerTeam(atleticoMadrid) \u2227 SameScore(realMadrid, atleticoMadrid) \u2227 During(extraTime)"
+    ],
+    "conclusion_fol": "PlayPenalty(realMadrid, atleticoMadrid)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "argument-order"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C077",
+    "story_id": 123,
+    "example_id": 367,
+    "sentence_idx": 2,
+    "nl": "Unsanctioned businesses are free.",
+    "gold_fol": "\u2200x (Buisness(x) \u2227 \u00acSanctioned(x) \u2192 Free(x))",
+    "perturbed_fol": "\u2203x (Buisness(x) \u2228 Sanctioned(x) \u2192 Free(x))",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Buisness(x) \u2192 Sanctioned(x) \u2295 \u00acSanctioned(x))",
+      "\u2200x (Buisness(x) \u2227 Sanctioned(x) \u2192 Limited(x))",
+      "\u2200x (Buisness(x) \u2227 \u00acSanctioned(x) \u2192 Free(x))",
+      "Buisness(crudeOilDataExchange) \u2227 \u00acFree(crudeOilDataExchange)"
+    ],
+    "conclusion_fol": "Sanctioned(crudeOilDataExchange)",
+    "expected_categories": [
+      "quantifier-scope",
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C078",
+    "story_id": 123,
+    "example_id": 367,
+    "sentence_idx": 3,
+    "nl": "The Crude Oil Data Exchange is a business that isn't free.",
+    "gold_fol": "Buisness(crudeOilDataExchange) \u2227 \u00acFree(crudeOilDataExchange)",
+    "perturbed_fol": "\u00acBuisness(crudeOilDataExchange) \u2228 \u00acFree(crudeOilDataExchange)",
+    "gold_label": "entailment",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Buisness(x) \u2192 Sanctioned(x) \u2295 \u00acSanctioned(x))",
+      "\u2200x (Buisness(x) \u2227 Sanctioned(x) \u2192 Limited(x))",
+      "\u2200x (Buisness(x) \u2227 \u00acSanctioned(x) \u2192 Free(x))",
+      "Buisness(crudeOilDataExchange) \u2227 \u00acFree(crudeOilDataExchange)"
+    ],
+    "conclusion_fol": "Sanctioned(crudeOilDataExchange)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": false
+  },
+  {
+    "candidate_id": "C079",
+    "story_id": 314,
+    "example_id": 782,
+    "sentence_idx": 0,
+    "nl": "No animals are plants.",
+    "gold_fol": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+    "perturbed_fol": "\u2203x (\u00acAnimal(x) \u2194 \u00acPlant(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+      "\u2200x (Human(x) \u2192 Animal(x))",
+      "\u2200x (Pupil(x) \u2192 Human(x))",
+      "\u2200x (Flower(x) \u2192 Plant(x))",
+      "\u00ac(Human(bailey) \u2295 Flower(bailey))"
+    ],
+    "conclusion_fol": "Pupil(bailey)",
+    "expected_categories": [
+      "connective-polarity",
+      "polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity",
+      "restrictor-content"
+    ],
+    "baseline_correction_correct": true
+  },
+  {
+    "candidate_id": "C080",
+    "story_id": 314,
+    "example_id": 782,
+    "sentence_idx": 1,
+    "nl": "All humans are animals.",
+    "gold_fol": "\u2200x (Human(x) \u2192 Animal(x))",
+    "perturbed_fol": "\u2203x (Human(x) \u2194 \u00acAnimal(x))",
+    "gold_label": "contradiction",
+    "perturbed_label": "neutral",
+    "all_fols": [
+      "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+      "\u2200x (Human(x) \u2192 Animal(x))",
+      "\u2200x (Pupil(x) \u2192 Human(x))",
+      "\u2200x (Flower(x) \u2192 Plant(x))",
+      "\u00ac(Human(bailey) \u2295 Flower(bailey))"
+    ],
+    "conclusion_fol": "Pupil(bailey)",
+    "expected_categories": [
+      "polarity",
+      "connective-polarity",
+      "quantifier-scope"
+    ],
+    "actual_categories": [
+      "content-gap",
+      "polarity"
+    ],
+    "baseline_correction_correct": true
+  }
+]

@@ -1,0 +1,1 @@
+{"premise_id": "v2_P1077", "attempt": 0, "response": "CANDIDATE_PARTIAL: all x.(Leukemia(x) -> BloodCancer(x))  \nCANDIDATE_OVERWEAK: exists x.((Disease(x) & Leukemia(x)) -> BloodCancer(x))  \nCANDIDATE_OVERSTRONG: all x.((Disease(x) & Leukemia(x) & BloodCancer(x)) -> BloodCancer(x))  \nCANDIDATE_GIBBERISH: all x.(BloodCancer(x) -> Disease(x))"}

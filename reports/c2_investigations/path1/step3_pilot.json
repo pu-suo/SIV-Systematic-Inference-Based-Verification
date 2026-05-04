@@ -1,0 +1,760 @@
+{
+  "n_pilot": 20,
+  "condition_rates": {
+    "no_feedback": {
+      "parseable_rate": 1.0,
+      "equiv_rate": 0.6,
+      "siv_rate": 0.65,
+      "n": 20
+    },
+    "score_only": {
+      "parseable_rate": 1.0,
+      "equiv_rate": 0.65,
+      "siv_rate": 0.65,
+      "n": 20
+    },
+    "structured_category": {
+      "parseable_rate": 1.0,
+      "equiv_rate": 0.55,
+      "siv_rate": 0.6,
+      "n": 20
+    },
+    "shuffled_category": {
+      "parseable_rate": 1.0,
+      "equiv_rate": 0.55,
+      "siv_rate": 0.6,
+      "n": 20
+    },
+    "count_only": {
+      "parseable_rate": 1.0,
+      "equiv_rate": 0.6,
+      "siv_rate": 0.6,
+      "n": 20
+    }
+  },
+  "primary_comparison": {
+    "structured_rate": 0.6,
+    "shuffled_rate": 0.6,
+    "delta": 0.0
+  },
+  "sanity_checks": {
+    "no_feedback_near_baseline": true,
+    "score_only_geq_no_feedback": true,
+    "all_parseable_80pct": true,
+    "overall_pass": true
+  },
+  "decision": "WEAK_SIGNAL",
+  "decision_text": "Pilot \u0394=+0.000 in [0, 0.05). Weak signal. Surface to user: per-aspect channel may not carry signal at category level.",
+  "per_condition_results": {
+    "no_feedback": [
+      {
+        "candidate_id": "C015",
+        "correction": "Kid(billy) \u2227 In(billy, ourFamily)",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C004",
+        "correction": "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C036",
+        "correction": "\u00ac\u2203x (Animal(x) \u2227 Plant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C032",
+        "correction": "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C029",
+        "correction": "(NBAPlayer(stephencurry) \u2228 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C018",
+        "correction": "\u2203x (RightFoot(x) \u2227 UseEfficiently(ronaldo, x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C014",
+        "correction": "\u2200x ((In(ourFamily, x) \u2227 Scientist(x)) \u2192 Adult(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C070",
+        "correction": "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C012",
+        "correction": "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C055",
+        "correction": "American(donaldErvinKnuth) \u2227 ComputerScientist(donaldErvinKnuth) \u2227 Mathematician(donaldErvinKnuth) \u2227 ProfessorEmeritusAt(donaldErvinKnuth, stanfordUniversity)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C005",
+        "correction": "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C079",
+        "correction": "\u00ac\u2203x (Animal(x) \u2227 Plant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C072",
+        "correction": "Measure(fMRI, brainActivity) \u2228 NoninvasiveNeuroimagingTechnique(fMRI)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C028",
+        "correction": "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C030",
+        "correction": "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C065",
+        "correction": "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2228 \u2203y (PastEra(y) \u2227 FascinatedBy(x, y)) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C069",
+        "correction": "\u2200x (Noninvasive(x) \u2227 NeuroimagingTechnique(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C078",
+        "correction": "Business(crudeOilDataExchange) \u2227 \u00acFree(crudeOilDataExchange)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C013",
+        "correction": "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C046",
+        "correction": "\u2200x (Edible(x) \u2192 Food(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      }
+    ],
+    "score_only": [
+      {
+        "candidate_id": "C015",
+        "correction": "Kid(billy) \u2227 In(billy, ourFamily)",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C004",
+        "correction": "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C036",
+        "correction": "\u00ac\u2203x (Animal(x) \u2227 Plant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C032",
+        "correction": "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C029",
+        "correction": "(NBAPlayer(stephencurry) \u2228 SoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C018",
+        "correction": "UseEfficiently(ronaldo, rightFoot)",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C014",
+        "correction": "\u2200x ((In(ourFamily, x) \u2227 Scientist(x)) \u2192 Adult(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C070",
+        "correction": "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C012",
+        "correction": "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C055",
+        "correction": "American(donaldErvinKnuth) \u2227 ComputerScientist(donaldErvinKnuth) \u2227 Mathematician(donaldErvinKnuth) \u2227 ProfessorEmeritusAt(donaldErvinKnuth, stanfordUniversity)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C005",
+        "correction": "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C079",
+        "correction": "\u00ac\u2203x (Animal(x) \u2227 Plant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C072",
+        "correction": "Measure(fMRI, brainActivity) \u2228 Noninvasive(fMRI)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C028",
+        "correction": "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C030",
+        "correction": "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C065",
+        "correction": "\u2200x ((FascinatedBy(x, historyOfRenaissance) \u2228 \u2203y (PastEra(y) \u2227 FascinatedBy(x, y))) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C069",
+        "correction": "\u2200x (Noninvasive(x) \u2227 NeuroimagingTechnique(x) \u2192 ProvidesSpatialResolutionOfBrains(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C078",
+        "correction": "Business(crudeOilDataExchange) \u2227 \u00acFree(crudeOilDataExchange)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C013",
+        "correction": "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C046",
+        "correction": "\u2200x (Edible(x) \u2192 Food(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      }
+    ],
+    "structured_category": [
+      {
+        "candidate_id": "C015",
+        "correction": "Kid(billy) \u2227 In(billy, ourFamily)",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C004",
+        "correction": "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C036",
+        "correction": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C032",
+        "correction": "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C029",
+        "correction": "(NBAPlayer(stephencurry) \u2228 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C018",
+        "correction": "\u2203x (RightFoot(x) \u2227 UseEfficiently(ronaldo, x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C014",
+        "correction": "\u2200x ((In(ourFamily, x) \u2227 Scientist(x)) \u2192 Adult(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C070",
+        "correction": "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C012",
+        "correction": "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C055",
+        "correction": "American(donaldErvinKnuth) \u2227 ComputerScientist(donaldErvinKnuth) \u2227 Mathematician(donaldErvinKnuth) \u2227 ProfessorEmeritusAt(donaldErvinKnuth, stanfordUniversity)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C005",
+        "correction": "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C079",
+        "correction": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C072",
+        "correction": "Measure(fMRI, brainActivity) \u2228 Noninvasive(fMRI) \u2227 NeuroimagingTechnique(fMRI)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C028",
+        "correction": "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C030",
+        "correction": "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(federalMinimumWage, x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C065",
+        "correction": "\u2200x ((FascinatedBy(x, historyOfRenaissance) \u2228 FascinatedBy(x, otherPastEras)) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C069",
+        "correction": "\u2200x (Noninvasive(x) \u2227 NeuroimagingTechnique(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C078",
+        "correction": "Business(crudeOilDataExchange) \u2227 \u00acFree(crudeOilDataExchange)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C013",
+        "correction": "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C046",
+        "correction": "\u2200x (Edible(x) \u2192 Food(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      }
+    ],
+    "shuffled_category": [
+      {
+        "candidate_id": "C015",
+        "correction": "Kid(billy) \u2227 In(billy, ourFamily)",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C004",
+        "correction": "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C036",
+        "correction": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C032",
+        "correction": "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C029",
+        "correction": "((NBAPlayer(stephencurry) \u2228 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C018",
+        "correction": "\u2203x (RightFoot(x) \u2227 UseEfficiently(ronaldo, x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C014",
+        "correction": "\u2200x ((In(ourFamily, x) \u2227 Scientist(x)) \u2192 Adult(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C070",
+        "correction": "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C012",
+        "correction": "\u00ac\u2203x (Kid(x) \u2227 In(x, ourFamily) \u2227 Love(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C055",
+        "correction": "American(donaldErvinKnuth) \u2227 ComputerScientist(donaldErvinKnuth) \u2227 Mathematician(donaldErvinKnuth) \u2227 ProfessorEmeritusAt(donaldErvinKnuth, stanfordUniversity)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C005",
+        "correction": "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C079",
+        "correction": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C072",
+        "correction": "Measure(fMRI, brainActivity) \u2228 Noninvasive(fMRI)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C028",
+        "correction": "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C030",
+        "correction": "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(federalMinimumWage, x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C065",
+        "correction": "\u2200x ((Person(x) \u2227 (FascinatedBy(x, historyOfRenaissance) \u2228 FascinatedBy(x, otherPastEras))) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C069",
+        "correction": "\u2200x (Noninvasive(x) \u2227 NeuroimagingTechnique(x) \u2192 Provides(x, spatialResolutionOfBrains))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C078",
+        "correction": "Business(crudeOilDataExchange) \u2227 \u00acFree(crudeOilDataExchange)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C013",
+        "correction": "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C046",
+        "correction": "\u2200x (Edible(x) \u2192 Food(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      }
+    ],
+    "count_only": [
+      {
+        "candidate_id": "C015",
+        "correction": "Kid(billy) \u2227 In(billy, ourFamily)",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C004",
+        "correction": "\u2200x (QuasiConvexFunction(x) \u2192 RealValuedFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C036",
+        "correction": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C032",
+        "correction": "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C029",
+        "correction": "(NBAPlayer(stephencurry) \u2228 SoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C018",
+        "correction": "\u2203x (RightFoot(x) \u2227 UseEfficiently(ronaldo, x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C014",
+        "correction": "\u2200x ((In(ourFamily, x) \u2227 Scientist(x)) \u2192 Adult(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C070",
+        "correction": "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C012",
+        "correction": "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C055",
+        "correction": "American(donaldErvinKnuth) \u2227 ComputerScientist(donaldErvinKnuth) \u2227 Mathematician(donaldErvinKnuth) \u2227 ProfessorEmeritusAt(donaldErvinKnuth, stanfordUniversity)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C005",
+        "correction": "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C079",
+        "correction": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C072",
+        "correction": "Measure(fMRI, brainActivity) \u2228 Noninvasive(fMRI)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C028",
+        "correction": "\u2200x (ProfessionalCenterback(x) \u2192 ProfessionalSoccerDefender(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C030",
+        "correction": "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C065",
+        "correction": "\u2200x ((FascinatedBy(x, historyOfRenaissance) \u2228 FascinatedBy(x, otherPastEras)) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C069",
+        "correction": "\u2200x (Noninvasive(x) \u2227 NeuroimagingTechnique(x) \u2192 ProvidesSpatialResolutionOfBrains(x))",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C078",
+        "correction": "Business(crudeOilDataExchange) \u2227 \u00acFree(crudeOilDataExchange)",
+        "parseable": true,
+        "equiv_to_gold": false,
+        "siv_equiv": false
+      },
+      {
+        "candidate_id": "C013",
+        "correction": "\u2200x ((Adult(x) \u2227 In(x, ourFamily)) \u2192 Love(x, opera))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      },
+      {
+        "candidate_id": "C046",
+        "correction": "\u2200x (Edible(x) \u2192 Food(x))",
+        "parseable": true,
+        "equiv_to_gold": true,
+        "siv_equiv": true
+      }
+    ]
+  }
+}

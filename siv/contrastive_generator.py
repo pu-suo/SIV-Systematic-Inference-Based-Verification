@@ -48,10 +48,16 @@ def derive_witness_axioms(extraction: SentenceExtraction) -> List[str]:
     axioms: List[str] = []
 
     for decl in extraction.predicates:
+        if decl.name == "__eq__":
+            continue  # Built-in equality needs no witness axiom
         if decl.arity == 1:
             axioms.append(f"exists x.{decl.name}(x)")
         elif decl.arity == 2:
             axioms.append(f"exists x.exists y.{decl.name}(x, y)")
+        else:
+            vars = [f"v{i}" for i in range(decl.arity)]
+            prefix = "".join(f"exists {v}." for v in vars)
+            axioms.append(f"{prefix}{decl.name}({', '.join(vars)})")
 
     # Build an ancestor-scope map keyed by each TripartiteQuantification,
     # listing every enclosing quantifier's bound variable (outer + outer
@@ -202,6 +208,9 @@ def _walk_quantifications(f: Formula):
 
 
 def _compile_atom(a: AtomicFormula) -> str:
+    if a.pred == "__eq__" and len(a.args) == 2:
+        body = f"({a.args[0]} = {a.args[1]})"
+        return f"-{body}" if a.negated else body
     body = f"{a.pred}({', '.join(a.args)})"
     return f"-{body}" if a.negated else body
 

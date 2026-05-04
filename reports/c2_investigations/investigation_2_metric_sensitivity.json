@@ -1,0 +1,418 @@
+{
+  "n_cases": 15,
+  "gold_correct_rate": 1.0,
+  "corrupted_wrong_rate": 0.9333333333333333,
+  "partial_correct_rate": 0.13333333333333333,
+  "partial_n": 15,
+  "full_repair_correct_rate": 0.8,
+  "full_repair_n": 15,
+  "decision": "BINARY_COLLAPSE",
+  "decision_text": "Outcome collapses to binary. Partial repairs only 13.3% correct (<30%). Only essentially-equivalent corrections produce right label. Use SIV-equivalence as primary outcome.",
+  "per_case": [
+    {
+      "story_id": 374,
+      "sentence_idx": 4,
+      "nl": "All convex functions are quasi-convex functions.",
+      "gold_fol": "\u2200x (ConvexFunction(x) \u2192 QuasiConvexFunction(x))",
+      "corrupted_fol": "\u2200x (ConvexFunction(x) \u2192 \u00acQuasiConvexFunction(x))",
+      "corruption_type": "negate_consequent",
+      "partial_repair_fol": "\u2200x (ConvexFunction(x) \u2192 \u00acQuasiConvexFunction(x))",
+      "full_repair_fol": "\u2200z (ConvezFunction(z) \u2192 QuasiConvezFunction(z))",
+      "gold_label": "contradiction",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": false,
+      "vampire_labels": {
+        "gold": "contradiction",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "neutral"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 0.0
+      }
+    },
+    {
+      "story_id": 134,
+      "sentence_idx": 0,
+      "nl": "Islip Speedway is the smallest race track.",
+      "gold_fol": "Speedway(islip) \u2227 SmallestRaceTrack(islip)",
+      "corrupted_fol": "SmallestRaceTrack(islip)",
+      "corruption_type": "drop_conjunct",
+      "partial_repair_fol": "Speedway(islip) \u2227 \u00acSmallestRaceTrack(islip)",
+      "full_repair_fol": "-(-((Speedway(islip) \u2227 SmallestRaceTrack(islip))))",
+      "gold_label": "contradiction",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": true,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "contradiction",
+        "corrupted": "neutral",
+        "partial": "contradiction",
+        "full_repair": "contradiction"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.3333333333333333,
+        "partial": 0.3333333333333333,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 317,
+      "sentence_idx": 2,
+      "nl": "All dresses are clothes.",
+      "gold_fol": "\u2200x (Dress(x) \u2192 Clothes(x))",
+      "corrupted_fol": "\u2203x (Dress(x) \u2192 Clothes(x))",
+      "corruption_type": "flip_quantifier",
+      "partial_repair_fol": "\u2200x (Dress(x) \u2192 \u00acClothes(x))",
+      "full_repair_fol": "\u2200z (Dress(z) \u2192 Clothes(z))",
+      "gold_label": "contradiction",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "contradiction",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "contradiction"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 22,
+      "sentence_idx": 2,
+      "nl": "Customers who prefer TV series will not watch TV series in cinemas.",
+      "gold_fol": "\u2200x (Prefer(x, tVSeries) \u2192 \u00acWatchTVIn(x, cinemas))",
+      "corrupted_fol": "\u2200x (Prefer(x, tVSeries) \u2192 \u00acWatchTVIn(cinemas, x))",
+      "corruption_type": "arg_swap",
+      "partial_repair_fol": "\u2200x (\u00acPrefer(x, tVSeries) \u2192 \u00acWatchTVIn(x, cinemas))",
+      "full_repair_fol": "\u2200z (Prefer(z, tVSeries) \u2192 \u00acWatchTVIn(z, cinemas))",
+      "gold_label": "entailment",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "entailment",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "entailment"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 125,
+      "sentence_idx": 5,
+      "nl": "Cristiano Ronaldo can use his right foot very efficiently.",
+      "gold_fol": "UseEfficiently(ronaldo, rightFoot)",
+      "corrupted_fol": "UseEfficiently(rightFoot, ronaldo)",
+      "corruption_type": "arg_swap",
+      "partial_repair_fol": "UseEfficiently(rightFoot, ronaldo)",
+      "full_repair_fol": "-(-((UseEfficiently(ronaldo, rightFoot))))",
+      "gold_label": "entailment",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "entailment",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "entailment"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 27,
+      "sentence_idx": 0,
+      "nl": "Xiufeng, Xiangshan, Diecai, Qixing are districts in the city of Guilin.",
+      "gold_fol": "DistrictIn(xiufeng, guilin) \u2227 DistrictIn(xiangshan, guilin) \u2227 DistrictIn(diecai, guilin) \u2227 DistrictIn(qixing, guilin) \u2227 City(guilin)",
+      "corrupted_fol": "DistrictIn(xiufeng, guilin) \u2227 DistrictIn(xiangshan, guilin) \u2227 DistrictIn(guilin, diecai) \u2227 DistrictIn(qixing, guilin) \u2227 City(guilin)",
+      "corruption_type": "arg_swap",
+      "partial_repair_fol": "DistrictIn(xiufeng, guilin) \u2227 DistrictIn(xiangshan, guilin) \u2227 DistrictIn(diecai, guilin) \u2227 DistrictIn(qixing, guilin) \u2227 \u00acCity(guilin)",
+      "full_repair_fol": "DistrictIn(ziufeng, guilin) \u2227 DistrictIn(ziangshan, guilin) \u2227 DistrictIn(diecai, guilin) \u2227 DistrictIn(qizing, guilin) \u2227 City(guilin)",
+      "gold_label": "entailment",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": true,
+      "partial_produces_correct": true,
+      "full_repair_produces_correct": false,
+      "vampire_labels": {
+        "gold": "entailment",
+        "corrupted": "entailment",
+        "partial": "entailment",
+        "full_repair": "neutral"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.6666666666666666,
+        "partial": 0.6666666666666666,
+        "full_repair": 0.3333333333333333
+      }
+    },
+    {
+      "story_id": 438,
+      "sentence_idx": 2,
+      "nl": "If someone in our family is a scientist, then they are an adult.",
+      "gold_fol": "\u2200x ((Scientist(x) \u2227 In(x, ourFamily)) \u2192 Adult(x))",
+      "corrupted_fol": "\u2203x ((Scientist(x) \u2227 In(x, ourFamily)) \u2192 Adult(x))",
+      "corruption_type": "flip_quantifier",
+      "partial_repair_fol": "\u2200x ((\u00acScientist(x) \u2227 In(x, ourFamily)) \u2192 Adult(x))",
+      "full_repair_fol": "\u2200z ((Scientist(z) \u2227 In(z, ourFamily)) \u2192 Adult(z))",
+      "gold_label": "contradiction",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "contradiction",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "contradiction"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 309,
+      "sentence_idx": 2,
+      "nl": "All lawyers are white-collar workers.",
+      "gold_fol": "\u2200x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+      "corrupted_fol": "\u2203x (Lawyer(x) \u2192 WhiteCollarWorker(x))",
+      "corruption_type": "flip_quantifier",
+      "partial_repair_fol": "\u2200x (\u00acLawyer(x) \u2192 WhiteCollarWorker(x))",
+      "full_repair_fol": "\u2200z (Lawyer(z) \u2192 WhiteCollarWorker(z))",
+      "gold_label": "contradiction",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "contradiction",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "contradiction"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 309,
+      "sentence_idx": 0,
+      "nl": "Tipped employees are not entitled to be paid the federal minimum wage by their employees.",
+      "gold_fol": "\u2200x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+      "corrupted_fol": "\u2203x (TippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+      "corruption_type": "flip_quantifier",
+      "partial_repair_fol": "\u2200x (\u00acTippedEmployee(x) \u2192 \u00acEntitledTo(x, federalMinimumWage))",
+      "full_repair_fol": "\u2200z (TippedEmployee(z) \u2192 \u00acEntitledTo(z, federalMinimumWage))",
+      "gold_label": "contradiction",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "contradiction",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "contradiction"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 314,
+      "sentence_idx": 3,
+      "nl": "All flowers are plants.",
+      "gold_fol": "\u2200x (Flower(x) \u2192 Plant(x))",
+      "corrupted_fol": "\u2200x (Flower(x) \u2192 \u00acPlant(x))",
+      "corruption_type": "negate_consequent",
+      "partial_repair_fol": "\u2200x (Flower(x) \u2192 \u00acPlant(x))",
+      "full_repair_fol": "\u2200z (Flower(z) \u2192 Plant(z))",
+      "gold_label": "entailment",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "entailment",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "entailment"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 22,
+      "sentence_idx": 5,
+      "nl": "Peter prefers TV series.",
+      "gold_fol": "Prefer(peter, tVSeries)",
+      "corrupted_fol": "Prefer(tVSeries, peter)",
+      "corruption_type": "arg_swap",
+      "partial_repair_fol": "Prefer(tVSeries, peter)",
+      "full_repair_fol": "-(-((Prefer(peter, tVSeries))))",
+      "gold_label": "entailment",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "entailment",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "entailment"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 317,
+      "sentence_idx": 0,
+      "nl": "All clothes are products.",
+      "gold_fol": "\u2200x (Clothes(x) \u2192 Product(x))",
+      "corrupted_fol": "\u2203x (Clothes(x) \u2192 Product(x))",
+      "corruption_type": "flip_quantifier",
+      "partial_repair_fol": "\u2200x (Clothes(x) \u2192 \u00acProduct(x))",
+      "full_repair_fol": "\u2200z (Clothes(z) \u2192 Product(z))",
+      "gold_label": "contradiction",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "contradiction",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "contradiction"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 314,
+      "sentence_idx": 0,
+      "nl": "No animals are plants.",
+      "gold_fol": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+      "corrupted_fol": "\u2200x (Animal(x) \u2192 Plant(x))",
+      "corruption_type": "negate_consequent",
+      "partial_repair_fol": "\u2200x (\u00acAnimal(x) \u2192 \u00acPlant(x))",
+      "full_repair_fol": "\u2200z (Animal(z) \u2192 \u00acPlant(z))",
+      "gold_label": "entailment",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "entailment",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "entailment"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    },
+    {
+      "story_id": 374,
+      "sentence_idx": 1,
+      "nl": "No linear functions are non-convex functions.",
+      "gold_fol": "\u2200x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+      "corrupted_fol": "\u2203x (LinearFunction(x) \u2192 \u00acNonConvexFunction(x))",
+      "corruption_type": "flip_quantifier",
+      "partial_repair_fol": "\u2200x (LinearFunction(x) \u2192 NonConvexFunction(x))",
+      "full_repair_fol": "\u2200z (LinearFunction(z) \u2192 \u00acNonConvezFunction(z))",
+      "gold_label": "contradiction",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": false,
+      "vampire_labels": {
+        "gold": "contradiction",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "neutral"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 0.0
+      }
+    },
+    {
+      "story_id": 125,
+      "sentence_idx": 2,
+      "nl": "If a soccer player can score many goals using the left foot, they can use that foot very efficiently.",
+      "gold_fol": "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, leftFoot) \u2192 UseEfficiently(x, leftFoot))",
+      "corrupted_fol": "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, leftFoot) \u2192 \u00acUseEfficiently(x, leftFoot))",
+      "corruption_type": "negate_consequent",
+      "partial_repair_fol": "\u2200x (SoccerPlayer(x) \u2227 ScoreUsing(x, manyGoals, leftFoot) \u2192 \u00acUseEfficiently(x, leftFoot))",
+      "full_repair_fol": "\u2200z (SoccerPlayer(z) \u2227 ScoreUsing(z, manyGoals, leftFoot) \u2192 UseEfficiently(z, leftFoot))",
+      "gold_label": "entailment",
+      "gold_produces_correct": true,
+      "corrupted_produces_correct": false,
+      "partial_produces_correct": false,
+      "full_repair_produces_correct": true,
+      "vampire_labels": {
+        "gold": "entailment",
+        "corrupted": "neutral",
+        "partial": "neutral",
+        "full_repair": "entailment"
+      },
+      "siv_scores": {
+        "gold": 1.0,
+        "corrupted": 0.0,
+        "partial": 0.0,
+        "full_repair": 1.0
+      }
+    }
+  ]
+}

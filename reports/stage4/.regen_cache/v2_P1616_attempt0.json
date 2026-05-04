@@ -1,0 +1,1 @@
+{"premise_id": "v2_P1616", "attempt": 0, "response": "CANDIDATE_PARTIAL: BornOn(zahaHadid, 31October1950)\nCANDIDATE_OVERWEAK: Exists(x) BornOn(zahaHadid, x)\nCANDIDATE_OVERSTRONG: (BornOn(zahaHadid, 31October1950) & BornIn(zahaHadid, baghdadIraq) & BornIn(zahaHadid, londonUK))\nCANDIDATE_GIBBERISH: BornIn(baghdadIraq, zahaHadid)"}

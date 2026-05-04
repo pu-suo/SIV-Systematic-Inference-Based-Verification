@@ -1,0 +1,1 @@
+{"premise_id": "v2_P0817", "attempt": 0, "response": "CANDIDATE_PARTIAL: In(oxfordSt, london)\nCANDIDATE_OVERWEAK: (In(oxfordSt, london) | In(regentSt, london))\nCANDIDATE_OVERSTRONG: (In(oxfordSt, london) & In(regentSt, london) & In(oxfordSt, regentSt))\nCANDIDATE_GIBBERISH: (In(london, oxfordSt) & In(london, regentSt))"}

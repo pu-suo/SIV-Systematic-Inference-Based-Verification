@@ -1,0 +1,465 @@
+{
+  "error_pattern_catalog": {
+    "arg_swap": {
+      "description": "Swap arguments of a binary predicate (e.g., Near(a,b) \u2192 Near(b,a))",
+      "source": "Exp A B_arg_swap, common LLM error with asymmetric relations"
+    },
+    "negation_flip": {
+      "description": "Add or remove negation on a predicate (e.g., P(x) \u2192 \u00acP(x))",
+      "source": "Exp A B_negation_drop, LLM polarity errors"
+    },
+    "quantifier_swap": {
+      "description": "Change \u2200 to \u2203 or vice versa (scope confusion)",
+      "source": "Exp A B_scope_flip, LLM quantifier confusion"
+    },
+    "conjunct_drop": {
+      "description": "Drop a conjunct from a conjunction (information loss)",
+      "source": "Exp B overweak candidates that omit conditions"
+    },
+    "disjunction_for_conjunction": {
+      "description": "Replace \u2227 with \u2228 (weakening error)",
+      "source": "Exp B overweak: P \u2227 Q \u2192 P \u2228 Q"
+    },
+    "implication_flip": {
+      "description": "Reverse implication direction (A\u2192B becomes B\u2192A)",
+      "source": "Exp B gibberish candidates with reversed conditionals"
+    },
+    "constant_swap": {
+      "description": "Swap two constants (entity confusion)",
+      "source": "Exp B partial candidates with wrong entity attribution"
+    },
+    "restrictor_drop": {
+      "description": "Drop restrictor from universal (\u2200x.(P(x)\u2192Q(x)) \u2192 \u2200x.Q(x))",
+      "source": "Exp A B_restrictor_drop, LLM over-generalization"
+    }
+  },
+  "n_lb_sentences": 12,
+  "n_perturbations_constructed": 20,
+  "n_verified": 20,
+  "n_pass_all_checks": 15,
+  "pass_rate": 0.75,
+  "verification_failures": {
+    "parse": 0,
+    "equivalent": 1,
+    "label_unchanged": 4,
+    "timeout": 0
+  },
+  "construction_decision": "NEEDS_REVIEW",
+  "construction_text": "Hand-perturbation works but needs review process. 75.0% pass (60-85%). Build in verification step; reject candidates that fail.",
+  "baseline_correction": {
+    "n_attempted": 15,
+    "n_equivalent_to_gold": 13,
+    "correction_rate": 0.8667,
+    "n_restores_label": 13,
+    "label_restore_rate": 0.8667
+  },
+  "severity_decision": "TOO_EASY",
+  "severity_text": "Correction rate 86.7% too high (>55%). Increase severity.",
+  "pattern_distribution": {
+    "negation_flip": 5,
+    "disjunction_for_conjunction": 5,
+    "arg_swap": 4,
+    "conjunct_drop": 3,
+    "quantifier_swap": 1,
+    "constant_swap": 2
+  },
+  "per_perturbation": [
+    {
+      "pattern": "negation_flip",
+      "nl": "There is a strong analogy of human aging in the poem Catullus 4.",
+      "gold_fol": "Poem(catullus4) \u2227 StrongAgingAnalogy(catullus4)",
+      "perturbed_fol": "Poem(catullus4) \u2227 \u00acStrongAgingAnalogy(catullus4)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "disjunction_for_conjunction",
+      "nl": "There is a strong analogy of human aging in the poem Catullus 4.",
+      "gold_fol": "Poem(catullus4) \u2227 StrongAgingAnalogy(catullus4)",
+      "perturbed_fol": "Poem(catullus4) \u2228 StrongAgingAnalogy(catullus4)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "arg_swap",
+      "nl": "Catullus 4 is written in an unusual iambic trimeter to convey a sense of speed over the waves.",
+      "gold_fol": "Poem(catullus4) \u2227 WrittenIn(catullus4, iambicTrimeter) \u2227 Convey(catullus4, aSenseOfSpeedOverTheWaves",
+      "perturbed_fol": "Poem(catullus4) \u2227 WrittenIn(catullus4, iambicTrimeter) \u2227 Convey(aSenseOfSpeedOverTheWaves, catullus4",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": false,
+        "pattern_faithful": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern": "conjunct_drop",
+      "nl": "Catullus 4 is written in an unusual iambic trimeter to convey a sense of speed over the waves.",
+      "gold_fol": "Poem(catullus4) \u2227 WrittenIn(catullus4, iambicTrimeter) \u2227 Convey(catullus4, aSenseOfSpeedOverTheWaves",
+      "perturbed_fol": "WrittenIn(catullus4, iambicTrimeter) \u2227 Convey(catullus4, aSenseOfSpeedOverTheWaves)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": false,
+        "pattern_faithful": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern": "negation_flip",
+      "nl": "Luzon is an island in the Philippines.",
+      "gold_fol": "Island(luzon) \u2227 In(luzon, philippines)",
+      "perturbed_fol": "Island(luzon) \u2227 \u00acIn(luzon, philippines)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "disjunction_for_conjunction",
+      "nl": "Luzon is an island in the Philippines.",
+      "gold_fol": "Island(luzon) \u2227 In(luzon, philippines)",
+      "perturbed_fol": "Island(luzon) \u2228 In(luzon, philippines)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "negation_flip",
+      "nl": "People died in the December 1999 earthquake in Luzon.",
+      "gold_fol": "\u2203x (Earthquake(x) \u2227 StrikeInYr(x, year1999) \u2227 StrikeInMo(x, december) \u2227 StrikeInCity(x, luzon) \u2227 Dea",
+      "perturbed_fol": "\u2203x (Earthquake(x) \u2227 StrikeInYr(x, year1999) \u2227 StrikeInMo(x, december) \u2227 StrikeInCity(x, luzon) \u2227 \u00acDe",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "conjunct_drop",
+      "nl": "People died in the December 1999 earthquake in Luzon.",
+      "gold_fol": "\u2203x (Earthquake(x) \u2227 StrikeInYr(x, year1999) \u2227 StrikeInMo(x, december) \u2227 StrikeInCity(x, luzon) \u2227 Dea",
+      "perturbed_fol": "StrikeInYr(x, year1999) \u2227 StrikeInMo(x, december) \u2227 StrikeInCity(x, luzon) \u2227 Deadly(x)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": false,
+        "pattern_faithful": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern": "negation_flip",
+      "nl": "WeTab is a MeeGo-based tablet computer.",
+      "gold_fol": "MeeGoBased(weTab) \u2227 TabletComputer(weTab)",
+      "perturbed_fol": "MeeGoBased(weTab) \u2227 \u00acTabletComputer(weTab)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "disjunction_for_conjunction",
+      "nl": "WeTab is a MeeGo-based tablet computer.",
+      "gold_fol": "MeeGoBased(weTab) \u2227 TabletComputer(weTab)",
+      "perturbed_fol": "MeeGoBased(weTab) \u2228 TabletComputer(weTab)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "arg_swap",
+      "nl": "WeTab was announced by Neofonie.",
+      "gold_fol": "\u2200x (AnnouncedBy(weTab, neofonie))",
+      "perturbed_fol": "\u2200x (AnnouncedBy(neofonie, weTab))",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "quantifier_swap",
+      "nl": "WeTab was announced by Neofonie.",
+      "gold_fol": "\u2200x (AnnouncedBy(weTab, neofonie))",
+      "perturbed_fol": "\u2203x (AnnouncedBy(weTab, neofonie))",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": false,
+        "label_changes": false,
+        "pattern_faithful": true
+      },
+      "all_pass": false
+    },
+    {
+      "pattern": "conjunct_drop",
+      "nl": "Neofonie is a German producer.",
+      "gold_fol": "German(neofonie) \u2227 Producer(neofonie)",
+      "perturbed_fol": "Producer(neofonie)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "disjunction_for_conjunction",
+      "nl": "Neofonie is a German producer.",
+      "gold_fol": "German(neofonie) \u2227 Producer(neofonie)",
+      "perturbed_fol": "German(neofonie) \u2228 Producer(neofonie)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "negation_flip",
+      "nl": "Asa Hoffmann was born in New York City.",
+      "gold_fol": "BornIn(asaHoffmann, newYorkCity)",
+      "perturbed_fol": "\u00acBornIn(asaHoffmann, newYorkCity)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "constant_swap",
+      "nl": "Asa Hoffmann was born in New York City.",
+      "gold_fol": "BornIn(asaHoffmann, newYorkCity)",
+      "perturbed_fol": "BornIn(newYorkCity, asaHoffmann)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "constant_swap",
+      "nl": "Asa Hoffman lives in Manhattan.",
+      "gold_fol": "LiveIn(asaHoffmann, manhattan)",
+      "perturbed_fol": "LiveIn(manhattan, asaHoffmann)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "arg_swap",
+      "nl": "Asa Hoffman lives in Manhattan.",
+      "gold_fol": "LiveIn(asaHoffmann, manhattan)",
+      "perturbed_fol": "LiveIn(manhattan, asaHoffmann)",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "arg_swap",
+      "nl": "People born and living in New York City are New Yorkers.",
+      "gold_fol": "\u2200x ((BornIn(x, newYorkCity) \u2227 LiveIn(x, newYorkCity)) \u2192 NewYorker(x))",
+      "perturbed_fol": "\u2200x ((BornIn(x, newYorkCity) \u2227 LiveIn(newYorkCity, x)) \u2192 NewYorker(x))",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": true,
+        "pattern_faithful": true
+      },
+      "all_pass": true
+    },
+    {
+      "pattern": "disjunction_for_conjunction",
+      "nl": "People born and living in New York City are New Yorkers.",
+      "gold_fol": "\u2200x ((BornIn(x, newYorkCity) \u2227 LiveIn(x, newYorkCity)) \u2192 NewYorker(x))",
+      "perturbed_fol": "\u2200x ((BornIn(x, newYorkCity) \u2228 LiveIn(x, newYorkCity)) \u2192 NewYorker(x))",
+      "checks": {
+        "parseable": true,
+        "non_equivalent": true,
+        "label_changes": false,
+        "pattern_faithful": true
+      },
+      "all_pass": false
+    }
+  ],
+  "correction_results": [
+    {
+      "pattern": "negation_flip",
+      "nl": "There is a strong analogy of human aging in the poem Catullus 4.",
+      "gold_fol": "Poem(catullus4) \u2227 StrongAgingAnalogy(catullus4)",
+      "perturbed_fol": "Poem(catullus4) \u2227 \u00acStrongAgingAnalogy(catullus4)",
+      "correction": "Poem(catullus4) \u2227 StrongAgingAnalogy(catullus4)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "disjunction_for_conjunction",
+      "nl": "There is a strong analogy of human aging in the poem Catullus 4.",
+      "gold_fol": "Poem(catullus4) \u2227 StrongAgingAnalogy(catullus4)",
+      "perturbed_fol": "Poem(catullus4) \u2228 StrongAgingAnalogy(catullus4)",
+      "correction": "\u2203x (Poem(catullus4) \u2227 StrongAgingAnalogy(x) \u2227 AnalogyOf(x, human_aging))",
+      "correction_equivalent_to_gold": false,
+      "correction_restores_label": false
+    },
+    {
+      "pattern": "negation_flip",
+      "nl": "Luzon is an island in the Philippines.",
+      "gold_fol": "Island(luzon) \u2227 In(luzon, philippines)",
+      "perturbed_fol": "Island(luzon) \u2227 \u00acIn(luzon, philippines)",
+      "correction": "Island(luzon) \u2227 In(luzon, philippines)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "disjunction_for_conjunction",
+      "nl": "Luzon is an island in the Philippines.",
+      "gold_fol": "Island(luzon) \u2227 In(luzon, philippines)",
+      "perturbed_fol": "Island(luzon) \u2228 In(luzon, philippines)",
+      "correction": "Island(luzon) \u2227 In(luzon, philippines)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "negation_flip",
+      "nl": "People died in the December 1999 earthquake in Luzon.",
+      "gold_fol": "\u2203x (Earthquake(x) \u2227 StrikeInYr(x, year1999) \u2227 StrikeInMo(x, december) \u2227 StrikeInCity(x, luzon) \u2227 Deadly(x))",
+      "perturbed_fol": "\u2203x (Earthquake(x) \u2227 StrikeInYr(x, year1999) \u2227 StrikeInMo(x, december) \u2227 StrikeInCity(x, luzon) \u2227 \u00acDeadly(x))",
+      "correction": "\u2203x (Earthquake(x) \u2227 StrikeInYr(x, year1999) \u2227 StrikeInMo(x, december) \u2227 StrikeInCity(x, luzon) \u2227 Deadly(x))",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "negation_flip",
+      "nl": "WeTab is a MeeGo-based tablet computer.",
+      "gold_fol": "MeeGoBased(weTab) \u2227 TabletComputer(weTab)",
+      "perturbed_fol": "MeeGoBased(weTab) \u2227 \u00acTabletComputer(weTab)",
+      "correction": "MeeGoBased(weTab) \u2227 TabletComputer(weTab)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "disjunction_for_conjunction",
+      "nl": "WeTab is a MeeGo-based tablet computer.",
+      "gold_fol": "MeeGoBased(weTab) \u2227 TabletComputer(weTab)",
+      "perturbed_fol": "MeeGoBased(weTab) \u2228 TabletComputer(weTab)",
+      "correction": "MeeGoBased(weTab) \u2227 TabletComputer(weTab)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "arg_swap",
+      "nl": "WeTab was announced by Neofonie.",
+      "gold_fol": "\u2200x (AnnouncedBy(weTab, neofonie))",
+      "perturbed_fol": "\u2200x (AnnouncedBy(neofonie, weTab))",
+      "correction": "AnnouncedBy(neofonie, weTab)",
+      "correction_equivalent_to_gold": false,
+      "correction_restores_label": false
+    },
+    {
+      "pattern": "conjunct_drop",
+      "nl": "Neofonie is a German producer.",
+      "gold_fol": "German(neofonie) \u2227 Producer(neofonie)",
+      "perturbed_fol": "Producer(neofonie)",
+      "correction": "Producer(neofonie) \u2227 German(neofonie)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "disjunction_for_conjunction",
+      "nl": "Neofonie is a German producer.",
+      "gold_fol": "German(neofonie) \u2227 Producer(neofonie)",
+      "perturbed_fol": "German(neofonie) \u2228 Producer(neofonie)",
+      "correction": "German(neofonie) \u2227 Producer(neofonie)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "negation_flip",
+      "nl": "Asa Hoffmann was born in New York City.",
+      "gold_fol": "BornIn(asaHoffmann, newYorkCity)",
+      "perturbed_fol": "\u00acBornIn(asaHoffmann, newYorkCity)",
+      "correction": "BornIn(asaHoffmann, newYorkCity)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "constant_swap",
+      "nl": "Asa Hoffmann was born in New York City.",
+      "gold_fol": "BornIn(asaHoffmann, newYorkCity)",
+      "perturbed_fol": "BornIn(newYorkCity, asaHoffmann)",
+      "correction": "BornIn(asaHoffmann, newYorkCity)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "constant_swap",
+      "nl": "Asa Hoffman lives in Manhattan.",
+      "gold_fol": "LiveIn(asaHoffmann, manhattan)",
+      "perturbed_fol": "LiveIn(manhattan, asaHoffmann)",
+      "correction": "LiveIn(asaHoffmann, manhattan)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "arg_swap",
+      "nl": "Asa Hoffman lives in Manhattan.",
+      "gold_fol": "LiveIn(asaHoffmann, manhattan)",
+      "perturbed_fol": "LiveIn(manhattan, asaHoffmann)",
+      "correction": "LiveIn(asaHoffmann, manhattan)",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    },
+    {
+      "pattern": "arg_swap",
+      "nl": "People born and living in New York City are New Yorkers.",
+      "gold_fol": "\u2200x ((BornIn(x, newYorkCity) \u2227 LiveIn(x, newYorkCity)) \u2192 NewYorker(x))",
+      "perturbed_fol": "\u2200x ((BornIn(x, newYorkCity) \u2227 LiveIn(newYorkCity, x)) \u2192 NewYorker(x))",
+      "correction": "\u2200x ((BornIn(x, newYorkCity) \u2227 LiveIn(x, newYorkCity)) \u2192 NewYorker(x))",
+      "correction_equivalent_to_gold": true,
+      "correction_restores_label": true
+    }
+  ]
+}

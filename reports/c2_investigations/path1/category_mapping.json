@@ -1,0 +1,39 @@
+{
+  "probe_family_to_category": {
+    "negate_atom": "polarity",
+    "swap_binary_args": "argument-order",
+    "flip_quantifier": "quantifier-scope",
+    "drop_restrictor_conjunct": "restrictor-content",
+    "flip_connective": "connective-polarity",
+    "replace_subformula_with_negation": "polarity",
+    "positive_failure": "content-gap"
+  },
+  "category_vocabulary": [
+    "argument-order",
+    "quantifier-scope",
+    "restrictor-content",
+    "polarity",
+    "connective-polarity",
+    "content-gap"
+  ],
+  "category_definitions": {
+    "argument-order": "Incorrect argument positions in n-ary predicates. Detected by swap_binary_args contrastive probes being entailed (consistent) with the candidate when they should be inconsistent.",
+    "quantifier-scope": "Wrong quantifier type (universal vs existential), wrong quantifier order, or scope errors. Detected by flip_quantifier contrastive probes being consistent with the candidate.",
+    "restrictor-content": "Missing, added, or wrong conjuncts in the restrictor/antecedent of a quantified formula. Detected by drop_restrictor_conjunct contrastive probes being consistent with the candidate.",
+    "polarity": "Negation errors: missing or extra negation on atoms or subformulas. Detected by negate_atom or replace_subformula_with_negation contrastive probes being consistent with the candidate.",
+    "connective-polarity": "Wrong logical connective: and/or confusion, implication/biconditional confusion, or reversed implication direction. Detected by flip_connective contrastive probes being consistent with the candidate.",
+    "content-gap": "Missing semantic content: the candidate fails to entail one or more sub-entailment positive probes derived from the gold. Indicates omitted predicates, missing conjuncts, or structural incompleteness."
+  },
+  "mapping_rationale": {
+    "negate_atom_to_polarity": "Negating an atom is a direct polarity error. When the candidate has wrong polarity, the negate_atom contrastive (which IS correctly negated relative to gold) will be consistent with the candidate instead of inconsistent.",
+    "swap_binary_args_to_argument_order": "Direct correspondence: swapping arguments in a predicate IS the argument-order error.",
+    "flip_quantifier_to_quantifier_scope": "Flipping quantifier type (forall<->exists) is the canonical quantifier-scope/type error.",
+    "drop_restrictor_conjunct_to_restrictor_content": "Dropping a restrictor conjunct directly tests whether the candidate preserves restrictor content.",
+    "flip_connective_to_connective_polarity": "Connective flips (and<->or, implies<->iff, direction reversal) are a family of polarity-like errors at the connective level, distinct from atom-level polarity.",
+    "replace_subformula_with_negation_to_polarity": "Wrapping a subformula in negation is structurally a polarity error at a larger scope.",
+    "positive_failure_to_content_gap": "When a positive sub-entailment probe fails, the candidate is missing content that the gold formula entails. This is a structural completeness issue."
+  },
+  "clean_mapping_rate": 1.0,
+  "residual_categories": [],
+  "note": "All 6 contrastive operators plus the positive-failure family map to one of 6 categories with no residual. 7/7 families mapped = 100%."
+}

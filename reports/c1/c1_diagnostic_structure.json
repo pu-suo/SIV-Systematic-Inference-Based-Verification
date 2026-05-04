@@ -1,0 +1,187 @@
+{
+  "coarse_macro_f1": 0.8125,
+  "fine_macro_f1": 0.2904,
+  "gate": "PASS",
+  "gate_threshold": 0.65,
+  "coarse_diagonal_mass_ratio": 0.8734,
+  "coarse_confusion_matrix": {
+    "total_failure": {
+      "total_failure": 143,
+      "partial_loss": 15,
+      "undetected": 1
+    },
+    "polarity_error": {
+      "total_failure": 11,
+      "polarity_error": 12
+    },
+    "partial_loss": {
+      "partial_loss": 45,
+      "undetected": 1,
+      "total_failure": 1
+    }
+  },
+  "coarse_per_class_f1": {
+    "total_failure": {
+      "precision": 0.9226,
+      "recall": 0.8994,
+      "f1": 0.9108,
+      "support": 159,
+      "tp": 143,
+      "fp": 12,
+      "fn": 16,
+      "expected_label": "total_failure"
+    },
+    "polarity_error": {
+      "precision": 1.0,
+      "recall": 0.5217,
+      "f1": 0.6857,
+      "support": 23,
+      "tp": 12,
+      "fp": 0,
+      "fn": 11,
+      "expected_label": "polarity_error"
+    },
+    "partial_loss": {
+      "precision": 0.75,
+      "recall": 0.9574,
+      "f1": 0.8411,
+      "support": 47,
+      "tp": 45,
+      "fp": 15,
+      "fn": 2,
+      "expected_label": "partial_loss"
+    }
+  },
+  "fine_confusion_matrix": {
+    "B_arg_swap": {
+      "unrelated": 39,
+      "severe_underspec": 2,
+      "partial_underspec": 1
+    },
+    "B_negation_drop": {
+      "unrelated": 11,
+      "polarity_error": 10,
+      "other_detected": 2
+    },
+    "D_random": {
+      "unrelated": 44,
+      "severe_underspec": 1,
+      "partial_underspec": 1
+    },
+    "partial": {
+      "partial_underspec": 7,
+      "undetected": 1,
+      "unrelated": 1,
+      "severe_underspec": 38
+    },
+    "overweak": {
+      "unrelated": 30,
+      "severe_underspec": 6,
+      "partial_underspec": 1
+    },
+    "gibberish": {
+      "unrelated": 30,
+      "undetected": 1,
+      "severe_underspec": 2,
+      "partial_underspec": 1
+    }
+  },
+  "fine_per_class_f1": {
+    "B_arg_swap": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 42,
+      "tp": 0,
+      "fp": 0,
+      "fn": 42,
+      "expected_label": "arg_error"
+    },
+    "B_negation_drop": {
+      "precision": 1.0,
+      "recall": 0.4348,
+      "f1": 0.6061,
+      "support": 23,
+      "tp": 10,
+      "fp": 0,
+      "fn": 13,
+      "expected_label": "polarity_error"
+    },
+    "D_random": {
+      "precision": 0.2839,
+      "recall": 0.9565,
+      "f1": 0.4378,
+      "support": 46,
+      "tp": 44,
+      "fp": 111,
+      "fn": 2,
+      "expected_label": "unrelated"
+    },
+    "partial": {
+      "precision": 0.6364,
+      "recall": 0.1489,
+      "f1": 0.2414,
+      "support": 47,
+      "tp": 7,
+      "fp": 4,
+      "fn": 40,
+      "expected_label": "partial_underspec"
+    },
+    "overweak": {
+      "precision": 0.1224,
+      "recall": 0.1622,
+      "f1": 0.1395,
+      "support": 37,
+      "tp": 6,
+      "fp": 43,
+      "fn": 31,
+      "expected_label": "severe_underspec"
+    },
+    "gibberish": {
+      "precision": 0.1935,
+      "recall": 0.8824,
+      "f1": 0.3175,
+      "support": 34,
+      "tp": 30,
+      "fp": 125,
+      "fn": 4,
+      "expected_label": "unrelated"
+    }
+  },
+  "candidate_counts": {
+    "exp_a": 111,
+    "exp_b": 118,
+    "total_scored": 229,
+    "score_errors": 0
+  },
+  "v2_suites": {
+    "generated": 92,
+    "total_premises": 92
+  },
+  "coarse_taxonomy": {
+    "partial": "partial_loss",
+    "overweak": "total_failure",
+    "gibberish": "total_failure",
+    "B_arg_swap": "total_failure",
+    "B_negation_drop": "polarity_error",
+    "D_random": "total_failure"
+  },
+  "fine_taxonomy": {
+    "partial": "partial_underspec",
+    "overweak": "severe_underspec",
+    "gibberish": "unrelated",
+    "B_arg_swap": "arg_error",
+    "B_negation_drop": "polarity_error",
+    "D_random": "unrelated"
+  },
+  "classification_rules": [
+    "recall=1.0 and no contrastive entailments \u2192 undetected",
+    "recall=0.0 and no contrastive entailments \u2192 unrelated",
+    "contrastive entailments: dominant=swap_binary_args \u2192 arg_error",
+    "contrastive entailments: dominant=negate_atom \u2192 polarity_error",
+    "contrastive entailments: other dominant \u2192 other_detected",
+    "no contrastive entailments, recall<0.4 \u2192 severe_underspec",
+    "no contrastive entailments, 0.4<=recall<1.0 \u2192 partial_underspec"
+  ],
+  "interpretation": "SIV binary probe verdicts distinguish 3 macro-categories: total_failure (recall=0), partial_loss (0<recall<1), polarity_error (contrastive entailment). Within total_failure, binary verdicts cannot distinguish arg-swap from gibberish from overweak. Per-probe TRACE identity (which probes failed, their FOL content) carries richer information \u2014 tested in C2."
+}

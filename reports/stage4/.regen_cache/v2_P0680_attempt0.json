@@ -1,0 +1,1 @@
+{"premise_id": "v2_P0680", "attempt": 0, "response": "CANDIDATE_PARTIAL: In(bird, sizeTown)  \nCANDIDATE_OVERWEAK: In(bird, sizeTown) & -(Heavy(bird))  \nCANDIDATE_OVERSTRONG: In(bird, sizeTown) & -((Heavy(bird) & Still(bird))) & Heavy(bird)  \nCANDIDATE_GIBBERISH: Heavy(sizeTown) | Still(sizeTown)"}

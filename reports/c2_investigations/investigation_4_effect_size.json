@@ -1,0 +1,356 @@
+{
+  "n_candidates": 22,
+  "condition_means": {
+    "score_only": 0.6932,
+    "structured": 1.0,
+    "shuffled": 1.0
+  },
+  "deltas": {
+    "structured_minus_shuffled": 0.0,
+    "structured_minus_score_only": 0.3068
+  },
+  "bootstrap_ci": {
+    "lo": null,
+    "hi": null
+  },
+  "decision": "LEAKAGE_SUPPORTED",
+  "decision_text": "No effect: \u0394=+0.0000 < 0.05. Probe-formula gain was likely answer-leakage. Per-aspect-actionability claim collapses. STOP and rethink before main run.",
+  "per_condition": {
+    "score_only": [
+      {
+        "idx": 0,
+        "siv": 0.0,
+        "equiv": false
+      },
+      {
+        "idx": 1,
+        "siv": 0.0,
+        "equiv": false
+      },
+      {
+        "idx": 2,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 3,
+        "siv": 1.0,
+        "equiv": false
+      },
+      {
+        "idx": 4,
+        "siv": 0.0,
+        "equiv": false
+      },
+      {
+        "idx": 5,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 6,
+        "siv": 0.0,
+        "equiv": false
+      },
+      {
+        "idx": 7,
+        "siv": 0.0,
+        "equiv": false
+      },
+      {
+        "idx": 8,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 9,
+        "siv": 1.0,
+        "equiv": false
+      },
+      {
+        "idx": 10,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 11,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 12,
+        "siv": 0.0,
+        "equiv": false
+      },
+      {
+        "idx": 13,
+        "siv": 0.25,
+        "equiv": false
+      },
+      {
+        "idx": 14,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 15,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 16,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 17,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 18,
+        "siv": 1.0,
+        "equiv": false
+      },
+      {
+        "idx": 19,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 20,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 21,
+        "siv": 1.0,
+        "equiv": true
+      }
+    ],
+    "structured": [
+      {
+        "idx": 0,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 1,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 2,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 3,
+        "siv": 1.0,
+        "equiv": false
+      },
+      {
+        "idx": 4,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 5,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 6,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 7,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 8,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 9,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 10,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 11,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 12,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 13,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 14,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 15,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 16,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 17,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 18,
+        "siv": 1.0,
+        "equiv": false
+      },
+      {
+        "idx": 19,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 20,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 21,
+        "siv": 1.0,
+        "equiv": true
+      }
+    ],
+    "shuffled": [
+      {
+        "idx": 0,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 1,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 2,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 3,
+        "siv": 1.0,
+        "equiv": false
+      },
+      {
+        "idx": 4,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 5,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 6,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 7,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 8,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 9,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 10,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 11,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 12,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 13,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 14,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 15,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 16,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 17,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 18,
+        "siv": 1.0,
+        "equiv": false
+      },
+      {
+        "idx": 19,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 20,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 21,
+        "siv": 1.0,
+        "equiv": true
+      }
+    ]
+  }
+}

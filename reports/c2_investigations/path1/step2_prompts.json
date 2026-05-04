@@ -1,0 +1,39 @@
+{
+  "task_preamble": "You are given a natural language sentence and a first-order logic (FOL) translation that contains errors. Your task is to produce the correct FOL translation of the natural language sentence.",
+  "conditions": {
+    "no_feedback": {
+      "template": "{task_preamble}\n\nNatural language: {nl}\n\nCandidate FOL (contains errors): {perturbed_fol}\n\nProvide ONLY the corrected FOL formula. Do not explain.",
+      "variables": ["nl", "perturbed_fol"]
+    },
+    "score_only": {
+      "template": "{task_preamble}\n\nYour translation was scored against a gold-standard test suite.\n\nScore: {siv_score}/1.00 (1.00 = perfect match)\n\nNatural language: {nl}\n\nCandidate FOL (contains errors): {perturbed_fol}\n\nProvide ONLY the corrected FOL formula. Do not explain.",
+      "variables": ["nl", "perturbed_fol", "siv_score"]
+    },
+    "structured_category": {
+      "template": "{task_preamble}\n\nYour translation was scored against a gold-standard test suite.\n\nScore: {siv_score}/1.00 (1.00 = perfect match)\n\nThe following error categories were detected in your translation:\n{category_list}\n\nError category definitions:\n- argument-order: incorrect argument positions in predicates\n- quantifier-scope: wrong quantifier type (∀ vs ∃) or scope\n- restrictor-content: missing or wrong conditions in quantifier restrictors\n- polarity: missing or extra negation\n- connective-polarity: wrong logical connective (∧/∨/→/↔ confusion)\n- content-gap: missing semantic content that should be entailed\n\nNatural language: {nl}\n\nCandidate FOL (contains errors): {perturbed_fol}\n\nUse the error category information to guide your correction. Provide ONLY the corrected FOL formula. Do not explain.",
+      "variables": ["nl", "perturbed_fol", "siv_score", "category_list"]
+    },
+    "shuffled_category": {
+      "template": "{task_preamble}\n\nYour translation was scored against a gold-standard test suite.\n\nScore: {siv_score}/1.00 (1.00 = perfect match)\n\nThe following error categories were detected in your translation:\n{category_list}\n\nError category definitions:\n- argument-order: incorrect argument positions in predicates\n- quantifier-scope: wrong quantifier type (∀ vs ∃) or scope\n- restrictor-content: missing or wrong conditions in quantifier restrictors\n- polarity: missing or extra negation\n- connective-polarity: wrong logical connective (∧/∨/→/↔ confusion)\n- content-gap: missing semantic content that should be entailed\n\nNatural language: {nl}\n\nCandidate FOL (contains errors): {perturbed_fol}\n\nUse the error category information to guide your correction. Provide ONLY the corrected FOL formula. Do not explain.",
+      "variables": ["nl", "perturbed_fol", "siv_score", "category_list"],
+      "note": "Same template as structured_category but category_list contains WRONG categories (actual categories removed, replaced with equal number of non-actual categories)"
+    },
+    "count_only": {
+      "template": "{task_preamble}\n\nYour translation was scored against a gold-standard test suite.\n\nScore: {siv_score}/1.00 (1.00 = perfect match)\n\n{n_categories} distinct error categories were detected in your translation.\n\nNatural language: {nl}\n\nCandidate FOL (contains errors): {perturbed_fol}\n\nProvide ONLY the corrected FOL formula. Do not explain.",
+      "variables": ["nl", "perturbed_fol", "siv_score", "n_categories"]
+    }
+  },
+  "shuffling_protocol": {
+    "method": "For each candidate, take its actual category set. Remove ALL actual categories. Replace with an equal number of categories randomly sampled (without replacement) from the NON-actual categories in the vocabulary. This ensures: (1) same number of categories shown, (2) none of the actual categories appear, (3) all shown categories are wrong.",
+    "vocabulary": ["argument-order", "quantifier-scope", "restrictor-content", "polarity", "connective-polarity", "content-gap"],
+    "example": "If actual = ['polarity', 'content-gap'], shuffled draws 2 from ['argument-order', 'quantifier-scope', 'restrictor-content', 'connective-polarity']"
+  },
+  "category_list_format": "- {category_name}\n- {category_name}\n...",
+  "models": {
+    "gpt-4o": {"provider": "openai", "model": "gpt-4o", "temperature": 0},
+    "gpt-4o-mini": {"provider": "openai", "model": "gpt-4o-mini", "temperature": 0},
+    "claude-sonnet": {"provider": "anthropic", "model": "claude-sonnet-4-6", "temperature": 0}
+  },
+  "seeds": [42, 137, 256],
+  "seed_mechanism": "Seed varies candidate ordering within the batch (random.shuffle with seed). Temperature is always 0."
+}

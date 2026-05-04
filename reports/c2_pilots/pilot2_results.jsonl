@@ -1,0 +1,80 @@
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0738", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "\u00ac\u2203x.(Kangaroo(x) \u2227 LiveIn(germany, x))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0738", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "\u00ac\u2203x.(Kangaroo(x) \u2227 LiveIn(x, germany))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0738", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "\u00ac\u2203x.(Kangaroo(x) \u2227 LiveIn(x, germany))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0738", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.(Kangaroo(x) -> -LiveIn(x,germany))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0599", "type": "overweak", "verdict": "equivalent", "corrected": "EuropeanCountry(belgium) \u2227 EuropeanCountry(france) \u2227 EuropeanCountry(germany)"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0599", "type": "overweak", "verdict": "equivalent", "corrected": "(EuropeanCountry(belgium) \u2227 EuropeanCountry(france) \u2227 EuropeanCountry(germany))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0599", "type": "overweak", "verdict": "equivalent", "corrected": "(EuropeanCountry(belgium) & EuropeanCountry(france) & EuropeanCountry(germany))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0599", "type": "overweak", "verdict": "equivalent", "corrected": "(EuropeanCountry(belgium) & EuropeanCountry(france) & EuropeanCountry(germany))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0796", "type": "overweak", "verdict": "not_equivalent", "corrected": "Architect(FrederickMonhoff) \u2227 Artist(FrederickMonhoff) \u2227 Illustrator(FrederickMonhoff)"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0796", "type": "overweak", "verdict": "not_equivalent", "corrected": "(exists x (FrederickMonhoff(x) & Architect(x) & Artist(x) & Illustrator(x)))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0796", "type": "overweak", "verdict": "not_equivalent", "corrected": "(exists x (Architect(x) & Artist(x) & Illustrator(x) & Equals(x, FrederickMonhoff)))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0796", "type": "overweak", "verdict": "equivalent", "corrected": "(exists x (Architect(x) & Artist(x) & Illustrator(x) & (x = monhoff)))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0013", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.(DisplayedIn(collection,x) -> (Animal(x) -> Multicellular(x)))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0013", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "\u2200x ((DisplayedIn(collection, x) \u2227 Animal(x)) \u2192 Multicellular(x))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0013", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.(Animal(x) & DisplayedIn(collection,x) -> Multicellular(x))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0013", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.((DisplayedIn(x,collection) & Animal(x)) -> Multicellular(x))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0965", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((Book(x) & WrittenBy(tolkien,x)) -> ReadBy(tomas,x))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0965", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((Book(x) & WrittenBy(tolkien,x)) -> ReadBy(tomas,x))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0965", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((Book(x) & WrittenBy(tolkien,x)) -> ReadBy(tomas,x))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0965", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((Book(x) & WrittenBy(x,tolkien)) -> ReadBy(tomas,x))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P1078", "type": "partial", "verdict": "equivalent", "corrected": "Disease(bladderCancer) \u2227 (BloodCancer(bladderCancer) \u2228 Leukemia(bladderCancer))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P1078", "type": "partial", "verdict": "equivalent", "corrected": "Disease(bladderCancer) \u2227 (BloodCancer(bladderCancer) \u2228 Leukemia(bladderCancer))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P1078", "type": "partial", "verdict": "equivalent", "corrected": "Disease(bladderCancer) \u2227 (BloodCancer(bladderCancer) \u2228 Leukemia(bladderCancer))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P1078", "type": "partial", "verdict": "equivalent", "corrected": "(Disease(bladderCancer) & (BloodCancer(bladderCancer) | Leukemia(bladderCancer)))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0956", "type": "B_negation_drop", "verdict": "equivalent", "corrected": "\u00acLiveIn(dominique,europe)"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0956", "type": "B_negation_drop", "verdict": "equivalent", "corrected": "\u00acLiveIn(dominique, europe)"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0956", "type": "B_negation_drop", "verdict": "equivalent", "corrected": "\u00acLiveIn(dominique, europe)"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0956", "type": "B_negation_drop", "verdict": "equivalent", "corrected": "- LiveIn(dominique,europe)"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0341", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((In(potterville,x) & Yell(x)) -> ~Cool(x))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0341", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.((In(x, potterville) & Yell(x)) -> -Cool(x))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0341", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((Person(x) & In(potterville,x) & Yell(x)) -> -Cool(x))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0341", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.((In(x,potterville) & Yell(x)) -> -Cool(x))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0398", "type": "partial", "verdict": "not_equivalent", "corrected": "Museum(whitneyMuseumOfAmericanArt) \u2227 InCity(whitneyMuseumOfAmericanArt, NYC)"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0398", "type": "partial", "verdict": "not_equivalent", "corrected": "Museum(whitneyMuseumOfAmericanArt) \u2227 LocatedIn(whitneyMuseumOfAmericanArt, NYC)"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0398", "type": "partial", "verdict": "not_equivalent", "corrected": "Museum(whitneyMuseumOfAmericanArt) \u2227 LocatedIn(whitneyMuseumOfAmericanArt, NYC)"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0398", "type": "partial", "verdict": "not_equivalent", "corrected": "In(whitneyMuseumOfAmericanArt, nYC) & Museum(whitneyMuseumOfAmericanArt)"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0011", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.(DisplayedIn(x,collection) -> (Plant(x) | Animal(x)))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0011", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "\\(\\forall x \\, ( \\text{DisplayedIn}(x, \\text{collection}) \\rightarrow (\\text{Plant}(x) \\lor \\text{Animal}(x)))\\)"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0011", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.(DisplayedIn(x,collection) -> (Plant(x) | Animal(x)))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0011", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.(DisplayedIn(x,collection) -> (Plant(x) | Animal(x)))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0343", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((In(potterville,x) & Fly(x)) -> Cool(x))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0343", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((Person(x) & In(potterville,x) & Fly(x)) -> Cool(x))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0343", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((Person(x) & In(potterville,x) & Fly(x)) -> Cool(x))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0343", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.(In(potterville,x) -> (Fly(x) -> Cool(x)))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P1616", "type": "overstrong", "verdict": "not_equivalent", "corrected": "(BornOn(zahaHadid, october311950) & BornIn(zahaHadid, baghdadIraq))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P1616", "type": "overstrong", "verdict": "not_equivalent", "corrected": "(BornOn(zahaHadid, october311950) & BornIn(zahaHadid, baghdadIraq))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P1616", "type": "overstrong", "verdict": "not_equivalent", "corrected": "(BornOn(zahaHadid, october311950) & BornIn(zahaHadid, baghdadIraq))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P1616", "type": "overstrong", "verdict": "equivalent", "corrected": "(BornOn(zahaHadid, 31October1950) & BornIn(zahaHadid, baghdadIraq))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0411", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.((Mammal(x) & LayEgg(x)) -> (Platypus(x) | Echidna(x)))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0411", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.((Mammal(x) & LayEgg(x)) -> (Platypus(x) | Echidna(x)))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0411", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.((Mammal(x) & LayEgg(x)) -> (Platypus(x) | Echidna(x)))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0411", "type": "B_negation_drop", "verdict": "equivalent", "corrected": "all x.((Mammal(x) & LayEgg(x)) -> ((Platypus(x) & -Echidna(x)) | (-Platypus(x) & Echidna(x))))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0922", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.((VideoGame(x) & ReleasedBy(nintendo,x)) -> -Supports(x,pS4))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0922", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "\u00ac\u2203x.(VideoGame(x) \u2227 ReleasedBy(x, nintendo) \u2227 Support(x, pS4))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0922", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.((VideoGame(x) & ReleasedBy(x, nintendo)) -> -Support(x, pS4))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0922", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.((VideoGame(x) & ReleasedBy(x,nintendo)) -> -Support(x,pS4))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P1138", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.(HoldingCompany(x) -> exists y.(Company(y) & Holds(x,y)))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P1138", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.(HoldingCompany(x) -> exists y.(Company(y) & Holds(x,y)))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P1138", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "all x.(HoldingCompany(x) -> exists y.(Company(y) & Holds(x,y) & exists z.(Company(z) & Holds(x,z) & not y = z)))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P1138", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.(HoldingCompany(x) -> exists y.(Company(y) & Holds(x,y)))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0495", "type": "overstrong", "verdict": "not_equivalent", "corrected": "Island(luzon) & In(luzon, thePhilippines)"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0495", "type": "overstrong", "verdict": "not_equivalent", "corrected": "(Island(luzon) & In(luzon, thePhilippines) & Country(thePhilippines))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0495", "type": "overstrong", "verdict": "not_equivalent", "corrected": "Island(luzon) & In(luzon, thePhilippines) & Country(thePhilippines)"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0495", "type": "overstrong", "verdict": "equivalent", "corrected": "(Island(luzon) & In(luzon, philippines))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P1077", "type": "partial", "verdict": "not_equivalent", "corrected": "all x.(TypeOfLeukemia(x) -> (Disease(x) and BloodCancer(x)))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P1077", "type": "partial", "verdict": "not_equivalent", "corrected": "\\(\\forall x \\, (TypeOfLeukemia(x) \\rightarrow (Disease(x) \\land BloodCancer(x)))\\)"}
+{"condition": "category", "model": "gpt-4o", "pid": "P1077", "type": "partial", "verdict": "not_equivalent", "corrected": "all x.(TypeOfLeukemia(x) -> (Disease(x) and BloodCancer(x)))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P1077", "type": "partial", "verdict": "not_equivalent", "corrected": "all x.(TypeOfLeukemia(x) -> (Disease(x) & BloodCancer(x)))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0282", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.((MulticellularCreature(x) & (Autotrophic(x) | DigestFoodInternally(x))) -> (Plant(x) | Animal(x)))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0282", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.((MulticellularCreature(x) & (Autotrophic(x) | DigestFoodInternally(x))) -> (Plant(x) | Animal(x)))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0282", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.((MulticellularCreature(x) & (Autotrophic(x) | DigestFoodInternally(x))) -> (Plant(x) | Animal(x)))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0282", "type": "B_negation_drop", "verdict": "not_equivalent", "corrected": "all x.((MulticellularCreature(x) & (Autotrophic(x) | DigestFoodInternally(x))) -> (Plant(x) | Animal(x)))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0977", "type": "B_arg_swap", "verdict": "not_equivalent", "corrected": "\\(\\forall x\\,(\\text{Team}(x) \\land \\text{Attending}(x, \\text{nbaFinals}) \\rightarrow \\text{WonManyGames}(x))\\)"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0977", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.((Team(x) & Attending(x, nbaFinals)) -> WonManyGames(x))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0977", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.((Team(x) & Attending(x, nbaFinals)) -> WonManyGames(x))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0977", "type": "B_arg_swap", "verdict": "equivalent", "corrected": "all x.((Team(x) & Attending(x,nbaFinals)) -> WonManyGames(x))"}
+{"condition": "no_feedback", "model": "gpt-4o", "pid": "P0187", "type": "overstrong", "verdict": "equivalent", "corrected": "(Play(peter, piano) & Play(peter, violin) & Play(peter, saxophone))"}
+{"condition": "score_only", "model": "gpt-4o", "pid": "P0187", "type": "overstrong", "verdict": "equivalent", "corrected": "(Play(peter, piano) & Play(peter, violin) & Play(peter, saxophone))"}
+{"condition": "category", "model": "gpt-4o", "pid": "P0187", "type": "overstrong", "verdict": "equivalent", "corrected": "(Play(peter, piano) & Play(peter, violin) & Play(peter, saxophone))"}
+{"condition": "probes", "model": "gpt-4o", "pid": "P0187", "type": "overstrong", "verdict": "equivalent", "corrected": "Play(peter, piano) & Play(peter, violin) & Play(peter, saxophone)"}

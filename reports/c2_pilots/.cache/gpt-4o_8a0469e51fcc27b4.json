@@ -1,0 +1,5 @@
+{
+  "model_key": "gpt-4o",
+  "prompt": "You are given a natural-language sentence and a first-order logic (FOL) translation that may contain errors. A diagnostic system identified specific issues with this translation.\n\nNatural language: If someone in Potterville is angry, then they yell.\n\nCandidate FOL (may be incorrect): all x.((In(potterville,x) & Angry(x)) -> Yell(x))\n\nDiagnostic summary:\n- Positive sub-entailment probes passed: 0/1\n- Contrastive probes incorrectly entailed: 0/1\nIssue: the translation fails to entail expected consequences (underspec).\n\nProduce ONLY the corrected FOL formula. Use the same predicate and constant naming conventions as the candidate. Do not explain your reasoning \u2014 output only the formula.",
+  "response": "all x.(In(potterville,x) -> (Angry(x) -> Yell(x)))"
+}

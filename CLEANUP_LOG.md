@@ -261,6 +261,38 @@ KEPT: `scripts/c2_investigation_4.py`, `scripts/c2_path1_step1.py`,
 `scripts/c2_path1_hard_step4_pilot.py`,
 `scripts/c2_path1_hard_step5_main_v2.py`.
 
+## Phase D — Stage 5: reports housekeeping
+
+Moved (preserves git history):
+- `reports/COMPREHENSIVE_RESULTS.md` → `docs/COMPREHENSIVE_RESULTS.md`
+
+Deleted:
+- `reports/stage2_self_score.json` (early Approach-C self-score
+  validation; not referenced by locked headline)
+- `reports/stage3_perturbation_ordering.json` (early Approach-C
+  perturbation-ordering validation; not referenced by locked headline)
+- `scripts/stage2_validation.py` (generator of the above)
+- `scripts/stage3_perturbation_validation.py` (generator of the above)
+
+Local cleanup (untracked, not in commit):
+- 45 items removed: `__pycache__/` directories, `.DS_Store`, `*.pyc`.
+  All gitignored; this just tidies the working tree.
+
+### Known dangling references (deferred to user)
+
+`docs/COMPREHENSIVE_RESULTS.md` (just moved) contains a "Key Files"
+table with rows pointing at files removed earlier in this cleanup:
+
+- `reports/c2_pilots/pilot_results.json` (deleted in Stage 2)
+- `reports/c2_investigations/investigation_*.json` glob — now resolves
+  only to `investigation_4_*` (1, 2, 3 deleted in Stage 2)
+- `reports/stage2_self_score.json` (deleted just above)
+- `reports/stage3_perturbation_ordering.json` (deleted just above)
+
+Left as-is per user choice (Stage 5 option A: move-only). Edit when
+revising the doc for paper writing.
+
+
 
 
 

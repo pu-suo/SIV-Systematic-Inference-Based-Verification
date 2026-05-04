@@ -1,185 +1,105 @@
-# SIV — Soundness-Invariant Verification for NL → FOL
+# SIV — Sub-entailment Vector
 
-SIV evaluates natural-language-to-First-Order-Logic translations by testing
-whether a candidate FOL formula entails the atomic claims the source
-sentence actually makes. It replaces exact-match, denotation-accuracy, and
-n-gram metrics with a Vampire-verified, structurally grounded F1.
+SIV is a graded, per-aspect diagnostic metric for natural-language to
+First-Order-Logic translation faithfulness. It scores a candidate FOL
+translation against a *test suite* of positive entailments and
+contrastive mutants derived deterministically from a gold FOL annotation,
+verified by the Vampire theorem prover.
 
-The claim SIV is designed to defend: **a translation is faithful iff every
-atomic proposition in the source is independently entailed by the
-translation, and every structural contradiction of the source is
-independently refuted.**
+The test suites are produced by a deterministic parser of FOLIO gold FOL
+(Stage 1, 94.2% coverage of the 1,675-premise corpus, 99.94% round-trip
+Vampire equivalence on what it parses), so SIV never depends on an LLM
+extraction step at evaluation time.
 
-## Architecture (seven components, §6 of `docs/SIV.md`)
+## Architecture
 
-1. **Pre-analyzer** (`siv/pre_analyzer.py`) — spaCy-based, emits two
-   tripwire flags: `requires_restrictor`, `requires_negation`.
-2. **Schema** (`siv/schema.py`) — `SentenceExtraction` / `Formula`;
-   Frege-closed four-case `Formula` type (atomic, quantification,
-   negation, connective); `TestSuite` / `UnitTest`.
-3. **Extractor** (`siv/extractor.py`) — frozen LLM call bound to the
-   Pydantic-derived JSON Schema (`siv/json_schema.py`); one retry on
-   violation.
-4. **Compiler** (`siv/compiler.py`) — two structurally distinct recursive
-   paths over `Formula`. Pure function of the extraction; never reads `nl`.
-5. **Contrastive generator** (`siv/contrastive_generator.py`) — six
-   mutation operators, filtered by Vampire with witness axioms.
-6. **Scorer** (`siv/scorer.py`) — Vampire-checked recall/precision/F1;
-   recall-only when the source is structurally weak (§6.5 structural
-   coverage limits).
-7. **Invariants** (`siv/invariants.py`) — CI-enforced entailment
-   monotonicity (C9a) and contrastive soundness (C9b).
+| Module | Role |
+| --- | --- |
+| `siv/fol_parser.py` | Deterministic FOLIO-gold-FOL → `SentenceExtraction`. |
+| `siv/gold_suite_generator.py` | Compose parser + compiler + contrastive generator into a `TestSuite`. |
+| `siv/compiler.py` | `SentenceExtraction` → canonical FOL + per-positive unit tests. |
+| `siv/contrastive_generator.py` | Six mutation operators; Vampire-filtered with witness axioms. |
+| `siv/scorer.py` | Vampire-checked recall / precision / F1; recall-only when the source is structurally weak. |
+| `siv/vampire_interface.py` | `vampire` binary wrapper for entailment checks. |
+| `siv/aligner.py` | Embedding-based cross-vocabulary symbol alignment (soft mode). |
+| `siv/schema.py` | Core `Formula` / `TestSuite` / `UnitTest` / `SentenceExtraction` data model. |
+| `siv/fol_utils.py` | FOL-string normalization. |
+| `siv/stratum_classifier.py` | Gold-FOL stratum classification (used by `generate_candidates.py`). |
+| `siv/nltk_perturbations.py` | AST-level FOL perturbation operators (used to generate broken candidates). |
+| `siv/invariants.py` | C9a/C9b soundness invariants (CI-enforced via `tests/test_soundness_invariants.py`). |
+| `siv/malls_le.py`, `siv/brunello_lt.py` | Baseline metrics (MALLS-LE, Brunello-LT). |
 
-Supporting modules: `siv/vampire_interface.py`, `siv/fol_utils.py`,
-`siv/frozen_client.py`, `siv/frozen_config.py`, `siv/aligner.py` (soft
-cross-vocabulary scoring), `siv/stratum_classifier.py` (gold FOL
-classification), `siv/nltk_perturbations.py` (AST-level FOL
-perturbations), `siv/test_suite_generator.py` (composing extraction +
-compilation + test generation into one callable).
+The Vampire binary itself ships at `./vampire`.
 
-## Quick start
+## Setup
 
 ```bash
-# 1. Install dependencies.
 bash scripts/setup.sh
-# — or manually:
+# or:
 pip install -r requirements.txt
 python -m spacy download en_core_web_sm
 python -c "from siv.vampire_interface import setup_vampire; setup_vampire('.')"
-
-# 2. Put OPENAI_API_KEY in .env at the repo root.
-echo "OPENAI_API_KEY=sk-..." > .env
-
-# 3. Generate a test suite for a single sentence.
-python scripts/generate_siv_tests.py "All employees who schedule meetings attend the company building." --pretty
 ```
 
-## Pipeline
+## Reproducing the headline results
 
-SIV's evaluation pipeline is split into four independent, cacheable scripts.
-Each produces a frozen artifact consumed by the next.
-
-### 1. Generate test suites (NL → SIV tests)
-
-For each natural language premise, extracts an atomic fact structure via a
-frozen LLM call, compiles it into a canonical FOL, and generates a test
-suite of positive entailments and contrastive mutants.
+The locked test-suite artifact is `reports/test_suites/test_suites.jsonl`
+(1,471 premises, frozen). All headline experiments load it directly.
 
 ```bash
-# Single sentence → JSON to stdout:
-python scripts/generate_siv_tests.py "All dogs are mammals." --pretty
+# Stage 1 — deterministic parser coverage.
+python scripts/parser_coverage_report.py
+# → reports/parser_coverage_report.json (94.2% / 99.94%)
 
-# Batch — all FOLIO train premises → frozen JSONL artifact:
-python scripts/generate_folio_test_suites.py --split train
-
-# Output: reports/test_suites/test_suites_test.jsonl
-```
-
-The test suites are the most important artifact. They are generated once
-and frozen — downstream scoring loads them without re-running extraction.
-
-### 2. Generate candidates (NL → candidate FOLs)
-
-Produces candidate translations from multiple sources: FOLIO gold,
-GPT-4o, GPT-4o-mini, and four tiers of AST perturbations (subtle,
-meaning-altering, clearly wrong, nonsense). No SIV involvement — candidates
-are independent of the metric.
-
-```bash
-# Full run (requires OPENAI_API_KEY):
+# Generate / score candidates.
 python scripts/generate_candidates.py --split train
-
-# Dry run (skip LLM calls):
-python scripts/generate_candidates.py --split train --limit 10 --skip-models
-
-# Output: candidates.jsonl
-```
-
-### 3. Score candidates (test suites × candidates → scores)
-
-Joins saved test suites with saved candidates and scores each pair using
-Vampire. Supports strict mode (SIV vocabulary) and soft mode
-(embedding-based cross-vocabulary alignment).
-
-```bash
 python scripts/score_candidates.py \
-  --test-suites reports/test_suites/test_suites_test.jsonl \
+  --test-suites reports/test_suites/test_suites.jsonl \
   --candidates candidates.jsonl
 
-# Output: reports/experiments/aligned_subset/scored_candidates.jsonl
+# Locked headline: Exp B (rank correlation; ρ = 0.8543, n=33 with regeneration).
+python scripts/stage4_regenerate.py
+python scripts/stage4_rescore_exp1.py
+python scripts/stage4_rescore_exp2.py
+# → reports/stage4/{stage4b_regeneration,rescore_exp1,rescore_exp2}.json
+
+# Exp C1 — coarse / fine error-stratum macro-F1 (0.81 / 0.29).
+python scripts/exp_c1_diagnostic_structure.py
+# → reports/c1/
+
+# Pre-registered nulls (supplementary).
+python scripts/c2_investigation_4.py
+python scripts/c2_path1_step1.py
+python scripts/c2_path1_hard_step5_main_v2.py
+# → reports/c2_investigations/{investigation_4_*, path1/, path1_hard/}
 ```
 
-### Data flow
+## Repository layout
 
 ```
-FOLIO NL premises
-    │
-    ├─→ generate_folio_test_suites.py ─→ test_suites.jsonl
-    │       LLM extract → compile → Vampire contrastives
-    │
-    └─→ generate_candidates.py ─→ candidates.jsonl
-            gold + model translations + perturbations
-
-test_suites.jsonl + candidates.jsonl
-    │
-    └─→ score_candidates.py ─→ scored_candidates.jsonl
-            Vampire scoring (strict + soft mode)
+siv/                         core library
+scripts/                     locked experiment runners
+scripts/experiments/         Exp 1–3 runners (cached outputs in reports/experiments/)
+tests/                       unit / soundness tests (pytest)
+reports/                     all locked artifacts (parser coverage, test suites,
+                             stage4 rescore, c1, experiments, c2 nulls)
+docs/                        SIV.md (canonical spec), translation_prompt.md,
+                             corrections_template.md (30 hand-corrected gold
+                             annotations from Exp D)
 ```
 
-## Programmatic usage
-
-```python
-from openai import OpenAI
-from dotenv import load_dotenv
-from siv.frozen_client import FrozenClient
-from siv.test_suite_generator import generate_test_suite
-from siv.scorer import score
-from siv.schema import TestSuite, UnitTest, SentenceExtraction
-
-load_dotenv()
-client = FrozenClient(OpenAI())
-
-# Generate a complete test suite from NL
-suite_dict = generate_test_suite(
-    "All employees who schedule meetings attend the company building.",
-    client,
-)
-
-print(f"Canonical: {suite_dict['canonical_fol']}")
-print(f"Positives: {len(suite_dict['positives'])}")
-print(f"Contrastives: {len(suite_dict['contrastives'])}")
-
-# Score a candidate against the test suite
-extraction = SentenceExtraction(**suite_dict["extraction_json"])
-test_suite = TestSuite(
-    extraction=extraction,
-    positives=[UnitTest(**t) for t in suite_dict["positives"]],
-    contrastives=[UnitTest(**t) for t in suite_dict["contrastives"]],
-)
-report = score(test_suite, suite_dict["canonical_fol"])
-print(f"recall={report.recall} precision={report.precision} f1={report.f1}")
-```
-
-## Running tests
+## Tests
 
 ```bash
 pytest tests/                                 # all mocked + deterministic tests
 pytest tests/test_soundness_invariants.py     # C9a / C9b on the 22-sentence corpus
-OPENAI_API_KEY=sk-... pytest tests/test_extraction_roundtrip.py  # live round-trip
 ```
-
-## Analysis scripts
-
-| Script | Purpose |
-|--------|---------|
-| `scripts/run_folio_evaluation.py` | End-to-end SIV pipeline on FOLIO (debugging / Exp 1 reuse) |
-| `scripts/compute_baseline_metrics.py` | BLEU / BERTScore / MALLS-LE / Brunello-LT baselines |
-| `scripts/soft_alignment_diagnostics.py` | Diagnostic report for soft cross-vocabulary scoring |
 
 ## Documentation
 
-- `docs/SIV.md` — the single canonical specification.
-- `docs/translation_prompt.md` — frozen NL→FOL prompt for model translations.
+- `docs/SIV.md` — canonical specification.
+- `docs/translation_prompt.md` — frozen NL→FOL prompt used for the human-study models.
+- `docs/corrections_template.md` — the 30 hand-corrected FOLIO gold annotations (Exp D artifact).
 
 ## License
 

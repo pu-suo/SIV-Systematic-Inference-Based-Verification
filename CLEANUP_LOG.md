@@ -71,3 +71,74 @@ Per the dependency check, only the failing test function was excised:
 
 This is the green baseline against which all subsequent cleanup-stage test
 runs will be compared.
+
+## Phase B — Archive repo creation and snapshot
+
+- Archive repo: **`https://github.com/pu-suo/SIV-archive`** (private)
+- Created via `gh repo create SIV-archive --private --description ...`
+- Archive remote configured locally as `archive`.
+- Archive README swap: **skipped** (option A) — archive carries the same
+  README as the main repo at the snapshot point.
+
+### Snapshot tag
+
+- Tag: `pre-cleanup-snapshot` (annotated)
+  - Tag object SHA: `953fa5f9be07bb263672050c36fb7f0db35df74a`
+  - Points at commit: `d864f328b9b11fb04f7578b5f5cf4ae26faac89e`
+    (`main` head after Stage 0 orphan-test removal)
+
+### Pushes performed by user
+
+- `git push archive --all` → archive `refs/heads/main` = `d864f32` ✓
+- `git push archive --tags` → `pre-cleanup-snapshot`, `v1-final`, `v2.0.0` all on archive ✓
+- `git push origin pre-cleanup-snapshot` → origin retains tag at `953fa5f`/`d864f32` ✓
+
+(`origin/main` intentionally still at `008a6fa`; user is holding all
+origin pushes for the end of cleanup per Phase E.)
+
+### Archive verification
+
+`git ls-remote archive` matches local refs for `main` and all tags.
+
+Archive-critical file presence at the snapshot SHA (verified locally on
+`d864f32` which is identical to `archive/main`):
+
+- `siv/extractor.py` — present, 5,715 B
+- `prompts/extraction_system.txt` — present, 13,723 B
+- `reports/c2_pilots/` — present, 7 files
+- `reports/experiments/exp2/.llm_cache/` — present, 48 cached LLM responses
+
+**Verification status: PASSED.**
+
+The `archive` remote is intentionally retained until Phase E confirms cleanup
+success (per spec).
+
+## Phase C — Inventory (read-only)
+
+`CLEANUP_INVENTORY.md` written. Five user decision points were raised; user
+chose all defaults.
+
+Inventory-time finding (not in any deletion stage): after Stage 3 deletes
+`siv/extractor.py`, the only remaining importer of `siv/pre_analyzer.py` is
+its own test. The module becomes orphan but harmless. Deferred for a
+post-cleanup follow-up rather than expanding Stage 3.
+
+## Phase D — Stage 1: stale documentation
+
+Deleted:
+- `archive/lessons.md`
+- `archive/perturbation_recipe.md`
+- `archive/` (directory; auto-removed once empty)
+- `docs/SIV_EXPERIMENTS_CONTEXT.md`
+
+Edited:
+- `README.md` — full rewrite. Removed pre-pivot framing and references to
+  scripts that no longer exist (`run_folio_evaluation.py`,
+  `compute_baseline_metrics.py`, `soft_alignment_diagnostics.py`) and to v1
+  components being deleted in Stage 3 (`extractor.py`, `frozen_client.py`,
+  `frozen_config.py`, `test_suite_generator.py`, `pre_analyzer.py`). New
+  README leads with the deterministic-gold-parser framing and lists the
+  reproduction commands for the locked headline / Exp C1 / nulls.
+  The "Prior exploration" archive pointer is held until Phase E.
+
+

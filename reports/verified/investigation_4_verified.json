@@ -1,0 +1,42 @@
+{
+  "experiment": "Investigation 4 — Probe-formula leakage null",
+  "source_files": ["reports/c2_investigations/investigation_4_effect_size.json"],
+  "produced_by_script": "scripts/c2_investigation_4.py",
+  "config_or_seed_notes": "n=22 candidates. Three conditions: score_only / structured (probe-formula feedback) / shuffled (probe-formula feedback with shuffled aspect labels). LEAKAGE supported when structured = shuffled.",
+  "headline_claims": {
+    "structured_siv_rate": 1.0,
+    "shuffled_siv_rate": 1.0,
+    "structured_equiv_rate": 0.9091,
+    "shuffled_equiv_rate": 0.9091,
+    "delta_structured_minus_shuffled": 0.0,
+    "decision": "LEAKAGE_SUPPORTED"
+  },
+  "full_numbers": {
+    "n_candidates": 22,
+    "condition_means_siv": {
+      "score_only": 0.6932,
+      "structured": 1.0,
+      "shuffled": 1.0
+    },
+    "equiv_to_gold_rates_derived_from_per_condition": {
+      "score_only_equiv_count_of_22": 12,
+      "score_only_equiv_rate": 0.5455,
+      "structured_equiv_count_of_22": 20,
+      "structured_equiv_rate": 0.9091,
+      "shuffled_equiv_count_of_22": 20,
+      "shuffled_equiv_rate": 0.9091,
+      "note": "20/22 = 0.9091; 12/22 = 0.5455. Derived by counting 'equiv'==true entries in per_condition."
+    },
+    "deltas": {
+      "structured_minus_shuffled_siv": 0.0,
+      "structured_minus_score_only_siv": 0.3068,
+      "structured_minus_shuffled_equiv": 0.0
+    },
+    "bootstrap_ci": {"lo": null, "hi": null},
+    "decision": "LEAKAGE_SUPPORTED",
+    "decision_text": "No effect: Δ=+0.0000 < 0.05. Probe-formula gain was likely answer-leakage. Per-aspect-actionability claim collapses. STOP and rethink before main run."
+  },
+  "verification_status": "OK",
+  "discrepancy_notes": null,
+  "notes": "HARD RULE 2 says 'structured = shuffled = 90.9%'; this matches the equiv-to-gold rate (20/22 in both conditions). The JSON's primary metric condition_means is the SIV rate (1.0 in both); both are correctly captured here. Δ on either metric = 0.000."
+}

@@ -1,0 +1,36 @@
+{
+  "experiment": "Stage 3 — Perturbation ordering validation",
+  "source_files": ["docs/COMPREHENSIVE_RESULTS.md (secondary source — primary JSON cleanup-removed)"],
+  "produced_by_script": "scripts/stage3_perturbation_validation.py (cleanup-removed)",
+  "config_or_seed_notes": "Goal: verify v2 suites detect perturbations (perturbed score < gold score) at scale. Deterministic; Vampire-required.",
+  "headline_claims": {
+    "sample_size_premises": 200,
+    "total_tests": 378,
+    "total_correct_ordering": 321,
+    "overall_detection_rate": 0.849,
+    "gate_pass": true
+  },
+  "full_numbers": {
+    "sample_size_premises": 200,
+    "total_tests": 378,
+    "total_correct_ordering": 321,
+    "overall_detection_rate_pct": 84.9,
+    "gate_pass": true,
+    "per_operator": {
+      "B_arg_swap": {
+        "applicable": 122,
+        "detection_rate_pct": 98.4,
+        "avg_perturbed_recall": 0.130
+      },
+      "B_restrictor_drop": {
+        "applicable": 38,
+        "detection_rate_pct": 0.0,
+        "note": "architectural blind spot — stronger formulas entail all sub-entailment positives by design"
+      }
+    },
+    "verdict": "B_arg_swap detection is excellent. B_restrictor_drop is an architectural blind spot."
+  },
+  "verification_status": "OK_SECONDARY_SOURCE",
+  "discrepancy_notes": null,
+  "notes": "Primary JSON deleted in cleanup commit c243cd9 (Stage 5/5). Numbers reproduced here from docs/COMPREHENSIVE_RESULTS.md §STAGE 3. To restore primary source, checkout pre-cleanup-snapshot tag. Note: only B_arg_swap and B_restrictor_drop are surfaced in the legacy doc's per-operator table; other operators (negation_drop, scope_flip, D_random) at this scale are not in the secondary source."
+}

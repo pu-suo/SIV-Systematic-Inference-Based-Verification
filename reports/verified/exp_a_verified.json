@@ -1,0 +1,32 @@
+{
+  "experiment": "Experiment A v2 — Systematic perturbation detection",
+  "source_files": ["reports/stage4/rescore_exp1.json"],
+  "produced_by_script": "scripts/stage4_rescore_exp1.py",
+  "config_or_seed_notes": "Deterministic gold-suite generation; no LLM calls. Vampire required for entailment checks.",
+  "headline_claims": {
+    "B_arg_swap_v2": 1.0,
+    "B_negation_drop_v2": 1.0,
+    "D_random_v2": 1.0,
+    "B_restrictor_drop_v2": 0.0,
+    "B_scope_flip_v2": 0.0,
+    "gate_pass": true
+  },
+  "full_numbers": {
+    "per_operator": {
+      "B_arg_swap": {"v1_rate": 1.0, "v1_n": 42, "v2_rate": 1.0, "v2_n": 42, "delta_pp": 0.0, "gate": "PASS", "avg_v2_recall": 0.0278},
+      "B_negation_drop": {"v1_rate": 0.6522, "v1_n": 23, "v2_rate": 1.0, "v2_n": 23, "delta_pp": 34.8, "gate": "PASS", "avg_v2_recall": 0.0145},
+      "B_scope_flip": {"v1_rate": 0.0, "v1_n": 1, "v2_rate": 0.0, "v2_n": 1, "delta_pp": 0.0, "gate": "*", "avg_v2_recall": 1.0},
+      "B_restrictor_drop": {"v1_rate": 0.1667, "v1_n": 30, "v2_rate": 0.0, "v2_n": 30, "delta_pp": -16.7, "gate": "*", "avg_v2_recall": 1.0},
+      "D_random": {"v1_rate": 1.0, "v1_n": 46, "v2_rate": 1.0, "v2_n": 46, "delta_pp": 0.0, "gate": "PASS", "avg_v2_recall": 0.0181}
+    },
+    "gate_pass": true,
+    "gate_definition": "no regression > 5pp on B_arg_swap, B_negation_drop, D_random",
+    "b_negation_drop_improvement": "v2 detection 100% vs v1 65.2% (+34.8pp). All 8 v1 non-detections were XOR premises where LLM extraction collapsed exclusive-or into a simple disjunction positive. v2 faithfully parses XOR structure and emits richer sub-entailments that catch the perturbation.",
+    "blind_spots": ["B_restrictor_drop", "B_scope_flip"],
+    "blind_spot_explanation": "B_restrictor_drop produces logically stronger formulas that still entail all sub-entailment positives (recall=1.0). B_scope_flip has n=1 in Exp 1 (insufficient power). Both are architectural properties of recall-based sub-entailment testing, not v2 regressions.",
+    "v2_suite_generation": {"generated": 368, "total_premises": 368, "failures": 0},
+    "scoring": {"total_scored": 510, "errors": 0}
+  },
+  "verification_status": "OK",
+  "discrepancy_notes": null
+}

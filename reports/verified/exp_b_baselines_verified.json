@@ -1,0 +1,23 @@
+{
+  "experiment": "Experiment B baselines — Multi-metric rank correlation comparison (v1 baseline scope, n=35)",
+  "source_files": ["reports/experiments/exp2/rank_correlation.json"],
+  "produced_by_script": "scripts/experiments/run_exp2.py",
+  "config_or_seed_notes": "v1 SIV baseline scope (n=35 premises). MALLS-LE and Brunello-LT use cross-vocabulary alignment. Bootstrap CIs reported. p-values are vs SIV.",
+  "headline_claims": {
+    "siv_soft_recall_rho": 0.8563,
+    "bleu_rho": 0.4513,
+    "bertscore_rho": 0.0435,
+    "malls_le_aligned_rho": 0.0,
+    "brunello_lt_aligned_rho": 0.0
+  },
+  "full_numbers": {
+    "siv_soft_recall": {"mean_rho": 0.8563, "ci_lo": 0.8236, "ci_hi": 0.8811, "n_premises": 35, "p_vs_siv": null},
+    "malls_le_aligned": {"mean_rho": 0.0, "ci_lo": 0.0, "ci_hi": 0.0, "n_premises": 35, "p_vs_siv": 0.0},
+    "brunello_lt_aligned": {"mean_rho": 0.0, "ci_lo": 0.0, "ci_hi": 0.0, "n_premises": 35, "p_vs_siv": 0.0},
+    "bleu": {"mean_rho": 0.4513, "ci_lo": 0.2872, "ci_hi": 0.6047, "n_premises": 35, "p_vs_siv": 0.0},
+    "bertscore": {"mean_rho": 0.0435, "ci_lo": -0.1715, "ci_hi": 0.2674, "n_premises": 35, "p_vs_siv": 0.0}
+  },
+  "verification_status": "OK",
+  "discrepancy_notes": null,
+  "notes": "All five rho values match HARD RULE 2 headline. v1 baseline (n=35) is the published baseline-comparison scope; v2 with-regen (ρ=0.8543, n=33) is computed differently — see exp_b_verified.json. The two are NOT directly comparable: different premise sets and different scoring pipelines."
+}

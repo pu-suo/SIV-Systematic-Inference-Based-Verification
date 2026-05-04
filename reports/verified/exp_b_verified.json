@@ -1,0 +1,148 @@
+{
+  "experiment": "Experiment B v2 — Graded correlation with structural error severity (with regeneration)",
+  "source_files": [
+    "reports/stage4/rescore_exp2.json",
+    "reports/stage4/stage4b_regeneration.json"
+  ],
+  "produced_by_script": "scripts/stage4_rescore_exp2.py + scripts/stage4_regenerate.py",
+  "config_or_seed_notes": "Vampire-required; alignment threshold = 0.6. Bootstrap CIs.",
+  "headline_claims": {
+    "rho_a_full_with_regen": 0.8543,
+    "rho_a_ci_lo": 0.8217,
+    "rho_a_ci_hi": 0.8779,
+    "rho_a_n": 33,
+    "rho_b_full_without_regen": 0.7797,
+    "rho_b_ci_lo": 0.6579,
+    "rho_b_ci_hi": 0.8674,
+    "rho_b_n": 35,
+    "rho_c_equiv_only_subset": 0.8583,
+    "rho_c_ci_lo": 0.8225,
+    "rho_c_ci_hi": 0.8801,
+    "rho_c_n": 22,
+    "v1_locked_rho": 0.8563
+  },
+  "full_numbers": {
+    "rescore_exp2": {
+      "v1_rho": 0.8563,
+      "v2_rho": 0.7797,
+      "v2_ci_lo": 0.6579,
+      "v2_ci_hi": 0.8674,
+      "n_premises": 35,
+      "gate": "STOP",
+      "mean_by_type_v2": {
+        "partial": {"mean": 0.36347517730496454, "n": 47},
+        "overweak": {"mean": 0.06531531531531531, "n": 37},
+        "overstrong": {"mean": 0.9583333333333333, "n": 32},
+        "gibberish": {"mean": 0.06127450980392156, "n": 34},
+        "gold": {"mean": 1.0, "n": 48}
+      },
+      "delta_by_type": {
+        "partial": {"mean_delta": 0.0029381965552178345, "n": 47},
+        "overweak": {"mean_delta": -0.006756756756756757, "n": 37},
+        "overstrong": {"mean_delta": -0.04166666666666667, "n": 32},
+        "gibberish": {"mean_delta": 0.029411764705882353, "n": 34},
+        "gold": {"mean_delta": 0.0, "n": 48}
+      },
+      "per_premise_rho_n35": {
+        "P1293": 0.888888888888889, "P1204": 0.8660254037844387, "P1375": 0.888888888888889,
+        "P0187": 0.888888888888889, "P0870": 0.888888888888889, "P0599": 0.8660254037844387,
+        "P1077": -0.8660254037844387, "P1616": 0.8333333333333335, "P1645": 0.888888888888889,
+        "P0023": 0.8660254037844387, "P0087": 0.8333333333333335, "P0089": 0.888888888888889,
+        "P0397": 0.888888888888889, "P0398": 0.9428090415820635, "P0399": 0.8660254037844387,
+        "P0495": 0.888888888888889, "P0586": 0.8660254037844387, "P0680": 0.8333333333333335,
+        "P0817": 0.888888888888889, "P0975": 0.888888888888889, "P0978": 0.8333333333333335,
+        "P1028": 0.888888888888889, "P1119": 0.8660254037844387, "P1172": 0.888888888888889,
+        "P1191": 0.888888888888889, "P1618": 0.8660254037844387, "P1637": 0.8660254037844387,
+        "P1648": 0.888888888888889, "P0566": 0.8660254037844387, "P1078": 0.5000000000000001,
+        "P1120": 0.8660254037844387, "P1207": 0.8660254037844387, "P1669": 0.8660254037844387,
+        "P0621": 0.0, "P1138": 0.5443310539518174
+      },
+      "v2_suite_stats": {"avg_positives": 3.0833, "avg_contrastives": 2.1458},
+      "score_errors": 0,
+      "root_cause_analysis": {
+        "summary": "rho drop driven by 2 premises where v1 LLM reinterpreted gold annotations",
+        "excluding_P1077": 0.8282,
+        "excluding_P1077_P0621": 0.8532,
+        "P1077": {
+          "issue": "v1 LLM invented TypeOfLeukemia predicate and changed consequent structure",
+          "gold_fol": "all x.((Disease(x) & Leukemia(x)) -> BloodCancer(x))",
+          "v1_canonical": "all x.(TypeOfLeukemia(x) -> (Disease(x) & BloodCancer(x)))",
+          "gibberish_candidate": "all x.(Disease(x) -> BloodCancer(x))",
+          "explanation": "Candidate is logically STRONGER than v2 gold (drops restrictor conjunct), so v2 correctly scores it as recall=1.0. Label gibberish is wrong from gold perspective."
+        },
+        "P0621": {
+          "issue": "Gold uses constant michael, v1 LLM used michaelODonnell. Alignment fails at threshold=0.6.",
+          "explanation": "Symbol alignment cannot bridge the name difference, so all candidates score uniformly low."
+        }
+      }
+    },
+    "regeneration": {
+      "equivalent_premises_n22": [
+        "P1293","P1375","P0187","P0870","P0599","P1645","P0023","P0089","P0399","P0586",
+        "P0975","P0978","P1028","P1119","P1172","P1618","P1637","P1648","P0566","P1078",
+        "P1120","P1207"
+      ],
+      "non_equivalent_premises_n13": [
+        "P1204","P1077","P1616","P0087","P0397","P0398","P0495","P0680","P0817","P1191",
+        "P1669","P0621","P1138"
+      ],
+      "regen_summary": {
+        "P1204": {"kept": 2, "types": ["gibberish","overweak"], "missing": ["overstrong","partial"]},
+        "P1077": {"kept": 2, "types": ["gibberish","overweak"], "missing": ["overstrong","partial"]},
+        "P1616": {"kept": 3, "types": ["gibberish","overstrong","partial"], "missing": ["overweak"]},
+        "P0087": {"kept": 4, "types": ["gibberish","overstrong","overweak","partial"], "missing": []},
+        "P0397": {"kept": 4, "types": ["gibberish","overstrong","overweak","partial"], "missing": []},
+        "P0398": {"kept": 3, "types": ["gibberish","overstrong","partial"], "missing": ["overweak"]},
+        "P0495": {"kept": 4, "types": ["gibberish","overstrong","overweak","partial"], "missing": []},
+        "P0680": {"kept": 3, "types": ["gibberish","overstrong","partial"], "missing": ["overweak"]},
+        "P0817": {"kept": 4, "types": ["gibberish","overstrong","overweak","partial"], "missing": []},
+        "P1191": {"kept": 4, "types": ["gibberish","overstrong","overweak","partial"], "missing": []},
+        "P1669": {"kept": 4, "types": ["gibberish","overstrong","overweak","partial"], "missing": []},
+        "P0621": {"kept": 4, "types": ["gibberish","overstrong","overweak","partial"], "missing": []},
+        "P1138": {"kept": 4, "types": ["gibberish","overstrong","overweak","partial"], "missing": []}
+      },
+      "rho_a_full_with_regen": {
+        "mean_rho": 0.8543,
+        "ci_lo": 0.8217,
+        "ci_hi": 0.8779,
+        "n": 33,
+        "per_premise": {
+          "P1293": 0.888888888888889, "P1375": 0.888888888888889, "P0187": 0.888888888888889,
+          "P0870": 0.888888888888889, "P0599": 0.8660254037844387, "P1616": 0.8660254037844387,
+          "P1645": 0.888888888888889, "P0023": 0.8660254037844387, "P0087": 0.888888888888889,
+          "P0089": 0.888888888888889, "P0397": 0.888888888888889, "P0398": 0.8660254037844387,
+          "P0399": 0.8660254037844387, "P0495": 0.888888888888889, "P0586": 0.8660254037844387,
+          "P0680": 0.8660254037844387, "P0817": 0.888888888888889, "P0975": 0.888888888888889,
+          "P0978": 0.8333333333333335, "P1028": 0.888888888888889, "P1119": 0.8660254037844387,
+          "P1172": 0.888888888888889, "P1191": 0.888888888888889, "P1618": 0.8660254037844387,
+          "P1637": 0.8660254037844387, "P1648": 0.888888888888889, "P0566": 0.8660254037844387,
+          "P1078": 0.5000000000000001, "P1120": 0.8660254037844387, "P1207": 0.8660254037844387,
+          "P1669": 0.8333333333333335, "P0621": 0.888888888888889, "P1138": 0.5443310539518174
+        }
+      },
+      "rho_b_full_without_regen": {"mean_rho": 0.7797, "ci_lo": 0.6579, "ci_hi": 0.8674, "n": 35},
+      "rho_c_equiv_only": {
+        "mean_rho": 0.8583,
+        "ci_lo": 0.8225,
+        "ci_hi": 0.8801,
+        "n": 22,
+        "derivation": "Computed in source JSON over the 22 equivalent_premises with NO regeneration; field rho_c_equiv_only present in stage4b_regeneration.json (no derivation needed).",
+        "per_premise": {
+          "P1293": 0.888888888888889, "P1375": 0.888888888888889, "P0187": 0.888888888888889,
+          "P0870": 0.888888888888889, "P0599": 0.8660254037844387, "P1645": 0.888888888888889,
+          "P0023": 0.8660254037844387, "P0089": 0.888888888888889, "P0399": 0.8660254037844387,
+          "P0586": 0.8660254037844387, "P0975": 0.888888888888889, "P0978": 0.8333333333333335,
+          "P1028": 0.888888888888889, "P1119": 0.8660254037844387, "P1172": 0.888888888888889,
+          "P1618": 0.8660254037844387, "P1637": 0.8660254037844387, "P1648": 0.888888888888889,
+          "P0566": 0.8660254037844387, "P1078": 0.5000000000000001, "P1120": 0.8660254037844387,
+          "P1207": 0.8660254037844387
+        }
+      },
+      "v1_locked_rho": 0.8563,
+      "gate": "PASS"
+    }
+  },
+  "verification_status": "OK",
+  "discrepancy_notes": null,
+  "notes": "rho_c subset CI [0.8225, 0.8801] in JSON rounds to [0.823, 0.880] in headline (3-decimal precision). All other headline numbers match exactly to 4 decimals."
+}

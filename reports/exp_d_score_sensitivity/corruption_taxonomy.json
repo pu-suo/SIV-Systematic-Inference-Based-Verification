@@ -1,0 +1,72 @@
+{
+  "total_corrected": 30,
+  "category_definitions": {
+    "syntax_error": "Pure parser-level malformation: unbalanced parens, hyphenated predicates, trailing commas, missing variable names — gold cannot be parsed as-is, but the intended encoding is reconstructible.",
+    "free_variable": "Identifier intended as a constant or quantifier-bound variable but is parsed as a free individual variable; usually a renaming fix.",
+    "semantic_error": "Gold parses (or is reparable into something that parses) but encodes the NL claim wrongly: wrong connective, wrong predicate scheme, or extra/missing assertion not warranted by NL.",
+    "scope_error": "Quantifier scope mismatch: existentials with bodies that leak past the quantifier, universal/implication parens that put the operator outside the binder, or universal-pair quantification that should be existential-pair (and vice versa).",
+    "missing_predicate": "NL claim is not encoded at all: a content-bearing component of the NL sentence (an adverb, an object, an additional conjunct) is dropped or collapsed into a predicate name that loses information."
+  },
+  "by_post_hoc_category": {
+    "syntax_error": {
+      "count": 10,
+      "example_premise_ids": ["P1332", "P1542", "P1223", "P0017", "P0437", "P1505", "P0913", "P1615", "P0446", "P0286"]
+    },
+    "free_variable": {
+      "count": 7,
+      "example_premise_ids": ["P0766", "P0768", "P0769", "P1479", "P0519", "P1053", "P0865"]
+    },
+    "semantic_error": {
+      "count": 6,
+      "example_premise_ids": ["P1134", "P1638", "P0671", "P0190", "P0518", "P0035"]
+    },
+    "scope_error": {
+      "count": 6,
+      "example_premise_ids": ["P1326", "P1414", "P1477", "P0179", "P0053", "P1630"]
+    },
+    "missing_predicate": {
+      "count": 1,
+      "example_premise_ids": ["P1270"]
+    }
+  },
+  "by_original_reason": {
+    "syntax_error": {"count": 17, "note": "from broken_gold_pool.jsonl original tagging"},
+    "free_variable": {"count": 13, "note": "from broken_gold_pool.jsonl original tagging"}
+  },
+  "per_premise": [
+    {"premise_id": "P1332", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Apostrophe in constant + unbalanced parens; the spurious second-witness existential is also dropped."},
+    {"premise_id": "P1326", "original_reason": "free_variable", "post_hoc_category": "scope_error", "one_line_summary": "Existential body conjuncts leak past the binder; corrected to single existential matching NL 'some'."},
+    {"premise_id": "P1414", "original_reason": "free_variable", "post_hoc_category": "scope_error", "one_line_summary": "Same scope-leak pattern as P1326; two-witness encoding unjustified by NL."},
+    {"premise_id": "P1542", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Unbalanced parens; manner adverb 'easily' folded into predicate to keep within binary scheme."},
+    {"premise_id": "P1223", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Hyphen in constant + duplicate LargeComplex conjunct."},
+    {"premise_id": "P1134", "original_reason": "syntax_error", "post_hoc_category": "semantic_error", "one_line_summary": "Parens unbalanced AND disjunction-vs-conjunction wrong: NL coordinates with 'and'."},
+    {"premise_id": "P0017", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Hyphenated predicate Five-Story; trailing extra paren."},
+    {"premise_id": "P1638", "original_reason": "syntax_error", "post_hoc_category": "semantic_error", "one_line_summary": "Treats TSLeda as unary predicate over x; corrected to constant-with-three-property scheme."},
+    {"premise_id": "P0437", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Trailing comma in argument list."},
+    {"premise_id": "P0671", "original_reason": "syntax_error", "post_hoc_category": "semantic_error", "one_line_summary": "Dot in constant + tortured 'exactly two' universal-z encoding; corrected to at-least-two existential."},
+    {"premise_id": "P0766", "original_reason": "free_variable", "post_hoc_category": "free_variable", "one_line_summary": "Single letters a/b/c parsed as free vars; renamed to gradeA/gradeB/gradeC constants."},
+    {"premise_id": "P0768", "original_reason": "free_variable", "post_hoc_category": "free_variable", "one_line_summary": "Free 'a' is intended grade constant gradeA; minor antecedent restructure."},
+    {"premise_id": "P0769", "original_reason": "free_variable", "post_hoc_category": "free_variable", "one_line_summary": "Same a-as-gradeA fix as P0768."},
+    {"premise_id": "P0190", "original_reason": "free_variable", "post_hoc_category": "semantic_error", "one_line_summary": "Free y plus universal-implies-negation says 'Peter plays nothing'; corrected to existential-with-inequality."},
+    {"premise_id": "P1477", "original_reason": "syntax_error", "post_hoc_category": "scope_error", "one_line_summary": "Paren grouping puts implication outside universal's body; rebalanced."},
+    {"premise_id": "P1479", "original_reason": "free_variable", "post_hoc_category": "free_variable", "one_line_summary": "Free x in second conjunct, clear typo for 'henry'."},
+    {"premise_id": "P1505", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Unbalanced parens in nested negated existential."},
+    {"premise_id": "P0519", "original_reason": "free_variable", "post_hoc_category": "free_variable", "one_line_summary": "Duplicate ∃y leaves z unbound; introduce missing ∃z binder."},
+    {"premise_id": "P1053", "original_reason": "free_variable", "post_hoc_category": "free_variable", "one_line_summary": "Comma in numeric literal 400,000 tokenizes as free var; rename to constant."},
+    {"premise_id": "P0913", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Existential with no variable name; insert missing 'x'."},
+    {"premise_id": "P0518", "original_reason": "syntax_error", "post_hoc_category": "semantic_error", "one_line_summary": "Biconditional-with-negation gives wrong logical content; 'only X did Y' is implication Y→X, not iff."},
+    {"premise_id": "P1615", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Hyphen in predicate British-Iraqi → CamelCase."},
+    {"premise_id": "P0446", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Unbalanced parens around four-conjunct list."},
+    {"premise_id": "P0179", "original_reason": "free_variable", "post_hoc_category": "scope_error", "one_line_summary": "Negated open formula should be negated existential; binds y properly."},
+    {"premise_id": "P0053", "original_reason": "free_variable", "post_hoc_category": "scope_error", "one_line_summary": "Existential-scope leakage; corrected to single existential matching NL 'some'."},
+    {"premise_id": "P0865", "original_reason": "free_variable", "post_hoc_category": "free_variable", "one_line_summary": "p1080 flagged as free var; renamed to res1080p constant."},
+    {"premise_id": "P0035", "original_reason": "syntax_error", "post_hoc_category": "semantic_error", "one_line_summary": "Unbalanced parens AND spurious Customer(lily) hallucination not in NL."},
+    {"premise_id": "P1630", "original_reason": "free_variable", "post_hoc_category": "scope_error", "one_line_summary": "Free y in antecedent + 'two distinct others' overspecification; corrected to all-pair universal."},
+    {"premise_id": "P1270", "original_reason": "syntax_error", "post_hoc_category": "missing_predicate", "one_line_summary": "Unary 'WrittenWithCode' + unary 'MacOS' lose the dual-object content; rebuilt with binary WrittenWith."},
+    {"premise_id": "P0286", "original_reason": "syntax_error", "post_hoc_category": "syntax_error", "one_line_summary": "Unbalanced parens + space before argument paren in DigestFoodInternally."}
+  ],
+  "totals_check": {
+    "by_post_hoc_sum": 30,
+    "by_original_sum": 30
+  }
+}

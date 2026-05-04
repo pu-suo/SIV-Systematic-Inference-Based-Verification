@@ -1,0 +1,39 @@
+{
+  "experiment": "Path 1 pilot — Category-level feedback on FOLIO (pilot only; main NOT run)",
+  "source_files": ["reports/c2_investigations/path1/step3_pilot.json"],
+  "produced_by_script": "scripts/c2_path1_step3_pilot.py",
+  "config_or_seed_notes": "n_pilot=20 candidates. Five conditions: no_feedback / score_only / structured_category / shuffled_category / count_only. Stop rule: pilot decides whether to proceed to main; WEAK_SIGNAL means main is NOT run.",
+  "headline_claims": {
+    "structured_category_siv_rate": 0.6,
+    "shuffled_category_siv_rate": 0.6,
+    "delta": 0.0,
+    "decision": "WEAK_SIGNAL",
+    "main_run_executed": false
+  },
+  "full_numbers": {
+    "n_pilot": 20,
+    "condition_rates": {
+      "no_feedback": {"parseable_rate": 1.0, "equiv_rate": 0.6, "siv_rate": 0.65, "n": 20},
+      "score_only": {"parseable_rate": 1.0, "equiv_rate": 0.65, "siv_rate": 0.65, "n": 20},
+      "structured_category": {"parseable_rate": 1.0, "equiv_rate": 0.55, "siv_rate": 0.6, "n": 20},
+      "shuffled_category": {"parseable_rate": 1.0, "equiv_rate": 0.55, "siv_rate": 0.6, "n": 20},
+      "count_only": {"parseable_rate": 1.0, "equiv_rate": 0.6, "siv_rate": 0.6, "n": 20}
+    },
+    "primary_comparison": {
+      "structured_rate": 0.6,
+      "shuffled_rate": 0.6,
+      "delta": 0.0
+    },
+    "sanity_checks": {
+      "no_feedback_near_baseline": true,
+      "score_only_geq_no_feedback": true,
+      "all_parseable_80pct": true,
+      "overall_pass": true
+    },
+    "decision": "WEAK_SIGNAL",
+    "decision_text": "Pilot Δ=+0.000 in [0, 0.05). Weak signal. Surface to user: per-aspect channel may not carry signal at category level."
+  },
+  "verification_status": "OK",
+  "discrepancy_notes": null,
+  "notes": "Main run NOT executed because pilot returned WEAK_SIGNAL. Path 1-Hard (different difficulty regime) was run instead — see path1_hard_verified.json."
+}

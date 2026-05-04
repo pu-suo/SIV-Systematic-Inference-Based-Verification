@@ -1,0 +1,71 @@
+{
+  "experiment": "Path 1-Hard — Category-level feedback at higher difficulty (3 models)",
+  "source_files": ["reports/c2_investigations/path1_hard/step5_main_results.json"],
+  "produced_by_script": "scripts/c2_path1_hard_step5_main_v2.py",
+  "config_or_seed_notes": "n_candidates=60 × 5 conditions × 3 models = 900 LLM calls. Total elapsed: 1462.84s. Bootstrap CIs and p-values per model.",
+  "headline_claims": {
+    "models_significant": 0,
+    "decision": "NULL",
+    "gpt4o_delta": 0.0,
+    "gpt4o_mini_delta": 0.0167,
+    "claude_sonnet_delta": -0.05
+  },
+  "full_numbers": {
+    "n_candidates": 60,
+    "total_calls": 900,
+    "elapsed_s": 1462.8419091701508,
+    "per_model": {
+      "gpt-4o": {
+        "rates": {
+          "no_feedback": 0.35,
+          "score_only": 0.3,
+          "structured_category": 0.31666666666666665,
+          "shuffled_category": 0.31666666666666665,
+          "count_only": 0.26666666666666666
+        },
+        "delta": 0.0,
+        "ci_lo": -0.09999999999999998,
+        "ci_hi": 0.09999999999999998,
+        "p": 0.5664
+      },
+      "gpt-4o-mini": {
+        "rates": {
+          "no_feedback": 0.21666666666666667,
+          "score_only": 0.26666666666666666,
+          "structured_category": 0.25,
+          "shuffled_category": 0.23333333333333334,
+          "count_only": 0.21666666666666667
+        },
+        "delta": 0.016666666666666663,
+        "ci_lo": -0.05000000000000002,
+        "ci_hi": 0.08333333333333337,
+        "p": 0.4141
+      },
+      "claude-sonnet": {
+        "rates": {
+          "no_feedback": 0.36666666666666664,
+          "score_only": 0.26666666666666666,
+          "structured_category": 0.3,
+          "shuffled_category": 0.35,
+          "count_only": 0.3333333333333333
+        },
+        "delta": -0.04999999999999999,
+        "ci_lo": -0.13333333333333336,
+        "ci_hi": 0.033333333333333326,
+        "p": 0.913
+      }
+    },
+    "decision": "NULL",
+    "decision_text": "Per-aspect fails at harder difficulty too. Claim rejected.",
+    "models_significant": 0,
+    "raw_results_array_lengths": {
+      "gpt-4o": {"no_feedback": 60, "score_only": 60, "structured_category": 60, "shuffled_category": 60, "count_only": 60},
+      "gpt-4o-mini": {"no_feedback": 60, "score_only": 60, "structured_category": 60, "shuffled_category": 60, "count_only": 60},
+      "claude-sonnet": {"no_feedback": 60, "score_only": 60, "structured_category": 60, "shuffled_category": 60, "count_only": 60}
+    },
+    "raw_results_present": true
+  },
+  "verification_status": "OK",
+  "discrepancy_notes": null,
+  "notes": "All three model deltas match HARD RULE 2 headline (gpt-4o 0.000; gpt-4o-mini +0.0167≈+0.017; claude-sonnet -0.0500). Raw 60-bool arrays present in source JSON for all 15 (model × condition) cells but excluded from this verification block by spec."
+}

@@ -1,0 +1,88 @@
+{
+  "broken_pool_total": 76,
+  "broken_pool_by_reason": {
+    "syntax_error": 54,
+    "free_variable": 22
+  },
+  "selected_30_premise_ids": [
+    "P1332",
+    "P1326",
+    "P1414",
+    "P1542",
+    "P1223",
+    "P1134",
+    "P0017",
+    "P1638",
+    "P0437",
+    "P0671",
+    "P0766",
+    "P0768",
+    "P0769",
+    "P0190",
+    "P1477",
+    "P1479",
+    "P1505",
+    "P0519",
+    "P1053",
+    "P0913",
+    "P0518",
+    "P1615",
+    "P0446",
+    "P0179",
+    "P0053",
+    "P0865",
+    "P0035",
+    "P1630",
+    "P1270",
+    "P0286"
+  ],
+  "selected_30_count": 30,
+  "corrections_doc_path": "docs/corrections_template.md",
+  "corrections_count": 30,
+  "selection_criteria_text": "Step 1: parse_fol returns None (syntax_error) OR free_individual_variables non-empty (free_variable). Per reports/experiments/exp3/run_metadata.json step1.criteria_used. Criterion (c) unprovable_by_design yielded 0 premises.",
+  "filter_criteria_text": "Step 2 filters: canonical extraction succeeded, >=2 positives, NL <=30 words. lt2_positives drop=45, survivors=31, premises_selected=30. Stratification noted as max bucket 17/30=57% (syntax_error) per run_metadata.",
+  "sample_pool_entries_first5": [
+    {
+      "premise_id": "P0017",
+      "story_id": 133,
+      "nl": "The Emmet Building is a five-story building in Portland, Oregon.",
+      "gold_fol": "Building(emmetBuilding) \u2227 Five-Story(emmetBuilding) \u2227 LocatedIn(emmetBuilding, portland) \u2227 LocatedIn(portland, oregon))",
+      "broken_reason": "syntax_error",
+      "broken_evidence": "parse_fol returns None (hyphenated predicates, XOR operator, or unbalanced parens)"
+    },
+    {
+      "premise_id": "P0035",
+      "story_id": 422,
+      "nl": "Lily is in James' family; she watches TV series in cinemas.",
+      "gold_fol": "Customer(lily) \u2227 In(lily, jameSFamily \u2227 WatchIn(lily, tV, cinema)",
+      "broken_reason": "syntax_error",
+      "broken_evidence": "parse_fol returns None (hyphenated predicates, XOR operator, or unbalanced parens)"
+    },
+    {
+      "premise_id": "P0053",
+      "story_id": 417,
+      "nl": "Some monitors made by LG have a type-c port.",
+      "gold_fol": "\u2203x (Monitor(x) \u2227 ProducedBy(x, lG) \u2227 Have(x, typeCPort) \u2227 (\u00ac(x=y)) \u2227 Monitor(y) \u2227 ProducedBy(y, lG) \u2227 Have(y, typeCPort))",
+      "broken_reason": "free_variable",
+      "broken_evidence": "free individual variables: ['y']"
+    },
+    {
+      "premise_id": "P0056",
+      "story_id": 417,
+      "nl": "The L-2021 monitor is either both produced before 2010 and made by LG, or neither is true.",
+      "gold_fol": "\u00ac(ProducedBefore(l-2021, yr2010) \u2295 ProducedBy(l-2021, lG))",
+      "broken_reason": "syntax_error",
+      "broken_evidence": "parse_fol returns None (hyphenated predicates, XOR operator, or unbalanced parens)"
+    },
+    {
+      "premise_id": "P0062",
+      "story_id": 377,
+      "nl": "If PSO J318.5\u221222 is not both a rogue planet and a planet gravitationally bound by the Sun, then it is a rogue planet.",
+      "gold_fol": "\u00ac(Planet(pSOJ318.5-22) \u2227 Rogue(pSOJ318.5-22) \u2227 BoundBy(pSOJ318.5-22, sun, gravitationally)) \u2192 (Planet(pSOJ318.5-22) \u2227 Rogue(pSOJ318.5-22))",
+      "broken_reason": "syntax_error",
+      "broken_evidence": "parse_fol returns None (hyphenated predicates, XOR operator, or unbalanced parens)"
+    }
+  ],
+  "broken_pool_path": "reports/experiments/exp3/broken_gold_pool.jsonl",
+  "run_metadata_path": "reports/experiments/exp3/run_metadata.json"
+}

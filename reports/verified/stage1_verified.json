@@ -1,0 +1,40 @@
+{
+  "experiment": "Stage 1 — Deterministic parser coverage",
+  "source_files": ["reports/parser_coverage_report.json"],
+  "produced_by_script": "scripts/parser_coverage_report.py",
+  "config_or_seed_notes": "Deterministic; no seeds required. Vampire used for round-trip equivalence checks.",
+  "headline_claims": {
+    "total_premises": 1675,
+    "converted": 1578,
+    "conversion_rate": 0.9421,
+    "round_trip_pass": 1577,
+    "round_trip_pass_rate_of_converted": 0.9994,
+    "round_trip_fail": 1,
+    "round_trip_fail_rate": 0.0006337135614702154
+  },
+  "full_numbers": {
+    "total_premises": 1675,
+    "converted": 1578,
+    "rejected": 97,
+    "round_trip_pass": 1577,
+    "round_trip_fail": 1,
+    "round_trip_fail_rate": 0.0006337135614702154,
+    "rejection_breakdown": {
+      "nltk_parse_failure": 68,
+      "free_indvar": 27,
+      "validation_failure": 1,
+      "predicate_arity_inconsistency": 1
+    },
+    "rejection_breakdown_total": 97,
+    "vampire_available": true,
+    "rejected_samples_count": 50,
+    "round_trip_failures_count": 1,
+    "round_trip_failure_example": {
+      "nl": "Avocados are a kind of fruit sold at the local farmers market in New Haven or at Nica's market.",
+      "compiled": "(Fruit(avocado) & (SoldAt(avocado, localFarmersMarket) | SoldAt(avocado, nica'sMarket)))"
+    }
+  },
+  "verification_status": "OK",
+  "discrepancy_notes": null,
+  "notes": "1578/1675 = 0.94209 → 94.21% (rounds to 94.2%). 1577/1578 = 0.999366 → 99.94%. Both match HARD RULE 2 headline. Rejection breakdown sums to 97 (68+27+1+1)."
+}

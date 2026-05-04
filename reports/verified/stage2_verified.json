@@ -1,0 +1,26 @@
+{
+  "experiment": "Stage 2 — Gold self-score validation",
+  "source_files": ["docs/COMPREHENSIVE_RESULTS.md (secondary source — primary JSON cleanup-removed)"],
+  "produced_by_script": "scripts/stage2_validation.py (cleanup-removed)",
+  "config_or_seed_notes": "Goal: verify v2 gold-derived test suites correctly score the gold itself with recall=1.0. Deterministic; Vampire-required.",
+  "headline_claims": {
+    "total_scored": 1577,
+    "perfect_recall_count": 1577,
+    "imperfect_recall_count": 0,
+    "score_errors": 0,
+    "perfect_rate": 1.0,
+    "gate_pass": true
+  },
+  "full_numbers": {
+    "total_scored": 1577,
+    "perfect_recall_1.0": 1577,
+    "imperfect_recall": 0,
+    "score_errors": 0,
+    "perfect_rate_pct": 100.0,
+    "gate_pass": true,
+    "verdict": "v2 suite generation is internally consistent. Gold formulas score perfectly against suites derived from themselves."
+  },
+  "verification_status": "OK_SECONDARY_SOURCE",
+  "discrepancy_notes": null,
+  "notes": "Primary JSON deleted in cleanup commit c243cd9 (Stage 5/5). Numbers reproduced here from docs/COMPREHENSIVE_RESULTS.md §STAGE 2. To restore primary source, checkout pre-cleanup-snapshot tag."
+}

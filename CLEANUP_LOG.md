@@ -223,6 +223,24 @@ errors**. Drop from 438 (Stage 0 baseline) accounted for:
 - 4 tests in `test_schema.py` (json_schema-specific)
 - Total removed: 42 → 438 − 42 = 396 ✓
 
+### Stage 3 follow-up
+
+`tests/test_main_dispatcher.py` was missed by the Phase C dependency
+grep because it exercised `siv/__main__.py` via subprocess
+(`python -m siv`) rather than via Python `import`. Same pattern as
+Stage 0's stratum_classifier orphan. Lesson: dependency checks must
+include subprocess-based invocations, not just Python import
+statements.
+
+Deleted in commit (separate from Stage 3): `tests/test_main_dispatcher.py`
+(3 tests, all subprocess invocations of the deleted dispatcher).
+
+Post-cleanup pytest: **388 passed, 5 skipped, 0 failed.** (Drop from 396
+collected to 393 reflects the 3 dispatcher tests; the 5 remaining
+skipped are pre-existing `vampire_required` skips in
+`test_contrastive_generator.py`.)
+
+
 
 
 

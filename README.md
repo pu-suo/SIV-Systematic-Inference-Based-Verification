@@ -101,6 +101,14 @@ pytest tests/test_soundness_invariants.py     # C9a / C9b on the 22-sentence cor
 - `docs/translation_prompt.md` — frozen NL→FOL prompt used for the human-study models.
 - `docs/corrections_template.md` — the 30 hand-corrected FOLIO gold annotations (Exp D artifact).
 
+## Prior exploration
+
+An earlier iteration of this project used LLM-extracted canonical FOL as
+the scoring reference. That direction was abandoned in favor of the
+deterministic parser presented here, but the original pipeline is
+preserved at <https://github.com/pu-suo/SIV-archive> for anyone interested
+in revisiting it.
+
 ## License
 
 See `LICENSE`.

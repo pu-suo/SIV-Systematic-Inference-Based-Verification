@@ -1,1 +1,0 @@
-{"premise_id": "P0978", "attempt": 0, "response": "CANDIDATE_PARTIAL: Team(bostonCeltics)  \nCANDIDATE_OVERWEAK: Lost(bostonCeltics, nbaFinals)  \nCANDIDATE_OVERSTRONG: (Team(bostonCeltics) & Lost(bostonCeltics, nbaFinals) & NBAFinals(nbaFinals))  \nCANDIDATE_GIBBERISH: (NBAFinals(bostonCeltics) | Lost(nbaFinals, bostonCeltics))"}

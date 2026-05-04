@@ -171,5 +171,58 @@ KEPT (Hard Rule 3):
 - `reports/c2_investigations/path1/` (10 files)
 - `reports/c2_investigations/path1_hard/` (10 files)
 
+## Phase D — Stage 3: LLM-extraction infrastructure
+
+Hard Rule 5 final check (`pytest tests/ --collect-only`) caught a missed
+dependency: `prompts/extraction_examples.json` was used as test fixture
+data by three load-bearing v2 tests (`test_scorer.py`,
+`test_contrastive_generator.py`, `test_soundness_invariants.py`), not just
+the v1 cluster.
+
+User chose Path B: relocate the corpus to `tests/data/` and split the work
+into two commits.
+
+### Pre-Stage-3 refactor (commit `1dc0be2`)
+
+`refactor: relocate extraction_examples to tests/data`
+
+- `git mv prompts/extraction_examples.json tests/data/extraction_examples.json`
+  (preserves blame/log on the corpus content).
+- Updated three test path references (`test_scorer.py:29`,
+  `test_contrastive_generator.py:40`, `test_soundness_invariants.py:39`)
+  to load from `Path(__file__).parent / "data" / ...`.
+- `tests/data/` is gitignored at `.gitignore:44` (`data/`), but the file
+  is tracked as a rename so the ignore rule doesn't re-fire (same as the
+  pre-existing `tests/data/invariant_corpus.json`).
+
+### Stage 3 deletions (61 changes total: 60 deletions + 1 edit)
+
+Deleted:
+- `prompts/extraction_system.txt` and the now-empty `prompts/` directory
+- `siv/extractor.py`, `siv/json_schema.py`, `siv/frozen_client.py`,
+  `siv/frozen_config.py`, `siv/test_suite_generator.py`, `siv/__main__.py`
+- `scripts/generate_siv_tests.py`, `scripts/generate_folio_test_suites.py`
+- `tests/test_extractor.py`, `tests/test_frozen_client.py`,
+  `tests/test_extraction_roundtrip.py`
+- `reports/experiments/exp2/.llm_cache/` (48 cached LLM responses)
+
+Edited:
+- `tests/test_schema.py` — dropped `from siv.json_schema import …` import,
+  removed 4 test functions and the `# ── JSON Schema derivation` section
+  comment (lines 312–357 in the pre-edit file).
+
+### Hard Rule 5 collect-only check
+
+`pytest tests/ --collect-only` after staging: **396 tests collected, 0
+errors**. Drop from 438 (Stage 0 baseline) accounted for:
+
+- 1 test removed in Stage 0 (orphaned stratum test)
+- 9 tests in `test_extractor.py`
+- 23 tests in `test_extraction_roundtrip.py` (all `requires_llm`-gated)
+- 5 tests in `test_frozen_client.py`
+- 4 tests in `test_schema.py` (json_schema-specific)
+- Total removed: 42 → 438 − 42 = 396 ✓
+
+
 
 

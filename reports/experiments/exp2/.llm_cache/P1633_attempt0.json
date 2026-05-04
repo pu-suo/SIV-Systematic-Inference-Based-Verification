@@ -1,1 +1,0 @@
-{"premise_id": "P1633", "attempt": 0, "response": "CANDIDATE_PARTIAL: HeavyCruiser(ussSalem)\nCANDIDATE_OVERWEAK: Exists x (HeavyCruiser(x) & BuiltFor(x, unitedStatesNavy))\nCANDIDATE_OVERSTRONG: HeavyCruiser(ussSalem) & BuiltFor(ussSalem, unitedStatesNavy) & Exists x (BuiltFor(x, unitedStatesNavy))\nCANDIDATE_GIBBERISH: BuiltFor(unitedStatesNavy, ussSalem)"}

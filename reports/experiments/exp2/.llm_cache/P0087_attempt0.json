@@ -1,1 +1,0 @@
-{"premise_id": "P0087", "attempt": 0, "response": "CANDIDATE_PARTIAL: At(susan, theEvent)  \nCANDIDATE_OVERWEAK: At(susan, theEvent)  \nCANDIDATE_OVERSTRONG: At(susan, theEvent) & HarvardStudent(susan) & YoungAdult(susan)  \nCANDIDATE_GIBBERISH: HarvardStudent(theEvent) -> YoungAdult(susan)"}

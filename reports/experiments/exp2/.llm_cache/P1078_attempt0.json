@@ -1,1 +1,0 @@
-{"premise_id": "P1078", "attempt": 0, "response": "CANDIDATE_PARTIAL: Disease(bladderCancer)  \nCANDIDATE_OVERWEAK: Disease(bladderCancer) & BloodCancer(bladderCancer)  \nCANDIDATE_OVERSTRONG: Disease(bladderCancer) & BloodCancer(bladderCancer) & Leukemia(bladderCancer)  \nCANDIDATE_GIBBERISH: Leukemia(bladderCancer) & -BloodCancer(bladderCancer)"}

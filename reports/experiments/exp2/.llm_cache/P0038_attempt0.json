@@ -1,1 +1,0 @@
-{"premise_id": "P0038", "attempt": 0, "response": "CANDIDATE_PARTIAL: LaLigaSoccerTeam(realMadrid)\nCANDIDATE_OVERWEAK: (exists x LaLigaSoccerTeam(x))\nCANDIDATE_OVERSTRONG: (LaLigaSoccerTeam(realMadrid) & LaLigaSoccerTeam(barcelona) & LaLigaSoccerTeam(atleticoMadrid))\nCANDIDATE_GIBBERISH: (LaLigaSoccerTeam(realMadrid) | -LaLigaSoccerTeam(barcelona))"}

@@ -1,10 +1,9 @@
-"""Tests for siv/schema.py and siv/json_schema.py — Phase 1 rewrite."""
+"""Tests for siv/schema.py — Phase 1 rewrite."""
 import json
 
 import pytest
 from pydantic import ValidationError
 
-from siv.json_schema import derive_extraction_schema
 from siv.schema import (
     AtomicFormula,
     Constant,
@@ -305,56 +304,6 @@ def test_validate_accepts_empty_restrictor_with_nonatomic_nucleus():
     ))
     ext = _ext(f, preds=_preds(("P", 1, ["e"]), ("Q", 1, ["e"])))
     validate_extraction(ext)
-
-
-# ── JSON Schema derivation (C3 / §6.2.7) ────────────────────────────────────
-
-def test_json_schema_deterministic_across_runs():
-    s1 = derive_extraction_schema()
-    s2 = derive_extraction_schema()
-    assert json.dumps(s1, sort_keys=True) == json.dumps(s2, sort_keys=True)
-
-
-def test_json_schema_inlines_non_recursive_refs():
-    # Formula is self-referential (negation, operands, nucleus all recurse
-    # back to Formula). A self-referential type cannot be fully inlined, so
-    # we preserve Formula as a $def and $ref to it. Non-recursive leaves
-    # (AtomicFormula, PredicateDecl, Entity, Constant, ...) must be inlined.
-    s = derive_extraction_schema()
-    defs = s.get("$defs", {})
-    # Only Formula (and structures that necessarily recurse through it, e.g.
-    # TripartiteQuantification) may remain as $defs.
-    for name in defs.keys():
-        assert name in {"Formula", "TripartiteQuantification"}, (
-            f"unexpected non-recursive type retained in $defs: {name}"
-        )
-
-
-def test_json_schema_objects_forbid_additional_properties():
-    s = derive_extraction_schema()
-
-    def walk(node):
-        if isinstance(node, dict):
-            if node.get("type") == "object" or "properties" in node:
-                assert node.get("additionalProperties") is False
-                props = node.get("properties", {})
-                if props:
-                    assert set(node.get("required", [])) == set(props.keys())
-            for v in node.values():
-                walk(v)
-        elif isinstance(node, list):
-            for x in node:
-                walk(x)
-
-    walk(s)
-
-
-def test_json_schema_strips_title_and_description():
-    s = derive_extraction_schema()
-    text = json.dumps(s)
-    assert '"title"' not in text
-    assert '"description"' not in text
-    assert '"default"' not in text
 
 
 # ── Exercise TestSuite container ────────────────────────────────────────────

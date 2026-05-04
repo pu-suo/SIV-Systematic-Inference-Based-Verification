@@ -1,1 +1,0 @@
-{"premise_id": "P0397", "attempt": 0, "response": "CANDIDATE_PARTIAL: Museum(theMetropolitanMuseumOfArt)\nCANDIDATE_OVERWEAK: exists x (Museum(x))\nCANDIDATE_OVERSTRONG: (Museum(theMetropolitanMuseumOfArt) & In(theMetropolitanMuseumOfArt, nyc) & Museum(nyc))\nCANDIDATE_GIBBERISH: In(nyc, theMetropolitanMuseumOfArt)"}

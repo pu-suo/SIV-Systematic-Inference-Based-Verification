@@ -1,1 +1,0 @@
-{"premise_id": "P1120", "attempt": 0, "response": "CANDIDATE_PARTIAL: Scientist(leonardoDaVinci)\nCANDIDATE_OVERWEAK: (Scientist(leonardoDaVinci) | Painter(leonardoDaVinci))\nCANDIDATE_OVERSTRONG: (Scientist(leonardoDaVinci) & Painter(leonardoDaVinci) & -Scientist(leonardoDaVinci))\nCANDIDATE_GIBBERISH: (Scientist(leonardoDaVinci) <-> Painter(leonardoDaVinci))"}

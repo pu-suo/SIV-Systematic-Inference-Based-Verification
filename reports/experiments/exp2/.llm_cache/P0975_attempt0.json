@@ -1,1 +1,0 @@
-{"premise_id": "P0975", "attempt": 0, "response": "CANDIDATE_PARTIAL: Team(goldenStateWarriors)\nCANDIDATE_OVERWEAK: exists x (Team(x) & From(x, sanFrancisco))\nCANDIDATE_OVERSTRONG: (Team(goldenStateWarriors) & From(goldenStateWarriors, sanFrancisco) & Team(sanFrancisco))\nCANDIDATE_GIBBERISH: From(sanFrancisco, goldenStateWarriors)"}

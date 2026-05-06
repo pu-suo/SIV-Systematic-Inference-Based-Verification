@@ -2,13 +2,26 @@
 Contrastive generator (SIV.md §6.5, C7).
 
 Produces candidate negative (contrastive) unit tests by mutating a
-``SentenceExtraction``'s formula tree with six exhaustive operators, then
-filters each mutant through Vampire. A mutant is accepted iff
-``(original ∧ mutant)`` is proved unsatisfiable — i.e., provably
-inconsistent, not merely different.
+``SentenceExtraction``'s formula tree with the registered operators, then
+filters each mutant through a three-check Vampire protocol:
+
+A. ``unsat(gold ∧ mutant)`` under witness axioms. If unsat, the mutant is
+   ``incompatible`` (mutually inconsistent with gold) — admit.
+B. ``entails(mutant, gold)``. Must be ``unsat`` (mutant ⊨ gold).
+C. ``entails(gold, mutant)``. Must be ``sat`` (gold ⊭ mutant).
+
+If A is sat AND B is unsat AND C is sat, the mutant is *strictly stronger*
+than gold (it adds content gold doesn't entail) — admit. All other
+combinations (equivalent, strictly weaker, independent, or any
+timeout/unknown) are dropped.
+
+Relaxing the gate to admit strictly-stronger mutants lets operators like
+``drop_restrictor_conjunct``, ``converse``, and ``scope_swap`` produce
+useful contrastives where the prior unsat-only gate dropped them silently.
 """
 from __future__ import annotations
 
+import os
 from typing import Callable, Dict, List, Optional, Tuple
 
 from siv.compiler import _a_formula
@@ -222,6 +235,10 @@ OPERATOR_NAMES = [
     "drop_restrictor_conjunct",
     "flip_connective",
     "replace_subformula_with_negation",
+    "disjunct_drop",
+    "converse",
+    "scope_swap",
+    "equality_drop",
 ]
 
 
@@ -371,6 +388,12 @@ def drop_restrictor_conjunct(f: Formula) -> List[Formula]:
 # ════════════════════════════════════════════════════════════════════════════
 
 def flip_connective(f: Formula) -> List[Formula]:
+    """Flip a logical connective at one site.
+
+    The implies-swap (``A -> B`` ↦ ``B -> A``) was previously emitted here;
+    it now lives in the dedicated ``converse`` operator for cleaner
+    telemetry attribution. The iff-flip (``A <-> B`` ↦ ``A -> B``) stays
+    here because it is not the converse of an implication."""
     mutants: List[Formula] = []
 
     if f.connective is not None:
@@ -381,7 +404,6 @@ def flip_connective(f: Formula) -> List[Formula]:
             mutants.append(Formula(connective="and", operands=ops))
         elif f.connective == "implies":
             mutants.append(Formula(connective="iff", operands=ops))
-            mutants.append(Formula(connective="implies", operands=[ops[1], ops[0]]))
         elif f.connective == "iff":
             mutants.append(Formula(connective="implies", operands=ops))
         # Recurse into each operand.
@@ -445,8 +467,238 @@ def replace_subformula_with_negation(f: Formula) -> List[Formula]:
 
 
 # ════════════════════════════════════════════════════════════════════════════
+# Operator 7: disjunct_drop  (Stage-2)
+# ════════════════════════════════════════════════════════════════════════════
+
+def disjunct_drop(f: Formula) -> List[Formula]:
+    """For each ``or``-site, emit one mutant per single disjunct removed.
+
+    The result is strictly stronger than the original (the smaller disjunction
+    entails the bigger). Admitted under the relaxed gate. Recurses into all
+    composite forms so OR-sites at any depth are eligible."""
+    mutants: List[Formula] = []
+
+    if f.connective == "or":
+        ops = list(f.operands or [])
+        if len(ops) >= 2:
+            for i in range(len(ops)):
+                rest = [op for j, op in enumerate(ops) if j != i]
+                if len(rest) == 1:
+                    mutants.append(rest[0])
+                else:
+                    mutants.append(Formula(connective="or", operands=rest))
+        # Recurse into operands too.
+        for i, op in enumerate(ops):
+            for sub in disjunct_drop(op):
+                mutants.append(_replace_operand(f, i, sub))
+    elif f.connective is not None:
+        for i, op in enumerate(f.operands or []):
+            for sub in disjunct_drop(op):
+                mutants.append(_replace_operand(f, i, sub))
+
+    if f.quantification is not None:
+        q = f.quantification
+        for sub in disjunct_drop(q.nucleus):
+            mutants.append(Formula(quantification=_replace_nucleus(q, sub)))
+
+    if f.negation is not None:
+        for sub in disjunct_drop(f.negation):
+            mutants.append(Formula(negation=sub))
+
+    return mutants
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# Operator 8: converse  (Stage-2)
+# ════════════════════════════════════════════════════════════════════════════
+
+def converse(f: Formula) -> List[Formula]:
+    """For ``A -> B`` emit ``B -> A`` (the converse). Meaning-altering and
+    typically incomparable to the original."""
+    mutants: List[Formula] = []
+
+    if f.connective == "implies":
+        ops = list(f.operands or [])
+        if len(ops) == 2:
+            mutants.append(
+                Formula(connective="implies", operands=[ops[1], ops[0]]),
+            )
+        for i, op in enumerate(ops):
+            for sub in converse(op):
+                mutants.append(_replace_operand(f, i, sub))
+    elif f.connective is not None:
+        for i, op in enumerate(f.operands or []):
+            for sub in converse(op):
+                mutants.append(_replace_operand(f, i, sub))
+
+    if f.quantification is not None:
+        q = f.quantification
+        for sub in converse(q.nucleus):
+            mutants.append(Formula(quantification=_replace_nucleus(q, sub)))
+
+    if f.negation is not None:
+        for sub in converse(f.negation):
+            mutants.append(Formula(negation=sub))
+
+    return mutants
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# Operator 9: scope_swap  (Stage-4)
+# ════════════════════════════════════════════════════════════════════════════
+
+def scope_swap(f: Formula) -> List[Formula]:
+    """For nested quantifier pairs ``∀x.∃y.φ`` and ``∃x.∀y.φ`` whose
+    bindings have *different* quantifiers, emit the scope-swapped form.
+
+    ``∀x.∃y.R(x,y)`` and ``∃y.∀x.R(x,y)`` are NOT equivalent: the latter
+    asserts a single witness ``y`` that works for every ``x``, while the
+    former allows ``y`` to vary with ``x``. The swap is meaning-altering
+    and usually strictly stronger (the existential-outer form entails the
+    universal-outer form under non-empty domains)."""
+    mutants: List[Formula] = []
+
+    if f.quantification is not None:
+        q1 = f.quantification
+        nucleus = q1.nucleus
+        if (
+            nucleus.quantification is not None
+            and not q1.inner_quantifications
+            and not nucleus.quantification.inner_quantifications
+            and q1.quantifier != nucleus.quantification.quantifier
+        ):
+            q2 = nucleus.quantification
+            new_inner = q1.model_copy(update={
+                "nucleus": q2.nucleus,
+            })
+            new_outer = q2.model_copy(update={
+                "nucleus": Formula(quantification=new_inner),
+            })
+            mutants.append(Formula(quantification=new_outer))
+        # Recurse into nucleus.
+        for sub in scope_swap(q1.nucleus):
+            mutants.append(Formula(quantification=_replace_nucleus(q1, sub)))
+
+    if f.negation is not None:
+        for sub in scope_swap(f.negation):
+            mutants.append(Formula(negation=sub))
+
+    if f.connective is not None:
+        for i, op in enumerate(f.operands or []):
+            for sub in scope_swap(op):
+                mutants.append(_replace_operand(f, i, sub))
+
+    return mutants
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# Operator 10: equality_drop  (Stage-4)
+# ════════════════════════════════════════════════════════════════════════════
+
+def equality_drop(f: Formula) -> List[Formula]:
+    """For a disjunction of equality atoms ``x = a ∨ x = b ∨ ...``, emit
+    the negate-all conjunction ``x ≠ a ∧ x ≠ b ∧ ...``. The drop-one
+    variant is intentionally not emitted here — ``disjunct_drop`` already
+    covers it (and the FOL-string dedup in ``generate_contrastives`` would
+    suppress duplicates anyway)."""
+    mutants: List[Formula] = []
+
+    if f.connective == "or":
+        ops = list(f.operands or [])
+        if len(ops) >= 2 and all(_is_positive_equality_atom(op) for op in ops):
+            negated_atoms = [
+                Formula(atomic=op.atomic.model_copy(update={"negated": True}))
+                for op in ops
+            ]
+            mutants.append(Formula(connective="and", operands=negated_atoms))
+        for i, op in enumerate(ops):
+            for sub in equality_drop(op):
+                mutants.append(_replace_operand(f, i, sub))
+    elif f.connective is not None:
+        for i, op in enumerate(f.operands or []):
+            for sub in equality_drop(op):
+                mutants.append(_replace_operand(f, i, sub))
+
+    if f.quantification is not None:
+        q = f.quantification
+        for sub in equality_drop(q.nucleus):
+            mutants.append(Formula(quantification=_replace_nucleus(q, sub)))
+
+    if f.negation is not None:
+        for sub in equality_drop(f.negation):
+            mutants.append(Formula(negation=sub))
+
+    return mutants
+
+
+def _is_positive_equality_atom(f: Formula) -> bool:
+    return (
+        f.atomic is not None
+        and f.atomic.pred == "__eq__"
+        and not f.atomic.negated
+    )
+
+
+# ════════════════════════════════════════════════════════════════════════════
 # generate_contrastives
 # ════════════════════════════════════════════════════════════════════════════
+
+def _ast_canonicalize(f: Formula) -> str:
+    """Canonical FOL string with sorted AND/OR/IFF operands, sorted
+    restrictor atoms, and sorted equality args. Bound variable names are
+    preserved (operator-induced mutations don't introduce fresh bound
+    variables, so α-renaming adds no dedup value).
+
+    Two Formulas that differ only in commutative-operand order produce the
+    same canonical string; the dedup at the top of ``generate_contrastives``
+    uses this to suppress operand-reorderings that the raw ``_a_formula``
+    dedup would miss."""
+    return _canon_str(f)
+
+
+def _canon_str(f: Formula) -> str:
+    if f.atomic is not None:
+        a = f.atomic
+        if a.pred == "__eq__" and len(a.args) == 2:
+            args = sorted(a.args)
+            body = "(" + args[0] + " = " + args[1] + ")"
+            return "-" + body if a.negated else body
+        body = a.pred + "(" + ", ".join(a.args) + ")"
+        return "-" + body if a.negated else body
+    if f.negation is not None:
+        return "-(" + _canon_str(f.negation) + ")"
+    if f.connective is not None:
+        parts = [_canon_str(op) for op in f.operands or []]
+        if f.connective == "and":
+            return "(" + " & ".join(sorted(parts)) + ")"
+        if f.connective == "or":
+            return "(" + " | ".join(sorted(parts)) + ")"
+        if f.connective == "iff":
+            return "(" + " <-> ".join(sorted(parts)) + ")"
+        if f.connective == "implies":
+            return "(" + parts[0] + " -> " + parts[1] + ")"
+    if f.quantification is not None:
+        q = f.quantification
+        r_parts = [_canon_str(Formula(atomic=a)) for a in q.restrictor]
+        if not r_parts:
+            r = None
+        elif len(r_parts) == 1:
+            r = r_parts[0]
+        else:
+            r = "(" + " & ".join(sorted(r_parts)) + ")"
+        if r is not None:
+            for iq in reversed(q.inner_quantifications):
+                qk = "all" if iq.quantifier == "universal" else "exists"
+                r = qk + " " + iq.variable + ".(" + r + ")"
+        nuc = _canon_str(q.nucleus)
+        outer = "all" if q.quantifier == "universal" else "exists"
+        if r is None:
+            return outer + " " + q.variable + ".(" + nuc + ")"
+        if q.quantifier == "universal":
+            return outer + " " + q.variable + ".(" + r + " -> " + nuc + ")"
+        return outer + " " + q.variable + ".(" + r + " & " + nuc + ")"
+    return ""
+
 
 _OPERATORS: Dict[str, Callable[[Formula], List[Formula]]] = {
     "negate_atom": negate_atom,
@@ -455,7 +707,112 @@ _OPERATORS: Dict[str, Callable[[Formula], List[Formula]]] = {
     "drop_restrictor_conjunct": drop_restrictor_conjunct,
     "flip_connective": flip_connective,
     "replace_subformula_with_negation": replace_subformula_with_negation,
+    "disjunct_drop": disjunct_drop,
+    "converse": converse,
+    "scope_swap": scope_swap,
+    "equality_drop": equality_drop,
 }
+
+
+# Relation labels emitted by ``classify_mutant_relation``. Two of them
+# (``incompatible``, ``strictly_stronger``) are admitted as contrastives;
+# the rest are dropped.
+_ADMITTED_RELATIONS = ("incompatible", "strictly_stronger")
+
+
+# Stage 5b — compositional probes. Hard cap on admitted depth-2 mutants per
+# premise; the iteration stops once this many are admitted. Locked before
+# the v3 regeneration; do not change during a run.
+_COMPOSITIONAL_CAP = 10
+
+
+def _dedupe_units_by_vampire_equivalence(
+    units: List[UnitTest], timeout_s: int,
+) -> List[UnitTest]:
+    """Pairwise FOL equivalence check; keep the smaller-FOL when two are
+    equivalent. Quadratic in #units; only run at artifact-regeneration time
+    behind ``SIV_DEDUPE_PROBES``."""
+    keep: List[UnitTest] = []
+    for u in units:
+        replaced = False
+        for i, kept in enumerate(keep):
+            if _are_fol_equivalent(u.fol, kept.fol, timeout_s):
+                if len(u.fol) < len(kept.fol):
+                    keep[i] = u
+                replaced = True
+                break
+        if not replaced:
+            keep.append(u)
+    return keep
+
+
+def _are_fol_equivalent(a: str, b: str, timeout_s: int) -> bool:
+    fwd = vampire_check(a, b, check="entails", timeout=timeout_s)
+    if fwd != "unsat":
+        return False
+    bwd = vampire_check(b, a, check="entails", timeout=timeout_s)
+    return bwd == "unsat"
+
+
+def _compose_operators_enabled() -> bool:
+    return os.environ.get("SIV_COMPOSE_OPERATORS", "0") == "1"
+
+
+def _vampire_dedupe_enabled() -> bool:
+    return os.environ.get("SIV_DEDUPE_PROBES", "0") == "1"
+
+
+def classify_mutant_relation(
+    gold_fol: str,
+    mutant_fol: str,
+    witnesses: List[str],
+    timeout_s: int = 5,
+) -> str:
+    """Run the three-check Vampire protocol and return the relation label.
+
+    Returns one of:
+      - ``"incompatible"`` — gold ∧ mutant is unsat (Check A).
+      - ``"strictly_stronger"`` — mutant ⊨ gold AND gold ⊭ mutant (B+C).
+      - ``"equivalent"`` — mutant ⊨ gold AND gold ⊨ mutant.
+      - ``"strictly_weaker"`` — mutant ⊭ gold AND gold ⊨ mutant.
+      - ``"independent"`` — neither entails the other.
+      - ``"timeout"`` — any of the three checks timed out / unknown.
+
+    Only the first two are admitted as contrastives. The two-check
+    formulation in the prior generator conflated ``strictly_stronger`` and
+    ``independent``; both checks B and C are needed to keep them distinct.
+    """
+    a = vampire_check(
+        gold_fol, mutant_fol, check="unsat",
+        timeout=timeout_s, axioms=witnesses,
+    )
+    if a == "unsat":
+        return "incompatible"
+    if a in ("timeout", "unknown"):
+        return "timeout"
+
+    b = vampire_check(
+        mutant_fol, gold_fol, check="entails",
+        timeout=timeout_s, axioms=witnesses,
+    )
+    if b in ("timeout", "unknown"):
+        return "timeout"
+
+    c = vampire_check(
+        gold_fol, mutant_fol, check="entails",
+        timeout=timeout_s, axioms=witnesses,
+    )
+    if c in ("timeout", "unknown"):
+        return "timeout"
+
+    # B unsat ↔ mutant ⊨ gold; C unsat ↔ gold ⊨ mutant.
+    if b == "unsat" and c == "sat":
+        return "strictly_stronger"
+    if b == "unsat" and c == "unsat":
+        return "equivalent"
+    if b == "sat" and c == "unsat":
+        return "strictly_weaker"
+    return "independent"
 
 
 def generate_contrastives(
@@ -469,17 +826,26 @@ def generate_contrastives(
     original_fol = _a_formula(extraction.formula)
     witnesses = derive_witness_axioms(extraction)
 
-    per_op = {name: {"generated": 0, "accepted": 0, "dropped_neutral": 0, "dropped_unknown": 0}
-              for name in OPERATOR_NAMES}
+    _empty_op_bucket = lambda: {
+        "generated": 0,
+        "accepted_incompatible": 0,
+        "accepted_strictly_stronger": 0,
+        "dropped_equivalent": 0,
+        "dropped_strictly_weaker": 0,
+        "dropped_independent": 0,
+        "dropped_timeout": 0,
+    }
+    per_op = {name: _empty_op_bucket() for name in OPERATOR_NAMES}
 
     accepted: List[UnitTest] = []
+    accepted_formulas: List[Tuple[Formula, str]] = []  # for compositional pass
     generated = 0
-    dropped_neutral = 0
-    dropped_unknown = 0
+    totals = {k: 0 for k in _empty_op_bucket() if k != "generated"}
 
-    # Dedup mutants by compiled FOL string (prevents e.g. double-counting a
-    # structurally-identical mutant emitted via two paths).
-    seen_fol = {original_fol}
+    # Dedup mutants by AST-canonical form (sorts commutative operands so two
+    # mutants that differ only in AND/OR/IFF operand order are recognized as
+    # the same probe).
+    seen_canon = {_ast_canonicalize(extraction.formula)}
 
     for op_name in OPERATOR_NAMES:
         op = _OPERATORS[op_name]
@@ -488,29 +854,67 @@ def generate_contrastives(
                 mutant_fol = _a_formula(mutant_formula)
             except SchemaViolation:
                 continue
-            if mutant_fol in seen_fol:
+            mutant_canon = _ast_canonicalize(mutant_formula)
+            if mutant_canon in seen_canon:
                 continue
-            seen_fol.add(mutant_fol)
+            seen_canon.add(mutant_canon)
             generated += 1
             per_op[op_name]["generated"] += 1
 
-            verdict = vampire_check(
-                original_fol, mutant_fol, check="unsat",
-                timeout=timeout_s, axioms=witnesses,
+            relation = classify_mutant_relation(
+                original_fol, mutant_fol, witnesses, timeout_s=timeout_s,
             )
-            if verdict == "unsat":
+
+            if relation in _ADMITTED_RELATIONS:
                 accepted.append(UnitTest(
                     fol=mutant_fol,
                     kind="contrastive",
                     mutation_kind=op_name,
+                    probe_relation=relation,
                 ))
-                per_op[op_name]["accepted"] += 1
-            elif verdict == "sat":
-                dropped_neutral += 1
-                per_op[op_name]["dropped_neutral"] += 1
-            else:  # timeout or unknown
-                dropped_unknown += 1
-                per_op[op_name]["dropped_unknown"] += 1
+                accepted_formulas.append((mutant_formula, op_name))
+                bucket = f"accepted_{relation}"
+            else:
+                bucket = f"dropped_{relation}"
+            per_op[op_name][bucket] += 1
+            totals[bucket] = totals.get(bucket, 0) + 1
+
+    # Stage 5b — compositional probes (depth-2). Behind SIV_COMPOSE_OPERATORS.
+    composed_admitted = 0
+    if _compose_operators_enabled() and accepted_formulas:
+        for m1_formula, op1 in accepted_formulas:
+            if composed_admitted >= _COMPOSITIONAL_CAP:
+                break
+            for op2_name in OPERATOR_NAMES:
+                if composed_admitted >= _COMPOSITIONAL_CAP:
+                    break
+                op2 = _OPERATORS[op2_name]
+                for m12_formula in op2(m1_formula):
+                    if composed_admitted >= _COMPOSITIONAL_CAP:
+                        break
+                    try:
+                        m12_fol = _a_formula(m12_formula)
+                    except SchemaViolation:
+                        continue
+                    m12_canon = _ast_canonicalize(m12_formula)
+                    if m12_canon in seen_canon:
+                        continue
+                    seen_canon.add(m12_canon)
+                    relation = classify_mutant_relation(
+                        original_fol, m12_fol, witnesses, timeout_s=timeout_s,
+                    )
+                    if relation in _ADMITTED_RELATIONS:
+                        accepted.append(UnitTest(
+                            fol=m12_fol,
+                            kind="contrastive",
+                            mutation_kind=f"{op1}+{op2_name}",
+                            probe_relation=relation,
+                        ))
+                        composed_admitted += 1
+
+    # Stage 5c — Vampire-equivalence dedup (off by default; ~2h FOLIO-wide).
+    if _vampire_dedupe_enabled() and accepted:
+        accepted = _dedupe_units_by_vampire_equivalence(accepted, timeout_s)
 
     structural_class = classify_structure(extraction)
     structurally_weak = structural_class in (
@@ -521,16 +925,20 @@ def generate_contrastives(
     empty_reason: Optional[str] = None
     if not accepted:
         if structurally_weak:
-            empty_reason = "no unsat mutation under B' witness axioms"
+            empty_reason = "no admissible mutation under B' witness axioms"
         else:
-            empty_reason = "no unsat mutation produced (mechanism failure)"
+            empty_reason = "no admissible mutation produced (mechanism failure)"
 
     telemetry = {
         "generated": generated,
         "accepted": len(accepted),
-        "dropped_neutral": dropped_neutral,
-        "dropped_unknown": dropped_unknown,
-        "unknown_rate": (dropped_unknown / generated) if generated else 0.0,
+        "accepted_incompatible": totals.get("accepted_incompatible", 0),
+        "accepted_strictly_stronger": totals.get("accepted_strictly_stronger", 0),
+        "dropped_equivalent": totals.get("dropped_equivalent", 0),
+        "dropped_strictly_weaker": totals.get("dropped_strictly_weaker", 0),
+        "dropped_independent": totals.get("dropped_independent", 0),
+        "dropped_timeout": totals.get("dropped_timeout", 0),
+        "unknown_rate": (totals.get("dropped_timeout", 0) / generated) if generated else 0.0,
         "per_operator": per_op,
         "structural_class": structural_class,
         "empty_reason": empty_reason,

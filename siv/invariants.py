@@ -8,8 +8,12 @@ on violation.
   positives is bidirectionally equivalent to ``compile_canonical_fol(extraction)``.
   Runs WITHOUT witness axioms — pure compiler-path equivalence.
 - ``check_contrastive_soundness`` (C9b): every contrastive in the test suite
-  is provably inconsistent with the conjunction of the positives, under the
-  §6.5 witness axioms.
+  is admissible against gold, under the §6.5 witness axioms. Two relations
+  are admissible:
+    * ``incompatible`` — gold ∧ contrastive is unsat (mutually inconsistent).
+    * ``strictly_stronger`` — gold does not entail contrastive (entails returns
+      ``sat``).
+  Legacy artifacts without a ``probe_relation`` are read as ``incompatible``.
 
 Timeout and unknown are failures, not passes. There is no soundness bypass.
 """
@@ -56,30 +60,57 @@ def check_contrastive_soundness(
     test_suite: TestSuite,
     timeout_s: int = 10,
 ) -> Tuple[bool, Optional[str]]:
-    """C9b. With ``P`` = conjunction of positives, for each contrastive ``C``,
-    Vampire-check that ``(P ∧ C)`` is ``unsat`` under §6.5 witness axioms.
+    """C9b. For each contrastive ``C``, dispatch by ``probe_relation``:
 
-    Returns ``(True, None)`` iff every contrastive is unsat against the positives.
-    Returns ``(False, reason)`` on the first contrastive that is sat / timeout /
-    unknown.
+    - ``incompatible`` (or legacy ``None``): assert gold ∧ C is unsat under
+      §6.5 witness axioms (preserves prior C9b semantics).
+    - ``strictly_stronger``: assert gold ⊭ C — i.e. ``vampire_check(gold, C,
+      check="entails", axioms=witnesses)`` returns ``sat``. This catches the
+      mis-tag where an equivalent or weaker mutant is incorrectly admitted as
+      strictly stronger.
+
+    Both checks are against the canonical (gold) FOL — they enforce the
+    same gate the contrastive generator uses for admittance. Returns
+    ``(True, None)`` iff every contrastive passes its dispatch.
     """
+    from siv.compiler import compile_canonical_fol
+
     if not test_suite.contrastives:
         return True, None
 
     if not test_suite.positives:
         return False, "test suite has contrastives but no positives"
 
-    p_fol = _conjunction([t.fol for t in test_suite.positives])
+    gold_fol = compile_canonical_fol(test_suite.extraction)
     witnesses = derive_witness_axioms(test_suite.extraction)
 
     for i, c in enumerate(test_suite.contrastives):
-        verdict = vampire_check(
-            p_fol, c.fol, check="unsat", timeout=timeout_s, axioms=witnesses,
-        )
-        if verdict != "unsat":
+        relation = c.probe_relation or "incompatible"
+        if relation == "incompatible":
+            verdict = vampire_check(
+                gold_fol, c.fol, check="unsat",
+                timeout=timeout_s, axioms=witnesses,
+            )
+            if verdict != "unsat":
+                return False, (
+                    f"contrastive {i} ({c.mutation_kind}, incompatible) "
+                    f"not unsat against gold: verdict={verdict}; fol={c.fol!r}"
+                )
+        elif relation == "strictly_stronger":
+            verdict = vampire_check(
+                gold_fol, c.fol, check="entails",
+                timeout=timeout_s, axioms=witnesses,
+            )
+            if verdict != "sat":
+                return False, (
+                    f"contrastive {i} ({c.mutation_kind}, strictly_stronger) "
+                    f"is entailed by gold (verdict={verdict}) — should not "
+                    f"have been admitted; fol={c.fol!r}"
+                )
+        else:
             return False, (
-                f"contrastive {i} ({c.mutation_kind}) not unsat against positives: "
-                f"verdict={verdict}; fol={c.fol!r}"
+                f"contrastive {i} ({c.mutation_kind}) has unknown "
+                f"probe_relation={relation!r}"
             )
 
     return True, None

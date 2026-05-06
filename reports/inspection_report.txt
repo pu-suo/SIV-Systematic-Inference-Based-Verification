@@ -1,0 +1,710 @@
+Inspecting 25 sentences (contrastives=on)
+
+==============================================================================
+  [EXPB-1]  (exp_b)
+==============================================================================
+  NL:    The University of Edinburgh is located in the United Kingdom.
+  Gold:  University(universityOfEdinburgh) & LocatedIn(universityOfEdinburgh, unitedKingdom)
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    and:
+      atom: University(universityOfEdinburgh)
+      atom: LocatedIn(universityOfEdinburgh, unitedKingdom)
+
+  Canonical (Path A): (University(universityOfEdinburgh) & LocatedIn(universityOfEdinburgh, unitedKingdom))
+
+  Positives (3 emitted):
+  ------------------------------------------------------------
+    [01] (W) (University(universityOfEdinburgh) & LocatedIn(universityOfEdinburgh,unitedKingdom))
+    [02] (a) University(universityOfEdinburgh)
+    [03] (a) LocatedIn(universityOfEdinburgh,unitedKingdom)
+
+  Contrastives (2 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) (-University(universityOfEdinburgh) & LocatedIn(universityOfEdinburgh, unitedKingdom))
+    [02] (negate_atom, incompatible) (University(universityOfEdinburgh) & -LocatedIn(universityOfEdinburgh, unitedKingdom))
+
+==============================================================================
+  [EXPB-2]  (exp_b)
+==============================================================================
+  NL:    Michael was born in Yorkshire and is the son of a general practitioner.
+  Gold:  BornIn(michael, yorkshire) & exists x.(SonOf(michael, x) & GeneralPractitioner(x))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    and:
+      atom: BornIn(michael, yorkshire)
+      EX  x (var_type=entity)
+        restrictor:
+          GeneralPractitioner(x)
+        nucleus:
+          atom: SonOf(michael, x)
+
+  Canonical (Path A): (BornIn(michael, yorkshire) & exists x.(GeneralPractitioner(x) & SonOf(michael, x)))
+
+  Positives (4 emitted):
+  ------------------------------------------------------------
+    [01] (W) (BornIn(michael,yorkshire) & exists v0.(GeneralPractitioner(v0) & SonOf(michael,v0)))
+    [02] (a) BornIn(michael,yorkshire)
+    [03] (a) exists v0.(GeneralPractitioner(v0) & SonOf(michael,v0))
+    [04] (b) exists v0.(GeneralPractitioner(v0))
+
+  Contrastives (3 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) (-BornIn(michael, yorkshire) & exists x.(GeneralPractitioner(x) & SonOf(michael, x)))
+    [02] (flip_quantifier, strictly_stronger) (BornIn(michael, yorkshire) & all x.(GeneralPractitioner(x) -> SonOf(michael, x)))
+    [03] (replace_subformula_with_negation, incompatible) (BornIn(michael, yorkshire) & -(exists x.(GeneralPractitioner(x) & SonOf(michael, x))))
+
+==============================================================================
+  [EXPB-3]  (exp_b)
+==============================================================================
+  NL:    Diseases that are leukemia are blood cancers.
+  Gold:  all x.((Disease(x) & Leukemia(x)) -> BloodCancer(x))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        Disease(x)
+        Leukemia(x)
+      nucleus:
+        atom: BloodCancer(x)
+
+  Canonical (Path A): all x.((Disease(x) & Leukemia(x)) -> BloodCancer(x))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.((Disease(v0) & Leukemia(v0)) -> BloodCancer(v0))
+
+  Contrastives (3 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) all x.((Disease(x) & Leukemia(x)) -> -BloodCancer(x))
+    [02] (drop_restrictor_conjunct, strictly_stronger) all x.(Leukemia(x) -> BloodCancer(x))
+    [03] (drop_restrictor_conjunct, strictly_stronger) all x.(Disease(x) -> BloodCancer(x))
+
+==============================================================================
+  [EXPB-4]  (exp_b)
+==============================================================================
+  NL:    All Ferraris are sports cars.
+  Gold:  all x.(Ferrari(x) -> SportsCar(x))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        Ferrari(x)
+      nucleus:
+        atom: SportsCar(x)
+
+  Canonical (Path A): all x.(Ferrari(x) -> SportsCar(x))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.(Ferrari(v0) -> SportsCar(v0))
+
+  Contrastives (2 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) all x.(Ferrari(x) -> -SportsCar(x))
+    [02] (drop_restrictor_conjunct, strictly_stronger) all x.(SportsCar(x))
+
+==============================================================================
+  [EXPB-5]  (exp_b)
+==============================================================================
+  NL:    Inception is a sci-fi movie.
+  Gold:  ScifiMovie(inception)
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    atom: ScifiMovie(inception)
+
+  Canonical (Path A): ScifiMovie(inception)
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) ScifiMovie(inception)
+
+  Contrastives (1 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) -ScifiMovie(inception)
+
+==============================================================================
+  [EXPB-6]  (exp_b)
+==============================================================================
+  NL:    Mary can get from New Haven to New York either by train or by car.
+  Gold:  FromAndTo(newHaven, newYork) & (GoByTrain(mary) | GoByCar(mary))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    and:
+      atom: FromAndTo(newHaven, newYork)
+      or:
+        atom: GoByTrain(mary)
+        atom: GoByCar(mary)
+
+  Canonical (Path A): (FromAndTo(newHaven, newYork) & (GoByTrain(mary) | GoByCar(mary)))
+
+  Positives (3 emitted):
+  ------------------------------------------------------------
+    [01] (W) (FromAndTo(newHaven,newYork) & (GoByTrain(mary) | GoByCar(mary)))
+    [02] (a) FromAndTo(newHaven,newYork)
+    [03] (a) (GoByTrain(mary) | GoByCar(mary))
+
+  Contrastives (5 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) (-FromAndTo(newHaven, newYork) & (GoByTrain(mary) | GoByCar(mary)))
+    [02] (flip_connective, strictly_stronger) (FromAndTo(newHaven, newYork) & (GoByTrain(mary) & GoByCar(mary)))
+    [03] (replace_subformula_with_negation, incompatible) (FromAndTo(newHaven, newYork) & -((GoByTrain(mary) | GoByCar(mary))))
+    [04] (disjunct_drop, strictly_stronger) (FromAndTo(newHaven, newYork) & GoByCar(mary))
+    [05] (disjunct_drop, strictly_stronger) (FromAndTo(newHaven, newYork) & GoByTrain(mary))
+
+==============================================================================
+  [RAND-SU-1]  (random_simple_universal)
+==============================================================================
+  NL:    Everyone who knows breadth-first search knows how to use a queue.
+  Gold:  all x.(Know(x, breathFirstSearch) -> Know(x, howToUseQueue))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        Know(x, breathFirstSearch)
+      nucleus:
+        atom: Know(x, howToUseQueue)
+
+  Canonical (Path A): all x.(Know(x, breathFirstSearch) -> Know(x, howToUseQueue))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.(Know(v0,breathFirstSearch) -> Know(v0,howToUseQueue))
+
+  Contrastives (2 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) all x.(Know(x, breathFirstSearch) -> -Know(x, howToUseQueue))
+    [02] (drop_restrictor_conjunct, strictly_stronger) all x.(Know(x, howToUseQueue))
+
+==============================================================================
+  [RAND-SU-2]  (random_simple_universal)
+==============================================================================
+  NL:    When Olivia sleeps, she prefers a cool temperature.
+  Gold:  all x.(Sleep(olivia, x) -> Prefer(olivia, coolTemperature, x))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        Sleep(olivia, x)
+      nucleus:
+        atom: Prefer(olivia, coolTemperature, x)
+
+  Canonical (Path A): all x.(Sleep(olivia, x) -> Prefer(olivia, coolTemperature, x))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.(Sleep(olivia,v0) -> Prefer(olivia,coolTemperature,v0))
+
+  Contrastives (2 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) all x.(Sleep(olivia, x) -> -Prefer(olivia, coolTemperature, x))
+    [02] (drop_restrictor_conjunct, strictly_stronger) all x.(Prefer(olivia, coolTemperature, x))
+
+==============================================================================
+  [RAND-SE-1]  (random_simple_existential)
+==============================================================================
+  NL:    Nancy teaches students.
+  Gold:  Teach(nancy, student)
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    atom: Teach(nancy, student)
+
+  Canonical (Path A): Teach(nancy, student)
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) Teach(nancy,student)
+
+  Contrastives (1 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) -Teach(nancy, student)
+
+==============================================================================
+  [RAND-SE-2]  (random_simple_existential)
+==============================================================================
+  NL:    Sam works on a project.
+  Gold:  exists x.(Project(x) & Do(sam, x))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    EX  x (var_type=entity)
+      restrictor:
+        Project(x)
+      nucleus:
+        atom: Do(sam, x)
+
+  Canonical (Path A): exists x.(Project(x) & Do(sam, x))
+
+  Positives (2 emitted):
+  ------------------------------------------------------------
+    [01] (W) exists v0.(Project(v0) & Do(sam,v0))
+    [02] (b) exists v0.(Project(v0))
+
+  Contrastives (1 accepted):
+  ------------------------------------------------------------
+    [01] (flip_quantifier, strictly_stronger) all x.(Project(x) -> Do(sam, x))
+
+==============================================================================
+  [RAND-CRU-1]  (random_compound_restrictor_universal)
+==============================================================================
+  NL:    Easy Leetcode problems do not have an AC rate lower than 20%.
+  Gold:  all x.((LeetcodeProblems(x) & Easy(x)) -> -HaveAnACRateLowerThan(x, percent20))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        LeetcodeProblems(x)
+        Easy(x)
+      nucleus:
+        negation:
+          atom: HaveAnACRateLowerThan(x, percent20)
+
+  Canonical (Path A): all x.((LeetcodeProblems(x) & Easy(x)) -> -(HaveAnACRateLowerThan(x, percent20)))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.((LeetcodeProblems(v0) & Easy(v0)) -> -(HaveAnACRateLowerThan(v0,percent20)))
+
+  Contrastives (4 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) all x.((LeetcodeProblems(x) & Easy(x)) -> -(-HaveAnACRateLowerThan(x, percent20)))
+    [02] (drop_restrictor_conjunct, strictly_stronger) all x.(Easy(x) -> -(HaveAnACRateLowerThan(x, percent20)))
+    [03] (drop_restrictor_conjunct, strictly_stronger) all x.(LeetcodeProblems(x) -> -(HaveAnACRateLowerThan(x, percent20)))
+    [04] (replace_subformula_with_negation, incompatible) all x.((LeetcodeProblems(x) & Easy(x)) -> -(-(HaveAnACRateLowerThan(x, percent20))))
+
+==============================================================================
+  [RAND-CRU-2]  (random_compound_restrictor_universal)
+==============================================================================
+  NL:    People in the tech company who have high energy and are impulsive don't like surprises.
+  Gold:  all x.((InThisTechCompany(x) & Have(x, highEnergy) & Impulsive(x)) -> -Like(x, surprise))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        InThisTechCompany(x)
+        Have(x, highEnergy)
+        Impulsive(x)
+      nucleus:
+        negation:
+          atom: Like(x, surprise)
+
+  Canonical (Path A): all x.((InThisTechCompany(x) & Have(x, highEnergy) & Impulsive(x)) -> -(Like(x, surprise)))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.((InThisTechCompany(v0) & Have(v0,highEnergy) & Impulsive(v0)) -> -(Like(v0,surprise)))
+
+  Contrastives (5 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) all x.((InThisTechCompany(x) & Have(x, highEnergy) & Impulsive(x)) -> -(-Like(x, surprise)))
+    [02] (drop_restrictor_conjunct, strictly_stronger) all x.((Have(x, highEnergy) & Impulsive(x)) -> -(Like(x, surprise)))
+    [03] (drop_restrictor_conjunct, strictly_stronger) all x.((InThisTechCompany(x) & Impulsive(x)) -> -(Like(x, surprise)))
+    [04] (drop_restrictor_conjunct, strictly_stronger) all x.((InThisTechCompany(x) & Have(x, highEnergy)) -> -(Like(x, surprise)))
+    [05] (replace_subformula_with_negation, incompatible) all x.((InThisTechCompany(x) & Have(x, highEnergy) & Impulsive(x)) -> -(-(Like(x, surprise))))
+
+==============================================================================
+  [RAND-ECN-1]  (random_existential_compound_nucleus)
+==============================================================================
+  NL:    Beasts of Prey is about a creature known as the Shetani.
+  Gold:  About(beastsOfPrey, shetani) & Creature(shetani)
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    and:
+      atom: About(beastsOfPrey, shetani)
+      atom: Creature(shetani)
+
+  Canonical (Path A): (About(beastsOfPrey, shetani) & Creature(shetani))
+
+  Positives (3 emitted):
+  ------------------------------------------------------------
+    [01] (W) (About(beastsOfPrey,shetani) & Creature(shetani))
+    [02] (a) About(beastsOfPrey,shetani)
+    [03] (a) Creature(shetani)
+
+  Contrastives (2 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) (-About(beastsOfPrey, shetani) & Creature(shetani))
+    [02] (negate_atom, incompatible) (About(beastsOfPrey, shetani) & -Creature(shetani))
+
+==============================================================================
+  [RAND-GI-1]  (random_ground_instance)
+==============================================================================
+  NL:    The lead singer of Imagine Dragons is Dan.
+  Gold:  LeadSinger(imagineDragon, dan)
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    atom: LeadSinger(imagineDragon, dan)
+
+  Canonical (Path A): LeadSinger(imagineDragon, dan)
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) LeadSinger(imagineDragon,dan)
+
+  Contrastives (1 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) -LeadSinger(imagineDragon, dan)
+
+==============================================================================
+  [RAND-DISJ-1]  (random_top_level_disjunction)
+==============================================================================
+  NL:    Either Mary goes from New Haven to New York by train or by car.
+  Gold:  FromAndTo(newHaven, newYork) & ((GoByTrain(mary) & -GoByCar(mary)) | (-GoByTrain(mary) & GoByCar(mary)))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    and:
+      atom: FromAndTo(newHaven, newYork)
+      or:
+        and:
+          atom: GoByTrain(mary)
+          negation:
+            atom: GoByCar(mary)
+        and:
+          negation:
+            atom: GoByTrain(mary)
+          atom: GoByCar(mary)
+
+  Canonical (Path A): (FromAndTo(newHaven, newYork) & ((GoByTrain(mary) & -(GoByCar(mary))) | (-(GoByTrain(mary)) & GoByCar(mary))))
+
+  Positives (3 emitted):
+  ------------------------------------------------------------
+    [01] (W) (FromAndTo(newHaven,newYork) & ((GoByTrain(mary) & -(GoByCar(mary))) | (-(GoByTrain(mary)) & GoByCar(mary))))
+    [02] (a) FromAndTo(newHaven,newYork)
+    [03] (a) ((GoByTrain(mary) & -(GoByCar(mary))) | (-(GoByTrain(mary)) & GoByCar(mary)))
+
+  Contrastives (5 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) (-FromAndTo(newHaven, newYork) & ((GoByTrain(mary) & -(GoByCar(mary))) | (-(GoByTrain(mary)) & GoByCar(mary))))
+    [02] (flip_connective, incompatible) (FromAndTo(newHaven, newYork) & ((GoByTrain(mary) & -(GoByCar(mary))) & (-(GoByTrain(mary)) & GoByCar(mary))))
+    [03] (replace_subformula_with_negation, incompatible) (FromAndTo(newHaven, newYork) & -(((GoByTrain(mary) & -(GoByCar(mary))) | (-(GoByTrain(mary)) & GoByCar(mary)))))
+    [04] (disjunct_drop, strictly_stronger) (FromAndTo(newHaven, newYork) & (-(GoByTrain(mary)) & GoByCar(mary)))
+    [05] (disjunct_drop, strictly_stronger) (FromAndTo(newHaven, newYork) & (GoByTrain(mary) & -(GoByCar(mary))))
+
+==============================================================================
+  [RAND-BIA-1]  (random_bare_implies_atomic)
+==============================================================================
+  NL:    If Thor is happy, the Hulk is angry.
+  Gold:  Happy(thor) -> Angry(theHulk)
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    implies:
+      atom: Happy(thor)
+      atom: Angry(theHulk)
+
+  Canonical (Path A): (Happy(thor) -> Angry(theHulk))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) (Happy(thor) -> Angry(theHulk))
+
+  Contrastives (1 accepted):
+  ------------------------------------------------------------
+    [01] (flip_connective, strictly_stronger) (Happy(thor) <-> Angry(theHulk))
+
+==============================================================================
+  [RAND-OTHER-1]  (random_other)
+==============================================================================
+  NL:    If Sam uses a Mac, he will play a song.
+  Gold:  exists x.((Use(sam, mac) & Song(x)) -> Play(sam, x))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    EX  x (var_type=entity)
+      restrictor:
+        (empty)
+      nucleus:
+        implies:
+          and:
+            atom: Use(sam, mac)
+            atom: Song(x)
+          atom: Play(sam, x)
+
+  Canonical (Path A): exists x.(((Use(sam, mac) & Song(x)) -> Play(sam, x)))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) exists v0.(((Use(sam,mac) & Song(v0)) -> Play(sam,v0)))
+
+  Contrastives (3 accepted):
+  ------------------------------------------------------------
+    [01] (flip_quantifier, strictly_stronger) all x.(((Use(sam, mac) & Song(x)) -> Play(sam, x)))
+    [02] (flip_connective, strictly_stronger) exists x.(((Use(sam, mac) & Song(x)) <-> Play(sam, x)))
+    [03] (flip_connective, strictly_stronger) exists x.(((Use(sam, mac) | Song(x)) -> Play(sam, x)))
+
+==============================================================================
+  [TRICKY-WHEELS]  (tricky_motivating_wheels)
+==============================================================================
+  NL:    Every car has wheels that are black and round.
+  Gold:  all x.(Car(x) -> exists y.((Wheel(y) & HasWheel(x, y)) & (Black(y) & Round(y))))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        Car(x)
+      nucleus:
+        EX  y (var_type=entity)
+          restrictor:
+            Wheel(y)
+          nucleus:
+            and:
+              atom: Black(y)
+              atom: Round(y)
+              atom: HasWheel(x, y)
+
+  Canonical (Path A): all x.(Car(x) -> exists y.(Wheel(y) & (Black(y) & Round(y) & HasWheel(x, y))))
+
+  Positives (5 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.(Car(v0) -> exists v1.(Wheel(v1) & (Black(v1) & Round(v1) & HasWheel(v0,v1))))
+    [02] (b) all v0.(Car(v0) -> exists v1.(Wheel(v1)))
+    [03] (a) all v0.(Car(v0) -> exists v1.(Wheel(v1) & Black(v1)))
+    [04] (a) all v0.(Car(v0) -> exists v1.(Wheel(v1) & Round(v1)))
+    [05] (a) all v0.(Car(v0) -> exists v1.(Wheel(v1) & HasWheel(v0,v1)))
+
+  Contrastives (4 accepted):
+  ------------------------------------------------------------
+    [01] (flip_quantifier, strictly_stronger) all x.(Car(x) -> all y.(Wheel(y) -> (Black(y) & Round(y) & HasWheel(x, y))))
+    [02] (drop_restrictor_conjunct, strictly_stronger) all x.(exists y.(Wheel(y) & (Black(y) & Round(y) & HasWheel(x, y))))
+    [03] (replace_subformula_with_negation, incompatible) all x.(Car(x) -> -(exists y.(Wheel(y) & (Black(y) & Round(y) & HasWheel(x, y)))))
+    [04] (scope_swap, strictly_stronger) exists y.(Wheel(y) & all x.(Car(x) -> (Black(y) & Round(y) & HasWheel(x, y))))
+
+==============================================================================
+  [TRICKY-NESTED-EXIST]  (tricky_nested_existentials)
+==============================================================================
+  NL:    There are at least two distinct bears in the zoo.
+  Gold:  exists x.(exists y.((Bear(x) & Bear(y)) & ((In(x, zoo) & In(y, zoo)) & -(x = y))))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    EX  x (var_type=entity)
+      restrictor:
+        (empty)
+      nucleus:
+        EX  y (var_type=entity)
+          restrictor:
+            Bear(y)
+          nucleus:
+            and:
+              atom: Bear(x)
+              atom: In(x, zoo)
+              atom: In(y, zoo)
+              atom: -(x = y)
+
+  Canonical (Path A): exists x.(exists y.(Bear(y) & (Bear(x) & In(x, zoo) & In(y, zoo) & -(x = y))))
+
+  Positives (6 emitted):
+  ------------------------------------------------------------
+    [01] (W) exists v0.(exists v1.(Bear(v1) & (Bear(v0) & In(v0,zoo) & In(v1,zoo) & -(v0 = v1))))
+    [02] (b) exists v1.(Bear(v1))
+    [03] (a) exists v0.(exists v1.(Bear(v1) & Bear(v0)))
+    [04] (a) exists v0.(exists v1.(Bear(v1) & In(v0,zoo)))
+    [05] (a) exists v1.(Bear(v1) & In(v1,zoo))
+    [06] (a) exists v0.(exists v1.(Bear(v1) & -(v0 = v1)))
+
+  Contrastives (2 accepted):
+  ------------------------------------------------------------
+    [01] (flip_quantifier, strictly_stronger) all x.(exists y.(Bear(y) & (Bear(x) & In(x, zoo) & In(y, zoo) & -(x = y))))
+    [02] (flip_quantifier, incompatible) exists x.(all y.(Bear(y) -> (Bear(x) & In(x, zoo) & In(y, zoo) & -(x = y))))
+
+==============================================================================
+  [TRICKY-NEG-IN-SCOPE]  (tricky_negation_inside_quant)
+==============================================================================
+  NL:    No person is both mortal and immortal.
+  Gold:  all x.(Person(x) -> -(Mortal(x) & Immortal(x)))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        Person(x)
+      nucleus:
+        negation:
+          and:
+            atom: Mortal(x)
+            atom: Immortal(x)
+
+  Canonical (Path A): all x.(Person(x) -> -((Mortal(x) & Immortal(x))))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.(Person(v0) -> -((Mortal(v0) & Immortal(v0))))
+
+  Contrastives (3 accepted):
+  ------------------------------------------------------------
+    [01] (drop_restrictor_conjunct, strictly_stronger) all x.(-((Mortal(x) & Immortal(x))))
+    [02] (flip_connective, strictly_stronger) all x.(Person(x) -> -((Mortal(x) | Immortal(x))))
+    [03] (replace_subformula_with_negation, incompatible) all x.(Person(x) -> -(-((Mortal(x) & Immortal(x)))))
+
+==============================================================================
+  [TRICKY-IFF]  (tricky_iff_in_body)
+==============================================================================
+  NL:    An integer is even iff it is not odd.
+  Gold:  all x.(Integer(x) -> (EvenNum(x) <-> -OddNum(x)))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        Integer(x)
+      nucleus:
+        iff:
+          atom: EvenNum(x)
+          negation:
+            atom: OddNum(x)
+
+  Canonical (Path A): all x.(Integer(x) -> (EvenNum(x) <-> -(OddNum(x))))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.(Integer(v0) -> (EvenNum(v0) <-> -(OddNum(v0))))
+
+  Contrastives (5 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) all x.(Integer(x) -> (-EvenNum(x) <-> -(OddNum(x))))
+    [02] (negate_atom, incompatible) all x.(Integer(x) -> (EvenNum(x) <-> -(-OddNum(x))))
+    [03] (drop_restrictor_conjunct, strictly_stronger) all x.((EvenNum(x) <-> -(OddNum(x))))
+    [04] (replace_subformula_with_negation, incompatible) all x.(Integer(x) -> -((EvenNum(x) <-> -(OddNum(x)))))
+    [05] (replace_subformula_with_negation, incompatible) all x.(Integer(x) -> (EvenNum(x) <-> -(-(OddNum(x)))))
+
+==============================================================================
+  [TRICKY-DEEP-NEST]  (tricky_deeply_nested)
+==============================================================================
+  NL:    Every student who takes a course is taught by a teacher of that course.
+  Gold:  all x.(Student(x) -> exists y.(Course(y) & Takes(x, y) & exists z.(Teacher(z) & TeachesCourse(z, y) & Teaches(z, x))))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        Student(x)
+      nucleus:
+        EX  y (var_type=entity)
+          restrictor:
+            Course(y)
+          nucleus:
+            and:
+              atom: Takes(x, y)
+              EX  z (var_type=entity)
+                restrictor:
+                  Teacher(z)
+                nucleus:
+                  and:
+                    atom: TeachesCourse(z, y)
+                    atom: Teaches(z, x)
+
+  Canonical (Path A): all x.(Student(x) -> exists y.(Course(y) & (Takes(x, y) & exists z.(Teacher(z) & (TeachesCourse(z, y) & Teaches(z, x))))))
+
+  Positives (7 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.(Student(v0) -> exists v1.(Course(v1) & (Takes(v0,v1) & exists v2.(Teacher(v2) & (TeachesCourse(v2,v1) & Teaches(v2,v0))))))
+    [02] (b) all v0.(Student(v0) -> exists v1.(Course(v1)))
+    [03] (a) all v0.(Student(v0) -> exists v1.(Course(v1) & Takes(v0,v1)))
+    [04] (a) all v0.(Student(v0) -> exists v1.(Course(v1) & exists v2.(Teacher(v2) & (TeachesCourse(v2,v1) & Teaches(v2,v0)))))
+    [05] (b) all v0.(Student(v0) -> exists v1.(Course(v1) & exists v2.(Teacher(v2))))
+    [06] (a) all v0.(Student(v0) -> exists v1.(Course(v1) & exists v2.(Teacher(v2) & TeachesCourse(v2,v1))))
+    [07] (a) all v0.(Student(v0) -> exists v1.(Course(v1) & exists v2.(Teacher(v2) & Teaches(v2,v0))))
+
+  Contrastives (5 accepted):
+  ------------------------------------------------------------
+    [01] (flip_quantifier, strictly_stronger) all x.(Student(x) -> all y.(Course(y) -> (Takes(x, y) & exists z.(Teacher(z) & (TeachesCourse(z, y) & Teaches(z, x))))))
+    [02] (flip_quantifier, strictly_stronger) all x.(Student(x) -> exists y.(Course(y) & (Takes(x, y) & all z.(Teacher(z) -> (TeachesCourse(z, y) & Teaches(z, x))))))
+    [03] (drop_restrictor_conjunct, strictly_stronger) all x.(exists y.(Course(y) & (Takes(x, y) & exists z.(Teacher(z) & (TeachesCourse(z, y) & Teaches(z, x))))))
+    [04] (replace_subformula_with_negation, incompatible) all x.(Student(x) -> -(exists y.(Course(y) & (Takes(x, y) & exists z.(Teacher(z) & (TeachesCourse(z, y) & Teaches(z, x)))))))
+    [05] (scope_swap, strictly_stronger) exists y.(Course(y) & all x.(Student(x) -> (Takes(x, y) & exists z.(Teacher(z) & (TeachesCourse(z, y) & Teaches(z, x))))))
+
+==============================================================================
+  [VACUOUS-1]  (vacuous_binder_from_folio)
+==============================================================================
+  NL:    (P0376) For all x and y, if y is a meal popular at a party, y is delicious.
+  Gold:  all x.(all y.((Meal(y) & PopularAt(y, party)) -> Delicious(y)))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        (empty)
+      nucleus:
+        ALL y (var_type=entity)
+          restrictor:
+            Meal(y)
+            PopularAt(y, party)
+          nucleus:
+            atom: Delicious(y)
+
+  Canonical (Path A): all x.(all y.((Meal(y) & PopularAt(y, party)) -> Delicious(y)))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.(all v1.((Meal(v1) & PopularAt(v1,party)) -> Delicious(v1)))
+
+  Contrastives (4 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) all x.(all y.((Meal(y) & PopularAt(y, party)) -> -Delicious(y)))
+    [02] (drop_restrictor_conjunct, strictly_stronger) all x.(all y.(PopularAt(y, party) -> Delicious(y)))
+    [03] (drop_restrictor_conjunct, strictly_stronger) all x.(all y.(Meal(y) -> Delicious(y)))
+    [04] (replace_subformula_with_negation, incompatible) all x.(-(all y.((Meal(y) & PopularAt(y, party)) -> Delicious(y))))
+
+==============================================================================
+  [VACUOUS-2]  (vacuous_binder_from_folio)
+==============================================================================
+  NL:    (P0615) Guam sent an athlete to the Calgary Winter Olympics.
+  Gold:  exists x.(Send(guam, athlete, calgaryWinterOlympics))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    EX  x (var_type=entity)
+      restrictor:
+        (empty)
+      nucleus:
+        atom: Send(guam, athlete, calgaryWinterOlympics)
+
+  Canonical (Path A): exists x.(Send(guam, athlete, calgaryWinterOlympics))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) exists v0.(Send(guam,athlete,calgaryWinterOlympics))
+
+  Contrastives (1 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) exists x.(-Send(guam, athlete, calgaryWinterOlympics))
+
+==============================================================================
+  [VACUOUS-3]  (vacuous_binder_from_folio)
+==============================================================================
+  NL:    (P1296) Neofonie announced WeTab.
+  Gold:  all x.(AnnouncedBy(weTab, neofonie))
+
+  TripartiteQuantification tree:
+  ------------------------------------------------------------
+    ALL x (var_type=entity)
+      restrictor:
+        (empty)
+      nucleus:
+        atom: AnnouncedBy(weTab, neofonie)
+
+  Canonical (Path A): all x.(AnnouncedBy(weTab, neofonie))
+
+  Positives (1 emitted):
+  ------------------------------------------------------------
+    [01] (W) all v0.(AnnouncedBy(weTab,neofonie))
+
+  Contrastives (1 accepted):
+  ------------------------------------------------------------
+    [01] (negate_atom, incompatible) all x.(-AnnouncedBy(weTab, neofonie))
+

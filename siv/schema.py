@@ -110,6 +110,10 @@ class UnitTest(BaseModel):
     fol: str
     kind: Literal["positive", "contrastive"]
     mutation_kind: Optional[str] = None
+    # Relation of the contrastive's FOL to the gold. ``None`` on legacy
+    # artifacts is read as "incompatible" by C9b (back-compat). Always None
+    # for positives.
+    probe_relation: Optional[Literal["incompatible", "strictly_stronger"]] = None
 
     @model_validator(mode="after")
     def _mutation_kind_iff_contrastive(self) -> "UnitTest":
@@ -120,6 +124,10 @@ class UnitTest(BaseModel):
         if self.kind == "positive" and self.mutation_kind is not None:
             raise SchemaViolation(
                 "UnitTest.kind == 'positive' forbids mutation_kind"
+            )
+        if self.kind == "positive" and self.probe_relation is not None:
+            raise SchemaViolation(
+                "UnitTest.kind == 'positive' forbids probe_relation"
             )
         return self
 

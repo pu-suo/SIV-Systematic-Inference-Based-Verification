@@ -290,65 +290,99 @@ def _handle_universal(expr: "AllExpression", bound_vars: Set[str]) -> Formula:
 
 
 def _handle_existential(expr: "ExistsExpression", bound_vars: Set[str]) -> Formula:
-    """Convert ExistsExpression to Formula with TripartiteQuantification."""
+    """Convert ExistsExpression to Formula with TripartiteQuantification.
+
+    Restrictor-selection rule: the restrictor is the *first* atomic conjunct
+    of the body that is a unary, non-negated atom whose only argument is
+    this existential's bound variable (the "type predicate" position). All
+    other conjuncts — atomic or not, including unary atoms over outer
+    bound vars and binary/ternary relations — go to the nucleus, joined
+    with AND.
+
+    This produces probes that pair the type predicate with each non-type
+    constraint: ``∃y.(Wheel(y))``, ``∃y.(Wheel(y) ∧ HasWheel(x,y))``,
+    ``∃y.(Wheel(y) ∧ Black(y))``, etc. — the §3 motivating decomposition.
+
+    Falls back to empty restrictor when no type-predicate candidate exists
+    (e.g. ``∃y.(Sees(x,y) ∧ Likes(x,y))``).
+    """
     var_name = str(expr.variable)
     body = expr.term
     new_bound = bound_vars | {var_name}
 
-    # Flatten body conjunction
+    # Flatten body conjunction.
     conjuncts = _flatten_conjunction(body)
 
-    # Separate into atomic (restrictor candidates) and non-atomic (nucleus)
-    restrictor_atoms: List[AtomicFormula] = []
+    # Classify every conjunct.
+    type_predicates: List[AtomicFormula] = []
+    other_atomic: List[AtomicFormula] = []
     nucleus_exprs: List["Expression"] = []
-
     for conj in conjuncts:
         atom = _expr_to_atomic(conj)
-        if atom is not None:
-            restrictor_atoms.append(atom)
-        else:
+        if atom is None:
             nucleus_exprs.append(conj)
-
-    # If only one conjunct and it's atomic with single arg = bound var → degenerate
-    if not nucleus_exprs and len(restrictor_atoms) == 1:
-        atom = restrictor_atoms[0]
-        if len(atom.args) == 1 and atom.args[0] == var_name:
-            # Degenerate: exists x.P(x) → duplicate atom in restrictor + nucleus
-            return Formula(quantification=TripartiteQuantification(
-                quantifier="existential",
-                variable=var_name,
-                var_type="entity",
-                restrictor=[atom],
-                nucleus=Formula(atomic=AtomicFormula(
-                    pred=atom.pred, args=list(atom.args), negated=atom.negated
-                )),
-                inner_quantifications=[],
-            ))
-
-    # Build nucleus from remaining expressions
-    if not nucleus_exprs:
-        # All conjuncts are atomic: last one becomes nucleus, rest → restrictor
-        if len(restrictor_atoms) >= 2:
-            nucleus = Formula(atomic=restrictor_atoms.pop())
+        elif (
+            len(atom.args) == 1
+            and atom.args[0] == var_name
+            and not atom.negated
+        ):
+            type_predicates.append(atom)
         else:
-            # Single non-degenerate atom (binary+): empty restrictor is fine
-            nucleus = Formula(atomic=restrictor_atoms[0])
-            restrictor_atoms = []
-    elif len(nucleus_exprs) == 1:
-        nucleus = _build_formula(nucleus_exprs[0], new_bound)
-    else:
-        # Multiple non-atomic: join with AND
-        nucleus_formulas = [_build_formula(e, new_bound) for e in nucleus_exprs]
-        nucleus = Formula(connective="and", operands=nucleus_formulas)
+            other_atomic.append(atom)
 
-    # Validate restrictor mentions bound variable (if non-empty)
-    if restrictor_atoms:
-        mentions_var = any(var_name in a.args for a in restrictor_atoms)
-        if not mentions_var:
-            # Move all to nucleus as conjunction instead
-            all_formulas = [Formula(atomic=a) for a in restrictor_atoms] + [nucleus]
-            nucleus = Formula(connective="and", operands=all_formulas)
-            restrictor_atoms = []
+    # Pick at most one type predicate as restrictor; remaining type
+    # predicates flow into the nucleus alongside other_atomic conjuncts.
+    if type_predicates:
+        restrictor_atoms = [type_predicates[0]]
+        rest_atomic = type_predicates[1:] + other_atomic
+    else:
+        restrictor_atoms = []
+        rest_atomic = other_atomic
+
+    # Degenerate: ``∃x.P(x)`` — single type predicate, no other content.
+    # Preserve the legacy behaviour of duplicating the atom in restrictor +
+    # nucleus so downstream callers see a complete tree.
+    if (
+        restrictor_atoms
+        and not rest_atomic
+        and not nucleus_exprs
+    ):
+        atom = restrictor_atoms[0]
+        return Formula(quantification=TripartiteQuantification(
+            quantifier="existential",
+            variable=var_name,
+            var_type="entity",
+            restrictor=[atom],
+            nucleus=Formula(atomic=AtomicFormula(
+                pred=atom.pred, args=list(atom.args), negated=atom.negated
+            )),
+            inner_quantifications=[],
+        ))
+
+    # Build nucleus from rest_atomic + nucleus_exprs.
+    nucleus_pieces: List[Formula] = []
+    nucleus_pieces.extend(Formula(atomic=a) for a in rest_atomic)
+    nucleus_pieces.extend(_build_formula(e, new_bound) for e in nucleus_exprs)
+
+    if not nucleus_pieces:
+        # Degenerate fallback: only a non-type-predicate atom (e.g. binary).
+        # Preserve legacy behaviour of putting it in the nucleus with empty
+        # restrictor.
+        if other_atomic:
+            single = other_atomic[0]
+            nucleus = Formula(atomic=single)
+        elif restrictor_atoms:
+            atom = restrictor_atoms[0]
+            nucleus = Formula(atomic=atom)
+            restrictor_atoms = [atom]  # keep restrictor too
+        else:
+            raise ParseError(
+                f"empty existential body for variable {var_name}"
+            )
+    elif len(nucleus_pieces) == 1:
+        nucleus = nucleus_pieces[0]
+    else:
+        nucleus = Formula(connective="and", operands=nucleus_pieces)
 
     if not restrictor_atoms and _is_degenerate(nucleus, var_name):
         raise ParseError(

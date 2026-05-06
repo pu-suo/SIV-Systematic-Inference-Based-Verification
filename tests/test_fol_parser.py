@@ -308,3 +308,130 @@ class TestParseErrors:
     def test_nonsense_string(self):
         with pytest.raises(ParseError):
             parse_gold_fol("not valid fol at all !!!", nl="test")
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# v3 regression: probe-suite scope/type guarantees
+#
+# Three properties the v3 expansion regressed on (instantiation operator
+# substituted constants for bound variables, producing type-unsound probes
+# like ``DrinkRegularly(caffeine, coffee)``). Removed in this round; locked
+# in here so future operator additions can't reintroduce the failure mode.
+# ════════════════════════════════════════════════════════════════════════════
+
+from siv.compiler import compile_sentence_test_suite
+
+
+def test_no_constant_substituted_for_bound_variable():
+    """Universal-instantiation positives are forbidden: gibberish satisfies
+    them by accident because the constants flood every argument position."""
+    ext = parse_gold_fol(
+        "all x.(DrinkRegularly(x, coffee) -> IsDependentOn(x, caffeine))",
+        nl="test",
+    )
+    suite = compile_sentence_test_suite(ext, with_contrastives=False)
+    for p in suite.positives:
+        assert "DrinkRegularly(caffeine," not in p.fol
+        assert "DrinkRegularly(coffee," not in p.fol
+        assert "IsDependentOn(caffeine,caffeine)" not in p.fol
+        assert "IsDependentOn(coffee,caffeine)" not in p.fol
+
+
+def test_universal_existential_decomposition_preserves_scope():
+    """Wheels-style nested ∀∃: type predicate (Wheel) is preserved in
+    every existential projection alongside each property predicate.
+    Probes match the §3 motivating decomposition.
+    """
+    ext = parse_gold_fol(
+        "all x.(Car(x) -> exists y.((Wheel(y) & HasWheel(x, y)) "
+        "& (Black(y) & Round(y))))",
+        nl="test",
+    )
+    suite = compile_sentence_test_suite(ext, with_contrastives=False)
+    fols = [p.fol for p in suite.positives]
+
+    # Whole formula present.
+    assert any(
+        "Car" in f and "Wheel" in f and "HasWheel" in f
+        and "Black" in f and "Round" in f
+        for f in fols
+    )
+    # ∀x.(Car(x) → ∃y. Wheel(y)): bare type-predicate projection.
+    assert any(
+        "Car" in f and "Wheel" in f
+        and "Black" not in f and "Round" not in f and "HasWheel" not in f
+        for f in fols
+    ), f"missing Wheel-only projection: {fols}"
+    # ∀x.(Car(x) → ∃y. (Wheel(y) ∧ Black(y))): type + property paired.
+    assert any(
+        "Car" in f and "Wheel" in f and "Black" in f
+        and "Round" not in f and "HasWheel" not in f
+        for f in fols
+    ), f"missing Wheel∧Black probe: {fols}"
+    # ∀x.(Car(x) → ∃y. (Wheel(y) ∧ Round(y))): type + property paired.
+    assert any(
+        "Car" in f and "Wheel" in f and "Round" in f
+        and "Black" not in f and "HasWheel" not in f
+        for f in fols
+    ), f"missing Wheel∧Round probe: {fols}"
+    # ∀x.(Car(x) → ∃y. (Wheel(y) ∧ HasWheel(x,y))): type + relation paired.
+    assert any(
+        "Car" in f and "Wheel" in f and "HasWheel" in f
+        and "Black" not in f and "Round" not in f
+        for f in fols
+    ), f"missing Wheel∧HasWheel probe: {fols}"
+    # Scope preservation: every probe with Wheel keeps the outer ∀.
+    for f in fols:
+        if "Wheel" in f:
+            assert "all " in f, f"Wheel-probe lost outer ∀: {f}"
+
+
+def test_no_vacuously_bound_existential_variable():
+    """Bears-in-zoo: ``∃x.∃y.…`` should never produce a probe that binds y
+    without using y in the body (e.g. ``∃x.∃y. Bear(x)``)."""
+    ext = parse_gold_fol(
+        "exists x.(exists y.((Bear(x) & Bear(y)) "
+        "& ((In(x, zoo) & In(y, zoo)) & -(x = y))))",
+        nl="test",
+    )
+    suite = compile_sentence_test_suite(ext, with_contrastives=False)
+    for p in suite.positives:
+        # crude check: every introduced quantifier var (v0,v1,...) must
+        # actually appear inside its scope.
+        import re
+        for m in re.finditer(r"(all|exists)\s+(v\d+)\.\(", p.fol):
+            var = m.group(2)
+            inner_start = m.end()
+            depth = 1
+            i = inner_start
+            while i < len(p.fol) and depth > 0:
+                if p.fol[i] == "(":
+                    depth += 1
+                elif p.fol[i] == ")":
+                    depth -= 1
+                i += 1
+            inner = p.fol[inner_start:i - 1]
+            assert var in inner, (
+                f"vacuously-quantified {var} in probe: {p.fol}"
+            )
+
+
+def test_round_trip_equivalence_canonical():
+    """The deterministic parser must produce extractions whose canonical
+    FOL re-compiles to the same logical content (modulo formatting)."""
+    samples = [
+        "all x.(Cat(x) -> Mammal(x))",
+        "exists x.(Bear(x) & InZoo(x))",
+        "all x.((Student(x) & Diligent(x)) -> Passes(x))",
+        "all x.(Bird(x) -> -Fish(x))",
+        "exists x.(Wheel(x) & (Black(x) & Round(x)))",
+    ]
+    for fol in samples:
+        ext = parse_gold_fol(fol, nl="test")
+        compiled = compile_canonical_fol(ext)
+        # Both must parse and re-compile identically.
+        ext2 = parse_gold_fol(compiled, nl="test")
+        compiled2 = compile_canonical_fol(ext2)
+        assert compiled == compiled2, (
+            f"round-trip drift: {fol} → {compiled} → {compiled2}"
+        )

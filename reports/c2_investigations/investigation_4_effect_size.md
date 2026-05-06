@@ -11,12 +11,12 @@
 
 | Condition | Mean SIV | Equiv Rate |
 |-----------|----------|-----------|
-| Score-only | 0.6932 | 12/22 |
-| Structured | 1.0000 | 20/22 |
-| Shuffled | 1.0000 | 20/22 |
+| Score-only | 0.5882 | 10/24 |
+| Structured | 0.9833 | 22/24 |
+| Shuffled | 0.9833 | 22/24 |
 
 **Δ (structured - shuffled): +0.0000**
-**Δ (structured - score_only): +0.3068**
+**Δ (structured - score_only): +0.3951**
 
 Bootstrap CI: insufficient data
 

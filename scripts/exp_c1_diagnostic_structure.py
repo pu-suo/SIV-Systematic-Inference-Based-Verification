@@ -66,7 +66,7 @@ logger = logging.getLogger(__name__)
 
 EXP1_DIR = _REPO_ROOT / "reports" / "experiments" / "exp1"
 EXP2_DIR = _REPO_ROOT / "reports" / "experiments" / "exp2"
-SUITES_PATH = _REPO_ROOT / "reports" / "test_suites" / "test_suites.jsonl"
+SUITES_PATH = _REPO_ROOT / "reports" / "test_suites" / "test_suites_v3.jsonl"
 OUT_DIR = _REPO_ROOT / "reports" / "c1"
 
 # Error types included in C1 and their expected diagnostic labels
@@ -244,12 +244,13 @@ def classify_failure_signature(score_detail: Dict) -> Tuple[str, Dict]:
     if recall == 0.0 and total_contrastive_entailed == 0:
         return "unrelated", profile
 
-    # If contrastive entailments dominate, classify by dominant kind
+    # If contrastive entailments dominate, classify by dominant kind.
+    # v3 adds: converse, disjunct_drop, flip_quantifier, scope_swap.
     if total_contrastive_entailed > 0:
         dominant_kind = contrastive_entailed_by_kind.most_common(1)[0][0]
-        if dominant_kind == "swap_binary_args":
+        if dominant_kind in {"swap_binary_args", "converse"}:
             return "arg_error", profile
-        elif dominant_kind == "negate_atom":
+        elif dominant_kind in {"negate_atom", "replace_subformula_with_negation"}:
             return "polarity_error", profile
         else:
             return "other_detected", profile

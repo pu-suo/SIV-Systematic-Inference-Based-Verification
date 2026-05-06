@@ -462,15 +462,13 @@ def test_compile_test_suite_independent_of_nl():
 @pytest.mark.parametrize("case_fn,expected", [
     (_case1, 1),  # atomic — canonical only.
     (_case2, 2),  # canonical + existential-restrictor sub-test (rule b).
-    (_case3, 1),  # canonical only; negation blocks.
+    (_case3, 1),  # canonical only; negation of an atom.
     (_case4, 3),  # canonical + each AND-conjunct (rule a).
     (_case5, 1),  # canonical only; or operands not emittable.
-    (_case6, 1),  # canonical only; implies operands not emittable.
+    (_case6, 1),  # canonical only; implies operands blocked.
     (_case7, 1),  # canonical only; iff interiors blocked.
-    (_case8, 1),  # canonical only; implies antecedent blocked, consequent
-                  #   atom not AND-conjunct.
-    (_case9, 1),  # canonical only; implies consequent quantification not
-                  #   AND-conjunct; nested atoms not emittable.
+    (_case8, 1),  # canonical only; outer implies blocks descent.
+    (_case9, 1),  # canonical only; implies operands blocked.
 ])
 def test_subtest_count(case_fn, expected):
     suite = compile_sentence_test_suite(case_fn())

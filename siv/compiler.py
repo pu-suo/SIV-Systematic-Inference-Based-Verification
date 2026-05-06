@@ -236,7 +236,13 @@ def _emit_rule_b(
     counter = [0]
     rename = _build_rename(enclosing + [inner_q], counter)
     atom_fol = _b_atom(atom, rename)
-    inner_fol = "".join(["exists ", rename[inner_q.variable], ".(", atom_fol, ")"])
+    # Only bind inner_q.variable if it actually appears in atom.args. Always
+    # binding it produces vacuous probes like ``exists y.(Bear(x))`` when the
+    # restrictor atom uses a different bound variable from the enclosing
+    # chain — gibberish satisfies these because they amount to "Bear exists".
+    inner_fol = atom_fol
+    if inner_q.variable in atom.args:
+        inner_fol = "".join(["exists ", rename[inner_q.variable], ".(", inner_fol, ")"])
     # Bind any inner_quantification variables that appear in the atom (Pre-work B fix)
     for iq in inner_q.inner_quantifications:
         if iq.variable in atom.args:
@@ -268,11 +274,20 @@ def _wrap_chain(
     rename: dict,
 ) -> str:
     """Wrap `inner_fol` with enclosing quantifiers (innermost wraps first)."""
+    import re
     for q in reversed(enclosing):
         if not q.restrictor:
-            # Empty restrictor (Category 7): wrap with bare quantifier
+            # Empty restrictor (Category 7): wrap with bare quantifier — but
+            # only if the variable actually appears inside the body. Otherwise
+            # the binder is vacuous and produces probes like
+            # ``exists v0. exists v1. Bear(v0)`` that leak recall to gibberish
+            # candidates. The variable name (v0/v1/...) is unique within this
+            # closure, so a word-boundary check is sufficient.
+            renamed = rename[q.variable]
+            if not re.search(rf"\b{re.escape(renamed)}\b", inner_fol):
+                continue
             outer = "all" if q.quantifier == "universal" else "exists"
-            inner_fol = "".join([outer, " ", rename[q.variable], ".(", inner_fol, ")"])
+            inner_fol = "".join([outer, " ", renamed, ".(", inner_fol, ")"])
         else:
             r_compiled = _compile_restrictor_for_wrap(q, rename)
             if q.quantifier == "universal":
@@ -390,3 +405,4 @@ def _b_fresh(counter: list) -> str:
     name = f"v{counter[0]}"
     counter[0] += 1
     return name
+

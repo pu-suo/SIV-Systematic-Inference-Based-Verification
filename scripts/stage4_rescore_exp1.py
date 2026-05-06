@@ -189,9 +189,11 @@ def main():
 
         if report is not None:
             v2_recall = report.recall
+            v2_f1 = report.f1 if report.f1 is not None else report.recall
         else:
             score_errors += 1
             v2_recall = None
+            v2_f1 = None
 
         scored_v2.append({
             "premise_id": pid,
@@ -199,35 +201,46 @@ def main():
             "candidate_fol": candidate_fol,
             "v1_recall": row["scores"].get("siv_soft_recall"),
             "v2_recall": v2_recall,
+            "v2_f1": v2_f1,
         })
 
     elapsed = time.time() - t0
     print(f"  Done in {elapsed:.1f}s. Scored: {len(scored_v2)}, Errors: {score_errors}")
     print()
 
-    # Step 3: Compute detection rates
-    # Detection = recall < 1.0 (perturbation scored lower than perfect gold)
-    v2_by_op = defaultdict(lambda: {"n": 0, "detected": 0, "recalls": []})
+    # Step 3: Compute detection rates under TWO rules:
+    #   (a) recall-only (legacy v2 rule): recall < 1.0
+    #   (b) f1-based (v3 rule): f1 < 1.0  -- also catches strictly-stronger
+    #       formulas via the contrastive precision channel.
+    v2_by_op = defaultdict(lambda: {
+        "n": 0, "detected_recall": 0, "detected_f1": 0,
+        "recalls": [], "f1s": [],
+    })
 
     for row in scored_v2:
         ctype = row["candidate_type"]
         if ctype == "gold":
             continue  # Skip gold rows
         v2_recall = row["v2_recall"]
+        v2_f1 = row.get("v2_f1")
         if v2_recall is None:
             continue
 
         v2_by_op[ctype]["n"] += 1
         v2_by_op[ctype]["recalls"].append(v2_recall)
+        if v2_f1 is not None:
+            v2_by_op[ctype]["f1s"].append(v2_f1)
         if v2_recall < 1.0:
-            v2_by_op[ctype]["detected"] += 1
+            v2_by_op[ctype]["detected_recall"] += 1
+        if (v2_f1 is not None and v2_f1 < 1.0) or v2_recall < 1.0:
+            v2_by_op[ctype]["detected_f1"] += 1
 
     # Step 4: Results table
     print("=" * 70)
     print("DETECTION RATES: v1 (LLM-derived suites) vs v2 (gold-derived suites)")
     print("=" * 70)
     print()
-    print(f"{'Operator':<20} {'v1 rate':>8} {'v1 n':>5}  {'v2 rate':>8} {'v2 n':>5}  {'delta':>7}  {'gate':>6}")
+    print(f"{'Operator':<20} {'v1':>6} {'recall':>7} {'f1':>7} {'n':>4}  {'Δrec':>7} {'Δf1':>7}  {'gate':>6}")
     print("-" * 75)
 
     gate_operators = {"B_arg_swap", "B_negation_drop", "D_random"}
@@ -242,19 +255,22 @@ def main():
         v2_data = v2_by_op.get(op)
 
         if v2_data and v2_data["n"] > 0:
-            v2_rate = v2_data["detected"] / v2_data["n"]
-            v2_n = v2_data["n"]
-            delta = v2_rate - v1_rate
+            v3_rate_recall = v2_data["detected_recall"] / v2_data["n"]
+            v3_rate_f1 = v2_data["detected_f1"] / v2_data["n"]
+            v3_n = v2_data["n"]
+            delta_rec = v3_rate_recall - v1_rate
+            delta_f1 = v3_rate_f1 - v1_rate
         else:
-            v2_rate = None
-            v2_n = 0
-            delta = None
+            v3_rate_recall = v3_rate_f1 = None
+            v3_n = 0
+            delta_rec = delta_f1 = None
 
-        # Gate: no regression > 5pp (improvement is allowed)
+        # Gate: no regression > 5pp on the f1 rule (the v3 detection rule)
+        gate_delta = delta_f1
         if op in gate_operators:
-            if delta is not None and delta >= -0.05:
+            if gate_delta is not None and gate_delta >= -0.05:
                 gate = "PASS"
-            elif delta is not None:
+            elif gate_delta is not None:
                 gate = "FAIL"
                 all_pass = False
             else:
@@ -263,18 +279,23 @@ def main():
         else:
             gate = "*"  # blind spot, not gated
 
-        v2_str = f"{v2_rate:.1%}" if v2_rate is not None else "N/A"
-        delta_str = f"{delta:+.1%}" if delta is not None else "N/A"
-        print(f"{op:<20} {v1_rate:>7.1%} {v1_n:>5}  {v2_str:>8} {v2_n:>5}  {delta_str:>7}  {gate:>6}")
+        rec_str = f"{v3_rate_recall:.1%}" if v3_rate_recall is not None else "N/A"
+        f1_str = f"{v3_rate_f1:.1%}" if v3_rate_f1 is not None else "N/A"
+        drec = f"{delta_rec:+.1%}" if delta_rec is not None else "N/A"
+        df1 = f"{delta_f1:+.1%}" if delta_f1 is not None else "N/A"
+        print(f"{op:<20} {v1_rate:>5.1%} {rec_str:>7} {f1_str:>7} {v3_n:>4}  {drec:>7} {df1:>7}  {gate:>6}")
 
         results_for_report[op] = {
             "v1_rate": v1_rate,
             "v1_n": v1_n,
-            "v2_rate": round(v2_rate, 4) if v2_rate is not None else None,
-            "v2_n": v2_n,
-            "delta_pp": round(delta * 100, 1) if delta is not None else None,
+            "v3_rate_recall_only": round(v3_rate_recall, 4) if v3_rate_recall is not None else None,
+            "v3_rate_f1": round(v3_rate_f1, 4) if v3_rate_f1 is not None else None,
+            "v3_n": v3_n,
+            "delta_pp_recall": round(delta_rec * 100, 1) if delta_rec is not None else None,
+            "delta_pp_f1": round(delta_f1 * 100, 1) if delta_f1 is not None else None,
             "gate": gate,
-            "avg_v2_recall": round(float(np.mean(v2_data["recalls"])), 4) if v2_data and v2_data["recalls"] else None,
+            "avg_v3_recall": round(float(np.mean(v2_data["recalls"])), 4) if v2_data and v2_data["recalls"] else None,
+            "avg_v3_f1": round(float(np.mean(v2_data["f1s"])), 4) if v2_data and v2_data["f1s"] else None,
         }
 
     print("-" * 75)
@@ -289,7 +310,7 @@ def main():
     # B_negation_drop improvement explanation
     neg_drop_data = v2_by_op.get("B_negation_drop")
     if neg_drop_data and neg_drop_data["n"] > 0:
-        v2_neg_rate = neg_drop_data["detected"] / neg_drop_data["n"]
+        v2_neg_rate = neg_drop_data["detected_f1"] / neg_drop_data["n"]
         if v2_neg_rate > V1_RATES["B_negation_drop"][0] + 0.05:
             print("=" * 70)
             print("B_NEGATION_DROP IMPROVEMENT (+34.8pp)")

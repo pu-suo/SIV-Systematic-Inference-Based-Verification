@@ -1,0 +1,3575 @@
+{
+  "summary": {
+    "n_premises": 100,
+    "positives": {
+      "total": 142,
+      "fail": 0,
+      "unknown": 0,
+      "pass": 142
+    },
+    "contrastives_incompatible": {
+      "total": 146,
+      "fail": 0,
+      "unknown": 0,
+      "pass": 146
+    },
+    "contrastives_strictly_stronger": {
+      "total": 139,
+      "fail": 0,
+      "unknown": 0,
+      "pass": 139
+    },
+    "elapsed_s": 2.1
+  },
+  "pos_failures": [],
+  "inc_failures": [],
+  "str_failures": [],
+  "pos_unknown_examples": [],
+  "str_unknown_examples": [],
+  "results": [
+    {
+      "premise_id": "P0000",
+      "positives": [
+        {
+          "fol": "all v0.(DrinkRegularly(v0,coffee) -> IsDependentOn(v0,caffeine))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(DrinkRegularly(x, coffee) -> -IsDependentOn(x, caffeine))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(IsDependentOn(x, caffeine))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0006",
+      "positives": [
+        {
+          "fol": "all v0.(ChoralConductor(v0) -> Musician(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(ChoralConductor(x) -> -Musician(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Musician(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0002",
+      "positives": [
+        {
+          "fol": "all v0.(-WantToBeAddictedTo(v0,caffeine) -> -(AwareThatDrug(v0,caffeine)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(-WantToBeAddictedTo(x, caffeine) -> -(-AwareThatDrug(x, caffeine)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(AwareThatDrug(x, caffeine)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-WantToBeAddictedTo(x, caffeine) -> -(-(AwareThatDrug(x, caffeine))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0004",
+      "positives": [
+        {
+          "fol": "-(((IsDependentOn(rina,caffeine) & -(Student(rina))) | (-(IsDependentOn(rina,caffeine)) & Student(rina))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-(((IsDependentOn(rina, caffeine) | -(Student(rina))) | (-(IsDependentOn(rina, caffeine)) & Student(rina))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-(((IsDependentOn(rina, caffeine) & -(Student(rina))) | (-(IsDependentOn(rina, caffeine)) | Student(rina))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-(-(((IsDependentOn(rina, caffeine) & -(Student(rina))) | (-(IsDependentOn(rina, caffeine)) & Student(rina)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-((-((IsDependentOn(rina, caffeine) & -(Student(rina)))) | (-(IsDependentOn(rina, caffeine)) & Student(rina))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-(((IsDependentOn(rina, caffeine) & -(Student(rina))) | -((-(IsDependentOn(rina, caffeine)) & Student(rina)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0008",
+      "positives": [
+        {
+          "fol": "PublishedBook(miroslav,methodOfStudyingGregorianChant,yr1946)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-PublishedBook(miroslav, methodOfStudyingGregorianChant, yr1946)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0003",
+      "positives": [
+        {
+          "fol": "-(((Student(rina) & -(-(AwareThatDrug(rina,caffeine)))) | (-(Student(rina)) & -(AwareThatDrug(rina,caffeine)))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-(((Student(rina) | -(-(AwareThatDrug(rina, caffeine)))) | (-(Student(rina)) & -(AwareThatDrug(rina, caffeine)))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-(((Student(rina) & -(-(AwareThatDrug(rina, caffeine)))) | (-(Student(rina)) | -(AwareThatDrug(rina, caffeine)))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-(-(((Student(rina) & -(-(AwareThatDrug(rina, caffeine)))) | (-(Student(rina)) & -(AwareThatDrug(rina, caffeine))))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-((-((Student(rina) & -(-(AwareThatDrug(rina, caffeine))))) | (-(Student(rina)) & -(AwareThatDrug(rina, caffeine)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-(((Student(rina) & -(-(AwareThatDrug(rina, caffeine)))) | -((-(Student(rina)) & -(AwareThatDrug(rina, caffeine))))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0001",
+      "positives": [
+        {
+          "fol": "all v0.((DrinkRegularly(v0,coffee) | -(WantToBeAddictedTo(v0,caffeine))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((DrinkRegularly(x, coffee) & -(WantToBeAddictedTo(x, caffeine))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-((DrinkRegularly(x, coffee) | -(WantToBeAddictedTo(x, caffeine)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(WantToBeAddictedTo(x, caffeine)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(DrinkRegularly(x, coffee))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0009",
+      "positives": [
+        {
+          "fol": "all v0.(Eel(v0) -> Fish(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(Eel(x) -> -Fish(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Fish(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0005",
+      "positives": [
+        {
+          "fol": "(Czech(miroslav) & ChoralConductor(miroslav) & SpecializeInPerformanceOf(miroslav,renaissanceMusic) & SpecializeInPerformanceOf(miroslav,baroqueMusic))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "Czech(miroslav)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "ChoralConductor(miroslav)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "SpecializeInPerformanceOf(miroslav,renaissanceMusic)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "SpecializeInPerformanceOf(miroslav,baroqueMusic)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-Czech(miroslav) & ChoralConductor(miroslav) & SpecializeInPerformanceOf(miroslav, renaissanceMusic) & SpecializeInPerformanceOf(miroslav, baroqueMusic))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Czech(miroslav) & -ChoralConductor(miroslav) & SpecializeInPerformanceOf(miroslav, renaissanceMusic) & SpecializeInPerformanceOf(miroslav, baroqueMusic))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Czech(miroslav) & ChoralConductor(miroslav) & -SpecializeInPerformanceOf(miroslav, renaissanceMusic) & SpecializeInPerformanceOf(miroslav, baroqueMusic))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Czech(miroslav) & ChoralConductor(miroslav) & SpecializeInPerformanceOf(miroslav, renaissanceMusic) & -SpecializeInPerformanceOf(miroslav, baroqueMusic))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0010",
+      "positives": [
+        {
+          "fol": "all v0.(Fish(v0) -> -(Plant(v0)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(-Fish(x) -> -(Plant(x)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Fish(x) -> -(-Plant(x)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(Plant(x)))",
+          "relation": "incompatible",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Fish(x) -> -(-(Plant(x))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0014",
+      "positives": [
+        {
+          "fol": "DisplayedIn(seaEel,collection)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-DisplayedIn(seaEel, collection)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0012",
+      "positives": [
+        {
+          "fol": "all v0.(Multicellular(v0) -> -(Bacteria(v0)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(-Multicellular(x) -> -(Bacteria(x)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Multicellular(x) -> -(-Bacteria(x)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(Bacteria(x)))",
+          "relation": "incompatible",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Multicellular(x) -> -(-(Bacteria(x))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0018",
+      "positives": [
+        {
+          "fol": "BuiltIn(emmetBuilding,year1915)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-BuiltIn(emmetBuilding, year1915)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0013",
+      "positives": [
+        {
+          "fol": "all v0.((DisplayedIn(v0,collection) & Animal(v0)) -> Multicellular(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((DisplayedIn(x, collection) & Animal(x)) -> -Multicellular(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Animal(x) -> Multicellular(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(DisplayedIn(x, collection) -> Multicellular(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0019",
+      "positives": [
+        {
+          "fol": "(emmetBuiling = blakeMcFallCompanyBuilding)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-(emmetBuiling = blakeMcFallCompanyBuilding)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0020",
+      "positives": [
+        {
+          "fol": "WorkAt(john,emmetBuilding)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-WorkAt(john, emmetBuilding)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0007",
+      "positives": [
+        {
+          "fol": "exists v0.(exists v1.(((Musician(v0) -> Love(v0,music)) & ((-((v0 = v1)) & Musician(v1)) -> Love(v1,music)))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v0.((Musician(v0) -> Love(v0,music)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v0.(exists v1.(((-((v0 = v1)) & Musician(v1)) -> Love(v1,music))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(exists y.(((Musician(x) -> Love(x, music)) & ((-((x = y)) & Musician(y)) -> Love(y, music)))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_quantifier",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(all y.(((Musician(x) -> Love(x, music)) & ((-((x = y)) & Musician(y)) -> Love(y, music)))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_quantifier",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(exists y.(((Musician(x) <-> Love(x, music)) & ((-((x = y)) & Musician(y)) -> Love(y, music)))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(exists y.(((Musician(x) -> Love(x, music)) & ((-((x = y)) & Musician(y)) <-> Love(y, music)))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(exists y.(((Musician(x) -> Love(x, music)) & (Love(y, music) -> (-((x = y)) & Musician(y))))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "converse",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0016",
+      "positives": [
+        {
+          "fol": "(Building(blakeMcFallCompanyBuilding) & AddedToIn(blakeMcFallCompanyBuilding,theNationalRegisterOfHistoricPlaces,year1990))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "Building(blakeMcFallCompanyBuilding)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "AddedToIn(blakeMcFallCompanyBuilding,theNationalRegisterOfHistoricPlaces,year1990)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-Building(blakeMcFallCompanyBuilding) & AddedToIn(blakeMcFallCompanyBuilding, theNationalRegisterOfHistoricPlaces, year1990))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Building(blakeMcFallCompanyBuilding) & -AddedToIn(blakeMcFallCompanyBuilding, theNationalRegisterOfHistoricPlaces, year1990))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0024",
+      "positives": [
+        {
+          "fol": "Supported(williamDickinson,portlandWhigs)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-Supported(williamDickinson, portlandWhigs)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0026",
+      "positives": [
+        {
+          "fol": "UniversalLanguage(languageA)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-UniversalLanguage(languageA)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0011",
+      "positives": [
+        {
+          "fol": "all v0.(DisplayedIn(v0,collection) -> ((Plant(v0) & -(Animal(v0))) | (-(Plant(v0)) & Animal(v0))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(((Plant(x) & -(Animal(x))) | (-(Plant(x)) & Animal(x))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(DisplayedIn(x, collection) -> ((Plant(x) & -(Animal(x))) & (-(Plant(x)) & Animal(x))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(DisplayedIn(x, collection) -> -(((Plant(x) & -(Animal(x))) | (-(Plant(x)) & Animal(x)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(DisplayedIn(x, collection) -> (-(Plant(x)) & Animal(x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(DisplayedIn(x, collection) -> (Plant(x) & -(Animal(x))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0028",
+      "positives": [
+        {
+          "fol": "-(CanCommunicateWith(katya,danil))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-(-CanCommunicateWith(katya, danil))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0029",
+      "positives": [
+        {
+          "fol": "Know(katya,languageA)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-Know(katya, languageA)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0023",
+      "positives": [
+        {
+          "fol": "(University(universityOfEdinburgh) & LocatedIn(universityOfEdinburgh,unitedKingdom))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "University(universityOfEdinburgh)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "LocatedIn(universityOfEdinburgh,unitedKingdom)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-University(universityOfEdinburgh) & LocatedIn(universityOfEdinburgh, unitedKingdom))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(University(universityOfEdinburgh) & -LocatedIn(universityOfEdinburgh, unitedKingdom))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0015",
+      "positives": [
+        {
+          "fol": "(Eel(seaEel) | Animal(seaEel) | -(Plant(seaEel)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(Eel(seaEel) & Animal(seaEel) & -(Plant(seaEel)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Animal(seaEel) | -(Plant(seaEel)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Eel(seaEel) | -(Plant(seaEel)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Eel(seaEel) | Animal(seaEel))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0025",
+      "positives": [
+        {
+          "fol": "all v0.(Supported(v0,portlandWhigs) -> -(SatIn(v0,parliament)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(Supported(x, portlandWhigs) -> -(-SatIn(x, parliament)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(SatIn(x, parliament)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Supported(x, portlandWhigs) -> -(-(SatIn(x, parliament))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0022",
+      "positives": [
+        {
+          "fol": "(Attended(williamDickinson,westminsterSchool) & Highschool(westminsterSchool) & Attended(williamDickinson,universityOfEdinburgh))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "Attended(williamDickinson,westminsterSchool)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "Highschool(westminsterSchool)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "Attended(williamDickinson,universityOfEdinburgh)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-Attended(williamDickinson, westminsterSchool) & Highschool(westminsterSchool) & Attended(williamDickinson, universityOfEdinburgh))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Attended(williamDickinson, westminsterSchool) & -Highschool(westminsterSchool) & Attended(williamDickinson, universityOfEdinburgh))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Attended(williamDickinson, westminsterSchool) & Highschool(westminsterSchool) & -Attended(williamDickinson, universityOfEdinburgh))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0039",
+      "positives": [
+        {
+          "fol": "MorePoints(realMadrid,barcelona)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-MorePoints(realMadrid, barcelona)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0038",
+      "positives": [
+        {
+          "fol": "(LaLigaSoccerTeam(realMadrid) & LaLigaSoccerTeam(barcelona))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "LaLigaSoccerTeam(realMadrid)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "LaLigaSoccerTeam(barcelona)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-LaLigaSoccerTeam(realMadrid) & LaLigaSoccerTeam(barcelona))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(LaLigaSoccerTeam(realMadrid) & -LaLigaSoccerTeam(barcelona))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0030",
+      "positives": [
+        {
+          "fol": "all v0.((Customer(v0) & In(v0,jameSFamily) & SubscribedTo(v0,aMCAList)) -> EligibleForThreeFreeMoviesEveryWeekWithoutAdditionalFees(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily) & SubscribedTo(x, aMCAList)) -> -EligibleForThreeFreeMoviesEveryWeekWithoutAdditionalFees(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((In(x, jameSFamily) & SubscribedTo(x, aMCAList)) -> EligibleForThreeFreeMoviesEveryWeekWithoutAdditionalFees(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & SubscribedTo(x, aMCAList)) -> EligibleForThreeFreeMoviesEveryWeekWithoutAdditionalFees(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily)) -> EligibleForThreeFreeMoviesEveryWeekWithoutAdditionalFees(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0041",
+      "positives": [
+        {
+          "fol": "NeighbourhoodIn(lawtonPark,seattle)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-NeighbourhoodIn(lawtonPark, seattle)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0033",
+      "positives": [
+        {
+          "fol": "all v0.((Customer(v0) & In(v0,jameSFamily) & Prefer(v0,tVSeries)) -> -(WatchIn(v0,tV,cinema)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily) & Prefer(x, tVSeries)) -> -(-WatchIn(x, tV, cinema)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((In(x, jameSFamily) & Prefer(x, tVSeries)) -> -(WatchIn(x, tV, cinema)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & Prefer(x, tVSeries)) -> -(WatchIn(x, tV, cinema)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily)) -> -(WatchIn(x, tV, cinema)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily) & Prefer(x, tVSeries)) -> -(-(WatchIn(x, tV, cinema))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0034",
+      "positives": [
+        {
+          "fol": "all v0.((Customer(v0) & In(v0,jameSFamily) & SubscribedTo(v0,hBO)) -> Prefer(v0,tVSeries))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily) & SubscribedTo(x, hBO)) -> -Prefer(x, tVSeries))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((In(x, jameSFamily) & SubscribedTo(x, hBO)) -> Prefer(x, tVSeries))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & SubscribedTo(x, hBO)) -> Prefer(x, tVSeries))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily)) -> Prefer(x, tVSeries))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0036",
+      "positives": [
+        {
+          "fol": "all v0.(all v1.((LaLigaSoccerTeam(v0) & LaLigaSoccerTeam(v1) & MorePoints(v0,v1)) -> RankHigherThan(v0,v1)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(all y.((LaLigaSoccerTeam(x) & LaLigaSoccerTeam(y) & MorePoints(x, y)) -> -RankHigherThan(x, y)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(all y.((LaLigaSoccerTeam(y) & MorePoints(x, y)) -> RankHigherThan(x, y)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(all y.((LaLigaSoccerTeam(x) & MorePoints(x, y)) -> RankHigherThan(x, y)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(all y.((LaLigaSoccerTeam(x) & LaLigaSoccerTeam(y)) -> RankHigherThan(x, y)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(all y.((LaLigaSoccerTeam(x) & LaLigaSoccerTeam(y) & MorePoints(x, y)) -> RankHigherThan(x, y))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0031",
+      "positives": [
+        {
+          "fol": "exists v0.(exists v1.(Customer(v1) & (Customer(v0) & In(v0,jameSFamily) & GoToEveryWeek(v0,cinema) & -(v0 = v1) & In(v1,jameSFamily) & GoToEveryWeek(v1,cinema))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v1.(Customer(v1))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v0.(exists v1.(Customer(v1) & Customer(v0)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v0.(exists v1.(Customer(v1) & In(v0,jameSFamily)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v0.(exists v1.(Customer(v1) & GoToEveryWeek(v0,cinema)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v0.(exists v1.(Customer(v1) & -(v0 = v1)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v1.(Customer(v1) & In(v1,jameSFamily))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v1.(Customer(v1) & GoToEveryWeek(v1,cinema))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(exists y.(Customer(y) & (Customer(x) & In(x, jameSFamily) & GoToEveryWeek(x, cinema) & -(x = y) & In(y, jameSFamily) & GoToEveryWeek(y, cinema))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_quantifier",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(all y.(Customer(y) -> (Customer(x) & In(x, jameSFamily) & GoToEveryWeek(x, cinema) & -(x = y) & In(y, jameSFamily) & GoToEveryWeek(y, cinema))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_quantifier",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0042",
+      "positives": [
+        {
+          "fol": "all v0.(Residentof(v0,lawtonPark) -> UseZipCode(v0,num98199))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(Residentof(x, lawtonPark) -> -UseZipCode(x, num98199))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(UseZipCode(x, num98199))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0044",
+      "positives": [
+        {
+          "fol": "UseZipCode(daniel,num98199)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-UseZipCode(daniel, num98199)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0043",
+      "positives": [
+        {
+          "fol": "ResidentOf(tom,lawtonPark)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-ResidentOf(tom, lawtonPark)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0040",
+      "positives": [
+        {
+          "fol": "(-(MorePointsInGameBetween(realMadrid,barcelona)) & -(MorePointsInGameBetween(barcelona,realMadrid)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-(MorePointsInGameBetween(realMadrid,barcelona))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-(MorePointsInGameBetween(barcelona,realMadrid))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-(-MorePointsInGameBetween(realMadrid, barcelona)) & -(MorePointsInGameBetween(barcelona, realMadrid)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(-(MorePointsInGameBetween(realMadrid, barcelona)) & -(-MorePointsInGameBetween(barcelona, realMadrid)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(-(-(MorePointsInGameBetween(realMadrid, barcelona))) & -(MorePointsInGameBetween(barcelona, realMadrid)))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(-(MorePointsInGameBetween(realMadrid, barcelona)) & -(-(MorePointsInGameBetween(barcelona, realMadrid))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0046",
+      "positives": [
+        {
+          "fol": "Legislator(tiffanyTAlston)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-Legislator(tiffanyTAlston)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0049",
+      "positives": [
+        {
+          "fol": "Fish(stonefish)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-Fish(stonefish)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0032",
+      "positives": [
+        {
+          "fol": "all v0.((Customer(v0) & In(v0,jameSFamily) & (SubscribedTo(v0,aMCAList) | SubscribedTo(v0,hBO))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all v0.(Customer(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all v0.(In(v0,jameSFamily))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all v0.((SubscribedTo(v0,aMCAList) | SubscribedTo(v0,hBO)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((-Customer(x) & In(x, jameSFamily) & (SubscribedTo(x, aMCAList) | SubscribedTo(x, hBO))))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & -In(x, jameSFamily) & (SubscribedTo(x, aMCAList) | SubscribedTo(x, hBO))))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily) & (SubscribedTo(x, aMCAList) & SubscribedTo(x, hBO))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-((Customer(x) & In(x, jameSFamily) & (SubscribedTo(x, aMCAList) | SubscribedTo(x, hBO)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily) & -((SubscribedTo(x, aMCAList) | SubscribedTo(x, hBO)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily) & SubscribedTo(x, hBO)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Customer(x) & In(x, jameSFamily) & SubscribedTo(x, aMCAList)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0047",
+      "positives": [
+        {
+          "fol": "(StealsFunds(tiffanyTAlston) & StealsFundsInYr(tiffanyTAlston,yr2012))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "StealsFunds(tiffanyTAlston)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "StealsFundsInYr(tiffanyTAlston,yr2012)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-StealsFunds(tiffanyTAlston) & StealsFundsInYr(tiffanyTAlston, yr2012))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(StealsFunds(tiffanyTAlston) & -StealsFundsInYr(tiffanyTAlston, yr2012))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0045",
+      "positives": [
+        {
+          "fol": "all v0.((Legislator(v0) & StealsFunds(v0)) -> Suspended(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((Legislator(x) & StealsFunds(x)) -> -Suspended(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(StealsFunds(x) -> Suspended(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Legislator(x) -> Suspended(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0054",
+      "positives": [
+        {
+          "fol": "all v0.(Have(v0,typeCPort) -> -(ProducedBefore(v0,yr2010)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(Have(x, typeCPort) -> -(-ProducedBefore(x, yr2010)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(ProducedBefore(x, yr2010)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Have(x, typeCPort) -> -(-(ProducedBefore(x, yr2010))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0052",
+      "positives": [
+        {
+          "fol": "all v0.(((Sting(stonefish,v0) & (ApplyHeatTo(v0) | UseAntivenomOn(v0))) -> Treated(v0)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(((Sting(stonefish, x) & (ApplyHeatTo(x) | UseAntivenomOn(x))) <-> Treated(x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(((Sting(stonefish, x) | (ApplyHeatTo(x) | UseAntivenomOn(x))) -> Treated(x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(((Sting(stonefish, x) & (ApplyHeatTo(x) | UseAntivenomOn(x))) -> Treated(x))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0055",
+      "positives": [
+        {
+          "fol": "all v0.((Monitor(v0) & In(v0,library)) -> ProducedBefore(v0,yr2010))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((Monitor(x) & In(x, library)) -> -ProducedBefore(x, yr2010))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(In(x, library) -> ProducedBefore(x, yr2010))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Monitor(x) -> ProducedBefore(x, yr2010))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0058",
+      "positives": [
+        {
+          "fol": "all v0.(Outside(v0,solarSystem) -> -(SunAs(v0,star)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(Outside(x, solarSystem) -> -(-SunAs(x, star)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(SunAs(x, star)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Outside(x, solarSystem) -> -(-(SunAs(x, star))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0059",
+      "positives": [
+        {
+          "fol": "all v0.(In(v0,solarSystem) -> BoundBy(v0,sun,gravitationally))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(In(x, solarSystem) -> -BoundBy(x, sun, gravitationally))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(BoundBy(x, sun, gravitationally))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0057",
+      "positives": [
+        {
+          "fol": "all v0.(((Outside(v0,solarSystem) & -(In(v0,solarSystem))) | (-(Outside(v0,solarSystem)) & In(v0,solarSystem))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(((Outside(x, solarSystem) & -(In(x, solarSystem))) & (-(Outside(x, solarSystem)) & In(x, solarSystem))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(((Outside(x, solarSystem) & -(In(x, solarSystem))) | (-(Outside(x, solarSystem)) & In(x, solarSystem)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((-(Outside(x, solarSystem)) & In(x, solarSystem)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Outside(x, solarSystem) & -(In(x, solarSystem))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0063",
+      "positives": [
+        {
+          "fol": "exists v0.(Project(v0) & Do(sam,v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v0.(Project(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(Project(x) -> Do(sam, x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_quantifier",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0060",
+      "positives": [
+        {
+          "fol": "all v0.((Planet(v0) & BoundBy(v0,sun,gravitationally)) -> -((Planet(v0) & Rogue(v0))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((Planet(x) & BoundBy(x, sun, gravitationally)) -> -((Planet(x) & -Rogue(x))))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Planet(x) -> -((Planet(x) & Rogue(x))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Planet(x) & BoundBy(x, sun, gravitationally)) -> -((Planet(x) | Rogue(x))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Planet(x) & BoundBy(x, sun, gravitationally)) -> -(-((Planet(x) & Rogue(x)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0066",
+      "positives": [
+        {
+          "fol": "Use(sam,mac)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-Use(sam, mac)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0048",
+      "positives": [
+        {
+          "fol": "exists v0.(exists v1.((Fish(v0) -> Sting(v0,v1))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "exists x.(exists y.((Fish(x) -> -Sting(x, y))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "negate_atom",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(exists y.((Fish(x) -> Sting(x, y))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_quantifier",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(all y.((Fish(x) -> Sting(x, y))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_quantifier",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(exists y.((Fish(x) <-> Sting(x, y))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(-(exists y.((Fish(x) -> Sting(x, y)))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(exists y.(-((Fish(x) -> Sting(x, y)))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0069",
+      "positives": [
+        {
+          "fol": "all v0.(Rabbit(v0) -> Have(v0,fur))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(Rabbit(x) -> -Have(x, fur))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Have(x, fur))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0070",
+      "positives": [
+        {
+          "fol": "exists v0.(Pet(v0) & Rabbit(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists v0.(Pet(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(Pet(x) -> Rabbit(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_quantifier",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0068",
+      "positives": [
+        {
+          "fol": "all v0.((Song(v0) & Play(sam,v0)) -> Titled(v0,perfect))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((Song(x) & Play(sam, x)) -> -Titled(x, perfect))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Play(sam, x) -> Titled(x, perfect))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Song(x) -> Titled(x, perfect))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0067",
+      "positives": [
+        {
+          "fol": "exists v0.(((Use(sam,mac) & Song(v0)) -> Play(sam,v0)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(((Use(sam, mac) & Song(x)) -> Play(sam, x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_quantifier",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(((Use(sam, mac) & Song(x)) <-> Play(sam, x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "exists x.(((Use(sam, mac) | Song(x)) -> Play(sam, x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0061",
+      "positives": [
+        {
+          "fol": "all v0.((Planet(v0) & Orphan(v0)) -> (Planet(v0) & Rogue(v0)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all v0.((Planet(v0) & Orphan(v0)) -> Planet(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all v0.((Planet(v0) & Orphan(v0)) -> Rogue(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((Planet(x) & Orphan(x)) -> (-Planet(x) & Rogue(x)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Planet(x) & Orphan(x)) -> (Planet(x) & -Rogue(x)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Orphan(x) -> (Planet(x) & Rogue(x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Planet(x) -> (Planet(x) & Rogue(x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Planet(x) & Orphan(x)) -> -((Planet(x) & Rogue(x))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0064",
+      "positives": [
+        {
+          "fol": "all v0.(Project(v0) -> ((WrittenIn(v0,cplusplus) & -(WrittenIn(v0,python))) | (-(WrittenIn(v0,cplusplus)) & WrittenIn(v0,python))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(((WrittenIn(x, cplusplus) & -(WrittenIn(x, python))) | (-(WrittenIn(x, cplusplus)) & WrittenIn(x, python))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Project(x) -> ((WrittenIn(x, cplusplus) & -(WrittenIn(x, python))) & (-(WrittenIn(x, cplusplus)) & WrittenIn(x, python))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Project(x) -> -(((WrittenIn(x, cplusplus) & -(WrittenIn(x, python))) | (-(WrittenIn(x, cplusplus)) & WrittenIn(x, python)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Project(x) -> (-(WrittenIn(x, cplusplus)) & WrittenIn(x, python)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Project(x) -> (WrittenIn(x, cplusplus) & -(WrittenIn(x, python))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0071",
+      "positives": [
+        {
+          "fol": "all v0.((SocialMedia(v0) & Application(v0) & Contain(v0,chatFeature)) -> Software(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x) & Contain(x, chatFeature)) -> -Software(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Application(x) & Contain(x, chatFeature)) -> Software(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Contain(x, chatFeature)) -> Software(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> Software(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0079",
+      "positives": [
+        {
+          "fol": "UnincorporatedCommunity(ordinary)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-UnincorporatedCommunity(ordinary)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0072",
+      "positives": [
+        {
+          "fol": "all v0.((SocialMedia(v0) & Application(v0) & AllowToSendTo(v0,user,message)) -> Contain(v0,chatFeature))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x) & AllowToSendTo(x, user, message)) -> -Contain(x, chatFeature))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Application(x) & AllowToSendTo(x, user, message)) -> Contain(x, chatFeature))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & AllowToSendTo(x, user, message)) -> Contain(x, chatFeature))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> Contain(x, chatFeature))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0074",
+      "positives": [
+        {
+          "fol": "all v0.((SocialMedia(v0) & Application(v0) & Contain(v0,videoFeature)) -> Allow(v0,user,uploadVideo))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x) & Contain(x, videoFeature)) -> -Allow(x, user, uploadVideo))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Application(x) & Contain(x, videoFeature)) -> Allow(x, user, uploadVideo))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Contain(x, videoFeature)) -> Allow(x, user, uploadVideo))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> Allow(x, user, uploadVideo))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0076",
+      "positives": [
+        {
+          "fol": "all v0.((SocialMedia(v0) & Application(v0) & Have(v0,highEngagementMetric)) -> Addictive(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x) & Have(x, highEngagementMetric)) -> -Addictive(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Application(x) & Have(x, highEngagementMetric)) -> Addictive(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Have(x, highEngagementMetric)) -> Addictive(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> Addictive(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0081",
+      "positives": [
+        {
+          "fol": "LocatedNorthwestOf(ordinary,sandyHook)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-LocatedNorthwestOf(ordinary, sandyHook)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0075",
+      "positives": [
+        {
+          "fol": "all v0.((SocialMedia(v0) & Application(v0) & Software(v0)) -> ComputerProgram(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x) & Software(x)) -> -ComputerProgram(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Application(x) & Software(x)) -> ComputerProgram(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Software(x)) -> ComputerProgram(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> ComputerProgram(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0078",
+      "positives": [
+        {
+          "fol": "(SocialMedia(tikTok) & Application(tikTok) & -(IdealFor(tikTok,preteen)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "SocialMedia(tikTok)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "Application(tikTok)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "-(IdealFor(tikTok,preteen))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-SocialMedia(tikTok) & Application(tikTok) & -(IdealFor(tikTok, preteen)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(SocialMedia(tikTok) & -Application(tikTok) & -(IdealFor(tikTok, preteen)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(SocialMedia(tikTok) & Application(tikTok) & -(-IdealFor(tikTok, preteen)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(SocialMedia(tikTok) & Application(tikTok) & -(-(IdealFor(tikTok, preteen))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0080",
+      "positives": [
+        {
+          "fol": "(LocatedIn(ordinary,elliotCounty) & On(ordinary,kentuckyRoute32))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "LocatedIn(ordinary,elliotCounty)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "On(ordinary,kentuckyRoute32)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-LocatedIn(ordinary, elliotCounty) & On(ordinary, kentuckyRoute32))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(LocatedIn(ordinary, elliotCounty) & -On(ordinary, kentuckyRoute32))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0077",
+      "positives": [
+        {
+          "fol": "all v0.((SocialMedia(v0) & Application(v0) & Addictive(v0)) -> -(IdealFor(v0,preteen)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x) & Addictive(x)) -> -(-IdealFor(x, preteen)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((Application(x) & Addictive(x)) -> -(IdealFor(x, preteen)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Addictive(x)) -> -(IdealFor(x, preteen)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> -(IdealFor(x, preteen)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x) & Addictive(x)) -> -(-(IdealFor(x, preteen))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0073",
+      "positives": [
+        {
+          "fol": "all v0.((SocialMedia(v0) & Application(v0)) -> (Contain(v0,chatFeature) | Contain(v0,videoFeature)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(Application(x) -> (Contain(x, chatFeature) | Contain(x, videoFeature)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(SocialMedia(x) -> (Contain(x, chatFeature) | Contain(x, videoFeature)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> (Contain(x, chatFeature) & Contain(x, videoFeature)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> -((Contain(x, chatFeature) | Contain(x, videoFeature))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> Contain(x, videoFeature))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((SocialMedia(x) & Application(x)) -> Contain(x, chatFeature))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0082",
+      "positives": [
+        {
+          "fol": "all v0.((At(v0,event) & YoungAdult(v0)) -> Like(v0,independence))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((At(x, event) & YoungAdult(x)) -> -Like(x, independence))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(YoungAdult(x) -> Like(x, independence))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, event) -> Like(x, independence))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0088",
+      "positives": [
+        {
+          "fol": "(YaleStudent(susan) -> -(Like(susan,independence)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(YaleStudent(susan) <-> -(Like(susan, independence)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0084",
+      "positives": [
+        {
+          "fol": "all v0.((At(v0,event) & YaleStudent(v0)) -> CollegeStudent(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((At(x, event) & YaleStudent(x)) -> -CollegeStudent(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(YaleStudent(x) -> CollegeStudent(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, event) -> CollegeStudent(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0083",
+      "positives": [
+        {
+          "fol": "all v0.((At(v0,event) & CollegeStudent(v0)) -> YoungAdult(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((At(x, event) & CollegeStudent(x)) -> -YoungAdult(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(CollegeStudent(x) -> YoungAdult(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, event) -> YoungAdult(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0086",
+      "positives": [
+        {
+          "fol": "all v0.((At(v0,event) & HarvardStudent(v0)) -> Diligent(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((At(x, event) & HarvardStudent(x)) -> -Diligent(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(HarvardStudent(x) -> Diligent(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, event) -> Diligent(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0091",
+      "positives": [
+        {
+          "fol": "Band(vicDicara,insideOut)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-Band(vicDicara, insideOut)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0089",
+      "positives": [
+        {
+          "fol": "(Play(vicDicara,guitar) & Play(vicDicara,bass))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "Play(vicDicara,guitar)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "Play(vicDicara,bass)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-Play(vicDicara, guitar) & Play(vicDicara, bass))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(Play(vicDicara, guitar) & -Play(vicDicara, bass))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0092",
+      "positives": [
+        {
+          "fol": "all v0.(ProfessionalAthlete(v0) -> SpendOn(v0,mostOfTheirTime,sports))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(ProfessionalAthlete(x) -> -SpendOn(x, mostOfTheirTime, sports))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(SpendOn(x, mostOfTheirTime, sports))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0087",
+      "positives": [
+        {
+          "fol": "(At(susan,event) & (HarvardStudent(susan) -> YoungAdult(susan)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "At(susan,event)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(HarvardStudent(susan) -> YoungAdult(susan))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-At(susan, event) & (HarvardStudent(susan) -> YoungAdult(susan)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(At(susan, event) & (HarvardStudent(susan) <-> YoungAdult(susan)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "(At(susan, event) & -((HarvardStudent(susan) -> YoungAdult(susan))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0085",
+      "positives": [
+        {
+          "fol": "all v0.(At(v0,event) -> ((YaleStudent(v0) & -(HarvardStudent(v0))) | (-(YaleStudent(v0)) & HarvardStudent(v0))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(((YaleStudent(x) & -(HarvardStudent(x))) | (-(YaleStudent(x)) & HarvardStudent(x))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, event) -> ((YaleStudent(x) & -(HarvardStudent(x))) & (-(YaleStudent(x)) & HarvardStudent(x))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, event) -> -(((YaleStudent(x) & -(HarvardStudent(x))) | (-(YaleStudent(x)) & HarvardStudent(x)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, event) -> (-(YaleStudent(x)) & HarvardStudent(x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, event) -> (YaleStudent(x) & -(HarvardStudent(x))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0093",
+      "positives": [
+        {
+          "fol": "all v0.(OlympicGoldMedalWinner(v0) -> ProfessionalAthlete(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(OlympicGoldMedalWinner(x) -> -ProfessionalAthlete(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(ProfessionalAthlete(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0095",
+      "positives": [
+        {
+          "fol": "all v0.(NobelPhysicsLaureate(v0) -> FullTimeScientist(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(NobelPhysicsLaureate(x) -> -FullTimeScientist(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(FullTimeScientist(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0094",
+      "positives": [
+        {
+          "fol": "all v0.(FullTimeScientist(v0) -> -(SpendOn(v0,mostOfTheirTime,sports)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(FullTimeScientist(x) -> -(-SpendOn(x, mostOfTheirTime, sports)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(SpendOn(x, mostOfTheirTime, sports)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(FullTimeScientist(x) -> -(-(SpendOn(x, mostOfTheirTime, sports))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0097",
+      "positives": [
+        {
+          "fol": "(-(NobelPhysicsLaureate(amy)) -> -(OlympicGoldMedalWinner(amy)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(-(NobelPhysicsLaureate(amy)) <-> -(OlympicGoldMedalWinner(amy)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0102",
+      "positives": [
+        {
+          "fol": "GrownIn(cherry,benSYard)",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "-GrownIn(cherry, benSYard)",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0096",
+      "positives": [
+        {
+          "fol": "(SpendOn(amy,mostOfTheirTime,sports) | OlympicGoldMedalWinner(amy))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(SpendOn(amy, mostOfTheirTime, sports) & OlympicGoldMedalWinner(amy))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "OlympicGoldMedalWinner(amy)",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "SpendOn(amy, mostOfTheirTime, sports)",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0100",
+      "positives": [
+        {
+          "fol": "all v0.((GrownIn(v0,benSYard) & Contain(v0,vitaminC)) -> healthy(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((GrownIn(x, benSYard) & Contain(x, vitaminC)) -> -healthy(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Contain(x, vitaminC) -> healthy(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(GrownIn(x, benSYard) -> healthy(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0104",
+      "positives": [
+        {
+          "fol": "all v0.(WorkAt(v0,meta) -> HighIncome(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(WorkAt(x, meta) -> -HighIncome(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(HighIncome(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0099",
+      "positives": [
+        {
+          "fol": "all v0.((GrownIn(v0,benSYard) & Is(v0,apple)) -> RedFruit(v0))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((GrownIn(x, benSYard) & Is(x, apple)) -> -RedFruit(x))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Is(x, apple) -> RedFruit(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(GrownIn(x, benSYard) -> RedFruit(x))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0098",
+      "positives": [
+        {
+          "fol": "all v0.((GrownIn(v0,benSYard) & RedFruit(v0)) -> Contain(v0,vitaminC))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((GrownIn(x, benSYard) & RedFruit(x)) -> -Contain(x, vitaminC))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(RedFruit(x) -> Contain(x, vitaminC))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(GrownIn(x, benSYard) -> Contain(x, vitaminC))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0105",
+      "positives": [
+        {
+          "fol": "all v0.(HighIncome(v0) -> -(MeansToDestination(v0,bus)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(HighIncome(x) -> -(-MeansToDestination(x, bus)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(MeansToDestination(x, bus)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(HighIncome(x) -> -(-(MeansToDestination(x, bus))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0101",
+      "positives": [
+        {
+          "fol": "all v0.((GrownIn(v0,benSYard) & Healthy(v0)) -> -(On(v0,warningList)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((GrownIn(x, benSYard) & Healthy(x)) -> -(-On(x, warningList)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Healthy(x) -> -(On(x, warningList)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(GrownIn(x, benSYard) -> -(On(x, warningList)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((GrownIn(x, benSYard) & Healthy(x)) -> -(-(On(x, warningList))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0107",
+      "positives": [
+        {
+          "fol": "all v0.(HaveCar(v0) -> MeansToDestination(v0,drive))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(HaveCar(x) -> -MeansToDestination(x, drive))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(MeansToDestination(x, drive))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0106",
+      "positives": [
+        {
+          "fol": "all v0.(((MeansToDestination(v0,bus) & -(MeansToDestination(v0,drive))) | (-(MeansToDestination(v0,bus)) & MeansToDestination(v0,drive))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(((MeansToDestination(x, bus) & -(MeansToDestination(x, drive))) & (-(MeansToDestination(x, bus)) & MeansToDestination(x, drive))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(-(((MeansToDestination(x, bus) & -(MeansToDestination(x, drive))) | (-(MeansToDestination(x, bus)) & MeansToDestination(x, drive)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((-(MeansToDestination(x, bus)) & MeansToDestination(x, drive)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((MeansToDestination(x, bus) & -(MeansToDestination(x, drive))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0112",
+      "positives": [
+        {
+          "fol": "all v0.((At(v0,businessConference) & Entrepreneur(v0)) -> Enjoy(v0,opportunityOfStartingOwnBusiness))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((At(x, businessConference) & Entrepreneur(x)) -> -Enjoy(x, opportunityOfStartingOwnBusiness))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Entrepreneur(x) -> Enjoy(x, opportunityOfStartingOwnBusiness))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, businessConference) -> Enjoy(x, opportunityOfStartingOwnBusiness))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0109",
+      "positives": [
+        {
+          "fol": "(HaveCar(james) | WorkAt(james,meta))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "(HaveCar(james) & WorkAt(james, meta))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "flip_connective",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "WorkAt(james, meta)",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "HaveCar(james)",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0111",
+      "positives": [
+        {
+          "fol": "all v0.((At(v0,businessConference) & Enjoy(v0,opportunityOfStartingOwnBusiness)) -> -(Prefer(v0,plannedEconomy)))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((At(x, businessConference) & Enjoy(x, opportunityOfStartingOwnBusiness)) -> -(-Prefer(x, plannedEconomy)))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Enjoy(x, opportunityOfStartingOwnBusiness) -> -(Prefer(x, plannedEconomy)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, businessConference) -> -(Prefer(x, plannedEconomy)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.((At(x, businessConference) & Enjoy(x, opportunityOfStartingOwnBusiness)) -> -(-(Prefer(x, plannedEconomy))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0113",
+      "positives": [
+        {
+          "fol": "all v0.((At(v0,businessConference) & Enjoy(v0,stateOwnershipOfMeansOfProduction)) -> Prefer(v0,plannedEconomy))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.((At(x, businessConference) & Enjoy(x, stateOwnershipOfMeansOfProduction)) -> -Prefer(x, plannedEconomy))",
+          "relation": "incompatible",
+          "mutation_kind": "negate_atom",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(Enjoy(x, stateOwnershipOfMeansOfProduction) -> Prefer(x, plannedEconomy))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, businessConference) -> Prefer(x, plannedEconomy))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    },
+    {
+      "premise_id": "P0110",
+      "positives": [
+        {
+          "fol": "all v0.(At(v0,businessConference) -> ((Investor(v0) & -(Entrepreneur(v0))) | (-(Investor(v0)) & Entrepreneur(v0))))",
+          "vampire": "unsat",
+          "verdict": "pass"
+        }
+      ],
+      "contrastives": [
+        {
+          "fol": "all x.(((Investor(x) & -(Entrepreneur(x))) | (-(Investor(x)) & Entrepreneur(x))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "drop_restrictor_conjunct",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, businessConference) -> ((Investor(x) & -(Entrepreneur(x))) & (-(Investor(x)) & Entrepreneur(x))))",
+          "relation": "incompatible",
+          "mutation_kind": "flip_connective",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, businessConference) -> -(((Investor(x) & -(Entrepreneur(x))) | (-(Investor(x)) & Entrepreneur(x)))))",
+          "relation": "incompatible",
+          "mutation_kind": "replace_subformula_with_negation",
+          "check_a": "unsat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, businessConference) -> (-(Investor(x)) & Entrepreneur(x)))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        },
+        {
+          "fol": "all x.(At(x, businessConference) -> (Investor(x) & -(Entrepreneur(x))))",
+          "relation": "strictly_stronger",
+          "mutation_kind": "disjunct_drop",
+          "check_b": "unsat",
+          "check_c": "sat",
+          "verdict": "pass"
+        }
+      ]
+    }
+  ]
+}

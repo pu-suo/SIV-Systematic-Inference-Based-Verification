@@ -1,13 +1,13 @@
 {
-  "n_candidates": 22,
+  "n_candidates": 24,
   "condition_means": {
-    "score_only": 0.6932,
-    "structured": 1.0,
-    "shuffled": 1.0
+    "score_only": 0.5882,
+    "structured": 0.9833,
+    "shuffled": 0.9833
   },
   "deltas": {
     "structured_minus_shuffled": 0.0,
-    "structured_minus_score_only": 0.3068
+    "structured_minus_score_only": 0.3951
   },
   "bootstrap_ci": {
     "lo": null,
@@ -34,7 +34,7 @@
       },
       {
         "idx": 3,
-        "siv": 1.0,
+        "siv": 0.6,
         "equiv": false
       },
       {
@@ -94,13 +94,13 @@
       },
       {
         "idx": 15,
-        "siv": 1.0,
-        "equiv": true
+        "siv": 0.6,
+        "equiv": false
       },
       {
         "idx": 16,
-        "siv": 1.0,
-        "equiv": true
+        "siv": 0.3333333333333333,
+        "equiv": false
       },
       {
         "idx": 17,
@@ -110,20 +110,30 @@
       {
         "idx": 18,
         "siv": 1.0,
-        "equiv": false
+        "equiv": true
       },
       {
         "idx": 19,
-        "siv": 1.0,
-        "equiv": true
+        "siv": 0.3333333333333333,
+        "equiv": false
       },
       {
         "idx": 20,
         "siv": 1.0,
-        "equiv": true
+        "equiv": false
       },
       {
         "idx": 21,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 22,
+        "siv": 0.0,
+        "equiv": false
+      },
+      {
+        "idx": 23,
         "siv": 1.0,
         "equiv": true
       }
@@ -146,7 +156,7 @@
       },
       {
         "idx": 3,
-        "siv": 1.0,
+        "siv": 0.6,
         "equiv": false
       },
       {
@@ -222,7 +232,7 @@
       {
         "idx": 18,
         "siv": 1.0,
-        "equiv": false
+        "equiv": true
       },
       {
         "idx": 19,
@@ -232,10 +242,20 @@
       {
         "idx": 20,
         "siv": 1.0,
-        "equiv": true
+        "equiv": false
       },
       {
         "idx": 21,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 22,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 23,
         "siv": 1.0,
         "equiv": true
       }
@@ -258,7 +278,7 @@
       },
       {
         "idx": 3,
-        "siv": 1.0,
+        "siv": 0.6,
         "equiv": false
       },
       {
@@ -334,7 +354,7 @@
       {
         "idx": 18,
         "siv": 1.0,
-        "equiv": false
+        "equiv": true
       },
       {
         "idx": 19,
@@ -344,10 +364,20 @@
       {
         "idx": 20,
         "siv": 1.0,
-        "equiv": true
+        "equiv": false
       },
       {
         "idx": 21,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 22,
+        "siv": 1.0,
+        "equiv": true
+      },
+      {
+        "idx": 23,
         "siv": 1.0,
         "equiv": true
       }

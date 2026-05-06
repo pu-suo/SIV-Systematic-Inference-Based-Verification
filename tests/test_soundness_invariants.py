@@ -152,13 +152,74 @@ def test_deliberately_broken_contrastive_fails_soundness():
     mechanism failures in the generator."""
     se = SentenceExtraction.model_validate(CORPUS[2]["extraction"])  # All dogs are mammals.
     suite = compile_sentence_test_suite(se, timeout_s=10)
-    # Inject a fake contrastive that is satisfiable alongside the positives:
-    # just a trivial tautology.
+    # Inject a fake contrastive tagged "incompatible" that is in fact a
+    # tautology — gold ∧ tautology is satisfiable, so C9b's incompatible
+    # branch must catch it.
     suite.contrastives.append(UnitTest(
         fol="all x.(Dog(x) -> Dog(x))",
         kind="contrastive",
         mutation_kind="fake_injected_for_test",
+        probe_relation="incompatible",
     ))
     ok, reason = check_contrastive_soundness(suite, timeout_s=10)
     assert not ok
     assert "fake_injected_for_test" in (reason or "")
+
+
+@vampire_required
+def test_equivalent_mutant_tagged_strictly_stronger_fails_soundness():
+    """A mutant equivalent to gold but mistakenly tagged ``strictly_stronger``
+    must be caught by C9b's strictly-stronger branch (gold ⊨ mutant returns
+    ``unsat``, so the entails check is not ``sat`` — admit-fails)."""
+    se = SentenceExtraction.model_validate(CORPUS[2]["extraction"])  # All dogs are mammals.
+    suite = compile_sentence_test_suite(se, timeout_s=10)
+    # The canonical FOL itself: equivalent to gold by definition. Tagging it
+    # as strictly_stronger is the kind of mis-tag the strictly-stronger
+    # branch must catch.
+    canonical = compile_canonical_fol(se)
+    suite.contrastives.append(UnitTest(
+        fol=canonical,
+        kind="contrastive",
+        mutation_kind="fake_equivalent_tagged_stronger",
+        probe_relation="strictly_stronger",
+    ))
+    ok, reason = check_contrastive_soundness(suite, timeout_s=10)
+    assert not ok
+    assert "fake_equivalent_tagged_stronger" in (reason or "")
+
+
+@vampire_required
+def test_independent_mutant_rejected_by_gate_at_admission():
+    """An operator-emitted mutant that is logically independent of gold
+    (neither entails the other, and they are jointly satisfiable) must be
+    rejected at admission time by ``classify_mutant_relation`` rather than
+    misclassified as ``strictly_stronger``. This is the bug the prior
+    two-check formulation had — without check B (mutant ⊨ gold), independent
+    mutants leaked through under the strictly-stronger label."""
+    from siv.contrastive_generator import (
+        classify_mutant_relation,
+        derive_witness_axioms,
+    )
+
+    se = SentenceExtraction.model_validate(CORPUS[2]["extraction"])  # All dogs are mammals.
+    canonical = compile_canonical_fol(se)  # all x.(Dog(x) -> Mammal(x))
+    witnesses = derive_witness_axioms(se)
+
+    # ``all x.(Cat(x) -> Reptile(x))`` is independent of gold: it neither
+    # entails nor is entailed by "all dogs are mammals", and the two are
+    # jointly satisfiable (witnesses force non-empty Dog/Mammal/Cat/Reptile).
+    independent_mutant = "all x.(Cat(x) -> Reptile(x))"
+    # Add Cat / Reptile witnesses so Vampire has something to existentially
+    # close (witness_axioms otherwise wouldn't include them — they're not in
+    # the extraction). For this test we hand-augment.
+    augmented_witnesses = list(witnesses) + [
+        "exists x.Cat(x)", "exists x.Reptile(x)",
+    ]
+
+    relation = classify_mutant_relation(
+        canonical, independent_mutant, augmented_witnesses, timeout_s=10,
+    )
+    assert relation == "independent", (
+        f"expected 'independent', got {relation!r} — the gate is letting "
+        f"unrelated mutants through"
+    )

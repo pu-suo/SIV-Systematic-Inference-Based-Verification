@@ -141,20 +141,52 @@ def test_flip_connective_and_to_or():
     assert any(m.connective == "or" for m in mutants)
 
 
-def test_flip_connective_implies_has_iff_and_reversed():
+def test_flip_connective_implies_emits_iff_only():
+    """``flip_connective`` rewrites ``A -> B`` to ``A <-> B`` (iff). The
+    converse (``B -> A``) is no longer emitted here — it now lives in the
+    dedicated ``converse`` operator for cleaner attribution."""
     f = Formula(connective="implies",
                 operands=[_atomic_f("A", "a"), _atomic_f("B", "a")])
     mutants = flip_connective(f)
     connectives = sorted(m.connective for m in mutants if m.connective)
-    assert "iff" in connectives
-    # Reversed implies: same connective, swapped operands.
+    assert connectives == ["iff"]
+    # The reversed-implies form must NOT come from flip_connective anymore.
     reversed_implies = [
         m for m in mutants
         if m.connective == "implies"
         and m.operands[0].atomic.pred == "B"
         and m.operands[1].atomic.pred == "A"
     ]
-    assert len(reversed_implies) == 1
+    assert len(reversed_implies) == 0
+
+
+def test_converse_operator_emits_swapped_implies():
+    """The dedicated ``converse`` operator emits ``A -> B`` ↦ ``B -> A``."""
+    from siv.contrastive_generator import converse
+    f = Formula(connective="implies",
+                operands=[_atomic_f("A", "a"), _atomic_f("B", "a")])
+    mutants = converse(f)
+    swapped = [
+        m for m in mutants
+        if m.connective == "implies"
+        and m.operands[0].atomic.pred == "B"
+        and m.operands[1].atomic.pred == "A"
+    ]
+    assert len(swapped) == 1
+
+
+def test_disjunct_drop_emits_one_mutant_per_dropped_disjunct():
+    """For ``A | B | C``, ``disjunct_drop`` emits three mutants, each with
+    one disjunct removed."""
+    from siv.contrastive_generator import disjunct_drop
+    f = Formula(connective="or", operands=[
+        _atomic_f("A", "a"), _atomic_f("B", "a"), _atomic_f("C", "a"),
+    ])
+    mutants = disjunct_drop(f)
+    # Top-level: 3 single-drop mutants. (Recursion into atom operands yields
+    # nothing further for predicates without internal OR-sites.)
+    top_level = [m for m in mutants if m.connective == "or" and len(m.operands) == 2]
+    assert len(top_level) == 3
 
 
 def test_flip_connective_iff_to_implies_no_reversed():
@@ -390,7 +422,7 @@ def test_fourteen_examples_have_unknown_rate_below_threshold():
         se = SentenceExtraction.model_validate(example["extraction"])
         _acc, tele = generate_contrastives(se, timeout_s=3)
         total_gen += tele["generated"]
-        total_unk += tele["dropped_unknown"]
+        total_unk += tele["dropped_timeout"]
     rate = total_unk / total_gen if total_gen else 0.0
     assert rate < 0.2, f"unknown_rate = {rate:.3f}"
 
@@ -399,9 +431,12 @@ def test_fourteen_examples_have_unknown_rate_below_threshold():
 @pytest.mark.parametrize(
     "example", _EXAMPLES, ids=[ex["sentence"] for ex in _EXAMPLES],
 )
-def test_every_accepted_mutant_is_provably_unsat(example):
-    """Every accepted contrastive must be provably inconsistent with the
-    canonical (under witness axioms). This is C7's acceptance rule."""
+def test_every_accepted_mutant_matches_its_probe_relation(example):
+    """Every accepted contrastive must satisfy the gate condition for its
+    declared ``probe_relation``:
+      - ``incompatible``: gold ∧ mutant unsat (under witness axioms).
+      - ``strictly_stronger``: gold ⊭ mutant — checked via entails returning
+        ``sat``."""
     se = SentenceExtraction.model_validate(example["extraction"])
     accepted, _tele = generate_contrastives(se, timeout_s=3)
     if not accepted:
@@ -411,7 +446,16 @@ def test_every_accepted_mutant_is_provably_unsat(example):
     for t in accepted:
         assert t.kind == "contrastive"
         assert t.mutation_kind is not None
-        verdict = vampire_check(
-            original_fol, t.fol, check="unsat", timeout=3, axioms=witnesses,
-        )
-        assert verdict == "unsat", (t.fol, t.mutation_kind, verdict)
+        relation = t.probe_relation or "incompatible"
+        if relation == "incompatible":
+            verdict = vampire_check(
+                original_fol, t.fol, check="unsat", timeout=3, axioms=witnesses,
+            )
+            assert verdict == "unsat", (t.fol, t.mutation_kind, verdict)
+        elif relation == "strictly_stronger":
+            verdict = vampire_check(
+                original_fol, t.fol, check="entails", timeout=3, axioms=witnesses,
+            )
+            assert verdict == "sat", (t.fol, t.mutation_kind, verdict)
+        else:
+            pytest.fail(f"unknown probe_relation {relation!r}")

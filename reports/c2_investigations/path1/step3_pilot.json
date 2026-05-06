@@ -4,25 +4,25 @@
     "no_feedback": {
       "parseable_rate": 1.0,
       "equiv_rate": 0.6,
-      "siv_rate": 0.65,
+      "siv_rate": 0.6,
       "n": 20
     },
     "score_only": {
       "parseable_rate": 1.0,
-      "equiv_rate": 0.65,
-      "siv_rate": 0.65,
+      "equiv_rate": 0.6,
+      "siv_rate": 0.6,
       "n": 20
     },
     "structured_category": {
       "parseable_rate": 1.0,
       "equiv_rate": 0.55,
-      "siv_rate": 0.6,
+      "siv_rate": 0.55,
       "n": 20
     },
     "shuffled_category": {
       "parseable_rate": 1.0,
-      "equiv_rate": 0.55,
-      "siv_rate": 0.6,
+      "equiv_rate": 0.5,
+      "siv_rate": 0.55,
       "n": 20
     },
     "count_only": {
@@ -33,8 +33,8 @@
     }
   },
   "primary_comparison": {
-    "structured_rate": 0.6,
-    "shuffled_rate": 0.6,
+    "structured_rate": 0.55,
+    "shuffled_rate": 0.55,
     "delta": 0.0
   },
   "sanity_checks": {
@@ -77,14 +77,14 @@
       },
       {
         "candidate_id": "C029",
-        "correction": "(NBAPlayer(stephencurry) \u2228 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)",
+        "correction": "(NBAPlayer(stephencurry) \u2228 SoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)",
         "parseable": true,
         "equiv_to_gold": false,
-        "siv_equiv": true
+        "siv_equiv": false
       },
       {
         "candidate_id": "C018",
-        "correction": "\u2203x (RightFoot(x) \u2227 UseEfficiently(ronaldo, x))",
+        "correction": "\u2203x (UseEfficiently(ronaldo, rightFoot, x))",
         "parseable": true,
         "equiv_to_gold": false,
         "siv_equiv": false
@@ -154,7 +154,7 @@
       },
       {
         "candidate_id": "C065",
-        "correction": "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2228 \u2203y (PastEra(y) \u2227 FascinatedBy(x, y)) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+        "correction": "\u2200x (FascinatedBy(x, historyOfRenaissance) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
         "parseable": true,
         "equiv_to_gold": false,
         "siv_equiv": false
@@ -226,10 +226,10 @@
       },
       {
         "candidate_id": "C018",
-        "correction": "UseEfficiently(ronaldo, rightFoot)",
+        "correction": "\u2203x (RightFoot(x) \u2227 UseEfficiently(ronaldo, x))",
         "parseable": true,
-        "equiv_to_gold": true,
-        "siv_equiv": true
+        "equiv_to_gold": false,
+        "siv_equiv": false
       },
       {
         "candidate_id": "C014",
@@ -275,7 +275,7 @@
       },
       {
         "candidate_id": "C072",
-        "correction": "Measure(fMRI, brainActivity) \u2228 Noninvasive(fMRI)",
+        "correction": "Measure(fMRI, brainActivity) \u2228 Noninvasive(fMRI) \u2227 NeuroimagingTechnique(fMRI)",
         "parseable": true,
         "equiv_to_gold": false,
         "siv_equiv": false
@@ -303,7 +303,7 @@
       },
       {
         "candidate_id": "C069",
-        "correction": "\u2200x (Noninvasive(x) \u2227 NeuroimagingTechnique(x) \u2192 ProvidesSpatialResolutionOfBrains(x))",
+        "correction": "\u2200x (Noninvasive(x) \u2227 NeuroimagingTechnique(x) \u2192 Provides(x, spatialResolutionOfBrains))",
         "parseable": true,
         "equiv_to_gold": false,
         "siv_equiv": false
@@ -361,10 +361,10 @@
       },
       {
         "candidate_id": "C029",
-        "correction": "(NBAPlayer(stephencurry) \u2228 ProfessionalSoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry)",
+        "correction": "((NBAPlayer(stephencurry) \u2228 SoccerPlayer(stephencurry)) \u2192 ProfessionalBasketballPlayer(stephencurry))",
         "parseable": true,
         "equiv_to_gold": false,
-        "siv_equiv": true
+        "siv_equiv": false
       },
       {
         "candidate_id": "C018",
@@ -389,7 +389,7 @@
       },
       {
         "candidate_id": "C012",
-        "correction": "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
+        "correction": "\u00ac\u2203x (Kid(x) \u2227 In(x, ourFamily) \u2227 Love(x, opera))",
         "parseable": true,
         "equiv_to_gold": true,
         "siv_equiv": true
@@ -417,7 +417,7 @@
       },
       {
         "candidate_id": "C072",
-        "correction": "Measure(fMRI, brainActivity) \u2228 Noninvasive(fMRI) \u2227 NeuroimagingTechnique(fMRI)",
+        "correction": "Measure(fMRI, brainActivity) \u2228 (Noninvasive(fMRI) \u2227 NeuroimagingTechnique(fMRI))",
         "parseable": true,
         "equiv_to_gold": false,
         "siv_equiv": false
@@ -438,7 +438,7 @@
       },
       {
         "candidate_id": "C065",
-        "correction": "\u2200x ((FascinatedBy(x, historyOfRenaissance) \u2228 FascinatedBy(x, otherPastEras)) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+        "correction": "\u2200x ((FascinatedBy(x, historyOfRenaissance) \u2227 FascinatedBy(x, otherPastEras)) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
         "parseable": true,
         "equiv_to_gold": false,
         "siv_equiv": false
@@ -524,14 +524,14 @@
       },
       {
         "candidate_id": "C070",
-        "correction": "\u2200x (Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
+        "correction": "\u2200x (Technique(x) \u2227 Provides(x, spatialResolutionOfBrains) \u2192 Measure(x, brainActivity))",
         "parseable": true,
-        "equiv_to_gold": true,
-        "siv_equiv": true
+        "equiv_to_gold": false,
+        "siv_equiv": false
       },
       {
         "candidate_id": "C012",
-        "correction": "\u00ac\u2203x (Kid(x) \u2227 In(x, ourFamily) \u2227 Love(x, opera))",
+        "correction": "\u2200x ((Kid(x) \u2227 In(x, ourFamily)) \u2192 \u00acLove(x, opera))",
         "parseable": true,
         "equiv_to_gold": true,
         "siv_equiv": true
@@ -580,7 +580,7 @@
       },
       {
         "candidate_id": "C065",
-        "correction": "\u2200x ((Person(x) \u2227 (FascinatedBy(x, historyOfRenaissance) \u2228 FascinatedBy(x, otherPastEras))) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
+        "correction": "\u2200x ((FascinatedBy(x, historyOfRenaissance) \u2227 FascinatedBy(x, otherPastEras)) \u2228 (ContemporaryAcademic(x) \u2227 Enjoy(x, learning)))",
         "parseable": true,
         "equiv_to_gold": false,
         "siv_equiv": false
@@ -694,14 +694,14 @@
       },
       {
         "candidate_id": "C079",
-        "correction": "\u2200x (Animal(x) \u2192 \u00acPlant(x))",
+        "correction": "\u00ac\u2203x (Animal(x) \u2227 Plant(x))",
         "parseable": true,
         "equiv_to_gold": true,
         "siv_equiv": true
       },
       {
         "candidate_id": "C072",
-        "correction": "Measure(fMRI, brainActivity) \u2228 Noninvasive(fMRI)",
+        "correction": "Measure(fMRI, brainActivity) \u2228 NoninvasiveNeuroimagingTechnique(fMRI)",
         "parseable": true,
         "equiv_to_gold": false,
         "siv_equiv": false

@@ -93,13 +93,20 @@ def test_candidate_entailing_contrastive_gives_precision_drop():
 @vampire_required
 def test_empty_contrastives_reports_recall_only():
     """A perfect candidate on an empty-contrastives test suite gives
-    recall = 1.0, precision None, f1 None."""
-    # Use a structurally-weak example: the L-2021 monitor disjunction.
-    ex = next(e for e in _EXAMPLES if "L-2021 monitor" in e["sentence"])
-    se = SentenceExtraction.model_validate(ex["extraction"])
-    suite = compile_sentence_test_suite(se, timeout_s=5)
-    assert len(suite.contrastives) == 0  # structurally-weak
-    report = score(suite, compile_canonical_fol(se), timeout_s=5)
+    recall = 1.0, precision None, f1 None.
+
+    Constructs the empty-contrastives suite manually rather than relying on
+    a particular FOLIO example, since the relaxed gate may admit
+    strictly-stronger contrastives for cases that were previously empty.
+    """
+    se = _atomic_extraction()
+    canonical = compile_canonical_fol(se)
+    suite = TestSuite(
+        extraction=se,
+        positives=[UnitTest(fol=canonical, kind="positive")],
+        contrastives=[],
+    )
+    report = score(suite, canonical, timeout_s=5)
     assert report.recall == 1.0
     assert report.precision is None
     assert report.f1 is None

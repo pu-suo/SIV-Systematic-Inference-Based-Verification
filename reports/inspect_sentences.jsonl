@@ -1,0 +1,25 @@
+{"id": "EXPB-1", "category": "exp_b", "nl": "The University of Edinburgh is located in the United Kingdom.", "gold_fol": "University(universityOfEdinburgh) & LocatedIn(universityOfEdinburgh, unitedKingdom)"}
+{"id": "EXPB-2", "category": "exp_b", "nl": "Michael was born in Yorkshire and is the son of a general practitioner.", "gold_fol": "BornIn(michael, yorkshire) & exists x.(SonOf(michael, x) & GeneralPractitioner(x))"}
+{"id": "EXPB-3", "category": "exp_b", "nl": "Diseases that are leukemia are blood cancers.", "gold_fol": "all x.((Disease(x) & Leukemia(x)) -> BloodCancer(x))"}
+{"id": "EXPB-4", "category": "exp_b", "nl": "All Ferraris are sports cars.", "gold_fol": "all x.(Ferrari(x) -> SportsCar(x))"}
+{"id": "EXPB-5", "category": "exp_b", "nl": "Inception is a sci-fi movie.", "gold_fol": "ScifiMovie(inception)"}
+{"id": "EXPB-6", "category": "exp_b", "nl": "Mary can get from New Haven to New York either by train or by car.", "gold_fol": "FromAndTo(newHaven, newYork) & (GoByTrain(mary) | GoByCar(mary))"}
+{"id": "RAND-SU-1", "category": "random_simple_universal", "nl": "Everyone who knows breadth-first search knows how to use a queue.", "gold_fol": "all x.(Know(x, breathFirstSearch) -> Know(x, howToUseQueue))"}
+{"id": "RAND-SU-2", "category": "random_simple_universal", "nl": "When Olivia sleeps, she prefers a cool temperature.", "gold_fol": "all x.(Sleep(olivia, x) -> Prefer(olivia, coolTemperature, x))"}
+{"id": "RAND-SE-1", "category": "random_simple_existential", "nl": "Nancy teaches students.", "gold_fol": "Teach(nancy, student)"}
+{"id": "RAND-SE-2", "category": "random_simple_existential", "nl": "Sam works on a project.", "gold_fol": "exists x.(Project(x) & Do(sam, x))"}
+{"id": "RAND-CRU-1", "category": "random_compound_restrictor_universal", "nl": "Easy Leetcode problems do not have an AC rate lower than 20%.", "gold_fol": "all x.((LeetcodeProblems(x) & Easy(x)) -> -HaveAnACRateLowerThan(x, percent20))"}
+{"id": "RAND-CRU-2", "category": "random_compound_restrictor_universal", "nl": "People in the tech company who have high energy and are impulsive don't like surprises.", "gold_fol": "all x.((InThisTechCompany(x) & Have(x, highEnergy) & Impulsive(x)) -> -Like(x, surprise))"}
+{"id": "RAND-ECN-1", "category": "random_existential_compound_nucleus", "nl": "Beasts of Prey is about a creature known as the Shetani.", "gold_fol": "About(beastsOfPrey, shetani) & Creature(shetani)"}
+{"id": "RAND-GI-1", "category": "random_ground_instance", "nl": "The lead singer of Imagine Dragons is Dan.", "gold_fol": "LeadSinger(imagineDragon, dan)"}
+{"id": "RAND-DISJ-1", "category": "random_top_level_disjunction", "nl": "Either Mary goes from New Haven to New York by train or by car.", "gold_fol": "FromAndTo(newHaven, newYork) & ((GoByTrain(mary) & -GoByCar(mary)) | (-GoByTrain(mary) & GoByCar(mary)))"}
+{"id": "RAND-BIA-1", "category": "random_bare_implies_atomic", "nl": "If Thor is happy, the Hulk is angry.", "gold_fol": "Happy(thor) -> Angry(theHulk)"}
+{"id": "RAND-OTHER-1", "category": "random_other", "nl": "If Sam uses a Mac, he will play a song.", "gold_fol": "exists x.((Use(sam, mac) & Song(x)) -> Play(sam, x))"}
+{"id": "TRICKY-WHEELS", "category": "tricky_motivating_wheels", "nl": "Every car has wheels that are black and round.", "gold_fol": "all x.(Car(x) -> exists y.((Wheel(y) & HasWheel(x, y)) & (Black(y) & Round(y))))"}
+{"id": "TRICKY-NESTED-EXIST", "category": "tricky_nested_existentials", "nl": "There are at least two distinct bears in the zoo.", "gold_fol": "exists x.(exists y.((Bear(x) & Bear(y)) & ((In(x, zoo) & In(y, zoo)) & -(x = y))))"}
+{"id": "TRICKY-NEG-IN-SCOPE", "category": "tricky_negation_inside_quant", "nl": "No person is both mortal and immortal.", "gold_fol": "all x.(Person(x) -> -(Mortal(x) & Immortal(x)))"}
+{"id": "TRICKY-IFF", "category": "tricky_iff_in_body", "nl": "An integer is even iff it is not odd.", "gold_fol": "all x.(Integer(x) -> (EvenNum(x) <-> -OddNum(x)))"}
+{"id": "TRICKY-DEEP-NEST", "category": "tricky_deeply_nested", "nl": "Every student who takes a course is taught by a teacher of that course.", "gold_fol": "all x.(Student(x) -> exists y.(Course(y) & Takes(x, y) & exists z.(Teacher(z) & TeachesCourse(z, y) & Teaches(z, x))))"}
+{"id": "VACUOUS-1", "category": "vacuous_binder_from_folio", "nl": "(P0376) For all x and y, if y is a meal popular at a party, y is delicious.", "gold_fol": "all x.(all y.((Meal(y) & PopularAt(y, party)) -> Delicious(y)))"}
+{"id": "VACUOUS-2", "category": "vacuous_binder_from_folio", "nl": "(P0615) Guam sent an athlete to the Calgary Winter Olympics.", "gold_fol": "exists x.(Send(guam, athlete, calgaryWinterOlympics))"}
+{"id": "VACUOUS-3", "category": "vacuous_binder_from_folio", "nl": "(P1296) Neofonie announced WeTab.", "gold_fol": "all x.(AnnouncedBy(weTab, neofonie))"}

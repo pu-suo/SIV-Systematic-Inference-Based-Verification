@@ -11,20 +11,20 @@
   "n_with_defined_delta": 12,
   "n_with_null_delta": 18,
   "mean_score_corrected": 1.0,
-  "mean_score_broken": 0.8166666666666668,
-  "mean_delta": 0.18333333333333335,
-  "median_delta": 0.0,
+  "mean_score_broken": 0.5133477633477633,
+  "mean_delta": 0.4866522366522366,
+  "median_delta": 0.33333333333333337,
   "min_delta": 0.0,
   "max_delta": 1.0,
   "delta_distribution_bins": {
-    "0.0-0.2": 10,
-    "0.2-0.4": 0,
+    "0.0-0.2": 5,
+    "0.2-0.4": 2,
     "0.4-0.6": 0,
     "0.6-0.8": 0,
-    "0.8-1.0": 2
+    "0.8-1.0": 5
   },
-  "n_delta_gt_zero": 3,
-  "n_delta_eq_zero": 9,
+  "n_delta_gt_zero": 9,
+  "n_delta_eq_zero": 3,
   "n_delta_lt_zero": 0,
   "anomaly_premises_delta_lt_zero": [],
   "broken_reason_breakdown_in_30": {
